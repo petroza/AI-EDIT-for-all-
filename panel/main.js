@@ -19,6 +19,12 @@
   var ROOT = path.dirname(extDir);
   var HOST_JSX = path.join(extDir, 'host', 'host.jsx').replace(/\\/g, '/');
   var SERVER_JS = path.join(ROOT, 'server', 'index.js').replace(/\\/g, '/');
+  // přibalený Node (tools\node) na konec PATH – agenti (Claude/Codex) pak spustí MCP server příkazem "node"
+  // i na PC bez instalace Node.js; nainstalovaný Node má přednost
+  try {
+    var bundledNodeDir = path.join(ROOT, 'tools', 'node');
+    if (fs.existsSync(path.join(bundledNodeDir, 'node.exe'))) process.env.PATH = (process.env.PATH || '') + ';' + bundledNodeDir;
+  } catch (e) {}
 
   var PORT = 7880;
   try { PORT = JSON.parse(fs.readFileSync(path.join(ROOT, 'config.json'), 'utf8')).port || PORT; } catch (e) {}
@@ -487,6 +493,12 @@
       for (var i = 0; i < lines.length; i++) if (/\.exe$/i.test(lines[i].trim())) return lines[i].trim();
       return lines[0].trim() || null;
     } catch (e) {}
+
+    // přibalený přenosný Node (tools\node) – přenesená složka na PC bez instalace Node.js
+    if (name === 'node') {
+      var bundledNode = path.join(ROOT, 'tools', 'node', 'node.exe');
+      if (fs.existsSync(bundledNode)) return bundledNode;
+    }
 
     // Premiere/CEP inherits PATH when Premiere starts, so it may not see a Codex
     // installed or updated by the desktop app later. Look in Codex's local app

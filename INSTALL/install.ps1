@@ -19,7 +19,9 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 $logFile = Join-Path $PSScriptRoot 'install-log.txt'
 $offline = Join-Path $PSScriptRoot 'offline'
-$hasOffline = Test-Path (Join-Path $offline 'models\whisper-large-v3\model.bin')
+# offline = modely v INSTALL\offline, NEBO aspon Python wheels (prenesena slozka ma modely uz primo v models\ a tools\)
+$hasOffline = (Test-Path (Join-Path $offline 'models\whisper-large-v3\model.bin')) -or (Test-Path (Join-Path $offline 'wheels'))
+$modelsInPlace = Test-Path (Join-Path $root 'models\whisper-large-v3\model.bin')
 $script:problems = @()
 $script:warnings = @()
 
@@ -75,12 +77,29 @@ if ($NoLocalLLM) { $needGB = 5 }
 if ($SkipModels) { $needGB = 1 }
 # Hermes (~23 GB) je v baliku jen nekdy - pricitat ho jen kdyz se opravdu bude kopirovat
 if (-not $SkipModels -and -not $NoLocalLLM -and ($Hermes -or (Test-Path (Join-Path $offline 'models\hermes')))) { $needGB += 24 }
+# modely uz lezi ve slozce aplikace (prenesena kompletni slozka) - potreba jen misto na .venv (~3 GB)
+if ($modelsInPlace) { $needGB = 4 }
 try {
     $drive = (Get-Item $root).PSDrive
     $freeGB = [math]::Round($drive.Free / 1GB, 1)
     if ($freeGB -lt $needGB) { Fail "Na disku $($drive.Name): je $freeGB GB volnych, potreba ~$needGB GB" "Uvolni misto, nebo spust s -NoLocalLLM (usetri ~9 GB)." }
     else { Ok "Misto na disku: $freeGB GB volnych (potreba ~$needGB GB)" }
 } catch { Warn 'Nepodarilo se zjistit volne misto na disku' $null }
+
+# -- prenosne nastroje pribalene ve slozce (PC, kde IT nedovoli nic instalovat)
+$bundledNodeDir = Join-Path $root 'tools\node'
+$portPy = Join-Path $root 'tools\python311\python.exe'
+if (-not (Have 'node') -and (Test-Path (Join-Path $bundledNodeDir 'node.exe'))) {
+    $env:PATH = "$env:PATH;$bundledNodeDir"
+    if (-not $CheckOnly) {
+        # uzivatelska PATH (HKCU, bez prav spravce) - Claude, panel i Codex pak najdou "node"
+        $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+        if (-not (($userPath -split ';') -contains $bundledNodeDir)) {
+            [Environment]::SetEnvironmentVariable('Path', (($userPath, $bundledNodeDir) | Where-Object { $_ }) -join ';', 'User')
+            Info "pribaleny Node pridan do uzivatelske PATH ($bundledNodeDir)"
+        }
+    }
+}
 
 # -- Node.js
 $node = Have 'node'
@@ -92,7 +111,8 @@ if (-not $node) {
     if ($nodeMajor -lt 18) { Fail "Node.js $nodeVer je prilis stary (potreba 18+)" 'Nainstaluj aktualni Node.js LTS z https://nodejs.org.' }
     else { Ok "Node.js $nodeVer ($node)" }
 }
-if (-not (Have 'npm')) { Fail 'npm nenalezen' 'Preinstaluj Node.js - npm je jeho soucasti.' }
+$nodeModulesReady = (Test-Path (Join-Path $root 'node_modules\@modelcontextprotocol\sdk')) -and (Test-Path (Join-Path $root 'node_modules\zod'))
+if (-not (Have 'npm') -and -not $nodeModulesReady) { Fail 'npm nenalezen' 'Preinstaluj Node.js - npm je jeho soucasti.' }
 
 # -- Python 3.11
 $pyCmd = $null
@@ -105,7 +125,14 @@ if (-not $pyCmd -and (Have 'python')) {
         if ($v -eq '3.11') { $pyCmd = @('python') }
     } catch { }
 }
-if (-not $pyCmd) {
+$usePortPy = Test-Path $portPy
+if ($usePortPy) {
+    & $portPy -c "import faster_whisper, sherpa_onnx, numpy, cv2, yaml" 2>$null
+    if ($LASTEXITCODE -eq 0) { Ok 'Python 3.11 pribaleny (tools\python311) vcetne balicku - nic se neinstaluje' }
+    else { $usePortPy = $false; Warn 'Pribaleny Python (tools\python311) nejde spustit - zkusim systemovy Python 3.11' $null }
+}
+if ($usePortPy) { }
+elseif (-not $pyCmd) {
     if ($SkipModels) { Warn 'Python 3.11 nenalezen - preskakuji (-SkipModels)' $null }
     else { Fail 'Python 3.11 nenalezen' 'Nainstaluj Python 3.11 z https://www.python.org/downloads/release/python-3119/ a zaskrtni "Add python.exe to PATH".' }
 } else { Ok "Python 3.11 ($($pyCmd -join ' '))" }
@@ -116,11 +143,17 @@ foreach ($t in @('curl.exe', 'tar.exe')) {
     else { Fail "$t nenalezen" 'Potreba Windows 10 1803+ (curl a tar jsou soucasti systemu).' }
 }
 
+# -- ffmpeg (YouTuber verze dilu, kontrolni snimky) - prednost ma pribaleny tools\ffmpeg\bin, Worker si ho prida do PATH sam
+if (Test-Path (Join-Path $root 'tools\ffmpeg\bin\ffmpeg.exe')) { Ok 'ffmpeg pribaleny (tools\ffmpeg\bin)' }
+elseif (Have 'ffmpeg') { Ok "ffmpeg ($(Have 'ffmpeg'))" }
+else { Warn 'ffmpeg nenalezen - YouTuber verze dilu (yt_*) nepobezi, strih v Premiere ano' 'Nainstaluj: winget install Gyan.FFmpeg' }
+
 # -- offline balik / sit
 if ($hasOffline) {
     $offGB = [math]::Round(((Get-ChildItem $offline -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum) / 1GB, 1)
     Ok "Offline balik nalezen ($offGB GB) - internet neni potreba"
     foreach ($part in @('models\whisper-large-v3\model.bin', 'models\diarization', 'wheels', 'node_modules')) {
+        if ($modelsInPlace -and $part -like 'models\*') { continue }
         if (-not (Test-Path (Join-Path $offline $part))) { Warn "V offline baliku chybi $part - tato cast se zkusi stahnout z internetu" $null }
     }
 } else {
@@ -280,6 +313,10 @@ Info "mcp.json -> $serverPath"
 if (-not $SkipModels) {
     Write-Host '  [4] Python prostredi (.venv)'
     $py = Join-Path $root '.venv\Scripts\python.exe'
+  if ($usePortPy) {
+    # server pri chybejici .venv sam pouzije tools\python311 (server/index.js appPython)
+    Info 'pouziva se pribaleny Python tools\python311 - .venv se nevytvari'
+  } else {
     # .venv prenesena z jineho PC ukazuje na tamni Python (pyvenv.cfg "home = C:\Users\...") a tady nespusti -
     # takovou smazat a vytvorit znovu (balicky se pak doinstaluji z offline baliku / internetu)
     if (Test-Path $py) {
@@ -295,12 +332,14 @@ if (-not $SkipModels) {
     $wheels = Join-Path $offline 'wheels'
     if ($hasOffline -and (Test-Path $wheels)) {
         Info 'instaluji Python balicky z offline baliku (bez internetu)'
-        & $py -m pip install --no-index --find-links "$wheels" faster-whisper sherpa-onnx numpy opencv-python-headless nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
+        & $py -m pip install --no-index --find-links "$wheels" faster-whisper sherpa-onnx numpy opencv-python-headless pyyaml nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
         if ($LASTEXITCODE -ne 0) { throw 'Instalace Python balicku z offline baliku selhala (chybejici wheel pro tuto verzi Pythonu? Potreba Python 3.11 64-bit).' }
     } else {
-        & $py -m pip install faster-whisper sherpa-onnx numpy opencv-python-headless nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
+        & $py -m pip install faster-whisper sherpa-onnx numpy opencv-python-headless pyyaml nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
         if ($LASTEXITCODE -ne 0) { throw 'pip install selhal - zkontroluj sit/proxy (pip config set global.proxy ...), nebo pouzij offline balik.' }
     }
+  }
+  if ($usePortPy) { $py = $portPy }
 
     Write-Host '  [5] Whisper large-v3'
     if (Test-Path 'models\whisper-large-v3\model.bin') { Info 'Whisper uz je na miste' }
@@ -430,6 +469,7 @@ if (Test-Path $mcpTarget) { Ok "mcp.json ukazuje na existujici server" } else { 
 
 if (-not $SkipModels) {
     $py = Join-Path $root '.venv\Scripts\python.exe'
+    if ($usePortPy) { $py = $portPy }
     if (Test-Path $py) {
         & $py -c "import faster_whisper, sherpa_onnx, numpy, cv2" 2>$null
         if ($LASTEXITCODE -eq 0) { Ok 'Python balicky (faster-whisper, sherpa-onnx, numpy, opencv) funguji' }

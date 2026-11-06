@@ -37,7 +37,7 @@ Step '3/7 Python prostredi aplikace (.venv)'
 $py = Join-Path $root '.venv\Scripts\python.exe'
 if (-not (Test-Path $py)) { py -3.11 -m venv .venv }
 & $py -m pip install --upgrade pip | Out-Null
-& $py -m pip install faster-whisper sherpa-onnx numpy opencv-python-headless nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
+& $py -m pip install faster-whisper sherpa-onnx numpy opencv-python-headless pyyaml nvidia-cublas-cu12 "nvidia-cudnn-cu12>=9,<10"
 
 Step '4/7 Whisper large-v3 (models\whisper-large-v3)'
 if (-not (Test-Path 'models\whisper-large-v3\model.bin')) {
@@ -53,6 +53,9 @@ if (-not (Test-Path 'models\diarization\sherpa-onnx-pyannote-segmentation-3-0\mo
     Remove-Item models\diarization\seg.tar.bz2
 }
 Download "$sherpa/speaker-recongition-models/3dspeaker_speech_campplus_sv_zh_en_16k-common_advanced.onnx" 'models\diarization\3dspeaker_speech_campplus_sv_zh_en_16k-common_advanced.onnx'
+# detekce obliceju YuNet (YouTuber verze dilu - hlava mluvciho na stred)
+New-Item -ItemType Directory -Force models\opencv_face | Out-Null
+Download 'https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx' 'models\opencv_face\face_detection_yunet_2023mar.onnx'
 
 Step '6/7 Lokalni LLM (llama.cpp + gemma3 12B)'
 $llamaTag = 'b10984'

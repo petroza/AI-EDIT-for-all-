@@ -9,6 +9,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SERVER = path.join(ROOT, 'server', 'index.js').replace(/\\/g, '/');
 const NODE = process.execPath.replace(/\\/g, '/');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+// "node" z PATH, když tam je; jinak plná cesta k Node, který tenhle skript spustil (přibalený tools\node)
+let NODE_CMD = 'node';
+try { execFileSync('where.exe', ['node'], { stdio: 'pipe' }); } catch { NODE_CMD = NODE; }
 
 function backup(file) {
   const b = `${file}.bak-${stamp}`;
@@ -37,11 +40,27 @@ try {
   if (exists) console.log('Claude Code: "premiere" už je zaregistrovaný');
   else {
     // "node" z PATH: cesta "C:/Program Files/..." by se v konfiguraci Claude Code rozdelila na mezere
-    execFileSync(claude, ['mcp', 'add', '--scope', 'user', 'premiere', '--', 'node', SERVER], { stdio: 'inherit' });
+    execFileSync(claude, ['mcp', 'add', '--scope', 'user', 'premiere', '--', NODE_CMD, SERVER], { stdio: 'inherit' });
     console.log('Claude Code: zaregistrováno');
   }
 } catch (e) {
-  console.log('Claude Code: přeskočeno –', e.message);
+  // CLI "claude" není v PATH (např. jen aplikace Claude s Code tabem) – zapsat rovnou do uživatelské
+  // konfigurace ~/.claude.json, kterou čte Claude Code v terminálu i v aplikaci
+  try {
+    const userCfg = path.join(os.homedir(), '.claude.json');
+    const cfg = fs.existsSync(userCfg) ? JSON.parse(fs.readFileSync(userCfg, 'utf8')) : {};
+    cfg.mcpServers ??= {};
+    const cur = cfg.mcpServers.premiere;
+    if (cur && fs.existsSync(cur.args?.[0] || '')) console.log('Claude Code: "premiere" už je v ~/.claude.json');
+    else {
+      if (fs.existsSync(userCfg)) backup(userCfg);
+      cfg.mcpServers.premiere = { type: 'stdio', command: NODE_CMD, args: [SERVER], env: {} };
+      fs.writeFileSync(userCfg, JSON.stringify(cfg, null, 2), 'utf8');
+      console.log('Claude Code: CLI nenalezen – zapsáno do ~/.claude.json (platí od nové relace)');
+    }
+  } catch (e2) {
+    console.log('Claude Code: přeskočeno –', e.message, '/', e2.message);
+  }
 }
 
 // Claude Desktop

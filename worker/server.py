@@ -21,8 +21,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+# ffmpeg přibalený ve složce aplikace (tools\ffmpeg\bin) – na počítači bez ffmpeg v PATH (přenesená instalace)
+_ffbin = Path(__file__).resolve().parent.parent / "tools" / "ffmpeg" / "bin"
+if (_ffbin / "ffmpeg.exe").exists():
+    os.environ["PATH"] = str(_ffbin) + os.pathsep + os.environ.get("PATH", "")
+
 from worker.common import CONFIG, Cancelled, cache_dir, log, original_media, read_json, read_token, write_json  # noqa: E402
-from worker import analysis, asr, audiosync, broll, diarize, frame, gpu, media  # noqa: E402
+from worker import aerun, analysis, asr, audiosync, broll, diarize, frame, gpu, media, youtuber  # noqa: E402
 
 VERSION = "0.2.0"
 HANDLERS = {
@@ -42,6 +47,13 @@ HANDLERS = {
     "broll_index": broll.index,
     "broll_plan": broll.plan,
     "media_info": broll.media_info,
+    # YouTuber verze dílu (9:16 / 16:9 v After Effects) – youtuber/*.yaml
+    "yt_speakers": youtuber.speakers,
+    "yt_plan": youtuber.plan,
+    "yt_build_ae": aerun.build,
+    "yt_stills": aerun.stills,
+    "yt_render": aerun.render,
+    "yt_collect": aerun.collect,
 }
 TOKEN = read_token()
 JOBS_DIR = cache_dir("jobs")

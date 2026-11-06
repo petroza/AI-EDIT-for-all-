@@ -81,7 +81,7 @@ a delší ticho jdou do celku, monology delší než 14 s se prostřihnou, nejkr
 Výsledek je obyčejná sekvence (V1 = obraz kamer bez jejich zvuku, A1 = hlavní zvuk) – dá se dál ručně upravit.
 `dryRun: true` vrátí plán bez Premiere; `picks` kombinují střih příběhu s přepínáním kamer.
 
-## Nástroje (43)
+## Nástroje (50)
 | Skupina | Nástroje |
 |---|---|
 | Stav a projekt | `premiere_status`, `get_project`, `list_project_items`, `import_media`, `save_project`, `undo`, `worker_status`, `job_status` |
@@ -94,6 +94,7 @@ Výsledek je obyčejná sekvence (V1 = obraz kamer bez jejich zvuku, A1 = hlavn�
 | Detekce střihu (obraz) | `detect_scene_cuts` (najde skutečné vizuální řezy kamer zapečené v jednom zdroji – Premierina Scene Edit Detection, jen na výslovné přání) |
 | Titulky | `add_captions` (titulky z přepisu podle timeline, s `translate` rovnou přeložené do češtiny) |
 | Střih (destruktivní) | `remove_timeline_ranges`, `razor`, `remove_clips` |
+| YouTuber verze dílu (AE 9:16 / 16:9) | `yt_export_structure`, `yt_speakers`, `yt_plan`, `yt_build_ae`, `yt_stills`, `yt_render`, `yt_collect` – config dílu a návod v [`youtuber/`](youtuber/README.md) |
 | Vývoj | `run_extendscript`, `reload_bridge` |
 
 ## Konfigurace

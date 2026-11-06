@@ -19,6 +19,14 @@ import { intervalsFromTranscript, intervalsFromTurns, multicamClips, planRuns, s
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'config.json'), 'utf8'));
 const W = CONFIG.whisper;
+// Python aplikace: .venv z instalátoru, jinak přibalený přenosný Python (tools/python311 – přenesená
+// složka na PC, kde nejde nic instalovat). Relativní cesta se bere od složky aplikace.
+const PORTABLE_PY = path.join(ROOT, 'tools', 'python311', 'python.exe');
+function appPython(rel) {
+  const p = path.resolve(ROOT, rel || '.venv/Scripts/python.exe');
+  if (fs.existsSync(p) || !fs.existsSync(PORTABLE_PY)) return p;
+  return PORTABLE_PY;
+}
 const CACHE_DIR = path.resolve(ROOT, CONFIG.cacheDir);
 const INDEX_FILE = path.join(CACHE_DIR, 'index.json');
 const TOKEN_FILE = path.join(process.env.APPDATA || ROOT, 'MYpremiereMCP', 'token.txt');
@@ -129,7 +137,7 @@ async function singleProjectMediaSource() {
 
 function runPython(args, extra) {
   return new Promise((resolve, reject) => {
-    const cmd = /[\\/]/.test(CONFIG.python[0]) ? path.resolve(ROOT, CONFIG.python[0]) : CONFIG.python[0];
+    const cmd = /[\\/]/.test(CONFIG.python[0]) ? appPython(CONFIG.python[0]) : CONFIG.python[0];
     const p = spawn(cmd, [...CONFIG.python.slice(1), ...args], {
       cwd: ROOT,
       windowsHide: true,
@@ -248,7 +256,7 @@ async function ensureWorker() {
     /* spustíme */
   }
   workerStarting ??= (async () => {
-    const py = path.resolve(ROOT, CONFIG.worker?.python || '.venv/Scripts/python.exe');
+    const py = appPython(CONFIG.worker?.python);
     if (!fs.existsSync(py)) throw new Error(`Python Workeru nenalezen: ${py} – spusť install.ps1`);
     const child = spawn(py, [path.join(ROOT, 'worker', 'server.py')], { cwd: ROOT, detached: true, stdio: 'ignore', windowsHide: true });
     child.unref();
@@ -955,6 +963,7 @@ const server = new McpServer(
       'plný text čti jen u vybraných kapitol přes get_transcript s format "compact".',
       'VÍCE KAMER: build_multicam_sequence – synchronizuje kamery podle zvuku a přepíná podle mluvčího (nejdřív dryRun).',
       'DABING / KOMENTÁŘ NAMLUVENÝ ZVLÁŠŤ (řeč jen na samostatné zvukové stopě, obraz = záznamy bez řeči): index_broll → build_voiceover_sequence se segments (ke každé větě komentáře záběr, který ukazuje, o čem mluví).',
+      'YOUTUBER VERZE DÍLU (svisle 9:16 / na šířku 16:9 v After Effects, Detail): config youtuber/<díl>.yaml, pak yt_export_structure → yt_speakers → yt_plan → yt_build_ae → yt_stills (prohlédnout) → yt_render → yt_collect.',
       'Dlouhé úlohy běží v lokálním Workeru; worker_status ukazuje frontu.',
     ].join(' '),
   },
@@ -2254,6 +2263,109 @@ tool(
     await bridge('/task/report', a, 10000);
     return 'odesláno do panelu';
   },
+);
+
+/* ------------------------------------------------------------------ YouTuber verze dílu (9:16 + 16:9 v After Effects) */
+
+// Config dílu (YAML) čte Python – stejný parser jako Worker; krátký název = youtuber/<název>.yaml
+function ytConfigPath(c) {
+  if (!c) throw new Error('Chybí config dílu (např. youtuber/detail-01.yaml)');
+  for (const p of [c, path.join(ROOT, c), path.join(ROOT, 'youtuber', c), path.join(ROOT, 'youtuber', `${c}.yaml`)]) {
+    if (fs.existsSync(p) && fs.statSync(p).isFile()) return path.resolve(p);
+  }
+  throw new Error(`Config dílu nenalezen: ${c}`);
+}
+function ytConfig(c) {
+  const file = ytConfigPath(c);
+  const py = appPython(CONFIG.worker?.python);
+  const out = JSON.parse(execFileSync(py, ['-m', 'worker.youtuber', '--print', file], { cwd: ROOT, encoding: 'utf8', windowsHide: true }));
+  if (out.error) throw new Error(out.error);
+  return out;
+}
+const ytCfgArg = z.string().describe('Config dílu: cesta k YAML nebo název v youtuber/ (vzor youtuber/detail-01.yaml)');
+const ytFmt = z.enum(['9x16', '16x9']).describe('9x16 = svisle (1080×1920), 16x9 = na šířku');
+const ytWait = z.boolean().optional().describe('false = vrátit hned ID úlohy (sleduj job_status); výchozí čekat');
+
+tool(
+  'yt_export_structure',
+  'YouTuber verze dílu, krok 1: vypíše strukturu obsahového střihu z Premiere (V1 klipy zdroje + znělky/předěly, A2 hudba s klíči ' +
+    'hlasitosti, V2 texty lišt MOGRT) do <cil.slozka>/data/struktura.json. Jen čte. Celý postup: yt_export_structure → yt_speakers → ' +
+    'yt_plan → yt_build_ae → yt_stills (zkontrolovat!) → yt_render → yt_collect; vše řídí YAML config dílu.',
+  { config: ytCfgArg, sequence: z.string().optional().describe('Přepíše premiere.sekvence z configu') },
+  async (a) => {
+    const cfg = ytConfig(a.config);
+    const st = cfg.premiere.stopy || {};
+    const args = { sequence: a.sequence || cfg.premiere.sekvence || '', video: st.obraz || 1, music: st.hudba || 2, tags: st.listy || 2 };
+    const code = `var YT_ARGS = ${JSON.stringify(args)};\n` + fs.readFileSync(path.join(ROOT, 'server', 'yt_structure.jsx'), 'utf8');
+    const raw = await bridge('/eval', { code }, 120000);
+    const d = JSON.parse(raw);
+    if (d.error) throw new Error(d.error);
+    fs.mkdirSync(path.dirname(cfg.struktura), { recursive: true });
+    fs.writeFileSync(cfg.struktura, JSON.stringify(d));
+    const src = normKey(cfg.zdroj);
+    const own = d.v1.filter((c) => c.p && normKey(c.p) === src);
+    return {
+      file: cfg.struktura, sequence: d.seq, duration: d.end,
+      sourceClips: own.length, otherV1: [...new Set(d.v1.filter((c) => !own.includes(c)).map((c) => c.n))],
+      music: d.a2.map((m) => `${m.n} ${m.s}–${m.e} s`), tags: d.v2.map((t) => `${t.s} ${t.t}`),
+      warning: own.length ? undefined : `Ve V1 není žádný klip zdroje ${cfg.zdroj} – zkontroluj zdroj v configu`,
+    };
+  },
+);
+
+tool(
+  'yt_speakers',
+  'YouTuber verze, krok 2: kdo mluví v každé větě podle barvy hlasu s KOTVAMI z configu (osoby[].kotvy = src úseky, kde jistě ' +
+    'mluví jen ta osoba; běžná diarizace slévá podobné hlasy). Vrací rozložení času a ukázku vět – zkontroluj a případně uprav kotvy.',
+  { config: ytCfgArg },
+  (a, extra) => runJob('yt_speakers', { config: ytConfigPath(a.config) }, extra),
+);
+
+tool(
+  'yt_plan',
+  'YouTuber verze, krok 3: plán záběrů (střih každé 1,3–4,4 s jen v mezerách mezi slovy, záběr na mluvčího, hlava na středu – ' +
+    'detekce obličejů YuNet, typ záběru podle pravidel v configu, zoom do obrazovek, vystřižení zapečeného loga) + plán pro AE ' +
+    '(titulky s opravami přepisu, jmenovky, kapitoly, CTA, fotky, vtipy, loučení v celku, hudba). Výpis typů záběrů: data/zabery.txt ' +
+    '(ruční opravy přes zabery.prepsat se src časem). Přepočet je rychlý díky cache analýzy obrazu.',
+  { config: ytCfgArg },
+  (a, extra) => runJob('yt_plan', { config: ytConfigPath(a.config) }, extra),
+);
+
+tool(
+  'yt_build_ae',
+  'YouTuber verze, krok 4: sestaví projekt After Effects (9:16 nebo 16:9) z plánu – spouští AE 2026 sám (skript s BOM přes ' +
+    '$.evalFile, projekt zavírá bez uložení, zavírá dialogy po pádu a při pádu AE restartuje). Vrací .aep a chyby z logu.',
+  { config: ytCfgArg, format: ytFmt, wait: ytWait },
+  (a, extra) => runJob('yt_build_ae', { config: ytConfigPath(a.config), format: a.format }, extra, { wait: a.wait !== false }),
+);
+
+tool(
+  'yt_stills',
+  'YouTuber verze, krok 5 (POVINNÝ před renderem): přehled kontrolních snímků jako JPG (prohlédni přes Read): hlavy na středu, ' +
+    'jmenovky na správné osobě, nic nepřekrývá obličej. Bez video = snímky z AE projektu; s video = z hotového renderu; ' +
+    's reference = dvojice nový | referenční (porovnání verzí).',
+  {
+    config: ytCfgArg, format: ytFmt,
+    times: z.array(z.number()).optional().describe('Časy na timeline v s; výchozí ~24 rovnoměrně + jmenovky + fotky'),
+    video: z.string().optional().describe('Hotové video místo AE projektu'),
+    reference: z.string().optional().describe('Referenční video pro porovnání vedle sebe'),
+  },
+  (a, extra) => runJob('yt_stills', { config: ytConfigPath(a.config), format: a.format, times: a.times, video: a.video, reference: a.reference }, extra),
+);
+
+tool(
+  'yt_render',
+  'YouTuber verze, krok 6: render přes aerender (H.264 15 Mbps), přebalení zvuku ffmpeg (hlasitost render.zvuk_db, AAC 256k, ' +
+    'faststart) a kontrola hlasitosti ebur128 (cíl ~−14 LUFS, špička pod −0,5 dBFS). Trvá řádově délku videa.',
+  { config: ytCfgArg, format: ytFmt, output: z.string().optional().describe('Cílové MP4 (výchozí <cil.slozka>/<nazev>_<format>.mp4)'), wait: ytWait },
+  (a, extra) => runJob('yt_render', { config: ytConfigPath(a.config), format: a.format, output: a.output }, extra, { wait: a.wait !== false }),
+);
+
+tool(
+  'yt_collect',
+  'YouTuber verze, krok 7: sbalí AE projekt (reduce + kopie všech zdrojů do <cil.slozka>/AE_projekt/Footage), ať jde archivovat/přenést.',
+  { config: ytCfgArg, format: ytFmt, wait: ytWait },
+  (a, extra) => runJob('yt_collect', { config: ytConfigPath(a.config), format: a.format }, extra, { wait: a.wait !== false }),
 );
 
 // „Jsem tu“ pro panel: indikátor „Claude“ v hlavičce panelu ukáže, že aplikace Claude (nebo Codex…) má plugin
