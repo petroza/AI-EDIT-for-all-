@@ -38,6 +38,11 @@
   Regrese 8/8 čistých hranic (Talk + debata).
 - **Panel:** délka 10/20/30 s, fronta zadání, Zpět = smazat sekvence posledního zadání, vytížení GPU/VRAM/RAM/CPU,
   pruh průběhu Workeru, přihlášení Claude Code tlačítkem. Schované „nástroje“. Tečky ve štítcích jen září (nezvětšují se).
+- Formáty ověřené exportem: 9:16 1080×1920, 1:1 1080×1080, 4:5 1080×1350 (obličej na středu, obraz vyplněný).
+- Otevřené (2026-11-20 večer): styl titulků (velikost/písmo) přes ExtendScript nejde – `createCaptionTrack` ze SRT,
+  styl stopy jen ručně v Premiere; na výšku jsou titulky malé. V projektu `Downloadswdwada.prproj` je spousta
+  testovacích sekvencí (STRIH HERMES…, TEST…) – smazat jen se svolením Petra. Upoutávky po vyřazení vadného úderu
+  bývají kratší než cíl (20 s → 15 s).
 - Otevřené: podepsaný panel `.zxp` pro instalaci v Nově (v práci se nepodepsaný panel neukázal – IT/certifikáty);
   druhé testovací video „Taky názor 20:15 01. 11. 2026“ se nedostáhlo (Petr zavřel Chrome); Claude CLI přihlásit
   a pustit srovnání Claude (panel, Sonnet) vs Hermes přes `scripts/compare-agents.mjs` s `CMP_SRC/CMP_TASK/CMP_OUT`.
