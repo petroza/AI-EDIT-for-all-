@@ -993,8 +993,10 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         order = top[:2]
     # délka: nad 1,25× cíle ubírej prostřední údery (hák a konec drž), pod 0,85× přidej další nejlepší, který se vejde
     # (20s upoutávka měla s mezí 0,7× jen 15,5 s)
-    while len(order) > 2 and sum(c["dur"] for c in order) > 1.25 * target:
+    while len(order) > 2 and sum(c["dur"] for c in order) > 1.2 * target:
         order.remove(max(order[1:-1], key=lambda c: c["dur"]))
+    # Pozn.: výměna delšího úderu za kratší „podle skóre“ (kvůli délce) rozbila děj – doprostřed upoutávky o smrti
+    # mámy vložila větu o práci reportérky. Raději o pár sekund delší upoutávka než nesouvislá (2026-11-20).
     for c in top:
         if sum(x["dur"] for x in order) >= 0.85 * target:
             break
@@ -1144,7 +1146,8 @@ def plan_edit(params: dict, ctx) -> dict:
             c = chapters[k - 1]
             ids = [i for i in range(c["from"], c["to"] + 1) if i in segs and i not in skip]
             removed_moderator.extend(i for i in ids if segs[i].get("speaker") in exclude and i not in removed_moderator)
-            ids = [i for i in ids if segs[i].get("speaker") not in exclude]
+            # avoid = věty se slyšitelnou hranicí z předchozího pokusu (uzavřená smyčka v plan_edit_local)
+            ids = [i for i in ids if segs[i].get("speaker") not in exclude and i not in avoid]
             for i in ids:
                 if len(windows[-1]) >= WINDOW:
                     windows.append([])
@@ -1294,10 +1297,14 @@ def plan_edit(params: dict, ctx) -> dict:
         mine = sum(x["dur"] for x in units if x["speaker"] == u["speaker"])
         return cur > 0 and mine / cur > 1 / len(speakers) + 0.05
 
+    topics_with_material: set[str] = set()  # témata, ke kterým ověření našlo aspoň jeden celek (viz verify)
+
     def over_topic(u: dict) -> bool:
         """Téma celku má víc než férový podíl (+10 bodů) – zadání "o bydlení a parkování" chce obojí.
-        Počítají se jen témata, ke kterým je materiál (prázdné téma by férový podíl rozmělnilo)."""
-        live = {x["topic"] for x in units if x.get("topic")}
+        Počítají se jen témata, ke kterým je materiál (prázdné téma by férový podíl rozmělnilo) – i ten, který zatím
+        jen leží mezi ověřenými kandidáty: dřív se téma s 0 s ve výběru nepočítalo, a tak se nikdy nedoplnilo
+        (Talk 2 min: „televize“ 0 s, herectví 57 s, přestože materiál o televizi byl)."""
+        live = {x["topic"] for x in units if x.get("topic")} | topics_with_material
         if not balance_topics or len(live) < 2 or not u.get("topic"):
             return False
         cur = sum(x["dur"] for x in units if x.get("topic"))
@@ -1330,6 +1337,7 @@ def plan_edit(params: dict, ctx) -> dict:
             got = [res[i] for i in u["ids"] if res.get(i) in topics]
             if got:
                 u["topic"] = got[0]
+                topics_with_material.add(got[0])
             # celek začíná větou, která stojí na předchozí ("Tím si to zhoršujeme.") -> musí jít s předchozí větou
             # téhož mluvčího: je-li ta v jiném celku, celky se sloučí (jinak zkracování vyhodí jen ji a věta zůstane
             # viset), jinak se předchozí věta předřadí. Odpověď na otázku řeší párování otázka–odpověď.
@@ -1424,7 +1432,12 @@ def plan_edit(params: dict, ctx) -> dict:
                 base = sum(u["dur"] for u in units) - out_u["dur"]
                 units.remove(out_u)  # podíly se počítají bez vyměňovaného celku
                 add, t = [], base
-                for c in sorted([c for c in pool if not viol(c) and (c["core"] or not out_u["core"])], key=keep_key):
+                present = {u.get("topic") for u in units}
+                # celek tématu, které ve výběru úplně chybí, smí nahradit i jádrový celek – jinak by téma ze zadání
+                # nikdy nedostalo prostor (Talk 2 min: 19 celků o televizi v zásobě, všechny „nejádrové“, 0 s ve střihu)
+                ok = lambda c: c["core"] or not out_u["core"] or (c.get("topic") and c["topic"] not in present)  # noqa: E731
+                for c in sorted([c for c in pool if not viol(c) and ok(c)],
+                                key=lambda c: (c.get("topic") in present, *keep_key(c))):
                     if t + c["dur"] <= hi:
                         add.append(c)
                         t += c["dur"]
@@ -1745,16 +1758,36 @@ def plan_edit(params: dict, ctx) -> dict:
             pool += extra
     if target:
         rebalance(pool, hi, lo)
-        if any(viol(u) for u in units) and pre_pool:
+        # téma ze zadání, které ve výběru úplně chybí: jeho materiál může ležet jen mezi předběžně vyřazenými, které
+        # ještě nemají ověřené téma – bez ověření by se o něm vyvažování nedozvědělo (Talk 2 min: „televize“ 0 s)
+        missing = bool(balance_topics and set(topics) - {u.get("topic") for u in units} - topics_with_material)
+        if (any(viol(u) for u in units) or missing) and pre_pool:
             # slabší strana může mít materiál jen mezi předběžně vyřazenými (ty ještě nemají ověřené téma) –
             # ověř nejlepší z nich a zkus výměnu znovu
             gpu.STAT_PHASE = "rebalance"
-            cand = sorted(pre_pool, key=keep_key)[:14]
+            cand = sorted(pre_pool, key=keep_key)[:24 if missing else 14]
             pre_pool = [u for u in pre_pool if u not in cand]
             bad = verify(cand)
             off_topic += bad
             pool += [u for u in cand if not any(i in bad for i in u["ids"])]
             rebalance(pool, hi, lo)
+        miss = (set(topics) - {u.get("topic") for u in units} - topics_with_material) if balance_topics else set()
+        if miss:
+            # pořád chybí: výběr vět z kapitol k tématu ho vůbec nenabídl. Kapitoly k němu najde ověření tématu jejich
+            # nejlepších vět (z osnovy), pak cílený výběr v nich a výměna (Talk 2 min: kariéra v televizi 0 s)
+            gpu.STAT_PHASE = "coverage"
+            ctx.progress(0.96, f"LLM doplňuje chybějící téma: {', '.join(sorted(miss))}")
+            best = [i for c in chapters for i in (c.get("best") or [])[:2] if i in segs and segs[i].get("speaker") not in exclude]
+            lab = _verify_topic(instruction, topics, balance_topics, best, segs, an, chapter_of, backend, set())
+            ks = sorted({chapter_of[i] for i, t in lab.items() if t in miss and i in chapter_of})
+            if ks:
+                have = {i for u in units + pool + pre_pool for i in u["ids"]} | set(off_topic)
+                extra = [u for u in to_units(complete(select(ks, have, f"Vyber věty o tématu: {', '.join(sorted(miss))}. ")))
+                         if not any(i in have for i in u["ids"])]
+                bad = verify(extra)
+                off_topic += bad
+                pool += [u for u in extra if not any(i in bad for i in u["ids"])]
+                rebalance(pool, hi, lo)
     attach_context(refs=False)
     units.sort(key=lambda u: u["ids"][0])
     snapped = _snap_units_to_pauses(units, segs, exclude, pause_map,
@@ -1787,6 +1820,10 @@ def plan_edit(params: dict, ctx) -> dict:
         "balanceTopics": balance_topics,
         "general": general,
         "topicSec": {t: round(sum(u["dur"] for u in units if u.get("topic") == t), 1) for t in topics},
+        # ladění vyvážení: kolik ověřeného materiálu k tématu zbylo v zásobě [počet celků, sekund, nejkratší celek]
+        "topicPool": {t: [len([u for u in pool if u.get("topic") == t]),
+                          round(sum(u["dur"] for u in pool if u.get("topic") == t), 1),
+                          round(min([u["dur"] for u in pool if u.get("topic") == t] or [0]), 1)] for t in topics},
         "backend": backend,
         "elapsedSec": round(time.time() - t_start, 1),
         "llmStats": gpu.stats_summary(gpu.CALL_STATS),

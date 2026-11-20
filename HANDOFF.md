@@ -24,7 +24,9 @@
   videa 121 s (dřív 8 min).
 - **Pauzy podle zvuku** (`analysis._pause_map` + `audiosync.boundary_pauses`): mezera ≥ 0,12 s a ≥ 40 ms ticha. Používá
   je výběr pasáží i nové dotažení krajů u dlouhých střihů (`_snap_units_to_pauses`, pak `trim`). 2 min Talk: 0 slyšitelných hranic.
-  Otevřené: po dotažení se rozjede vyvážení témat (2 min: herectví 57 s, televize 0 s).
+  Vyvážení témat opraveno: téma s 0 s se počítá jako živé, když má ověřený materiál, chybějící téma se dohledá
+  přes kapitoly (ověření nejlepších vět) a jeho celek smí nahradit i jádrový (2 min: 23/27/24/40 s místo 57/0/31/29).
+  Uzavřená smyčka hranic i u delších střihů (1 opakování, `avoid` vyřadí věty už při výběru).
 - Stavby vrací `edges` (⚠ zvuk na hranici) – `build_sequence_from_transcript`, `build_from_plan` (nově i s dolaďováním
   hranic), `plan_edit_local`. Panel: 👍/👎 → `cacheeedback.jsonl`, „Zdroj:“ nad zadáním.
 - **Upoutávky** (`analysis._plan_teaser`) a **formát pro sítě** (`reframe_sequence`, host `reframeSequence` = Premiere

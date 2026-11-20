@@ -2208,7 +2208,8 @@ tool(
       // stejné doladění konců podle zvuku jako build_sequence_from_transcript (dřív tu chybělo)
       await refineOutPoints(a.path, ranges, extra);
       const edges = await edgeWarnings(a.path, tr, ranges, extra);
-      const retry = edges?.badIds?.length && ['passage', 'teaser'].includes(plan.mode) && attempt < 2;
+      // krátké režimy až 2×, skládání vět (delší střihy, plán ~1 min) 1×
+      const retry = edges?.badIds?.length && attempt < (['passage', 'teaser'].includes(plan.mode) ? 2 : 1);
       if (retry) {
         avoid.push(...edges.badIds);
         const again = await runJob('plan_edit', { path: a.path, instruction: a.instruction, targetSec: a.targetSec,
