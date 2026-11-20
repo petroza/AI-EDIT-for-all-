@@ -56,6 +56,7 @@ Příklady zadání (panel v Premiere, `claude` v terminálu, Claude Desktop):
 Zadání jde i nadiktovat – tlačítko 🎤 v panelu nahraje řeč a lokálně ji přepíše (stejný Whisper jako na video, žádný cloud).
 
 ### Panel
+- **Rychle:** šablony zadání 💬 Výrok, 🎬 Upoutávka, ✂ Zkrácená verze, 🔇 Bez pauz (vyplní zadání a délku).
 - **Délka 10 / 20 / 30 s** – rychlá volba cílové délky (přidá se k zadání, u Hermese má přednost před délkou v textu).
 - **Formát 16:9 / 9:16 / 1:1 / 4:5** – jiný než 16:9: po střihu se z nové sekvence sama udělá verze pro sociální sítě
   (nástroj `reframe_sequence`: Premiere Auto Reframe sleduje obličej, výsledek v plném rozlišení 1080×1920 / 1080×1080 /

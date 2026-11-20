@@ -157,6 +157,14 @@
       Zdroj: <b id="srcName" style="color:var(--text);font-weight:600">…</b></span>
   </div>
 
+  <div class="chips" id="templates" title="Rychlá zadání – klik vyplní zadání, uprav ho a spusť (délku a formát vyber vedle)">
+    <span style="color:var(--dim)">Rychle:</span>
+    <button class="chip tpl" data-len="20" data-text="Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.">💬 Výrok</button>
+    <button class="chip tpl" data-len="20" data-text="Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.">🎬 Upoutávka</button>
+    <button class="chip tpl" data-len="" data-text="Zkrácená verze rozhovoru na 3 minuty: nejzajímavější myšlenky v původním pořadí, otázky moderátora jen tam, kde jsou potřeba. Vyhoď přeřeknutí a opakování.">✂ Zkrácená verze</button>
+    <button class="chip tpl" data-len="" data-text="Vystřihni hluchá místa a dlouhé pauzy, ať řeč plyne – krátké pauzy na nádech nech.">🔇 Bez pauz</button>
+  </div>
+
   <textarea id="prompt" lang="cs" spellcheck="false" placeholder="Např.: Přepiš zvuk aktivní sekvence a udělej novou sekvenci jen s větami o cenách, ať to dává smysl. Vyhoď přeřeknutí a dlouhé pauzy."></textarea>
   <div class="row" style="flex-wrap:wrap">
     <select id="agent">

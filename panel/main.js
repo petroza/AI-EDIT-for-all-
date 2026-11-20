@@ -157,7 +157,7 @@
   /* ---------------- rychlá volba délky ---------------- */
   var targetSec = 0;
   try { targetSec = Number(localStorage.getItem('targetSec') || 0); } catch (e) { /* bez paměti */ }
-  var chips = document.querySelectorAll('.chip');
+  var chips = document.querySelectorAll('.chip[data-sec]'); // jen délky – šablony zadání mají třídu chip taky
   function paintChips() {
     Array.prototype.forEach.call(chips, function (c) { c.classList.toggle('on', Number(c.getAttribute('data-sec')) === targetSec); });
   }
@@ -208,6 +208,22 @@
       });
     };
   }
+
+  /* ---------------- rychlá zadání ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.tpl'), function (b) {
+    b.addEventListener('click', function () {
+      $('prompt').value = b.getAttribute('data-text');
+      var len = Number(b.getAttribute('data-len') || 0);
+      if (len && targetSec !== len) {
+        var chip = document.querySelector('.chip[data-sec="' + len + '"]');
+        if (chip) chip.click();
+      } else if (!len && targetSec) {
+        var on = document.querySelector('.chip[data-sec="' + targetSec + '"]');
+        if (on) on.click(); // délka z textu zadání (3 minuty) – zrušit zvolenou krátkou
+      }
+      $('prompt').focus();
+    });
+  });
 
   /* ---------------- formát pro sociální sítě (Auto Reframe) ---------------- */
   var FORMATS = { '9:16': [9, 16, 1080, 1920], '1:1': [1, 1, 1080, 1080], '4:5': [4, 5, 1080, 1350] };
