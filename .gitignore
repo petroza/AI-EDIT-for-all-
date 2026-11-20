@@ -23,3 +23,7 @@ INSTALL/install-log.txt
 *.log
 __pycache__/
 *.pyc
+
+# podepsany panel: certifikat a balicek (scripts/build-zxp.ps1) - tajne / generovane
+INSTALL/cert/
+INSTALL/*.zxp
