@@ -1020,6 +1020,9 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total, 1),
         "alternates": [u["id"] for c in top if c not in order for u in c["units"]], "dropped": [],
         "mode": "teaser", "passages": len(cands), "reason": r.get("uvaha"), "distorted": distorted,
+        # náhradní údery (nejlépe hodnocené mimo upoutávku): server je vloží, když kvůli slyšitelné hranici vyřadí úder
+        "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
+                   for c in top if c not in order][:6],
         "ranked": [[round(sc, 1), text(c)[:60], c["dur"]] for sc, c in rated[:8]],
         "editorial": [], "thesis": None, "keyChapters": [], "offTopic": [], "topics": [], "balanceTopics": False,
         "general": False, "topicSec": {}, "addedForQuestionAnswer": [], "fixedFragments": [],

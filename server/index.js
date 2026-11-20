@@ -2236,8 +2236,22 @@ tool(
         const dur = kept.reduce((s, r) => s + r.out - r.in, 0);
         if (kept.length >= 2 && (!a.targetSec || dur >= 0.6 * a.targetSec)) {
           finalRanges = kept;
-          finalEdges = await edgeWarnings(a.path, tr, kept, extra);
           plan = { ...plan, droppedForEdges: [...bad] };
+          // vyřazením se upoutávka zkrátila (20 s → 15 s): doplnit náhradním úderem s čistými hranicemi, který se vejde
+          let total = dur;
+          const used = new Set(kept.flatMap((r) => r.ids));
+          for (const sp of plan.spares || []) {
+            if (!a.targetSec || total >= 0.85 * a.targetSec) break;
+            if (sp.ids.some((i) => bad.has(i) || used.has(i)) || total + sp.dur > 1.15 * a.targetSec) continue;
+            const add = picksToRanges(tr, sp.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap: 0.4 });
+            await refineOutPoints(a.path, add, extra);
+            if (await edgeWarnings(a.path, tr, add, extra)) continue;
+            finalRanges = [...finalRanges.slice(0, -1), ...add, finalRanges[finalRanges.length - 1]]; // pointa zůstane
+            total += add.reduce((s, r) => s + r.out - r.in, 0);
+            sp.ids.forEach((i) => used.add(i));
+            plan.addedSpares = [...(plan.addedSpares || []), ...sp.ids];
+          }
+          finalEdges = await edgeWarnings(a.path, tr, finalRanges, extra);
         }
       }
       const ranges2 = finalRanges;
