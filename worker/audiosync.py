@@ -155,7 +155,10 @@ def edge_levels(params: dict, ctx) -> dict:
     out = []
     for e in params.get("edges", []):
         t = float(e["t"])
-        edge = rms(t, t + 0.012) if e.get("kind") == "in" else rms(t - 0.012, t)
+        # Premiere hranici ještě zaokrouhlí na snímek (začátek dolů, konec nahoru – až o 40 ms), proto se měří
+        # i tahle rezerva: nejhlasitější 12ms okno v ní (debata: server čistá hranice, v Premiere 21,80 s -8 dB)
+        span = (t - 0.04, t + 0.012) if e.get("kind") == "in" else (t - 0.012, t + 0.04)
+        edge = max(rms(x, x + 0.012) for x in np.arange(span[0], span[1] - 0.011, 0.006))
         wins = [rms(x, x + 0.025) for x in np.arange(t - 2.0, t + 2.0, 0.025)]
         speech = float(np.percentile(wins, 90)) if wins else 0.0
         rel = 20 * np.log10(max(edge, 1e-7)) - 20 * np.log10(max(speech, 1e-7))

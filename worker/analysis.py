@@ -861,7 +861,9 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
             return False
         # „To byl prostě můj nejbližší člověk.“ je v upoutávce úder (zvědavost) – „to/tohle“ se nevyřazuje, zkreslení
         # hlídá kontrola kontextu; spojky navazující na předchozí myšlenku ano
-        return not re.match(r"(takže|tak|proto|protože|no|jo|taky|tím|že)\b", t.lower())
+        # výčet („Za třetí je to…“, „Navíc…“) bez předchozího bodu nedává smysl (debata 2026-11-20)
+        return not re.match(r"(takže|tak|proto|protože|no|jo|taky|tím|že|za (prvé|druhé|třetí|čtvrté)|zaprvé|zadruhé|"
+                            r"zatřetí|navíc|dále|zároveň|také|další)\b", t.lower())
 
     def ok_end(n):
         u = units[n]
@@ -972,12 +974,15 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
     if len(top) - len(bad) >= 2:
         top = [c for n, c in enumerate(top, 1) if n not in bad]
     ctx.progress(0.8, "LLM skládá upoutávku")
-    lines = "\n".join(f"U{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(top))
+    lines = "\n".join(f"U{n + 1} [{c['units'][0].get('spk') or '?'}] ({c['dur']:.0f} s): {text(c)}"
+                      for n, c in enumerate(top))
+    speakers = {c["units"][0].get("spk") for c in top if c["units"][0].get("spk")}
     r = _chat_json(
         f"Jsi střihač zpravodajských upoutávek (TV Nova). Zadání: {instruction}. Cílová délka {target:.0f} s.\n\n"
-        f"Vybrané údery:\n{lines}\n\n"
+        f"Vybrané údery (v hranatých závorkách mluvčí):\n{lines}\n\n"
         f"Sestav upoutávku ze 2–4 úderů v pořadí, jak půjdou za sebou, součet délek co nejblíž {target:.0f} s. "
         "První úder je hák (nejsilnější emoce nebo otázka), poslední nechá diváka v napětí a neprozradí rozuzlení. "
+        + ("Mluví víc lidí: ukaž střet názorů – postav proti sobě údery různých mluvčích. " if len(speakers) > 1 else "") +
         "Údery se nesmí opakovat ani říkat totéž; dohromady mají naznačit příběh. Nesmí zkreslit, co mluvčí myslí: "
         "žádné citace cizích slov, ironie ani věty, které mluvčí odmítá (vytržené by znamenaly opak). "
         'Nejdřív v poli uvaha krátce zdůvodni, pak dej pořadí čísel úderů. JSON {"uvaha": "…", "poradi": [čísla]}.',
