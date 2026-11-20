@@ -78,6 +78,9 @@ začínají i končí ve skutečné pauze (≥ 0,15 s nebo změna mluvčího), k
 (samostatnost, síla, pointa, zadání), začátky navazující na předchozí větu („A…“, „Takže…“, „Absolutně.“) se strhávají
 a o vítězi rozhodne finále s krátkou úvahou. Pauzy uvnitř pasáže zůstanou. Plán s hotovou osnovou trvá 2–10 s.
 
+**Zvukové prolnutí:** každá stavba dá na začátek a konec zvukových klipů 2snímkový přechod Constant Power (standard
+u dialogu – hranice v plynulé řeči nezní tvrdě, žádné cvaknutí); `audioFades: 0` vypne.
+
 **Pauza** = mezera v přepisu ≥ 0,12 s **a** aspoň 40 ms ticha ve zvuku (proti šumu z okolí). Samotný zvuk mate závěr
 souhlásky, samotné časy přepisu přeslechnou mluvení přes sebe. Delší střihy (skládání vět) po výběru dotáhnou kraje
 každého úseku k nejbližší pauze (o větu dál i přes jiného mluvčího – otázka před odpovědí –, jinak o větu zpět;

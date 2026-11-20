@@ -994,7 +994,11 @@ async function buildAndReport(name, segments, gap, extraInfo, extra) {
     s.source = await safe(s.source);
     for (const x of s.extra || []) x.source = await safe(x.source);
   }
-  const res = await premiere('buildSequence', { name, segments, gap }, 600000);
+  // 2snímkové zvukové prolnutí na každém střihu (standard u dialogu – hranice v plynulé řeči nezní tvrdě);
+  // _audioFades: 0 = vypnout (např. hudba pod obrazem)
+  const audioFades = extraInfo?._audioFades ?? 2;
+  if (extraInfo) delete extraInfo._audioFades;
+  const res = await premiere('buildSequence', { name, segments, gap, audioFades }, 600000);
   return {
     ...res,
     placed: undefined,
@@ -1525,6 +1529,8 @@ tool(
       .boolean()
       .optional()
       .describe('Krátké zpravodajské sestřihy: zkontroluj skryté střihy obrazu u hranic klipů a hranici na střih přichyť, když mezi nimi není řeč (jinak vrátí upozornění)'),
+    audioFades: z.number().int().min(0).max(10).optional()
+      .describe('Zvukové prolnutí na každém střihu ve snímcích (výchozí 2 = standard u dialogu; 0 = vypnout)'),
   },
   async (a, extra) => {
     const source = a.source || a.path || singleTranscribedSource();
@@ -1546,6 +1552,7 @@ tool(
       continuity: continuityWarnings(tr, a.picks),
       sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
       edges,
+      _audioFades: a.audioFades,
     });
   },
 );

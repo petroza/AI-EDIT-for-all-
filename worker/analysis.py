@@ -849,7 +849,9 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
         return []
     pairs = [(units[n]["e"], units[n + 1]["s"]) for n in range(len(units) - 1)]
     pause_ms = audiosync.boundary_pauses(path, pairs, return_ms=True)
-    pause_after = [(pause_ms[n] >= 90 if pause_ms is not None else pairs[n][1] - pairs[n][0] >= 0.12)
+    # 70 ms: plynulá mluvčí dělá mezi větami nejčastěji 60–100 ms (Talk C: s 90 ms jediný kandidát na 5 minut);
+    # vadné hranice pak zachytí kontrola zvuku v plan_edit_local (opakování / vyřazení úderu)
+    pause_after = [(pause_ms[n] >= 70 if pause_ms is not None else pairs[n][1] - pairs[n][0] >= 0.12)
                    for n in range(len(pairs))] + [True]
     edge_ms = (pause_ms or [500.0] * len(pairs)) + [500.0]  # délka ticha za jednotkou (poslední = konec souboru)
 
@@ -1039,15 +1041,7 @@ def plan_edit(params: dict, ctx) -> dict:
     tr, _ = load_transcript(path)
     # skutečné pauzy mezi větami ze zvuku (jednou na plán, ~3 s u 30 min) – střih jen tam, kde je ticho
     pause_map = _pause_map(path, {s["id"]: s for s in tr["segments"]})
-    # osnova musí být od stejného modelu (každý backend má vlastní cache; z cache je to okamžité)
-    an = read_json(analyze({"path": path, "backend": backend}, ctx)["file"])
     segs = {s["id"]: s for s in tr["segments"]}
-    weak = an.get("weak", {})
-    chapters = an["chapters"]
-    best_ids = {i for c in chapters for i in (c.get("best") or [])}
-    n_ch = len(chapters)
-    chapter_of = {i: k + 1 for k, c in enumerate(chapters) for i in range(c["from"], c["to"] + 1)}
-
     # "bez moderátora" v zadání -> jeho věty vyhoď natvrdo (model to sám nedodrží spolehlivě).
     # "bez úvodních a organizačních vět moderátora" – mezi "bez" a "moder…" může být víc slov (v rámci jedné fráze)
     # agent zadání občas přeformuluje ("Vynech … věty moderátora") – nejen "bez"
@@ -1059,6 +1053,23 @@ def plan_edit(params: dict, ctx) -> dict:
     only = _speakers_named(instruction, {s.get("speaker") for s in segs.values() if s.get("speaker")})
     if only:
         exclude |= {s.get("speaker") for s in segs.values() if s.get("speaker") and s.get("speaker") not in only}
+
+    # Upoutávka osnovu nepotřebuje (údery bere přímo z přepisu) – na novém videu ušetří krok osnovy (28 min ~2 min)
+    if target and target <= 40 and re.search(r"upoutáv|upoutav|trailer|teaser|promo|pozvánk|pozvank", instruction, re.I):
+        res = _plan_teaser(instruction, target, segs, exclude, backend, ctx, path, avoid)
+        if res:
+            res.update({"chapters": [], "why": "", "backend": backend,
+                        "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
+                        "elapsedSec": round(time.time() - t_start, 1), "llmStats": gpu.stats_summary(gpu.CALL_STATS)})
+            return res
+
+    # osnova musí být od stejného modelu (každý backend má vlastní cache; z cache je to okamžité)
+    an = read_json(analyze({"path": path, "backend": backend}, ctx)["file"])
+    weak = an.get("weak", {})
+    chapters = an["chapters"]
+    best_ids = {i for c in chapters for i in (c.get("best") or [])}
+    n_ch = len(chapters)
+    chapter_of = {i: k + 1 for k, c in enumerate(chapters) for i in range(c["from"], c["to"] + 1)}
 
     outline_lines = [
         f"K{i + 1}: věty {c['from']}–{c['to']} ({c['end'] - c['start']:.0f}s) [{', '.join(c.get('speakers') or [])}] "
@@ -1103,16 +1114,6 @@ def plan_edit(params: dict, ctx) -> dict:
     # Krátký výrok / highlight (do 60 s): jedna souvislá pasáž místo skládání vět z celého materiálu.
     # Skládání vybralo „…napadlo mě úplně z ničeho nic.“ a pak skočilo jinam – to, co ji napadlo, vypadlo
     # (Talk 2026-11-20, 20 s); Claude bral jednu ucelenou pasáž s pointou. Upoutávka má vlastní dramaturgii.
-    # Krátká upoutávka (do 40 s): 2–4 krátké údery ve stylu zpravodajství (hák, napětí na konec). Obecné skládání
-    # vybralo 26 s souvislého vyprávění o diagnóze na 10s upoutávku (Talk 2026-11-20).
-    if target and target <= 40 and re.search(r"upoutáv|upoutav|trailer|teaser|promo|pozvánk|pozvank", instruction, re.I):
-        res = _plan_teaser(instruction, target, segs, exclude, backend, ctx, path, avoid)
-        if res:
-            res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
-                        "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
-                        "elapsedSec": round(time.time() - t_start, 1), "llmStats": gpu.stats_summary(gpu.CALL_STATS)})
-            return res
-
     if (target and target <= 60 and not params.get("noPassage")
             # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
             and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",

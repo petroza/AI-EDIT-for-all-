@@ -33,6 +33,9 @@
   `autoReframeSequence` + přepnutí na 1080×1920 a Motion Scale × poměr). Panel: volba Formát. Export: výchozí preset se
   hledá v běžící Premiere (config měl natvrdo 2026, Petr má 2027). Náhled: `export_sequence` + ffmpeg (QE exportFramePNG
   vrací false).
+- Stavby: 2snímkové zvukové prolnutí na každém střihu (host `addAudioFades`, QE `addTransition` Constant Power).
+  Upoutávky bez osnovy (rovnou z přepisu), práh pauzy úderu 70 ms (plynulá řeč), přednost úderům s pauzou ≥ 150 ms.
+  Regrese 8/8 čistých hranic (Talk + debata).
 - **Panel:** délka 10/20/30 s, fronta zadání, Zpět = smazat sekvence posledního zadání, vytížení GPU/VRAM/RAM/CPU,
   pruh průběhu Workeru, přihlášení Claude Code tlačítkem. Schované „nástroje“. Tečky ve štítcích jen září (nezvětšují se).
 - Otevřené: podepsaný panel `.zxp` pro instalaci v Nově (v práci se nepodepsaný panel neukázal – IT/certifikáty);

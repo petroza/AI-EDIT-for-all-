@@ -291,6 +291,27 @@ var PMCP = {};
   api.openSequence = function (a) { var s = getSeq(a.sequence); activate(s); return { name: s.name, sequenceID: s.sequenceID }; };
 
   /* Nova sekvence poskladana z useku zdroju: [{source, in, out, audioOnly?, extra:[{source, offset, audioTrack}]}] */
+  // Kratke zvukove prolnuti (Constant Power, N snimku) na zacatku a konci kazdeho zvukoveho klipu - standard u strihu
+  // dialogu: hranice nezni tvrde a zmizi cvaknuti, kdyz v plynule reci neni ciste ticho (2026-11-20). Pres QE DOM.
+  function addAudioFades(seq, frames) {
+    app.project.activeSequence = seq;
+    app.enableQE();
+    var q = qe.project.getActiveSequence();
+    var tr = qe.project.getAudioTransitionByName('Constant Power');
+    if (!q || !tr) return 0;
+    var dur = '00:00:00:' + (frames < 10 ? '0' : '') + frames, n = 0;
+    for (var t = 0; t < q.numAudioTracks; t++) {
+      var track = q.getAudioTrackAt(t);
+      for (var k = 0; k < track.numItems; k++) {
+        var it = track.getItemAt(k);
+        if (!it || it.type !== 'Clip') continue;
+        try { it.addTransition(tr, true, dur); n++; } catch (e1) { /* klip kratsi nez prechod */ }
+        try { it.addTransition(tr, false, dur); n++; } catch (e2) { /* dtto */ }
+      }
+    }
+    return n;
+  }
+
   api.buildSequence = function (a) {
     var segs = a.segments;
     if (!segs || !segs.length) throw new Error('No segments');
@@ -322,8 +343,13 @@ var PMCP = {};
       // skutecny konec klipu (Premiere zaokrouhli na snimky zdroje) - jinak vznikaji 1snimkove mezery
       cursor = snap(main.end + gap, fd);
     }
+    var fades = 0;
+    if (a.audioFades && placed.length > 1) {
+      try { fades = addAudioFades(seq, a.audioFades); } catch (e) { warnings.push('audio fades: ' + (e.message || e)); }
+    }
     if (a.open !== false) activate(seq);
-    return { sequenceID: seq.sequenceID, name: seq.name, duration: r3(cursor), segments: placed.length, placed: placed, warnings: warnings };
+    return { sequenceID: seq.sequenceID, name: seq.name, duration: r3(cursor), segments: placed.length, placed: placed,
+             warnings: warnings, audioFades: fades };
   };
 
   function removeLinkedAudio(seq, item, at, fd) {
