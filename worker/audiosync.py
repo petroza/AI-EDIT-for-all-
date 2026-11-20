@@ -94,6 +94,45 @@ def sync(params: dict, ctx) -> dict:
     return data
 
 
+_PAUSE_CACHE: dict = {}
+
+
+def boundary_pauses(path: str, pairs: list[tuple[float, float]]) -> list[bool] | None:
+    """Je mezi koncem jedné věty a začátkem další skutečné ticho (≥ 40 ms pod prahem šumu z okolí ±1,5 s)?
+    Mezera v časech Whisperu ticho nezaručuje – lidé mluví přes sebe, konce slov jsou v přepisu pozdě
+    (Talk: „zlomilo?“ → „Jo“ 0,14 s mezera, ve zvuku souvislá řeč). None = zvuk nejde přečíst."""
+    import numpy as np
+
+    try:
+        key = (os.path.abspath(path), os.path.getmtime(path))
+        env = _PAUSE_CACHE.get(key)
+        if env is None:
+            from faster_whisper import decode_audio
+            env = _energy_envelope(decode_audio(path, sampling_rate=SR))
+            _PAUSE_CACHE.clear()
+            _PAUSE_CACHE[key] = env
+    except Exception:  # noqa: BLE001 – bez zvuku se rozhoduje podle časů slov
+        return None
+    fs = HOP / SR
+    db = 20 * np.log10(np.maximum(env, 1e-7))
+    out = []
+    for a, b in pairs:
+        c0, c1 = max(0, int((min(a, b) - 1.5) / fs)), min(len(env), int((max(a, b) + 1.5) / fs))
+        if c1 - c0 < 20:
+            out.append(False)
+            continue
+        floor_db, peak_db = np.percentile(db[c0:c1], 10), np.percentile(db[c0:c1], 95)
+        thr = floor_db + 0.25 * max(0.0, peak_db - floor_db)
+        s0, s1 = max(0, int((min(a, b) - 0.08) / fs)), min(len(env), int((max(a, b) + 0.08) / fs) + 1)
+        quiet = db[s0:s1] < thr
+        run = best = 0
+        for q in quiet:
+            run = run + 1 if q else 0
+            best = max(best, run)
+        out.append(best >= 8)
+    return out
+
+
 def edge_levels(params: dict, ctx) -> dict:
     """Hlasitost těsně u hranic střihu proti řeči v okolí (dB): [{t, kind: in|out}] -> [{t, kind, rel}].
     rel kolem -25 dB a níž = ticho/nádech, nad -12 dB = střih skrz zvuk (useknuté slovo). Stejné měření jako

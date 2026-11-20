@@ -9,7 +9,7 @@ import time
 import unicodedata
 from difflib import SequenceMatcher
 
-from . import gpu
+from . import audiosync, gpu
 from .common import CONFIG, cache_file, index_get, index_set, log, read_json, write_json
 
 FILLERS = {"ehm", "eh", "eee", "ee", "e", "hm", "hmm", "mhm", "ehh", "em", "emm"}
@@ -484,8 +484,145 @@ def _verify_topic(instruction: str, topics: list[str], separate: bool, ids: list
     return res
 
 
+def _pause_map(path: str, segs: dict[int, dict]) -> dict[int, bool]:
+    """id věty -> je za ní skutečná pauza (ticho ve zvuku, ne jen mezera v časech Whisperu). Bez zvuku podle mezery."""
+    ids = sorted(segs)
+
+    def fs(i):
+        w = segs[i].get("words") or []
+        return w[0]["s"] if w else segs[i]["start"]
+
+    def le(i):
+        w = segs[i].get("words") or []
+        return w[-1]["e"] if w else segs[i]["end"]
+
+    pairs = [(le(ids[n]), fs(ids[n + 1])) for n in range(len(ids) - 1)]
+    audio = audiosync.boundary_pauses(path, pairs)
+    out = {ids[-1]: True} if ids else {}
+    for n in range(len(ids) - 1):
+        # obojí: mezera v přepisu ≥ 0,12 s A ticho ve zvuku – samotný zvuk mate závěr souhlásky („nic.|Jsem“ 0,08 s),
+        # samotná mezera přeslechne mluvení přes sebe („zlomilo?|Jo“ 0,14 s); ověřeno na 12 přechodech Talku
+        gap_ok = pairs[n][1] - pairs[n][0] >= 0.12
+        out[ids[n]] = gap_ok and (audio[n] if audio is not None else True)
+    return out
+
+
+def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set,
+                          pause_map: dict[int, bool] | None = None) -> int:
+    """Kraje vybraných celků dotáhne ke skutečné pauze (mezera ≥ 0,12 s): o větu dál (max. 3 věty,
+    max. 16 s), jinak o větu zpět. Věta vystřižená ze souvislé řeči bez nádechu zní useknutě, i když střih neprotne
+    slovo (Talk 2 min, 2026-11-20: 4 z 22 hranic slyšitelné). Vrací počet upravených krajů."""
+    ids = sorted(segs)
+    pos = {i: n for n, i in enumerate(ids)}
+    PAUSE = 0.12
+
+    def first_s(i):
+        w = segs[i].get("words") or []
+        return w[0]["s"] if w else segs[i]["start"]
+
+    def last_e(i):
+        w = segs[i].get("words") or []
+        return w[-1]["e"] if w else segs[i]["end"]
+
+    def pause_before(i):
+        n = pos[i]
+        if n == 0:
+            return True
+        p = ids[n - 1]
+        if pause_map is not None and p in pause_map:
+            return pause_map[p]
+        gap = first_s(i) - last_e(p)
+        # i při změně mluvčího jen skutečná mezera – v rozhovoru na sebe navazují i do 20 ms a mluví přes sebe
+        return gap >= PAUSE
+
+    def pause_after(j):
+        n = pos[j]
+        if n == len(ids) - 1:
+            return True
+        if pause_map is not None and j in pause_map:
+            return pause_map[j]
+        q = ids[n + 1]
+        gap = first_s(q) - last_e(j)
+        return gap >= PAUSE
+
+    def usable(i, spk, taken):
+        # i jiný mluvčí (otázka před odpovědí, souhlas za ní) – v rozhovoru na sebe navazují bez mezery a celá výměna
+        # zní přirozeněji než střih doprostřed; jen ne mluvčí vyřazený zadáním („bez moderátora“)
+        return i in segs and i not in taken and segs[i].get("speaker") not in exclude
+
+    def dur(i):
+        return segs[i]["end"] - segs[i]["start"]
+
+    taken = {i for u in units for i in u["ids"]}
+    fixed = 0
+    for u in units:
+        if not u.get("ids"):
+            continue
+        spk = segs[u["ids"][0]].get("speaker")
+        # začátek
+        a = u["ids"][0]
+        if not pause_before(a):
+            ext, n, add = [], pos[a], 0.0
+            for k in range(1, 4):
+                if n - k < 0 or not usable(ids[n - k], spk, taken):
+                    break
+                ext.insert(0, ids[n - k])
+                add += dur(ids[n - k])
+                if add > 16:
+                    ext = []
+                    break
+                if pause_before(ids[n - k]):
+                    break
+            if ext and pause_before(ext[0]):
+                u["ids"][:0] = ext
+                taken.update(ext)
+                fixed += 1
+            elif len(u["ids"]) > 1 and pause_before(u["ids"][1]):
+                taken.discard(u["ids"].pop(0))
+                fixed += 1
+        # konec
+        b = u["ids"][-1]
+        if not pause_after(b):
+            ext, n, add, merged = [], pos[b], 0.0, False
+            for k in range(1, 4):
+                if n + k >= len(ids):
+                    break
+                nxt = ids[n + k]
+                # dotahování narazilo na další vybraný celek -> spojit (souvislá řeč #20–#22, Talk 2 min)
+                owner = next((x for x in units if x is not u and x.get("ids") and x["ids"][0] == nxt), None)
+                if owner is not None:
+                    u["ids"].extend(ext + owner["ids"])
+                    taken.update(ext)
+                    owner["ids"] = []
+                    fixed += 1
+                    merged = True
+                    break
+                if not usable(nxt, spk, taken):
+                    break
+                ext.append(nxt)
+                add += dur(nxt)
+                if add > 16:
+                    ext = []
+                    break
+                if pause_after(nxt):
+                    break
+            end_ok = ext and pause_after(ext[-1]) and not re.search(r"(\.\.\.|…)\W*$", segs[ext[-1]]["text"].strip())
+            if merged:
+                pass
+            elif end_ok:
+                u["ids"].extend(ext)
+                taken.update(ext)
+                fixed += 1
+            elif len(u["ids"]) > 1 and pause_after(u["ids"][-2]):
+                taken.discard(u["ids"].pop())
+                fixed += 1
+        u["dur"] = sum(dur(i) for i in u["ids"])
+    units[:] = [u for u in units if u.get("ids")]  # celky spojené do předchozího
+    return fixed
+
+
 def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dict], chosen: list[int],
-                        exclude: set) -> list[dict]:
+                        exclude: set, pause_map: dict[int, bool] | None = None) -> list[dict]:
     """Souvislé pasáže jednoho mluvčího kolem cílové délky, které začínají i končí ve skutečné pauze
     (mezi větami bez nádechu zní každý střih useknutě, i když neprotne slovo)."""
     ids = sorted(segs)
@@ -499,9 +636,9 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
         w = segs[i].get("words") or []
         return w[-1]["e"] if w else segs[i]["end"]
 
-    # 0,15 s: v ní už bývá ticho na čistý střih (ověří refine_edges + check-cuts); 0,25 s nechalo u plynulé
+    # 0,12 s: v ní už bývá ticho na čistý střih (ověří refine_edges + check-cuts); 0,25 s nechalo u plynulé
     # mluvčí jen 3 kandidáty na 5 minut
-    PAUSE = 0.15
+    PAUSE = 0.12
     ch_score = {}
     for k, c in enumerate(chapters, 1):
         for i in range(c["from"], c["to"] + 1):
@@ -518,7 +655,10 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
         if n == 0:
             return True
         prev = segs[ids[n - 1]]
-        return prev.get("speaker") != segs[i].get("speaker") or first_s(i) - last_e(ids[n - 1]) >= PAUSE
+        if pause_map is not None and ids[n - 1] in pause_map:
+            return pause_map[ids[n - 1]]
+        gap = first_s(i) - last_e(ids[n - 1])
+        return gap >= PAUSE
 
     def clean_end(j):
         n = pos[j]
@@ -529,7 +669,10 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
         if n == len(ids) - 1:
             return True
         nxt = segs[ids[n + 1]]
-        return nxt.get("speaker") != segs[j].get("speaker") or first_s(ids[n + 1]) - last_e(j) >= PAUSE
+        if pause_map is not None and j in pause_map:
+            return pause_map[j]
+        gap = first_s(ids[n + 1]) - last_e(j)
+        return gap >= PAUSE
 
     lo, hi = 0.6 * target, 1.25 * target
     cands = []
@@ -559,8 +702,9 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
 
 
 def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapters: list[dict], chosen: list[int],
-                  scores: dict[int, int], exclude: set, backend: str, ctx) -> dict | None:
-    cands = _passage_candidates(target, segs, chapters, chosen, exclude)
+                  scores: dict[int, int], exclude: set, backend: str, ctx,
+                  pause_map: dict[int, bool] | None = None) -> dict | None:
+    cands = _passage_candidates(target, segs, chapters, chosen, exclude, pause_map)
     if not cands:
         return None
     if len(cands) > 60:  # dlouhý materiál: přednost jádrovým kapitolám
@@ -665,6 +809,8 @@ def plan_edit(params: dict, ctx) -> dict:
     t_start = time.time()
     gpu.CALL_STATS.clear()
     tr, _ = load_transcript(path)
+    # skutečné pauzy mezi větami ze zvuku (jednou na plán, ~3 s u 30 min) – střih jen tam, kde je ticho
+    pause_map = _pause_map(path, {s["id"]: s for s in tr["segments"]})
     # osnova musí být od stejného modelu (každý backend má vlastní cache; z cache je to okamžité)
     an = read_json(analyze({"path": path, "backend": backend}, ctx)["file"])
     segs = {s["id"]: s for s in tr["segments"]}
@@ -733,7 +879,7 @@ def plan_edit(params: dict, ctx) -> dict:
             # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
             and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",
                               instruction, re.I)):
-        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx)
+        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map)
         if res:
             res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
                         "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
@@ -1385,6 +1531,9 @@ def plan_edit(params: dict, ctx) -> dict:
             rebalance(pool, hi, lo)
     attach_context(refs=False)
     units.sort(key=lambda u: u["ids"][0])
+    snapped = _snap_units_to_pauses(units, segs, exclude, pause_map)
+    if target and sum(u["dur"] for u in units) > target * 1.08:
+        trim(target * 1.05, target * 0.9)  # dotažení k pauzám střih prodloužilo – dorovnat celými celky
     total = sum(u["dur"] for u in units)
     note = None
     if target and total < 0.85 * target:
@@ -1402,6 +1551,7 @@ def plan_edit(params: dict, ctx) -> dict:
         "alternates": [i for u in sorted(pool, key=keep_key) for i in u["ids"]],
         "removedModerator": removed_moderator,
         "fixedFragments": fixed_fragments,
+        "snappedEdges": snapped,
         "editorial": editorial,
         "thesis": thesis,
         "keyChapters": sorted(key_ch),

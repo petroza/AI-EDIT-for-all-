@@ -22,6 +22,11 @@
 - **Rychlost Hermese:** zaplněná VRAM (AE, Chrome) ho přelévala do sdílené paměti – 20 tok/s místo 42. Worker teď volí
   `-NCpuMoe` podle volné VRAM a před startem uvolní cizí modely (Ollama unload, cizí llama-server kill). Osnova 28 min
   videa 121 s (dřív 8 min).
+- **Pauzy podle zvuku** (`analysis._pause_map` + `audiosync.boundary_pauses`): mezera ≥ 0,12 s a ≥ 40 ms ticha. Používá
+  je výběr pasáží i nové dotažení krajů u dlouhých střihů (`_snap_units_to_pauses`, pak `trim`). 2 min Talk: 0 slyšitelných hranic.
+  Otevřené: po dotažení se rozjede vyvážení témat (2 min: herectví 57 s, televize 0 s).
+- Stavby vrací `edges` (⚠ zvuk na hranici) – `build_sequence_from_transcript`, `build_from_plan` (nově i s dolaďováním
+  hranic), `plan_edit_local`. Panel: 👍/👎 → `cacheeedback.jsonl`, „Zdroj:“ nad zadáním.
 - **Panel:** délka 10/20/30 s, fronta zadání, Zpět = smazat sekvence posledního zadání, vytížení GPU/VRAM/RAM/CPU,
   pruh průběhu Workeru, přihlášení Claude Code tlačítkem. Schované „nástroje“. Tečky ve štítcích jen září (nezvětšují se).
 - Otevřené: podepsaný panel `.zxp` pro instalaci v Nově (v práci se nepodepsaný panel neukázal – IT/certifikáty);

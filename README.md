@@ -62,6 +62,9 @@ Zadání jde i nadiktovat – tlačítko 🎤 v panelu nahraje řeč a lokálně
 - **↶ Zpět** – smaže sekvence, které vytvořilo poslední zadání (opakovaným klikem i předchozí). Když zadání žádnou
   sekvenci nevytvořilo, vrátí jeden krok v Premiere (Ctrl+Z) s pojistkou proti opakování.
 - **GPU / VRAM / RAM / CPU** – vytížení počítače každé 2 s (GPU jen s kartou NVIDIA). Pod Workerem pruh průběhu úlohy.
+- **Zdroj:** vpravo nad zadáním – aktivní sekvence, ze které se bude stříhat.
+- **👍 / 👎** pod každým hotovým střihem – hodnocení se ukládá do `cacheeedback.jsonl` (zadání, agent, délka, sekvence)
+  jako podklad pro ladění lokálního modelu.
 - Nepřihlášený Claude Code: tlačítko „🔑 Přihlásit Claude Code“ (jednorázově, pak zadání zopakuje samo) nebo poslat do aplikace Claude.
 
 ### Krátký výrok / highlight (do 60 s) lokálně
@@ -69,6 +72,11 @@ Hermes u krátké cílové délky nevybírá jednotlivé věty z celého materi�
 začínají i končí ve skutečné pauze (≥ 0,15 s nebo změna mluvčího), končí dokončenou větou, model je ohodnotí po kritériích
 (samostatnost, síla, pointa, zadání), začátky navazující na předchozí větu („A…“, „Takže…“, „Absolutně.“) se strhávají
 a o vítězi rozhodne finále s krátkou úvahou. Pauzy uvnitř pasáže zůstanou. Plán s hotovou osnovou trvá 2–10 s.
+
+**Pauza** = mezera v přepisu ≥ 0,12 s **a** aspoň 40 ms ticha ve zvuku (proti šumu z okolí). Samotný zvuk mate závěr
+souhlásky, samotné časy přepisu přeslechnou mluvení přes sebe. Delší střihy (skládání vět) po výběru dotáhnou kraje
+každého úseku k nejbližší pauze (o větu dál i přes jiného mluvčího – otázka před odpovědí –, jinak o větu zpět;
+narazí-li na další vybraný úsek, spojí je) a pak dorovnají délku. Talk 2 min: slyšitelné hranice 4/22 → 0.
 Neplatí pro upoutávky, přehledy a shrnutí (ty skládají věty jako dřív).
 
 ### Dlouhý materiál a kredity

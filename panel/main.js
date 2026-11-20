@@ -191,7 +191,7 @@
     return hostCall('projectInfo').then(function (p) { return p.sequences; }).catch(function () { return null; });
   }
   /** před během si zapamatuje sekvence, po běhu uloží nově vzniklé na zásobník pro Zpět */
-  function trackRun(label) {
+  function trackRun(label, meta) {
     var before = sequenceIds();
     return function done() {
       Promise.all([before, sequenceIds()]).then(function (r) {
@@ -203,9 +203,52 @@
         undoStack.push({ label: label, ids: fresh.map(function (s) { return s.sequenceID; }),
           names: fresh.map(function (s) { return s.name; }) });
         $('undo').disabled = false;
+        if (meta) offerFeedback(meta, fresh);
       });
     };
   }
+
+  /* ---------------- hodnocení výsledku (data na ladění lokálního modelu) ---------------- */
+  // 👍/👎 pod hotovým střihem -> cache\feedback.jsonl (zadání, agent, délka, sekvence, hodnocení). Z toho se dá
+  // poznat, kde Hermes zaostává za Claudem, a doplnit případy do scripts/highlight-cases.json.
+  function offerFeedback(meta, fresh) {
+    var row = document.createElement('div');
+    row.className = 'dim';
+    row.style.margin = '2px 0 6px';
+    row.textContent = 'Jak dopadl střih „' + fresh.map(function (s) { return s.name; }).join('“, „') + '“? ';
+    [['👍', 'good'], ['👎', 'bad']].forEach(function (b) {
+      var btn = document.createElement('button');
+      btn.textContent = b[0];
+      btn.style.margin = '0 4px 0 0';
+      btn.addEventListener('click', function () {
+        var rec = { time: new Date().toISOString(), rating: b[1], agent: meta.agent, model: meta.model || null,
+          targetSec: meta.targetSec || null, prompt: meta.prompt, sequences: fresh.map(function (s) {
+            return { name: s.name, id: s.sequenceID, duration: s.duration }; }) };
+        try {
+          fs.mkdirSync(path.join(ROOT, 'cache'), { recursive: true });
+          fs.appendFileSync(path.join(ROOT, 'cache', 'feedback.jsonl'), JSON.stringify(rec) + '\n', 'utf8');
+          row.textContent = b[1] === 'good' ? '👍 díky, uloženo' : '👎 uloženo – napiš klidně do zadání, co bylo špatně, a spusť znovu';
+        } catch (e) {
+          row.textContent = '✖ hodnocení se neuložilo: ' + e.message;
+        }
+      });
+      row.appendChild(btn);
+    });
+    outEl.appendChild(row);
+    outEl.scrollTop = outEl.scrollHeight;
+  }
+
+  /* ---------------- zdroj (aktivní sekvence) nad zadáním ---------------- */
+  function pollSource() {
+    if (child) return; // během úlohy ExtendScript nezdržovat
+    hostCall('projectInfo').then(function (p) {
+      var a = p.activeSequence;
+      $('srcName').textContent = a ? a.name : 'žádná aktivní sekvence – otevři sekvenci s klipem';
+      $('srcName').title = a ? 'Ze které sekvence se bude stříhat (aktivní v Premiere)' : '';
+    }).catch(function () { $('srcName').textContent = '–'; });
+  }
+  setInterval(pollSource, 4000);
+  setTimeout(pollSource, 1500);
 
   /* ---------------- ExtendScript fronta ---------------- */
   var queue = Promise.resolve();
@@ -1013,7 +1056,8 @@
     setAiIcon(agent);
 
     if (agent === 'hermes' && task.targetSec) out('⚙ cílová délka ' + task.targetSec + ' s', 'dim');
-    var finishTrack = trackRun(prompt.split('\n')[0].slice(0, 60));
+    var finishTrack = trackRun(prompt.split('\n')[0].slice(0, 60),
+      { agent: agent, model: task.model, targetSec: task.targetSec, prompt: task.prompt });
     var useShell = /\.(cmd|bat)$/i.test(exe);
     var env = process.env;
     if (agent === 'hermes') {

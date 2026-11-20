@@ -153,6 +153,7 @@ try {
   if (plan.removedModerator?.length) notes.push(`vynechány věty moderátora / jiných mluvčích (${plan.removedModerator.length})`);
   if (plan.offTopic?.length) notes.push(`vyřazeno mimo téma: ${plan.offTopic.length} vět`);
   if (plan.fixedFragments?.length) notes.push(`doplněny začátky souvětí: ${plan.fixedFragments.length}`);
+  if (plan.snappedEdges) notes.push(`kraje dotaženy k pauze: ${plan.snappedEdges}`);
   if (plan.elapsedSec) notes.push(`plán ${Math.round(plan.elapsedSec)} s`);
   if (notes.length) say(`ℹ ${notes.join(' · ')}`);
   if (plan.note) say(`⚠ ${plan.note}`);
