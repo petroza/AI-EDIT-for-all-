@@ -29,6 +29,12 @@ stav projektu: `mcp__premiere__get_project`, …). Nehledej po jednom.
 - Dabing (komentář namluvený zvlášť, obraz = záznamy bez řeči): `transcribe_media` komentáře → `index_broll`
   (`sheets: true` – prohlédni si archy) → `build_voiceover_sequence` se `segments` (ke každé větě záběr, který
   ukazuje, o čem mluví). Ne `build_sequence_from_transcript` – ve videu žádná řeč není.
+- Upoutávka nebo výrok do ~40 s: návrh z `plan_edit_local` je už hotová dramaturgie (upoutávka = 2–4 údery: hák →
+  napětí, s kontrolou vytržení z kontextu; výrok = jedna souvislá pasáž s pauzou na krajích). Picks mohou být
+  `{id, fromWord, toWord}` (věta uvnitř segmentu) – předej je do `build_sequence_from_transcript` beze změny.
+  Nejrychlejší je `plan_edit_local` rovnou s `build` (hranice se samy zkontrolují a vadné údery vymění).
+- Formát pro sociální sítě (na výšku 9:16, čtverec 1:1, 4:5): po hotovém střihu `reframe_sequence` na novou
+  sekvenci – Auto Reframe podle obličeje, plné rozlišení. Titulky až potom.
 - Cestu ke zdroji (`path`/`source`) předávej vždy celou.
 - Destruktivní nástroje jen na výslovné přání a předtím `backup_project`.
 - Když `build_sequence_from_transcript` vrátí `continuity` (utnuté souvětí), postav sekvenci znovu s opraveným
