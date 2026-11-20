@@ -36,6 +36,15 @@ postupuj podle [`INSTALACE_NA_NOVEM_PC.md`](INSTALACE_NA_NOVEM_PC.md).
      zvaž výměnu věty za sousední se stejným smyslem, která leží celá v klidném záběru (reálně se osvědčilo 2026-09-17).
    - Zmiň v shrnutí, že jsi hranice ověřil (i když nic neopravoval), ať je vidět, že se to nepřeskočilo.
 
+## Formát pro sociální sítě (9:16, 1:1, 4:5)
+Po hotovém střihu `reframe_sequence` (`format: "9:16"`, u rozhovoru `motion: "slower"`): NOVÁ sekvence přes Premiere
+Auto Reframe podle obličeje v plném rozlišení (1080×1920). Původní 16:9 zůstává. Titulky (`add_captions`) až potom.
+
+## Upoutávka / krátký výrok lokálně
+`plan_edit_local` s cílovou délkou do ~40 s a slovem „upoutávka“ složí 2–4 krátké údery (hák → napětí, kontrola
+vytržení z kontextu); bez něj do 60 s vybere jednu souvislou pasáž s pauzou na krajích. S `build` se hranice samy
+zkontrolují podle zvuku a vadné údery se vymění. Picks mohou být `{id, fromWord, toWord}` – předávej je beze změny.
+
 ## Dlouhý materiál (hodina a víc) – šetři kredity
 1. `transcribe_media` (běží v lokálním Workeru, cache) → `diarize_media` nebo `speakerTracks` → `rename_speakers`.
 2. `analyze_transcript` – lokální LLM udělá osnovu kapitol a označí slabé věty. Pracuj s osnovou, ne s celým textem.
