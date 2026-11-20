@@ -848,9 +848,10 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
     if not units:
         return []
     pairs = [(units[n]["e"], units[n + 1]["s"]) for n in range(len(units) - 1)]
-    audio = audiosync.boundary_pauses(path, pairs)
-    pause_after = [(audio[n] if audio is not None else pairs[n][1] - pairs[n][0] >= 0.12)
+    pause_ms = audiosync.boundary_pauses(path, pairs, return_ms=True)
+    pause_after = [(pause_ms[n] >= 90 if pause_ms is not None else pairs[n][1] - pairs[n][0] >= 0.12)
                    for n in range(len(pairs))] + [True]
+    edge_ms = (pause_ms or [500.0] * len(pairs)) + [500.0]  # délka ticha za jednotkou (poslední = konec souboru)
 
     def ok_start(n):
         u = units[n]
@@ -886,6 +887,8 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
                 break
             if lo <= d <= (hi1 if k == 0 else hi2) and ok_end(m):
                 out.append({"units": units[n: m + 1], "dur": round(d, 1),
+                            # nejkratší ticho na krajích (ms): krátká pauza = větší riziko slyšitelné hranice
+                            "edge_ms": min(edge_ms[n - 1] if n else 500.0, edge_ms[m]),
                             # okolí pro kontrolu vytržení z kontextu
                             "before": " ".join(u["text"] for u in units[max(0, n - 2): n]),
                             "after": " ".join(u["text"] for u in units[m + 1: m + 3])})
@@ -949,6 +952,9 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
                 rated.append((sc, part[n]))
     if len(rated) < 2:
         return None
+    # úder s krátkou pauzou na kraji (< 150 ms) často vyjde se slyšitelnou hranicí, pak se vyřadí a upoutávka zkrátí
+    # (20s upoutávka po vyřazení 12 s) – radši rovnou přednost úderům s výraznou pauzou
+    rated = [(sc - (1.5 if c.get("edge_ms", 500) < 150 else 0), c) for sc, c in rated]
     rated.sort(key=lambda x: -x[0])
     top: list[dict] = []  # bez překryvů (věta sama i s následující) – nechat lepšího
     for _, c in rated:

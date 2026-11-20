@@ -98,7 +98,7 @@ _PAUSE_CACHE: dict = {}
 
 
 def boundary_pauses(path: str, pairs: list[tuple[float, float]], before: float = 0.15, after: float = 0.30,
-                    min_ms: float = 90) -> list[bool] | None:
+                    min_ms: float = 90, return_ms: bool = False) -> list | None:
     """Je mezi koncem jedné věty a začátkem další skutečné ticho (≥ 90 ms pod prahem šumu z okolí ±1,5 s)?
     Rozhoduje zvuk, ne časy Whisperu: mezera v přepisu ticho nezaručuje (lidé mluví přes sebe – „zlomilo?“ → „Jo“
     0,14 s, ve zvuku souvislá řeč) a naopak ho přeslechne, když jsou časy slov posunuté (Talk: „pryč.“ → „A já“ podle
@@ -122,7 +122,7 @@ def boundary_pauses(path: str, pairs: list[tuple[float, float]], before: float =
     for a, b in pairs:
         c0, c1 = max(0, int((min(a, b) - 1.5) / fs)), min(len(env), int((max(a, b) + 1.5) / fs))
         if c1 - c0 < 20:
-            out.append(False)
+            out.append(0.0 if return_ms else False)
             continue
         floor_db, peak_db = np.percentile(db[c0:c1], 10), np.percentile(db[c0:c1], 95)
         thr = floor_db + 0.25 * max(0.0, peak_db - floor_db)
@@ -132,7 +132,8 @@ def boundary_pauses(path: str, pairs: list[tuple[float, float]], before: float =
         for q in quiet:
             run = run + 1 if q else 0
             best = max(best, run)
-        out.append(best * fs * 1000 >= min_ms)
+        # return_ms: délka nejdelšího ticha v ms (upoutávky dávají přednost úderům s výraznou pauzou na krajích)
+        out.append(best * fs * 1000 if return_ms else best * fs * 1000 >= min_ms)
     return out
 
 
