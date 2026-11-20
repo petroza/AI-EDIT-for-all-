@@ -2,9 +2,33 @@
 
 > Uživatel (Petr) píše česky, odpovídej česky, stručně. Pracuj v `O:\ADOBEPREMIERESTRIH`.
 > Začni: přečti tenhle soubor, `README.md` a `CLAUDE.md`, pak `node scripts/smoke.mjs` a `worker_status`.
-> **Claude CLI je teď přihlášené** (`claude auth status` → loggedIn true, firemní účet v organizaci) – panel i `panel-run.mjs` fungují end-to-end, žádný obchvat přes přímou MCP session není potřeba.
+> **Claude CLI na domácím PC 2026-11-20 NEBYLO přihlášené** (`claude auth status` → loggedIn false) – panel nabídne
+> „🔑 Přihlásit Claude Code“ nebo předání do aplikace Claude. Přihlásit musí Petr sám.
 
-> **Stav k 2026-09-23 (večer).** Nejnovější věci jsou v sekcích 0, 9, 10, 11. Starší sekce (5a–5v) jsou historie předchozích session.
+## 2026-11-20 – přesun, panel, Hermes na krátké střihy (ZAČNI TADY)
+- Projekt přesunut z `O:\MYpremiereMCP` do **`O:\ADOBEPREMIERESTRIH`** (čistá složka i pro IT Novy). Osobní věci,
+  stará cache a testovací data zůstaly v `O:\MYpremiereMCP` (`_dev-data\cache`, `_dev-data\test`). Krátké testovací
+  úseky: `O:\MYpremiereMCP\_dev-data\test\kratke\talk_A_kariera_5min.mp4`, `talk_B_mama_5min.mp4` (5 min z Talku
+  s B. Šimkovou, Downloads\tncz-TIT_2026-11-20_TALK…mp4.mp4). **Testovací data nedávej do O:\ADOBEPREMIERESTRIH.**
+- **Přepis:** dávkový Whisper ztrácel celé úseky řeči a psal halucinace („Titulky vytvořil JohnyX.“) – na Talku
+  ~3 min řeči. `asr._repair_batched`: podezřelá místa (halucinace, řídké/nejisté segmenty, díry > 6 s) se přepíšou
+  klasicky. +44 % slov, čas stejný. Slova bez písmen („.........“) pryč.
+- **Hranice střihu (useknutá slova):** `refine_edges` hledá ticho proti šumu z okolí ±1,5 s (≥ 15 ms), u začátků
+  i konců; začátek smí 0,12 s za Whisperův konec předchozího slova jen do skutečného ticha, jinak nejtišší místo.
+  `host.jsx buildSequence`: začátek dolů / konec nahoru na snímek (dřív zaokrouhlení posouvalo začátek do slova).
+  Zakoktaný začátek věty („Rozhodně bych... Bych“) se vynechá sám (`falseStartWord`). Kontrola: `scripts/check-cuts.mjs`.
+- **Hermes – krátký výrok do 60 s:** `analysis._plan_passage` (jedna souvislá pasáž, kritéria + finále s úvahou),
+  regrese `scripts/test-highlight.mjs` (4 případy, čisté hranice 4/4, výběry rovnocenné s Claudem). Plán 2–20 s.
+- **Rychlost Hermese:** zaplněná VRAM (AE, Chrome) ho přelévala do sdílené paměti – 20 tok/s místo 42. Worker teď volí
+  `-NCpuMoe` podle volné VRAM a před startem uvolní cizí modely (Ollama unload, cizí llama-server kill). Osnova 28 min
+  videa 121 s (dřív 8 min).
+- **Panel:** délka 10/20/30 s, fronta zadání, Zpět = smazat sekvence posledního zadání, vytížení GPU/VRAM/RAM/CPU,
+  pruh průběhu Workeru, přihlášení Claude Code tlačítkem. Schované „nástroje“. Tečky ve štítcích jen září (nezvětšují se).
+- Otevřené: podepsaný panel `.zxp` pro instalaci v Nově (v práci se nepodepsaný panel neukázal – IT/certifikáty);
+  druhé testovací video „Taky názor 20:15 01. 11. 2026“ se nedostáhlo (Petr zavřel Chrome); Claude CLI přihlásit
+  a pustit srovnání Claude (panel, Sonnet) vs Hermes přes `scripts/compare-agents.mjs` s `CMP_SRC/CMP_TASK/CMP_OUT`.
+
+> **Stav k 2026-09-23 (večer).** Starší stav – sekce 0, 9, 10, 11. Starší sekce (5a–5v) jsou historie předchozích session.
 
 ## 0. ZAČNI TADY – aktuální stav a rozdělaná práce (2026-09-23)
 
@@ -262,7 +286,7 @@ Uživatel si po delším používání všiml: "často se ti stávalo, že jsi u
 1. **`cutBounds()` v `server/index.js`** počítala konec klipu jako `Math.min(b + padAfter, (b + nextStart) / 2)` – když další (nevybraná) věta začínala brzy po té vybrané (běžné u plynulé řeči), bral se **poloviční** zbytek mezery místo celého `padAfter`. Při mezeře < 2×padAfter (výchozí < 0,3 s) to systematicky ubíralo prostor na doznění věty. Opraveno na `Math.min(b + padAfter, nextStart - GUARD)` (GUARD 0,02 s) – využije se celá dostupná mezera, ne půlka, s pojistkami že `lo`/`hi` nikdy nepřekročí/nepodkročí samotné slovo (`a`/`b`).
 2. **Whisperovy časy konce věty mají svou vlastní nepřesnost** (uživatel sám navrhl: "můžeš kontrolovat waveform?") – i s opravou #1 může být `padAfter` málo, když řeč skutečně doznívá. Nový worker job **`refine_edges`** (`worker/audiosync.py`) dekóduje úsek zvuku kolem hranice, spočítá RMS obálku po 5ms rámcích a **prodlouží** (nikdy nezkrátí) konec až do chvíle, kdy energie klesne pod práh ticha (max. o `maxExtend`, výchozí 0,4 s, nikdy nepřeteče do dalšího úseku). Zapojeno automaticky do `build_sequence_from_transcript` (funkce `refineOutPoints`) – ne jako volitelný krok, po zkušenosti z 5j/5j² automaticky vždy.
 
-**Živě ověřeno** na Špidlovi (věty #14–15, poslední věta v souboru): `cutBounds` dala základ 130,28 s (slovo + padAfter), `refine_edges` to doladila na 130,65 s (+0,37 s skutečně dozníva­jící řeči) – ověřeno jak v odpovědi nástroje, tak přímo v Premiere (`outPoint: 130.64`). Test na dřívějším páru vět (#14/#15 hranice) ukázal jen +0,02 s (tam byl Whisper přesný) – potvrzuje to, že **hlavní vinu nesla oprava #1** (zaokrouhlování na půlku mezery), oprava #2 je doplňková pojistka pro případy, kdy Whisper skutečně netrefí přesně.
+**Živě ověřeno** na Špidlovi (věty #14–15, poslední věta v souboru): `cutBounds` dala základ 130,28 s (slovo + padAfter), `refine_edges` to doladila na 130,65 s (+0,37 s skutečně doznívající řeči) – ověřeno jak v odpovědi nástroje, tak přímo v Premiere (`outPoint: 130.64`). Test na dřívějším páru vět (#14/#15 hranice) ukázal jen +0,02 s (tam byl Whisper přesný) – potvrzuje to, že **hlavní vinu nesla oprava #1** (zaokrouhlování na půlku mezery), oprava #2 je doplňková pojistka pro případy, kdy Whisper skutečně netrefí přesně.
 
 ## 5l. `list_project_items` – hledání nově vloženého videa bez shellu (2026-09-17)
 

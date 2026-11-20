@@ -17,6 +17,14 @@
   var extDir = decodeURIComponent(window.location.pathname).replace(/^\/+/, '').replace(/\/[^\/]*$/, '');
   try { extDir = fs.realpathSync(extDir); } catch (e) {}
   var ROOT = path.dirname(extDir);
+  // Panel nainstalovaný z podepsaného .zxp leží ve složce Adobe (CEP\extensions), ne ve složce aplikace – tam
+  // server ani Worker nejsou. Pak platí cesta, kterou zapsal instalátor (%APPDATA%\MYpremiereMCP\root.txt).
+  if (!fs.existsSync(path.join(ROOT, 'server', 'index.js'))) {
+    try {
+      var rootTxt = fs.readFileSync(path.join(process.env.APPDATA || '', 'MYpremiereMCP', 'root.txt'), 'utf8').trim();
+      if (rootTxt && fs.existsSync(path.join(rootTxt, 'server', 'index.js'))) ROOT = rootTxt;
+    } catch (e) { /* instalátor ještě neběžel – panel ohlásí chybějící server */ }
+  }
   var HOST_JSX = path.join(extDir, 'host', 'host.jsx').replace(/\\/g, '/');
   var SERVER_JS = path.join(ROOT, 'server', 'index.js').replace(/\\/g, '/');
   // přibalený Node (tools\node) na konec PATH – agenti (Claude/Codex) pak spustí MCP server příkazem "node"
@@ -74,22 +82,130 @@
           var running = jobs.filter(function (j) { return j.status === 'running'; })[0];
           var queued = jobs.filter(function (j) { return j.status === 'queued'; }).length;
           var q = queued ? ' · ve frontě ' + queued : '';
+          var pct = running ? Math.round((running.progress || 0) * 100) : 0;
+          var JOB = { transcribe: 'Přepis', diarize: 'Mluvčí', analyze: 'Osnova', plan: 'Plán střihu', plan_edit: 'Plán střihu',
+            sync: 'Synchronizace', translate: 'Překlad', refine_edges: 'Dolaďování hranic', prepare_media: 'Převod videa',
+            broll_index: 'Rejstřík záběrů', broll_plan: 'Výběr záběrů', frame: 'Snímek', describe_frame: 'Popis snímku',
+            yt_speakers: 'Mluvčí (YouTuber)', yt_plan: 'Plán YouTuber', yt_build_ae: 'Stavba v AE' };
           $('workerText').textContent = running
-            ? 'Worker: ' + running.type + ' ' + Math.round((running.progress || 0) * 100) + ' % – ' + (running.message || '') + q
+            ? (JOB[running.type] || running.type) + ' ' + pct + ' %' + (running.message ? ' – ' + running.message : '') + q
             : 'Worker: připraven' + q;
           $('workerPulse').classList.toggle('on', !!running);
+          $('workerBar').classList.toggle('on', !!running);
+          $('workerBar').firstChild.style.width = pct + '%';
         } catch (e) {
           $('workerText').textContent = 'Worker: neznámý stav';
           $('workerPulse').classList.remove('on');
         }
       });
     });
-    req.on('error', function () { $('workerText').textContent = 'Worker: neběží (spustí se při první úloze)'; $('workerPulse').classList.remove('on'); });
+    req.on('error', function () {
+      $('workerText').textContent = 'Worker: neběží (spustí se při první úloze)';
+      $('workerPulse').classList.remove('on');
+      $('workerBar').classList.remove('on');
+    });
     req.on('timeout', function () { req.destroy(); });
     req.end();
   }
   setInterval(pollWorker, 3000);
   pollWorker();
+
+  /* ---------------- vytížení počítače (GPU, VRAM, RAM, CPU) ---------------- */
+  function setMeter(id, pct, text) {
+    var el = $(id);
+    if (!el) return;
+    el.style.display = '';
+    var bar = el.querySelector('.bar i');
+    var p = Math.max(0, Math.min(100, pct || 0));
+    bar.style.width = p + '%';
+    bar.className = p >= 92 ? 'hot' : p >= 75 ? 'warn' : '';
+    el.querySelector('.v').textContent = text;
+  }
+  var gb = function (b) { return (b / 1073741824).toFixed(1).replace('.', ','); };
+  var lastCpu = null;
+  function cpuTimes() {
+    var t = { idle: 0, total: 0 };
+    os.cpus().forEach(function (c) {
+      for (var k in c.times) t.total += c.times[k];
+      t.idle += c.times.idle;
+    });
+    return t;
+  }
+  var gpuOk = true; // bez NVIDIA karty (Mac, AMD) se GPU/VRAM prostě nezobrazí
+  function pollResources() {
+    var total = os.totalmem(), used = total - os.freemem();
+    setMeter('resRam', 100 * used / total, gb(used) + '/' + gb(total) + ' GB');
+    var now = cpuTimes();
+    if (lastCpu) {
+      var dt = now.total - lastCpu.total;
+      setMeter('resCpu', dt ? 100 * (1 - (now.idle - lastCpu.idle) / dt) : 0, Math.round(dt ? 100 * (1 - (now.idle - lastCpu.idle) / dt) : 0) + ' %');
+    }
+    lastCpu = now;
+    if (!gpuOk) return;
+    cp.execFile('nvidia-smi', ['--query-gpu=utilization.gpu,memory.used,memory.total', '--format=csv,noheader,nounits'],
+      { windowsHide: true, timeout: 4000 }, function (err, stdout) {
+        if (err) { gpuOk = false; return; }
+        var v = String(stdout).split(/\r?\n/)[0].split(',').map(function (s) { return Number(s.trim()); });
+        if (v.length < 3 || isNaN(v[2])) { gpuOk = false; return; }
+        setMeter('resGpu', v[0], v[0] + ' %');
+        setMeter('resVram', 100 * v[1] / v[2], (v[1] / 1024).toFixed(1).replace('.', ',') + '/' + Math.round(v[2] / 1024) + ' GB');
+      });
+  }
+  setInterval(pollResources, 2000);
+  pollResources();
+
+  /* ---------------- rychlá volba délky ---------------- */
+  var targetSec = 0;
+  try { targetSec = Number(localStorage.getItem('targetSec') || 0); } catch (e) { /* bez paměti */ }
+  var chips = document.querySelectorAll('.chip');
+  function paintChips() {
+    Array.prototype.forEach.call(chips, function (c) { c.classList.toggle('on', Number(c.getAttribute('data-sec')) === targetSec); });
+  }
+  Array.prototype.forEach.call(chips, function (c) {
+    c.addEventListener('click', function () {
+      var s = Number(c.getAttribute('data-sec'));
+      targetSec = targetSec === s ? 0 : s;
+      try { localStorage.setItem('targetSec', String(targetSec)); } catch (e) { /* bez paměti */ }
+      paintChips();
+    });
+  });
+  paintChips();
+  /** zadání + zvolená délka (u Hermese jde délka zvlášť proměnnou prostředí, ať ji nepřebije slovo v textu) */
+  function withTarget(prompt, sec) {
+    prompt = prompt.replace(/\s*Cílová délka výsledného střihu: [^\n]*$/, ''); // opakované zadání (tlačítka ve výpisu)
+    return sec ? prompt + '\n\nCílová délka výsledného střihu: ' + sec + ' sekund (±10 %).' : prompt;
+  }
+
+  /* ---------------- Zpět = smazat sekvence z posledního zadání ---------------- */
+  var undoStack = []; // [{ label, ids: [sequenceID], names: [...] }]
+  function hostCall(name, args, timeoutMs) {
+    return evalQueued('PMCP.call(' + jsString(name) + ',' + jsString(JSON.stringify(args || {})) + ')', timeoutMs || 20000)
+      .then(function (r) {
+        if (r.timeout) throw new Error('časový limit (modální dialog v Premiere?)');
+        var j = JSON.parse(r.raw);
+        if (!j.ok) throw new Error(j.error || 'chyba ExtendScriptu');
+        return j.result;
+      });
+  }
+  function sequenceIds() {
+    return hostCall('projectInfo').then(function (p) { return p.sequences; }).catch(function () { return null; });
+  }
+  /** před během si zapamatuje sekvence, po běhu uloží nově vzniklé na zásobník pro Zpět */
+  function trackRun(label) {
+    var before = sequenceIds();
+    return function done() {
+      Promise.all([before, sequenceIds()]).then(function (r) {
+        if (!r[0] || !r[1]) return;
+        var old = {};
+        r[0].forEach(function (s) { old[s.sequenceID] = true; });
+        var fresh = r[1].filter(function (s) { return !old[s.sequenceID]; });
+        if (!fresh.length) return;
+        undoStack.push({ label: label, ids: fresh.map(function (s) { return s.sequenceID; }),
+          names: fresh.map(function (s) { return s.name; }) });
+        $('undo').disabled = false;
+      });
+    };
+  }
 
   /* ---------------- ExtendScript fronta ---------------- */
   var queue = Promise.resolve();
@@ -349,6 +465,21 @@
 
   $('undo').addEventListener('click', function () {
     if (child) { out('Nejdřív počkej, až agent doběhne (nebo klikni Stop).', 'err'); return; }
+    // Spolehlivá cesta: poslední zadání vytvořilo nové sekvence -> smazat právě ty (jde opakovaně, po zadáních)
+    if (undoStack.length) {
+      var run = undoStack.pop();
+      hostCall('deleteSequences', { ids: run.ids }).then(function (r) {
+        out(r.deleted.length
+          ? '↶ Smazáno z posledního zadání: ' + r.deleted.map(function (n) { return '„' + n + '“'; }).join(', ') +
+            (undoStack.length ? ' · dalším klikem i předchozí (' + undoStack.length + ')' : '')
+          : '↶ Sekvence z posledního zadání už v projektu nejsou.', 'dim');
+      }).catch(function (e) {
+        undoStack.push(run);
+        out('✖ Zpět se nepodařilo: ' + e.message, 'err');
+      });
+      return;
+    }
+    // Zadání nevytvořilo sekvenci (upravilo existující) -> jeden krok Ctrl+Z v Premiere s pojistkou proti opakování.
     // DŮLEŽITÉ: Premiere/QE undo pracuje po jednotlivých vnitřních krocích (např. samostatně
     // nastavení in/out bodu klipu), ne po celých akcích nástrojů. Opakované klikání za sebou
     // prokazatelně nechá projekt v nekonzistentním stavu (klip se "natáhne" na celý zdroj
@@ -447,8 +578,9 @@
     var connected = list.some(function (l) { return /^Claude/.test(l); });
     var listening = claudeListening();
     el.classList.toggle('on', connected || listening);
-    el.textContent = activeTask ? '● Claude pracuje…' : listening ? '● Claude čeká na zadání' :
-      connected ? '● Claude připojen' : '○ Připojit Claude';
+    // tečka jako prvek (znak ● v písmu Segoe sedí pod osou textu a „padal“)
+    el.innerHTML = '<span class="ld"></span>' + (activeTask ? 'Claude pracuje…' : listening ? 'Claude čeká na zadání' :
+      connected ? 'Claude připojen' : 'Připojit Claude');
     el.title = listening || activeTask
       ? 'Aplikace Claude je napojená na panel: zadání s agentem Claude (aplikace) převezme hned a průběh píše sem.'
       : connected
@@ -482,6 +614,35 @@
       $('agent').dispatchEvent(new Event('change'));
       $('prompt').value = lastPrompt;
       runAgent();
+    });
+    outEl.appendChild(b);
+    outEl.scrollTop = outEl.scrollHeight;
+  }
+
+  // jednorázové přihlášení Claude Code: otevře okno terminálu s `claude auth login` (přihlášení v prohlížeči),
+  // panel pak hlídá stav a po přihlášení zadání sám zopakuje
+  function offerLogin() {
+    var b = document.createElement('button');
+    b.textContent = '🔑 Přihlásit Claude Code';
+    b.className = 'primary';
+    b.style.margin = '4px 6px 2px 0';
+    b.addEventListener('click', function () {
+      var exe = findExe('claude');
+      if (!exe) { out('✖ Claude Code CLI nenalezen v PATH.', 'err'); return; }
+      cp.spawn('cmd.exe', ['/c', 'start', '"Prihlaseni Claude"', 'cmd', '/k', '"' + exe + '" auth login'],
+        { detached: true, windowsHide: false, windowsVerbatimArguments: true }).unref();
+      out('⚙ Otevřelo se okno s přihlášením – dokonči ho v prohlížeči. Zadání pak zopakuju samo.', 'dim');
+      var tries = 0;
+      var t = setInterval(function () {
+        if (++tries > 100) { clearInterval(t); return; } // ~5 min
+        cp.execFile(exe, ['auth', 'status'], { windowsHide: true, timeout: 8000 }, function (err, stdout) {
+          if (/"loggedIn":\s*true/.test(String(stdout || ''))) {
+            clearInterval(t);
+            out('✔ Claude Code přihlášen.', 'ai');
+            if (lastPrompt && !child) { $('agent').value = 'claude'; $('prompt').value = lastPrompt; runAgent(); }
+          }
+        });
+      }, 3000);
     });
     outEl.appendChild(b);
     outEl.scrollTop = outEl.scrollHeight;
@@ -665,7 +826,11 @@
       if (ev.total_cost_usd) info += ' · $' + ev.total_cost_usd.toFixed(3);
       out((ev.is_error ? '✖ chyba' : '✔ hotovo') + ' (' + info + ')', ev.is_error ? 'err' : 'dim');
       if (ev.is_error && /not logged in|\/login/i.test(String(ev.result || ''))) {
-        out('Claude CLI není přihlášené. V terminálu spusť: claude auth login  (a pak zadání zopakuj).', 'err');
+        out('Claude Code v panelu není na tomhle počítači přihlášený. Stačí se jednou přihlásit (pamatuje si to), ' +
+          'nebo zadání pošli do aplikace Claude, kde přihlášený jsi.', 'err');
+        offerLogin();
+        offerRerun('claudeapp', '▶ Poslat do aplikace Claude');
+        offerRerun('hermes', '▶ Místo toho v Hermesovi (lokálně, zdarma)');
       }
       // Firemní účet (TV Nova) má příkazový Claude Code přes předplatné zakázaný – obejít to nejde (jen API klíč nebo
       // správce). Aplikace Claude povolená je: zadání se tam pošle samo a panel si to pamatuje (další už rovnou).
@@ -758,11 +923,24 @@
     }
   }
 
-  function runAgent() {
-    var prompt = $('prompt').value.trim();
-    if (!prompt || child) return;
-    var agent = $('agent').value;
-    if (agent === 'claudeapp') { sendToClaudeApp(prompt); return; }
+  /** zadání z formuláře (text, agent, model, délka) – pro hned spuštění i pro frontu */
+  function formTask() {
+    return { prompt: $('prompt').value.trim(), agent: $('agent').value, model: $('model').value,
+      targetSec: targetSec, resume: $('pokracovat').checked };
+  }
+
+  /** Spustí zadání. Vrací 'spawned' (běží, na konci zavolá task.onDone), 'sent' (předáno aplikaci Claude) nebo false. */
+  function runAgent(task) {
+    task = task || formTask();
+    var prompt = task.prompt;
+    if (!prompt || child) return false;
+    var agent = task.agent;
+    if (agent !== 'hermes') prompt = withTarget(prompt, task.targetSec);
+    // zadání z fronty: sekvence zapamatovaná při přidání (aktivní sekvence se mezitím mění – předchozí úloha otevře svou)
+    if (task.seqName && agent !== 'hermes') {
+      prompt += '\n\nPracuj se sekvencí „' + task.seqName + '“' + (task.source ? ' (zdroj ' + task.source + ')' : '') + '.';
+    }
+    if (agent === 'claudeapp') { sendToClaudeApp(prompt); return 'sent'; }
     // Příkazový Claude je u účtu zakázaný (organizace) -> rovnou do aplikace Claude. Jednou za 24 h se CLI zkusí
     // znovu, kdyby ho správce povolil (při chybě se zadání do aplikace pošle stejně samo).
     if (agent === 'claude') {
@@ -771,7 +949,7 @@
       if (claudeListening() || (blockedAt && Date.now() - blockedAt < 24 * 3600 * 1000)) {
         out('ℹ Příkazový Claude Code je u tvého účtu zakázaný – zadání jde do aplikace Claude.', 'dim');
         sendToClaudeApp(prompt);
-        return;
+        return 'sent';
       }
     }
     // Hermes = lokální model uživatele (O:\Hermes, llama-server :8000). Nejede přes CLI agenta,
@@ -783,7 +961,7 @@
         : agent === 'hermes'
           ? '✖ Node.js nenalezen v PATH (potřebný pro lokální střih).'
           : '✖ Codex CLI nenalezen. Nainstaluj: npm install -g @openai/codex a přihlas se (codex login).', 'err');
-      return;
+      return false;
     }
     if (lastAgent !== agent) sessionId = null;
     lastAgent = agent;
@@ -808,8 +986,9 @@
           /* bez souboru s promptem běží výchozí režim Claude Code */
         }
       }
-      if ($('model').value) args.push('--model', $('model').value);
-      if ($('pokracovat').checked && sessionId) args.push('--resume', sessionId);
+      if (task.model) args.push('--model', task.model);
+      // zadání z fronty jsou samostatná – navazovat na konverzaci jiného zadání by je pomíchalo
+      if (task.resume && !task.queued && sessionId) args.push('--resume', sessionId);
     } else {
       args = ['exec', '--json', '--skip-git-repo-check',
         // Bez schválení Codex v neinteraktivním exec režimu MCP volání vždy zamítne
@@ -823,19 +1002,25 @@
         '-c', 'mcp_servers.premiere.command="node"',
         '-c', 'mcp_servers.premiere.args=["' + SERVER_JS + '"]',
         '-c', 'mcp_servers.premiere.default_tools_approval_mode="approve"'];
-      if ($('model').value) args.push('-m', $('model').value);
+      if (task.model) args.push('-m', task.model);
       args.push('-');
     }
 
     out('› ' + prompt, 'me');
     lastPrompt = prompt;
-    $('run').disabled = true;
     $('undo').disabled = false; // nová akce = čerstvá historie, undo zámek z předchozí akce už neplatí
     $('stop').disabled = false;
     setAiIcon(agent);
 
+    if (agent === 'hermes' && task.targetSec) out('⚙ cílová délka ' + task.targetSec + ' s', 'dim');
+    var finishTrack = trackRun(prompt.split('\n')[0].slice(0, 60));
     var useShell = /\.(cmd|bat)$/i.test(exe);
-    child = cp.spawn(exe, args, { cwd: ROOT, windowsHide: true, shell: useShell, env: process.env });
+    var env = process.env;
+    if (agent === 'hermes') {
+      env = Object.assign({}, process.env, { PMCP_TARGET_SEC: task.targetSec ? String(task.targetSec) : '',
+        PMCP_SEQUENCE: task.seqId || '' });
+    }
+    child = cp.spawn(exe, args, { cwd: ROOT, windowsHide: true, shell: useShell, env: env });
     child.stdin.end(prompt, 'utf8');
 
     var buf = '';
@@ -847,6 +1032,7 @@
       lines.forEach(function (line) {
         if (!line.trim()) return;
         if (agent === 'hermes') { // prostý text, ne stream JSON
+          if (/^\s*0 % (ve frontě|běží)\s*$/.test(line)) return; // šum – průběh ukazuje pruh pod Workerem
           out(line, /^✖/.test(line) ? 'err' : /^(⚙|\s)/.test(line) ? 'dim' : 'ai');
           return;
         }
@@ -865,10 +1051,122 @@
     child.on('close', function (code) {
       if (code && errBuf.trim()) out('✖ ' + errBuf.trim().slice(-1200), 'err');
       child = null;
-      $('run').disabled = false;
       $('stop').disabled = true;
       setAiIcon(null);
+      finishTrack();
+      if (task.onDone) task.onDone(code ? 'error' : 'done');
+      setTimeout(pumpQueue, 800);
     });
+    return 'spawned';
+  }
+
+  /* ---------------- fronta zadání ---------------- */
+  // Zadání běží po jednom (Premiere ExtendScript i grafika zvládnou bezpečně jednu úlohu). Každé si při přidání
+  // zapamatuje agenta, model, délku a aktivní sekvenci, takže lze nachystat víc střihů a nechat je doběhnout.
+  var jobs = [], qSeq = 0, qPaused = false;
+  var AGENT_LABEL = { claude: 'Claude', claudeapp: 'Claude app', codex: 'Codex', hermes: 'Hermes' };
+  function renderQueue() {
+    var waiting = jobs.filter(function (j) { return j.status === 'wait'; }).length;
+    $('queue').classList.toggle('on', jobs.length > 0);
+    $('qCount').textContent = (waiting ? waiting + ' čeká' : '') + (qPaused ? ' · pozastaveno' : '');
+    $('qPause').textContent = qPaused ? 'pokračovat' : 'pozastavit';
+    var list = $('qList');
+    list.innerHTML = '';
+    jobs.forEach(function (j) {
+      var row = document.createElement('div');
+      row.className = 'qi ' + j.status;
+      var icon = { wait: '⏳', running: '▶', done: '✔', error: '✖' }[j.status];
+      var tag = AGENT_LABEL[j.agent] + (j.model ? ' ' + j.model : '') + (j.targetSec ? ' · ' + j.targetSec + ' s' : '') +
+        (j.seqName ? ' · ' + j.seqName.slice(0, 18) : '');
+      row.innerHTML = '<span class="st"></span><span class="tag"></span><span class="tx"></span>';
+      row.children[0].textContent = icon;
+      row.children[1].textContent = '[' + tag + ']';
+      row.children[2].textContent = j.prompt;
+      row.title = j.prompt;
+      if (j.status !== 'running') {
+        var x = document.createElement('span');
+        x.className = 'x';
+        x.textContent = '×';
+        x.title = j.status === 'wait' ? 'Odebrat z fronty' : 'Skrýt';
+        x.addEventListener('click', function () { jobs = jobs.filter(function (k) { return k !== j; }); renderQueue(); });
+        row.appendChild(x);
+      }
+      list.appendChild(row);
+    });
+  }
+  function pumpQueue() {
+    if (child || qPaused || jobs.some(function (j) { return j.status === 'running'; })) return;
+    var next = jobs.filter(function (j) { return j.status === 'wait'; })[0];
+    if (!next) return;
+    next.status = 'running';
+    next.onDone = function (st) { next.status = st; renderQueue(); };
+    renderQueue();
+    var r = runAgent(next);
+    if (r === 'sent') {
+      // Claude (aplikace) pracuje mimo panel – další zadání až po jeho hlášení „hotovo“ (panel_report done),
+      // jinak by dvě úlohy sahaly do Premiere naráz. Neodešlé zadání čeká v taskQueue, dokud se aplikace nenapojí.
+      var since = Date.now();
+      var t = setInterval(function () {
+        var finished = !activeTask && !taskQueue.length && Date.now() - since > 4000;
+        if (!finished && Date.now() - since < 45 * 60 * 1000) return;
+        clearInterval(t);
+        next.status = finished ? 'done' : 'error';
+        renderQueue();
+        pumpQueue();
+      }, 2000);
+    } else if (r !== 'spawned') {
+      next.status = 'error';
+      renderQueue();
+      setTimeout(pumpQueue, 300);
+    }
+  }
+  function enqueue(task) {
+    if (!task.prompt) return;
+    task.id = ++qSeq;
+    task.queued = true;
+    task.status = 'capture';
+    // zapamatovat aktivní sekvenci teď – než přijde řada, otevřou se jiné
+    hostCall('getSequence', { clips: true }).then(function (s) {
+      task.seqId = s.sequenceID;
+      task.seqName = s.name;
+      var m = (s.clips || []).filter(function (c) { return c.mediaPath; })[0];
+      task.source = m ? m.mediaPath : '';
+    }).catch(function () { /* bez aktivní sekvence – agent si zdroj najde sám */ }).then(function () {
+      task.status = 'wait';
+      jobs.push(task);
+      renderQueue();
+      pumpQueue();
+    });
+  }
+  $('enqueue').addEventListener('click', function () {
+    var t = formTask();
+    if (!t.prompt) return;
+    enqueue(t);
+    $('prompt').value = '';
+    out('➕ do fronty: ' + t.prompt.slice(0, 80) + ' [' + AGENT_LABEL[t.agent] + (t.targetSec ? ', ' + t.targetSec + ' s' : '') + ']', 'dim');
+  });
+  $('qPause').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    qPaused = !qPaused;
+    renderQueue();
+    pumpQueue();
+  });
+  $('qClear').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    jobs = jobs.filter(function (j) { return j.status === 'wait' || j.status === 'running'; });
+    renderQueue();
+  });
+  /** Spustit: hned, nebo do fronty, když něco běží */
+  function runOrQueue() {
+    var t = formTask();
+    if (!t.prompt) return;
+    if (child || jobs.some(function (j) { return j.status === 'running' || j.status === 'wait'; })) {
+      enqueue(t);
+      $('prompt').value = '';
+      out('➕ běží jiná úloha – zadání čeká ve frontě', 'dim');
+      return;
+    }
+    runAgent(t);
   }
 
   // Přímé spuštění jednoho nástroje bez AI agenta (titulky): mechanická úloha, agent by jen stál kredity
@@ -878,7 +1176,6 @@
     var exe = findExe('node');
     if (!exe) { out('✖ Node.js nenalezen v PATH.', 'err'); return; }
     out('› ' + label, 'me');
-    $('run').disabled = true;
     $('stop').disabled = false;
     setAiIcon('hermes');
     child = cp.spawn(exe, [path.join(ROOT, 'scripts', 'run-tool.mjs'), tool, JSON.stringify(toolArgs || {})],
@@ -899,17 +1196,24 @@
     child.on('close', function (code) {
       if (code && errBuf.trim()) out('✖ ' + errBuf.trim().slice(-1200), 'err');
       child = null;
-      $('run').disabled = false;
       $('stop').disabled = true;
       setAiIcon(null);
+      setTimeout(pumpQueue, 800);
     });
   }
 
 
-  $('run').addEventListener('click', runAgent);
-  $('stop').addEventListener('click', function () { stopAgent(); out('■ zastaveno', 'dim'); });
+  $('run').addEventListener('click', runOrQueue);
+  $('stop').addEventListener('click', function () {
+    stopAgent();
+    // zastavení = uživatel chce mít klid; další zadání z fronty se samo nespustí, dokud frontu nepustí
+    if (jobs.some(function (j) { return j.status === 'wait'; })) { qPaused = true; renderQueue(); out('■ zastaveno · fronta pozastavena', 'dim'); }
+    else out('■ zastaveno', 'dim');
+  });
   $('prompt').addEventListener('keydown', function (ev) {
     // Enter samotný spustí zadání, Shift+Enter dělá nový řádek (běžná konvence chatu).
-    if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); runAgent(); }
+    // Ctrl+Enter = přidat do fronty
+    if (ev.key === 'Enter' && ev.ctrlKey) { ev.preventDefault(); $('enqueue').click(); return; }
+    if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); runOrQueue(); }
   });
 })();

@@ -58,6 +58,48 @@ def kill_orphan_llama() -> int:
     return killed
 
 
+def free_foreign_ai(reason: str) -> list[str]:
+    """Uvolní grafiku od cizích AI modelů, než se načte náš (Whisper, Hermes): na 12 GB se dva velké modely
+    nevejdou a ovladač pak přelévá do sdílené RAM – vše je několikrát pomalejší a Premiere se seká
+    (2026-11-20: Hermes 20 tok/s místo ~50 při 11 z 12 GB obsazených).
+    - Ollama: modely se jen vyloží z paměti (keep_alive 0), server běží dál – jiné aplikace ho dál použijí
+    - cizí llama-server.exe (jiná instalace, např. O:\\Hermes na jiném portu) se ukončí"""
+    done: list[str] = []
+    no_window = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/ps", timeout=1.5) as r:
+            loaded = [m.get("name") for m in json.load(r).get("models", []) if m.get("name")]
+        for name in loaded:
+            req = urllib.request.Request("http://127.0.0.1:11434/api/generate", method="POST",
+                                         data=json.dumps({"model": name, "keep_alive": 0}).encode(),
+                                         headers={"Content-Type": "application/json"})
+            urllib.request.urlopen(req, timeout=20).read()
+            done.append(f"Ollama {name} vyložena")
+    except Exception:  # noqa: BLE001 – Ollama neběží
+        pass
+    if os.name == "nt":
+        ours = {str((ROOT / p).resolve()).lower() for p in (
+            CONFIG["llm"]["server"], (CONFIG.get("llmBackends", {}).get("hermes") or {}).get("server", "tools/llama.cpp-hermes/llama-server.exe"),
+            "tools/llama.cpp-hermes/llama-server.exe")}
+        ps = ("Get-CimInstance Win32_Process -Filter \"Name='llama-server.exe'\" | "
+              "Select-Object ProcessId, ExecutablePath | ConvertTo-Json -Compress")
+        try:
+            out = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True,
+                                 timeout=30, creationflags=no_window).stdout.strip()
+            items = json.loads(out) if out else []
+        except Exception:  # noqa: BLE001
+            items = []
+        for it in items if isinstance(items, list) else [items]:
+            path = (it.get("ExecutablePath") or "").lower()
+            if path and path not in ours:
+                subprocess.run(["taskkill", "/PID", str(it.get("ProcessId")), "/T", "/F"], capture_output=True,
+                               creationflags=no_window)
+                done.append(f"cizí llama-server ukončen ({it.get('ExecutablePath')})")
+    if done:
+        log(f"GPU: uvolnění grafiky ({reason}): " + "; ".join(done))
+    return done
+
+
 def _free_llm() -> None:
     global _llm_proc
     if _llm_proc is None and _llm_ready():
@@ -115,6 +157,7 @@ def whisper(name: str | None = None):
         if _whisper is not None and _whisper_key[0] == source and _whisper_key[1] in (w["device"], "cpu"):
             return _whisper, _whisper_key[1]
         stop_owned_hermes("přepis potřebuje grafiku")  # 35B model + Whisper se do 12 GB nevejdou (přepis visel na 4 %)
+        free_foreign_ai("přepis")
         _free_llm()
         _free_vision()
         _free_whisper()
@@ -321,10 +364,17 @@ def ensure_hermes() -> bool:
         _free_whisper()  # Whisper na GPU by se s 35B modelem do 12 GB nevešel
         _free_llm()
         _free_vision()
-    log("GPU: spouštím Hermese na požádání (s viděním)")
+        free_foreign_ai("start Hermese")
+    # Kolik MoE vrstev nechat v RAM podle volné grafiky: model se nesmí přelít do sdílené paměti (Windows to dělá
+    # potichu a rychlost spadne na polovinu i méně). Změřeno 2026-11-20 (4070 Ti 12 GB, s viděním):
+    # 30 vrstev v RAM = 8,7 GB VRAM, 42 tok/s · 36 = 6,5 GB, 38 tok/s · 40 = 4,6 GB, 33 tok/s; přelitý model
+    # (30 vrstev při 11 z 12 GB obsazených jinými programy) jen 20 tok/s a vstup 8× pomaleji.
+    free = free_vram_mb()
+    n_cpu_moe = 30 if free is None or free >= 9600 else 36 if free >= 7400 else 40
+    log(f"GPU: spouštím Hermese na požádání (s viděním, volná VRAM {free} MB -> {n_cpu_moe} MoE vrstev v RAM)")
     t0 = time.time()
     try:
-        _hermes_script(b, "start", "-Vize")
+        _hermes_script(b, "start", "-Vize", "-NCpuMoe", str(n_cpu_moe))
     except Exception as e:  # noqa: BLE001
         log(f"GPU: Hermes se nespustil: {e}")
     _backend_cache = (0.0, [])

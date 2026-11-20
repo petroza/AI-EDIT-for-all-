@@ -32,7 +32,8 @@ Pak restartuj Premiere a otevři **Okno > Rozšíření > MY Premiere MCP**. Wor
 | llama.cpp build 11118 (pro Hermese) | `tools/llama.cpp-hermes` | 1,1 GB |
 
 ### Hermes (silnější lokální model)
-Kvalitnější lokální plánování střihu (`plan_edit_local`) než gemma3. Je součástí složky projektu, spouští se ručně:
+Kvalitnější lokální plánování střihu (`plan_edit_local`) než gemma3. Je součástí složky projektu. Worker ho spouští
+sám na požádání a po nečinnosti (`idleStopSec`) i před přepisem vypíná; ručně:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\hermes.ps1 start     # textově
@@ -41,9 +42,10 @@ powershell -ExecutionPolicy Bypass -File scripts\hermes.ps1 stop|status
 ```
 
 Běží na `127.0.0.1:8000`; `plan_edit_local` si ho vezme sám, jakmile odpovídá (`backend` se nezadává).
-Worker ho **záměrně nespouští ani nevypíná** – na 12GB GPU by se pral s Whisperem o paměť. Nastavení je
-ověřené: 30 ze 40 MoE vrstev v RAM, zbytek na GPU (~42–54 tok/s); automatické `--fit` na Windows VRAM
-přeplní a rychlost spadne na ~10 tok/s.
+Kolik MoE vrstev nechat v RAM, volí Worker podle volné VRAM (30 / 36 / 40), aby se model nepřelil do sdílené
+paměti (Windows to dělá potichu, rychlost pak spadne na polovinu). Před startem Hermese i před přepisem Worker
+uvolní grafiku od cizích modelů: modely Ollamy vyloží (server běží dál) a cizí `llama-server.exe` ukončí –
+na grafice tak nikdy neběží dva velké modely najednou. Automatické `--fit` na Windows VRAM přeplní (~10 tok/s).
 
 ## Použití
 Příklady zadání (panel v Premiere, `claude` v terminálu, Claude Desktop):
@@ -52,6 +54,22 @@ Příklady zadání (panel v Premiere, `claude` v terminálu, Claude Desktop):
 - „Hodinový materiál: udělej osnovu a navrhni střih lokálně, ať nepálíme kredity."
 
 Zadání jde i nadiktovat – tlačítko 🎤 v panelu nahraje řeč a lokálně ji přepíše (stejný Whisper jako na video, žádný cloud).
+
+### Panel
+- **Délka 10 / 20 / 30 s** – rychlá volba cílové délky (přidá se k zadání, u Hermese má přednost před délkou v textu).
+- **Fronta** – „+ Do fronty“ (Ctrl+Enter) nebo Spustit, když už něco běží. Úlohy běží po jedné; každá si při přidání
+  zapamatuje agenta, model, délku a aktivní sekvenci, takže lze nachystat víc střihů z různých videí. Stop frontu pozastaví.
+- **↶ Zpět** – smaže sekvence, které vytvořilo poslední zadání (opakovaným klikem i předchozí). Když zadání žádnou
+  sekvenci nevytvořilo, vrátí jeden krok v Premiere (Ctrl+Z) s pojistkou proti opakování.
+- **GPU / VRAM / RAM / CPU** – vytížení počítače každé 2 s (GPU jen s kartou NVIDIA). Pod Workerem pruh průběhu úlohy.
+- Nepřihlášený Claude Code: tlačítko „🔑 Přihlásit Claude Code“ (jednorázově, pak zadání zopakuje samo) nebo poslat do aplikace Claude.
+
+### Krátký výrok / highlight (do 60 s) lokálně
+Hermes u krátké cílové délky nevybírá jednotlivé věty z celého materiálu, ale **jednu souvislou pasáž**: kandidáti
+začínají i končí ve skutečné pauze (≥ 0,15 s nebo změna mluvčího), končí dokončenou větou, model je ohodnotí po kritériích
+(samostatnost, síla, pointa, zadání), začátky navazující na předchozí větu („A…“, „Takže…“, „Absolutně.“) se strhávají
+a o vítězi rozhodne finále s krátkou úvahou. Pauzy uvnitř pasáže zůstanou. Plán s hotovou osnovou trvá 2–10 s.
+Neplatí pro upoutávky, přehledy a shrnutí (ty skládají věty jako dřív).
 
 ### Dlouhý materiál a kredity
 1. `transcribe_media` + `diarize_media` / `speakerTracks` + `rename_speakers` – vše lokálně.
@@ -126,12 +144,18 @@ Výsledek je obyčejná sekvence (V1 = obraz kamer bez jejich zvuku, A1 = hlavn�
 | `.venv\Scripts\python.exe scripts\srt-qa.py soubor.srt [znaků] [řádků]` | kontrola kvality titulků (délka řádků, předložky, rychlost čtení, osiřelá slova) |
 | `node scripts/tool-sizes.mjs` | velikost popisů MCP nástrojů (tokeny, které agent platí) |
 | `node scripts/panel-reload.mjs` | znovu načte stránku panelu (po úpravě `panel/main.js`) bez restartu Premiere |
+| `node scripts/check-cuts.mjs "<sekvence>"` | **kontrola useknutých slov**: hlasitost 12 ms u každé hranice proti řeči v okolí + slova přepisu, která hranice protíná (rozhoduje zvuk – časy slov z Whisperu bývají o desítky ms vedle) |
+| `node scripts/seq-text.mjs "<sekvence>" …` | co je ve střihu: klipy → věty přepisu s textem a mluvčím |
+| `node scripts/test-highlight.mjs [filtr]` | regrese krátkých střihů Hermese proti referenci Clauda (`scripts/highlight-cases.json`): shoda, délka, čisté hranice, čas |
+| `node scripts/plan-debug.mjs video s "zadání"` | plán lokálním modelem bez stavby: žebříček pasáží a úvaha finále |
 
 ### Naměřeno
 | Test | Výsledek |
 |---|---|
 | Syntetický rozhovor, 3 kamery | synchronizace 0 ms, kdo mluví (jen hlas) 92 %, (mikrofony) 100 %, správná kamera 99,7 % |
 | Skutečná panelová diskuse 26:39 (archive.org, CC BY-NC-ND) | přepis 116 s, diarizace 15 s (moderátor + 2 panelisté rozlišeni), osnova 112 s, lokální plán 47 s, střih + export 5:15 za 30 s |
+| Talk (TN Live) 28:07, 2026-11-20 | přepis 145 s (dávkový + oprava 17 podezřelých míst: +44 % slov proti čistě dávkovému), diarizace 16 s, osnova 121 s, 30s výrok 2–20 s; 4 krátké střihy: čisté hranice 4/4 |
+| Hermes podle volné VRAM (4070 Ti 12 GB) | 30 MoE vrstev v RAM: 8,7 GB, 42 tok/s · 36: 6,5 GB, 38 tok/s · 40: 4,6 GB, 33 tok/s · přelitý do sdílené paměti: 20 tok/s, vstup 8× pomaleji |
 
 Diarizace „chunks“ (výchozí, když existuje přepis): hlasové otisky kousků vět modelem 3D-Speaker CAM++ a shlukování.
 Na záznamu z místnosti je výrazně lepší než klasická pyannote pipeline (ta vše přiřadila jednomu mluvčímu).

@@ -303,7 +303,9 @@ var PMCP = {};
     for (var i = 0; i < segs.length; i++) {
       var sg = segs[i];
       var item = resolveItem(sg.source, true);
-      var inS = snap(sg['in'], fd), outS = snap(sg.out, fd);
+      // začátek dolů a konec nahoru na celý snímek: zaokrouhlení na nejbližší posunulo začátek až o půl snímku
+      // (20 ms při 25 fps) do slova a usekávalo první hlásku – hranice už jsou dolaďené podle zvuku
+      var inS = Math.max(0, Math.floor(sg['in'] / fd + 1e-6) * fd), outS = Math.ceil(sg.out / fd - 1e-6) * fd;
       if (outS - inS < fd) { warnings.push('segment ' + i + ' too short, skipped'); continue; }
       var audioOnly = sg.audioOnly || isAudioOnly(item);
       var main = placeRange(seq, item, inS, outS, cursor, audioOnly ? 'audio' : 'video', audioOnly ? (sg.audioTrack || 0) : (sg.videoTrack || 0));
@@ -497,6 +499,20 @@ var PMCP = {};
   };
 
   api.saveProject = function () { needProject(); app.project.save(); return { saved: app.project.path }; };
+
+  // Zpět v panelu: smaže sekvence, které vytvořilo poslední zadání (spolehlivé, na rozdíl od QE undo po krocích).
+  // Jen podle sequenceID, které si panel zapamatoval před a po běhu – na nic jiného nesahá.
+  api.deleteSequences = function (a) {
+    needProject();
+    var want = {}, i, done = [], s = app.project.sequences, found = [];
+    for (i = 0; i < (a.ids || []).length; i++) want[a.ids[i]] = true;
+    for (i = 0; i < s.numSequences; i++) if (want[s[i].sequenceID]) found.push(s[i]);
+    for (i = 0; i < found.length; i++) {
+      var name = found[i].name;
+      if (app.project.deleteSequence(found[i])) done.push(name);
+    }
+    return { deleted: done };
+  };
 
   api.undo = function () {
     needProject();

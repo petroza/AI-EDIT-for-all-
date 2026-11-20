@@ -24,6 +24,8 @@ postupuj podle [`INSTALACE_NA_NOVEM_PC.md`](INSTALACE_NA_NOVEM_PC.md).
    - u rozhovoru zachovej otázku i odpověď.
 4. `build_sequence_from_transcript` – vytvoří NOVOU sekvenci, původní střih zůstává. Vrátí-li `continuity`
    (výběr utnul souvětí), postav ji znovu s doplněným pokračováním/začátkem.
+   Vrátí-li `edges` (⚠ zvuk na hranici = nejspíš useknuté slovo v souvislé řeči), vyměň krajní větu za sousední,
+   která začíná/končí v pauze, nebo hranici posuň přes `fromWord`/`toWord` – a postav znovu.
 5. Shrň uživateli, co jsi vybral a proč (ID vět + délka výsledku).
 6. **Povinná kontrola hranic u krátkých/punchy sestřihů** (upoutávky, highlight, jednotlivé silné výroky do ~1 min) ze zpravodajského/produkovaného materiálu (grafiky, infografiky, přebaly) – NE u běžných rozhovorů/schůzek se statickou kamerou (tam se přeskočí, viz sekce Více kamer):
    - Stav sekvenci přes `build_sequence_from_transcript` s `sceneCuts: true`: server detekuje skryté střihy obrazu

@@ -38,6 +38,7 @@ HANDLERS = {
     "forget_voice": diarize.forget_voice,
     "sync": audiosync.sync,
     "refine_edges": audiosync.refine_edges,
+    "edge_levels": audiosync.edge_levels,
     "analyze": analysis.analyze,
     "plan_edit": analysis.plan_edit,
     "translate": analysis.translate,

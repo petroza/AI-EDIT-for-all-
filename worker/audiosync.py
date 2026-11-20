@@ -94,6 +94,33 @@ def sync(params: dict, ctx) -> dict:
     return data
 
 
+def edge_levels(params: dict, ctx) -> dict:
+    """Hlasitost těsně u hranic střihu proti řeči v okolí (dB): [{t, kind: in|out}] -> [{t, kind, rel}].
+    rel kolem -25 dB a níž = ticho/nádech, nad -12 dB = střih skrz zvuk (useknuté slovo). Stejné měření jako
+    scripts/check-cuts.mjs, aby stavba sama hlásila podezřelé hranice."""
+    import numpy as np
+    from faster_whisper import decode_audio
+
+    path = params["path"]
+    if not os.path.exists(path) or not _has_audio(path):
+        return {"edges": []}
+    audio = decode_audio(path, sampling_rate=SR)
+
+    def rms(a: float, b: float) -> float:
+        seg = audio[max(0, int(a * SR)): max(0, int(b * SR))]
+        return float(np.sqrt(np.mean(seg.astype("float64") ** 2))) if len(seg) else 0.0
+
+    out = []
+    for e in params.get("edges", []):
+        t = float(e["t"])
+        edge = rms(t, t + 0.012) if e.get("kind") == "in" else rms(t - 0.012, t)
+        wins = [rms(x, x + 0.025) for x in np.arange(t - 2.0, t + 2.0, 0.025)]
+        speech = float(np.percentile(wins, 90)) if wins else 0.0
+        rel = 20 * np.log10(max(edge, 1e-7)) - 20 * np.log10(max(speech, 1e-7))
+        out.append({"t": round(t, 3), "kind": e.get("kind"), "rel": round(float(rel), 1)})
+    return {"edges": out}
+
+
 def refine_edges(params: dict, ctx) -> dict:
     """Doladí konce/začátky střihů podle skutečné energie zvuku, ne jen podle časů slov z Whisperu
     (ty mívají u krátkých/tichých hlásek na konci věty systematickou nepřesnost). Pro každý požadovaný
@@ -111,38 +138,54 @@ def refine_edges(params: dict, ctx) -> dict:
 
     audio = decode_audio(path, sampling_rate=SR)
     total = len(audio) / SR
+    frame_s = HOP / SR
+    min_run = 3  # ticho = aspoň 3 rámce po 5 ms pod prahem (krátký pokles uvnitř slova ticho není)
     out = []
     for pt in points:
         at = float(pt["at"])
         direction = pt.get("direction", "end")
-        max_extend = float(pt.get("maxExtend", 0.4))
-        pad = 0.25
-        lo = max(0.0, at - pad)
-        hi = min(total, at + max_extend + pad)
-        seg = audio[int(lo * SR): int(hi * SR)]
-        if len(seg) < SR * 0.05:
+        max_extend = max(0.0, float(pt.get("maxExtend", 0.4)))
+        # Práh ticha z širšího okolí (±1,5 s): šum pozadí (10. percentil) a řeč (95. percentil) v dB, ticho = pod
+        # čtvrtinou rozsahu nad šumem. Dřív se práh bral z úzkého okna kolem hranice – když bylo celé v řeči,
+        # „šum“ vyšel vysoko a hledání se zastavilo na prvním poklesu uvnitř slova (Talk 2026-11-20: začátek
+        # „Rozhodně“ o 360 ms dřív, než říkal Whisper, střih ho usekl).
+        clo, chi = max(0.0, at - max_extend - 1.5), min(total, at + max_extend + 1.5)
+        ctx_env = _energy_envelope(audio[int(clo * SR): int(chi * SR)])
+        if len(ctx_env) < 10:
             out.append({"at": at, "time": round(at, 3)})
             continue
-        env = _energy_envelope(seg)
-        if not len(env):
-            out.append({"at": at, "time": round(at, 3)})
-            continue
-        noise_floor = float(np.percentile(env, 20))
-        peak = float(np.max(env))
-        threshold = max(noise_floor * 2.5, peak * 0.05, 1e-6)
-        frame_s = HOP / SR
-        at_idx = min(len(env) - 1, max(0, round((at - lo) / frame_s)))
-        if direction == "end":
-            i = at_idx
-            while i < len(env) - 1 and env[i] > threshold:
-                i += 1
-            refined = lo + i * frame_s
-            refined = min(max(refined, at), at + max_extend)
-        else:
-            i = at_idx
-            while i > 0 and env[i] > threshold:
-                i -= 1
-            refined = lo + i * frame_s
-            refined = max(min(refined, at), at - max_extend)
-        out.append({"at": at, "time": round(refined, 3)})
+        db = 20 * np.log10(np.maximum(ctx_env, 1e-7))
+        floor_db, peak_db = float(np.percentile(db, 10)), float(np.percentile(db, 95))
+        thr = 10 ** ((floor_db + 0.25 * max(0.0, peak_db - floor_db)) / 20)
+        quiet = ctx_env < thr
+        at_idx = min(len(ctx_env) - 1, max(0, round((at - clo) / frame_s)))
+        limit = round(max_extend / frame_s)
+        step = 1 if direction == "end" else -1
+        refined, clean = None, False
+        run = 0
+        for k in range(0, limit + 1):
+            i = at_idx + step * k
+            if i < 0 or i >= len(ctx_env):
+                break
+            run = run + 1 if quiet[i] else 0
+            if run >= min_run:
+                # hranice = začátek tichého úseku (u konce) / jeho konec u začátku, tj. těsně u zvuku + 30 ms rezervy (tichý náběh souhlásky)
+                edge = i - step * (min_run - 1)
+                refined = clo + edge * frame_s + (0.03 if direction == "end" else -0.03)
+                clean = True
+                break
+        if refined is None:
+            # čisté ticho v dosahu není (plynulá řeč, ruch v pozadí) – střih do nejtiššího místa v dosahu; dřív šel na
+            # okraj povoleného rozsahu, a ten padl i do náběhu dalšího slova (Talk A 280,17 s: „Mě“ useknuté)
+            # bez čistého ticha jen v bezpečném rozsahu (fallbackExtend) – přesah za Whisperův konec předchozího slova
+            # má smysl jen tehdy, když tam opravdu je ticho; jinak by střih padl do dozvuku slova (Talk B „práce.“)
+            fb = round(min(max_extend, float(pt.get("fallbackExtend", max_extend))) / frame_s)
+            idxs = [at_idx + step * k for k in range(0, fb + 1) if 0 <= at_idx + step * k < len(ctx_env)]
+            if idxs:
+                q = min(idxs, key=lambda i: ctx_env[i])
+                refined = clo + q * frame_s + (frame_s if direction == "end" else 0.0)
+            else:
+                refined = at
+        refined = min(max(refined, at), at + max_extend) if direction == "end" else max(min(refined, at), at - max_extend)
+        out.append({"at": at, "time": round(refined, 3), "clean": clean})
     return {"points": out}

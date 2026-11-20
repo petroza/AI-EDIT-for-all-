@@ -383,12 +383,47 @@ async function refineOutPoints(source, ranges, extra) {
     const ceiling = Math.min(nextIn, r.maxOut ?? Infinity);
     return { at: r.out, direction: 'end', maxExtend: Math.max(0, Math.min(0.4, ceiling - r.out - 0.02)) };
   });
+  // Začátky stejně: Whisper dává začátek slova často pozdě (neznělé souhlásky „s“, „t“, „p“ před samohláskou),
+  // 0,08 s rezervy pak nestačí a první hláska se usekne. Posouvá jen dozadu. Whisperův konec předchozího slova
+  // bývá taky pozdě (Talk A: „složitá.“ do 280,13, ve zvuku ticho už v 280,00 a „Mě“ od 280,10) – smí se proto
+  // hledat až 0,12 s za něj; worker střih dá do ticha mezi slovy, jinak do nejtiššího místa.
+  const starts = ranges.map((r) => ({
+    at: r.in, direction: 'start', maxExtend: Math.max(0, Math.min(0.3, r.in - (r.minIn ?? r.in - 0.3) + 0.1)),
+    fallbackExtend: Math.max(0, Math.min(0.3, r.in - (r.minIn ?? r.in - 0.3) - 0.02)),
+  }));
   try {
-    const res = await runJob('refine_edges', { path: source, points }, extra);
-    res.points.forEach((p, i) => { ranges[i].out = p.time; });
+    const res = await runJob('refine_edges', { path: source, points: [...points, ...starts] }, extra);
+    res.points.forEach((p, i) => {
+      if (i < ranges.length) ranges[i].out = p.time;
+      else ranges[i - ranges.length].in = p.time;
+    });
   } catch {
     // zvuková analýza selhala (např. soubor bez zvuku) – necháme původní časy z cutBounds
   }
+}
+
+/** Kontrola hranic po stavbě: slyšitelný zvuk těsně u střihu = nejspíš useknuté slovo. Vrací varování (nebo nic).
+ *  Rozhoduje zvuk (worker edge_levels), slova přepisu jen doplní, které slovo to je – jejich časy bývají o desítky ms
+ *  vedle. Stejná měřítka jako scripts/check-cuts.mjs: nad -12 dB proti řeči = zvuk, nad -20 dB uvnitř slova = slovo. */
+async function edgeWarnings(source, tr, ranges, extra) {
+  if (!fs.existsSync(source) || !ranges.length) return undefined;
+  const edges = ranges.flatMap((r) => [{ t: r.in, kind: 'in' }, { t: r.out, kind: 'out' }]);
+  let res;
+  try {
+    res = await runJob('edge_levels', { path: source, edges }, extra);
+  } catch {
+    return undefined;
+  }
+  const words = allWords(tr);
+  const warn = [];
+  for (const e of res.edges || []) {
+    const w = words.find((x) => x.s < e.t - 0.01 && x.e > e.t + 0.01);
+    if (e.rel > -12 || (w && e.rel > -20)) {
+      warn.push(`⚠ ${tc(e.t)} ${e.kind === 'in' ? 'začátek' : 'konec'}: zvuk na hranici ${e.rel} dB proti řeči` +
+        (w ? ` – možná useknuté slovo „${w.w}“` : '') + ' (zkus sousední větu nebo fromWord/toWord)');
+    }
+  }
+  return warn.length ? warn : undefined;
 }
 
 // Původní přepis bez Workeru (přímé spuštění transcribe.py) – záloha
@@ -609,7 +644,9 @@ function cutBounds(words, a, b, padBefore, padAfter) {
   // slova (např. za toWord), i když cutBounds sám o sobě hranici spočítal správně.
   const hiCeiling = nextStart === Infinity ? Infinity : nextStart - GUARD;
   const hi = Math.min(b + padAfter, hiCeiling);
-  return [Math.max(0, Math.min(lo, a)), Math.max(hi, b), Math.max(hiCeiling, b)];
+  // loFloor = nejzazší možný začátek (konec předchozího slova) – doladění začátku podle vlny přes něj nesmí
+  const loFloor = prevEnd === -Infinity ? 0 : Math.min(prevEnd + GUARD, a);
+  return [Math.max(0, Math.min(lo, a)), Math.max(hi, b), Math.max(hiCeiling, b), Math.max(0, loFloor)];
 }
 
 function mergeRanges(ranges, mergeGap) {
@@ -665,13 +702,31 @@ function reviewText(plan, tr, targetSec) {
   return out.join('\n');
 }
 
+/** Zakoktaný začátek věty („Rozhodně bych... Bych jako doporučila“) -> index slova, kde začíná povedený pokus.
+ *  Jen když Whisper označil přerušení třemi tečkami a hned za ním se slovo opakuje (do 4 slov od začátku). */
+function falseStartWord(ws) {
+  const base = (w) => String(w || '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+  for (let k = 0; k < Math.min(4, ws.length - 2); k++) {
+    if (!/(\.\.\.|…)$/.test(ws[k].w)) continue;
+    const before = new Set(ws.slice(0, k + 1).map((w) => base(w.w)));
+    if (before.has(base(ws[k + 1].w))) return k + 1;
+  }
+  return 0;
+}
+
 function picksToRanges(tr, picks, { padBefore, padAfter, mergeGap }) {
   const byId = new Map(tr.segments.map((s) => [s.id, s]));
   const words = allWords(tr);
+  const pickedIds = new Set(picks.map((p) => (typeof p === 'number' ? p : p.id)));
   const ranges = picks.map((p0) => {
-    const p = typeof p0 === 'number' ? { id: p0 } : p0;
+    let p = typeof p0 === 'number' ? { id: p0 } : p0;
     const s = byId.get(p.id);
     if (!s) throw new Error(`Segment #${p.id} v přepisu neexistuje`);
+    // zakoktaný začátek vynechat (ne uprostřed souvislého výběru – tam by vznikl skok v obraze)
+    if (p.fromWord === undefined && !pickedIds.has(p.id - 1)) {
+      const fs0 = falseStartWord(s.words || []);
+      if (fs0) p = { ...p, fromWord: fs0 };
+    }
     let a = s.start;
     let b = s.end;
     const ws = s.words || [];
@@ -682,9 +737,9 @@ function picksToRanges(tr, picks, { padBefore, padAfter, mergeGap }) {
       a = ws[fw].s;
       b = ws[tw].e;
     }
-    const [lo, hi, hiCeiling] = cutBounds(words, a, b, padBefore, padAfter);
+    const [lo, hi, hiCeiling, loFloor] = cutBounds(words, a, b, padBefore, padAfter);
     const dur = tr.duration || hi;
-    return { in: lo, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [p.id] };
+    return { in: lo, minIn: loFloor, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [p.id] };
   });
   return mergeRanges(ranges, mergeGap);
 }
@@ -702,9 +757,9 @@ function speechIslands(tr, minPause, pad) {
   }
   if (cur) islands.push(cur);
   return islands.map((i) => {
-    const [lo, hi, hiCeiling] = cutBounds(words, i.a, i.b, pad, pad);
+    const [lo, hi, hiCeiling, loFloor] = cutBounds(words, i.a, i.b, pad, pad);
     const dur = tr.duration || hi;
-    return { in: lo, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [] };
+    return { in: lo, minIn: loFloor, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [] };
   });
 }
 
@@ -1479,11 +1534,13 @@ tool(
     await refineOutPoints(a.transcriptSource || source, ranges, extra);
     const sceneCuts = a.sceneCuts ? await snapToSceneCuts(source, tr, ranges) : undefined;
     const segments = withExtras(ranges, source, a.extraAudio);
+    const edges = await edgeWarnings(a.transcriptSource || source, tr, ranges, extra);
     return buildAndReport(a.name, segments, a.gap ?? 0, {
       source: guessed ? `${source} (zdroj nebyl zadán – vzat naposledy použitý; zkontroluj, že je to ten správný)` : undefined,
       ranges: ranges.map((r) => `${tc(r.in)}–${tc(r.out)} věty ${r.ids.join(',')}`),
       continuity: continuityWarnings(tr, a.picks),
       sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
+      edges,
     });
   },
 );
@@ -2075,11 +2132,14 @@ tool(
     const name = a.name || plan.name || `Plán z ${path.basename(a.planFile)}`;
     const tr = loadTranscript(a.source);
     const ranges = picksToRanges(tr, plan.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap: 0.4 });
+    // hranice podle zvuku jako u ostatních staveb (tady dřív chyběly – plán z ChatGPT stříhal jen podle časů slov)
+    await refineOutPoints(a.source, ranges, extra);
     const segments = withExtras(ranges, a.source);
     return buildAndReport(name, segments, 0, {
       ranges: ranges.map((r) => `${tc(r.in)}–${tc(r.out)} věty ${r.ids.join(',')}`),
       planFile: a.planFile,
       continuity: continuityWarnings(tr, plan.picks),
+      edges: await edgeWarnings(a.source, tr, ranges, extra),
     });
   },
 );
@@ -2108,13 +2168,17 @@ tool(
     if (a.format === 'review' && !a.build) return reviewText(plan, loadTranscript(a.path), a.targetSec);
     if (!a.build || !plan.picks.length) return plan;
     const tr = loadTranscript(a.path);
-    const ranges = picksToRanges(tr, plan.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap: 0.4 });
+    // souvislá pasáž (krátký výrok): pauzy uvnitř nechat – vystřižená dramatická pauza („…takový šok, že — nebyla
+    // možnost…“) rozbila rytmus a vznikl zbytečný střih uprostřed věty
+    const mergeGap = plan.mode === 'passage' ? 5 : 0.4;
+    const ranges = picksToRanges(tr, plan.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap });
     // stejné doladění konců podle zvuku jako build_sequence_from_transcript (dřív tu chybělo)
     await refineOutPoints(a.path, ranges, extra);
     const sceneCuts = a.build.sceneCuts ? await snapToSceneCuts(a.build.source || a.path, tr, ranges) : undefined;
     const built = await buildAndReport(a.build.name, withExtras(ranges, a.build.source || a.path, a.build.extraAudio), 0, {
       continuity: continuityWarnings(tr, plan.picks),
       sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
+      edges: await edgeWarnings(a.path, tr, ranges, extra),
     });
     return { plan, built };
   },

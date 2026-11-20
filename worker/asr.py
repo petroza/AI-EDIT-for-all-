@@ -186,6 +186,93 @@ def _probe_language(model, src: str, samples: int = 4, secs: float = 30.0) -> di
         return None
 
 
+# Typické halucinace Whisperu z titulků v trénovacích datech (objevují se v hudbě, tichu i místo skutečné řeči)
+HALLU_RE = re.compile(r"titulky vytvořil|johnyx|titulky:|subtitles by|amara\.org|www\.|děkuji za pozornost|"
+                      r"odebírejte|sledujte nás|titulky pro", re.I)
+
+
+def _seg_words(seg) -> list[dict]:
+    out = []
+    for wd in seg.words or []:
+        token = (wd.word or "").strip()
+        if token:
+            out.append({"w": token, "s": round(float(wd.start), 3), "e": round(float(wd.end), 3), "p": round(float(wd.probability), 3)})
+    return out
+
+
+def _suspicious_windows(raw: list[dict], duration: float) -> list[list[float]]:
+    """Úseky k novému přepisu: halucinace, řídké/nejisté segmenty a delší díry mezi slovy (mohla tam být řeč)."""
+    wins: list[list[float]] = []
+    for s in raw:
+        dur = s["end"] - s["start"]
+        probs = [wd["p"] for wd in s["words"]]
+        if (HALLU_RE.search(s["text"]) or (dur > 4 and len(s["words"]) / dur < 0.5)
+                or (probs and sum(probs) / len(probs) < 0.35)):
+            wins.append([s["start"], s["end"]])
+    prev = 0.0
+    for wd in sorted((wd for s in raw for wd in s["words"]), key=lambda x: x["s"]):
+        if wd["s"] - prev > 6.0:
+            wins.append([prev, wd["s"]])
+        prev = max(prev, wd["e"])
+    if duration - prev > 6.0:
+        wins.append([prev, duration])
+    merged: list[list[float]] = []
+    for a, b in sorted([max(0.0, a - 0.5), min(duration or b + 0.5, b + 0.5)] for a, b in wins):
+        if merged and a <= merged[-1][1] + 1.0:
+            merged[-1][1] = max(merged[-1][1], b)
+        else:
+            merged.append([a, b])
+    return [w for w in merged if w[1] - w[0] >= 1.0]
+
+
+def _repair_batched(model, src: str, raw: list[dict], duration: float, common: dict, ctx) -> list[dict]:
+    wins = _suspicious_windows(raw, duration)
+    if not wins:
+        return raw
+    total = sum(b - a for a, b in wins)
+    ctx.progress(0.82, f"kontrola {len(wins)} podezřelých míst ({total:.0f} s) klasickým přepisem")
+    segs, _ = model.transcribe(src, condition_on_previous_text=False, clip_timestamps=[t for w in wins for t in w], **common)
+    fresh: list[dict] = []
+    for seg in segs:
+        ctx.check()
+        wds = _seg_words(seg)
+        probs = [wd["p"] for wd in wds]
+        if (not wds or HALLU_RE.search(seg.text or "") or float(seg.no_speech_prob) > 0.6
+                or sum(probs) / len(probs) < 0.4):
+            continue
+        fresh.append({"start": float(seg.start), "end": float(seg.end), "text": seg.text or "", "words": wds})
+        ctx.progress(0.82 + 0.08 * min(1.0, seg.end / max(1.0, duration)), f"oprava přepisu {seg.end:.0f}/{duration:.0f} s")
+
+    def inside(t: float, w: list[float]) -> bool:
+        return w[0] <= t <= w[1]
+
+    out = [s for s in raw if not HALLU_RE.search(s["text"])]
+    fixed = 0
+    for w in wins:
+        new = [s for s in fresh if inside((s["start"] + s["end"]) / 2, w)]
+        if not new:
+            continue
+        # staré segmenty v okně pryč (halucinace, nejisté), nové místo nich; segmenty přes okraj zůstanou
+        out = [s for s in out if not (inside(s["start"], w) and inside(s["end"], w))]
+        out.extend(new)
+        fixed += 1
+    out.sort(key=lambda s: s["start"])
+    # slova se nesmí překrývat (okraj okna) – pozdější duplicitní slovo pryč
+    last = -1.0
+    for s in out:
+        keep = []
+        for wd in s["words"]:
+            if wd["s"] >= last - 0.05:
+                keep.append(wd)
+                last = max(last, wd["e"])
+        s["words"] = keep
+    out = [s for s in out if s["words"]]
+    removed = len(raw) - len([s for s in raw if not HALLU_RE.search(s["text"])])
+    log(f"asr: dávkový přepis {os.path.basename(src)} – {len(wins)} podezřelých míst ({total:.0f} s), opraveno {fixed}, "
+        f"halucinací odstraněno {removed}")
+    return out
+
+
 def transcribe(params: dict, ctx) -> dict:
     src = params["path"]
     if not os.path.exists(src):
@@ -233,7 +320,8 @@ def transcribe(params: dict, ctx) -> dict:
                   vad_parameters={"min_silence_duration_ms": 400}, beam_size=w.get("beamSize", 5),
                   initial_prompt=opts["prompt"], multilingual=opts["language"] is None)
     batch = int(w.get("batchSize", 8) or 0)
-    if device == "cuda" and batch > 1:
+    batched = device == "cuda" and batch > 1
+    if batched:
         # dávkově: úseky řeči (VAD) jdou na GPU po několika najednou – změřeno na 10 min debaty 3,8× rychleji
         # (68 s -> 18 s), přesnost textu i časů slov stejná (průměr 25 ms). Dávka 16 byla vedle Hermese pomalejší
         # (nevejde se do VRAM). Věty se skládají ze slov (group_segments), dělení segmentů Whisperem nevadí.
@@ -242,15 +330,19 @@ def transcribe(params: dict, ctx) -> dict:
     else:
         segments, info = model.transcribe(src, condition_on_previous_text=False, **common)
     duration = float(info.duration or 0.0)
-    words: list[dict] = []
+    raw: list[dict] = []
     for seg in segments:
         ctx.check()
-        for wd in seg.words or []:
-            token = (wd.word or "").strip()
-            if token:
-                words.append({"w": token, "s": round(float(wd.start), 3), "e": round(float(wd.end), 3), "p": round(float(wd.probability), 3)})
+        raw.append({"start": float(seg.start), "end": float(seg.end), "text": seg.text or "", "words": _seg_words(seg)})
         if duration:
-            ctx.progress(0.05 + 0.85 * min(1.0, seg.end / duration), f"přepis {seg.end:.0f}/{duration:.0f} s")
+            ctx.progress(0.05 + (0.75 if batched else 0.85) * min(1.0, seg.end / duration), f"přepis {seg.end:.0f}/{duration:.0f} s")
+    if batched:
+        # Dávkový režim občas celé úseky řeči „nepřepíše“ a místo nich vrátí halucinaci z titulků („Titulky vytvořil
+        # JohnyX.“) nebo nic – Talk s B. Šimkovou 2026-11-20: 22 takových míst, ~3 min řeči pryč. Klasický režim stejné
+        # úseky přepsal správně, proto se podezřelá místa přepíšou znovu klasicky (jen ona, rychlost zůstane).
+        raw = _repair_batched(model, src, raw, duration, common, ctx)
+    # „slova“ bez jediného písmene/číslice („.........“ v tichu) – Whisper je vymýšlí místo ticha, věta z nich nedává smysl
+    words = [wd for s in raw for wd in s["words"] if re.search(r"[^\W_]", wd["w"])]
 
     rules = load_corrections()
     for wd in words:

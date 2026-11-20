@@ -23,7 +23,9 @@
   .pulse { display:none; width:8px; height:8px; border-radius:50%; flex:none; }
   .pulse.on { display:inline-block; animation: pulse-anim 1s ease-in-out infinite; }
   @keyframes pulse-anim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(1.7); } }
-  #workerPulse.on { background:var(--ok); }
+  #workerPulse.on { background:var(--ok); animation: glow-anim 1.2s ease-in-out infinite; }
+  /* jen jas a záře, velikost stejná (zvětšování rozhazovalo zarovnání řádku) */
+  @keyframes glow-anim { 0%,100% { opacity:1; box-shadow:0 0 6px 1px rgba(67,194,107,.85); } 50% { opacity:.4; box-shadow:0 0 0 0 rgba(67,194,107,0); } }
   .ai-icon { display:none; width:15px; height:15px; flex:none; }
   .ai-icon.on { display:inline-block; }
   .ai-icon.on svg { display:block; transform-origin:center; }
@@ -45,16 +47,47 @@
   .grow { flex:1; }
   .pill { border-radius:10px; padding:1px 9px; font-size:11px; color:var(--dim); }
   .pill.on { color:var(--ok); border-color:var(--ok); }
+  .pill { display:inline-flex; align-items:center; gap:5px; }
+  .pill .ld { width:7px; height:7px; border-radius:50%; border:1.5px solid currentColor; box-sizing:border-box; flex:none; }
+  .pill.on .ld { background:currentColor; }
   .actions { display:flex; gap:6px; margin-left:auto; }
   #dropRow { border:1px dashed transparent; border-radius:4px; padding:2px; margin:-3px; }
   #dropRow.drag { border-color:var(--accent); background:rgba(111,140,255,.12); }
+  /* průběh úlohy Workeru */
+  #workerBar { display:none; height:4px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:-4px; }
+  #workerBar.on { display:block; }
+  #workerBar i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),#9fb3ff); transition:width .6s; }
+  /* fronta zadání */
+  #queue { display:none; border:1px solid var(--line); border-radius:4px; background:#181818; padding:4px 6px; max-height:140px; overflow:auto; }
+  #queue.on { display:block; }
+  #queue .qhead { display:flex; gap:8px; align-items:center; color:var(--dim); font-size:11px; margin-bottom:2px; }
+  #queue .qhead span:first-child { color:var(--text); font-weight:600; }
+  #queue .qhead a { color:var(--accent); text-decoration:none; } #queue .qhead a:first-of-type { margin-left:auto; }
+  .qi { display:flex; gap:6px; align-items:center; padding:2px 0; border-top:1px solid #222; font-size:11px; }
+  .qi:first-child { border-top:0; }
+  .qi .st { width:14px; text-align:center; flex:none; }
+  .qi .tag { color:var(--dim); flex:none; }
+  .qi .tx { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qi .x { cursor:pointer; color:var(--dim); flex:none; padding:0 3px; } .qi .x:hover { color:var(--err); }
+  .qi.running .st { color:var(--accent); animation: glow-anim 1.2s ease-in-out infinite; }
+  .qi.done .st { color:var(--ok); } .qi.error .st { color:var(--err); } .qi.done .tx, .qi.error .tx { color:var(--dim); }
+  /* rychlá volba délky */
+  .chips { display:flex; gap:4px; align-items:center; flex-wrap:wrap; }
+  .chip { border-radius:12px; padding:2px 10px; color:var(--dim); }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  /* vytížení počítače */
+  #res { display:flex; gap:10px; flex-wrap:wrap; font-size:11px; color:var(--dim); }
+  #res .m { display:flex; align-items:center; gap:4px; }
+  #res .bar { width:44px; height:5px; background:var(--line); border-radius:3px; overflow:hidden; }
+  #res .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .4s; }
+  #res .bar i.warn { background:var(--tool); } #res .bar i.hot { background:var(--err); }
 </style>
 </head>
 <body>
   <header>
     <span id="dot" class="dot"></span>
     <h1>MY Premiere MCP</h1>
-    <button id="claudeLink" class="pill" title="Stav připojení aplikace Claude k pluginu">○ Připojit Claude</button>
+    <button id="claudeLink" class="pill" title="Stav připojení aplikace Claude k pluginu"><span class="ld"></span>Připojit Claude</button>
     <span id="stav">startuji…</span>
     <span id="aiClaude" class="ai-icon" title="Claude pracuje">
       <svg viewBox="0 0 24 24" width="15" height="15">
@@ -90,8 +123,29 @@
     <span id="workerText">Worker: …</span>
     <button id="stopAll" style="margin-left:auto;padding:1px 8px;font-size:11px" title="Zastaví všechny AI procesy – Hermes (i z jiné složky, např. O:\Hermes), Ollamu, lokální modely a Worker s Whisperem – a uvolní grafiku a paměť pro Premiere. Rozpracovaná úloha se přeruší. Premiere zůstane běžet.">⏹ Zastavit AI</button>
   </div>
+  <div id="workerBar" title="Průběh úlohy lokálního Workeru"><i></i></div>
+
+  <div id="res" title="Vytížení počítače (obnovuje se každé 2 s). VRAM = paměť grafické karty – když dojde, lokální modely (Whisper, Hermes) se zpomalí nebo spadnou a Premiere může zamrznout.">
+    <span class="m" id="resGpu" style="display:none">GPU <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resVram" style="display:none">VRAM <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resRam">RAM <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resCpu">CPU <span class="bar"><i></i></span> <b class="v">–</b></span>
+  </div>
 
   <div id="out"></div>
+
+  <div id="queue" title="Fronta zadání – běží postupně jedno po druhém (Premiere i grafika zvládnou bezpečně jen jednu úlohu najednou)">
+    <div class="qhead"><span>Fronta</span><span id="qCount"></span>
+      <a href="#" id="qPause">pozastavit</a><a href="#" id="qClear">vyčistit hotové</a></div>
+    <div id="qList"></div>
+  </div>
+
+  <div class="chips" title="Cílová délka výsledného střihu. Přidá se k zadání – nemusíš ji psát do textu. Druhým klikem volbu zrušíš.">
+    <span style="color:var(--dim)">Délka:</span>
+    <button class="chip" data-sec="10">10 s</button>
+    <button class="chip" data-sec="20">20 s</button>
+    <button class="chip" data-sec="30">30 s</button>
+  </div>
 
   <textarea id="prompt" lang="cs" spellcheck="false" placeholder="Např.: Přepiš zvuk aktivní sekvence a udělej novou sekvenci jen s větami o cenách, ať to dává smysl. Vyhoď přeřeknutí a dlouhé pauzy."></textarea>
   <div class="row" style="flex-wrap:wrap">
@@ -114,12 +168,13 @@
       <option value="gpt-5.2" data-agent="codex">GPT-5.2</option>
     </select>
     <label class="row" title="Navázat na předchozí konverzaci"><input type="checkbox" id="pokracovat" checked> navázat</label>
-    <label class="row" title="Zobrazit i technické volání nástrojů (ladění)"><input type="checkbox" id="nastroje"> nástroje</label>
+    <label class="row" style="display:none" title="Zobrazit i technické volání nástrojů (ladění)"><input type="checkbox" id="nastroje"> nástroje</label>
     <button id="mic" title="Nadiktovat zadání mikrofonem (lokálně, Whisper) - klikni, mluv, klikni znovu">🎤</button>
     <span class="actions">
-    <button id="undo" title="Vrátí jeden krok zpět v Premiere. Funguje jen na jedno použití mezi akcemi - klikni jednou a zkontroluj výsledek, opakované klikání za sebou může klip poškodit místo opravit.">↶ Zpět</button>
+    <button id="undo" title="Smaže sekvence, které vytvořilo poslední zadání (opakovaným klikem i ty předchozí). Původní střih ani média se nemění.">↶ Zpět</button>
     <button id="stop" disabled>Stop</button>
-    <button id="run" class="primary">Spustit</button>
+    <button id="enqueue" title="Přidá zadání do fronty (s vybraným agentem, délkou a aktuální sekvencí) – fronta běží sama po jednom, můžeš rovnou psát další. Ctrl+Enter.">+ Do fronty</button>
+    <button id="run" class="primary" title="Spustí hned (Enter). Když něco běží, zařadí se do fronty.">Spustit</button>
     </span>
   </div>
 

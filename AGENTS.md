@@ -18,6 +18,8 @@ Ovládáš Adobe Premiere Pro přes MCP server `premiere`. Uživatel píše čes
    - u rozhovoru zachovej otázku i odpověď.
 4. `build_sequence_from_transcript` – vytvoří NOVOU sekvenci, původní střih zůstává. Vrátí-li `continuity`
    (výběr utnul souvětí), postav ji znovu s doplněným pokračováním/začátkem.
+   Vrátí-li `edges` (⚠ zvuk na hranici = nejspíš useknuté slovo v souvislé řeči), vyměň krajní větu za sousední,
+   která začíná/končí v pauze, nebo hranici posuň přes `fromWord`/`toWord` – a postav znovu.
 5. Shrň uživateli, co jsi vybral a proč (ID vět + délka výsledku).
 
 ## Dabing / dodatečně namluvený komentář (obraz pod komentář)

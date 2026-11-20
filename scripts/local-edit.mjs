@@ -56,14 +56,16 @@ const call = async (name, args, onprogress) => {
 };
 
 try {
-  const target = targetSeconds(instruction);
+  // délka zvolená tlačítkem v panelu má přednost před délkou napsanou v textu
+  const target = Number(process.env.PMCP_TARGET_SEC) || targetSeconds(instruction);
   say(`⚙ lokální model (${BACKEND})${target ? `, cílová délka ${target} s` : ''} – kredity se nečerpají`);
 
   // zdroj: médium z aktivní sekvence, jinak jediné video v projektu
   let source = null;
   let seq = null;
   try {
-    seq = JSON.parse(await call('get_sequence', {}));
+    // PMCP_SEQUENCE = sekvence zapamatovaná při přidání do fronty v panelu (aktivní sekvence se mezitím mění)
+    seq = JSON.parse(await call('get_sequence', process.env.PMCP_SEQUENCE ? { sequence: process.env.PMCP_SEQUENCE } : {}));
     source = (seq.clips || []).find((x) => x.mediaPath)?.mediaPath || null;
   } catch {
     /* bez aktivní sekvence */
@@ -127,7 +129,7 @@ try {
   say('⚙ přepis (z cache, pokud už existuje)');
   await call('transcribe_media', { path: source, maxChars: 1 }, progress);
 
-  const name = `STRIH ${BACKEND.toUpperCase()} ${new Date().toTimeString().slice(0, 5)}`;
+  const name = `STRIH ${BACKEND.toUpperCase()}${target ? ` ${target}s` : ""} ${new Date().toTimeString().slice(0, 8)}`;
   say('⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)');
   last = -1;
   const res = JSON.parse(
@@ -156,6 +158,10 @@ try {
   if (plan.note) say(`⚠ ${plan.note}`);
   for (const n of built?.sceneCuts || []) say(`🎞 ${n}`);
   for (const n of built?.continuity || []) say(`⚠ ${n}`);
+  for (const n of built?.edges || []) say(n);
+  if (plan.mode === 'passage') {
+    say(`ℹ souvislá pasáž (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
+  }
 } catch (e) {
   say('✖ ' + (e?.message || e));
   process.exitCode = 1;

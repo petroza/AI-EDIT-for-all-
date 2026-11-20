@@ -33,4 +33,6 @@ stav projektu: `mcp__premiere__get_project`, …). Nehledej po jednom.
 - Destruktivní nástroje jen na výslovné přání a předtím `backup_project`.
 - Když `build_sequence_from_transcript` vrátí `continuity` (utnuté souvětí), postav sekvenci znovu s opraveným
   výběrem (doplň chybějící pokračování/začátek).
+- Když stavba vrátí `edges` (⚠ zvuk na hranici = useknuté slovo), vyměň krajní větu za sousední, která začíná/končí
+  v pauze, nebo posuň hranici přes `fromWord`/`toWord` a postav znovu.
 - Na konci jednou větou shrň výsledek (název sekvence, délka, čísla vět).

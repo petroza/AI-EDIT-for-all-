@@ -13,15 +13,16 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const ROOT = 'O:/ADOBEPREMIERESTRIH';
-const SRC = 'C:/Users/Petr/Downloads/01-video/tncz-TIT_2026-06-16_naprimo_liberec.mp4.mp4';
-const OUT = `${ROOT}/test/agent-compare`;
+// CMP_SRC / CMP_TASK / CMP_OUT = jiné video, zadání a složka výsledků (výchozí: debata Liberec, test\agent-compare)
+const SRC = process.env.CMP_SRC || 'C:/Users/Petr/Downloads/01-video/tncz-TIT_2026-06-16_naprimo_liberec.mp4.mp4';
+const OUT = process.env.CMP_OUT || `${ROOT}/test/agent-compare`;
 const RUNS = (process.argv[2] || 'claude:haiku,claude:sonnet,claude:opus,codex:gpt-6-astra,codex:gpt-5.5,hermes:local')
   .split(',')
   .map((s) => {
     const [agent, model, profile, effort] = s.split(':');
     return { agent, model, profile, effort, tag: [agent, model, profile, effort].filter(Boolean).join('-').toUpperCase() };
   });
-const TASK =
+const TASK = process.env.CMP_TASK ||
   'Tříminutový sestřih o bydlení a parkování: nejkonkrétnější argumenty obou hostů (co chtějí udělat a čím to zdůvodňují), ' +
   'bez úvodních a organizačních vět moderátora, bez opakování.';
 const prompt = (tag) =>
