@@ -6,7 +6,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const PEOPLE = 'D:/FILMY/UA/Ukraine.The.Peoples.Fight.2023.1080p.WEBRip.x265-LAMA/Ukraine.The.Peoples.Fight.2023.1080p.WEBRip.x265-LAMA.mp4';
 const ANDR = 'C:/Users/Petr/Downloads/01-video/2000.Meters.To.Andriivka.2025.1080p.WEBRip.x264.AAC-WORLD.mp4';
 const TASKS = [

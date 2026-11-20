@@ -1,8 +1,8 @@
 // Spouštěč MCP serveru MY Premiere MCP pro plugin aplikace Claude (PLUGIN CLAUDE). Kopíruje se do pluginu jako
 // server/start.mjs a .mcp.json ho spouští přes `node`. Najde složku aplikace kdekoli (flash disk, jiný disk) a spustí
 // její server/index.js. Bez závislostí – plugin sám nemá node_modules.
-//  - složka: MYPREMIEREMCP_ROOT, %APPDATA%\MYpremiereMCP\root.txt (zapisuje instalátor), X:\MYpremiereMCP na všech
-//    discích, %USERPROFILE%\MYpremiereMCP
+//  - složka: MYPREMIEREMCP_ROOT, %APPDATA%\MYpremiereMCP\root.txt (zapisuje instalátor), X:\ADOBEPREMIERESTRIH
+//    a X:\MYpremiereMCP na všech discích, %USERPROFILE%\ADOBEPREMIERESTRIH a \MYpremiereMCP
 //  - když je server „premiere“ už zaregistrovaný instalátorem pro Claude Code (~/.claude.json), tenhle nástroje
 //    nenabízí – jinak by v aplikaci byly všechny nástroje dvakrát
 //  - když složka chybí, odpoví prázdným MCP serverem s pokynem (místo pádu, který aplikace hlásí jako chybu)
@@ -20,8 +20,8 @@ function findRoot() {
   } catch {
     /* instalátor tu ještě neběžel */
   }
-  for (const L of 'CDEFGHIJKLMNOPQRSTUVWXYZAB') c.push(`${L}:\\MYpremiereMCP`);
-  c.push(path.join(os.homedir(), 'MYpremiereMCP'));
+  for (const L of 'CDEFGHIJKLMNOPQRSTUVWXYZAB') c.push(`${L}:\\ADOBEPREMIERESTRIH`, `${L}:\\MYpremiereMCP`);
+  c.push(path.join(os.homedir(), 'ADOBEPREMIERESTRIH'), path.join(os.homedir(), 'MYpremiereMCP'));
   return c.find(isRoot) || null;
 }
 

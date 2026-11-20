@@ -16,7 +16,7 @@ Claude / Codex ──stdio──► server/index.js (MCP) ──HTTP :7880 + tok
 
 ## Instalace
 ```powershell
-powershell -ExecutionPolicy Bypass -File O:\MYpremiereMCP\install.ps1
+powershell -ExecutionPolicy Bypass -File O:\ADOBEPREMIERESTRIH\install.ps1
 ```
 Vše se ukládá do složky aplikace: `.venv` (Python 3.11), `models/` (Whisper, diarizace, LLM), `tools/llama.cpp`.
 Pak restartuj Premiere a otevři **Okno > Rozšíření > MY Premiere MCP**. Worker se spouští sám při prvním použití.

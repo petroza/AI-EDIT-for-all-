@@ -6,7 +6,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const backends = (process.argv[2] || 'local,hermes').split(',');
 const SRC = process.argv[3] || `${ROOT}/test/podcast/Diskuse1.mp4`;
 const TARGET = Number(process.argv[4] || 300);

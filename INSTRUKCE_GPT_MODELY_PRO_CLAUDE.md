@@ -4,7 +4,7 @@
 
 Když uživatel v poli **AI agent** vybere `Codex (GPT)`, pole **Model** musí nabídnout dostupné modely Codexu. Vybraný model se má použít při následujícím spuštění přes `codex exec -m <model>`.
 
-Claude: implementuj tuto změnu přímo v `O:\MYpremiereMCP`. Zachovej současnou podporu modelů Claude a nezasahuj do střihových nástrojů.
+Claude: implementuj tuto změnu přímo v `O:\ADOBEPREMIERESTRIH`. Zachovej současnou podporu modelů Claude a nezasahuj do střihových nástrojů.
 
 ## Co už je hotové
 

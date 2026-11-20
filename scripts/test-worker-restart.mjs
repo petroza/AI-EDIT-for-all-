@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const REF = `${ROOT}/test/multicam/master_mix.wav`;
 const llamaCount = () =>
   Number(execFileSync('powershell', ['-NoProfile', '-Command', "@(Get-CimInstance Win32_Process -Filter \"Name='llama-server.exe'\").Count"], { encoding: 'utf8' }).trim());

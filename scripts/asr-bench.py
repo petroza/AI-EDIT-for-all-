@@ -9,7 +9,7 @@ import sys
 import time
 
 sys.stdout.reconfigure(encoding="utf-8")
-ROOT = "O:/MYpremiereMCP"
+ROOT = "O:/ADOBEPREMIERESTRIH"
 sys.path.insert(0, ROOT)
 from worker.common import add_nvidia_dll_dirs  # noqa: E402
 

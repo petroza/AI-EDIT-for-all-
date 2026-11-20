@@ -10,7 +10,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const SRC = process.env.SRC || 'C:/Users/Petr/Downloads/01-video/2000.Meters.To.Andriivka.2025.1080p.WEBRip.x264.AAC-WORLD.mp4';
 const OUT = process.env.OUT || `${ROOT}/test/agent-compare-film`;
 const TASK = process.env.TASK || 'Sestříhej to nejdůležitější jako nejsrozumitelnější sdelění o válce na ukrajině. do jedné minuty';

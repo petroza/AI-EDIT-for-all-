@@ -6,7 +6,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const DEBATE = 'C:/Users/Petr/Downloads/01-video/tncz-TIT_2026-06-16_naprimo_liberec.mp4.mp4';
 const DISK = `${ROOT}/test/podcast/Diskuse1.mp4`;
 const BACKEND = process.argv[2] || 'auto';

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const SRC = 'C:/Users/Petr/Downloads/01-video/tncz-TIT_2026-06-16_naprimo_liberec.mp4.mp4';
 const MODERATOR = new Set([5, 39, 40, 59, 60, 77, 78, 127, 149, 173, 174, 175, 181, 203, 206, 272, 294, 295, 338, 356, 357, 360]);
 const names = process.argv.slice(2);

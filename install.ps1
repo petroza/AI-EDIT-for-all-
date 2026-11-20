@@ -1,4 +1,4 @@
-# MYpremiereMCP - instalace (powershell -ExecutionPolicy Bypass -File O:\MYpremiereMCP\install.ps1)
+# MYpremiereMCP - instalace (powershell -ExecutionPolicy Bypass -File O:\ADOBEPREMIERESTRIH\install.ps1)
 # Vse potrebne (Python prostredi, modely, llama.cpp) se uklada do slozky aplikace. Ollama neni potreba.
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path

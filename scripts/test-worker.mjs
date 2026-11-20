@@ -5,7 +5,7 @@ import path from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const GT = JSON.parse(fs.readFileSync(`${ROOT}/test/multicam/gt.json`, 'utf8'));
 const REF = GT.reference;
 const steps = process.argv.slice(2);

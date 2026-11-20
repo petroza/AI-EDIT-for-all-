@@ -7,6 +7,9 @@ description: Střih videa v Adobe Premiere Pro přes MCP server premiere (MY Pre
 
 Ovládáš Adobe Premiere Pro přes MCP server `premiere`. Uživatel píše česky, odpovídej česky a stručně.
 
+**Nový počítač / přenesená složka** (chybí `.venv`, nástroje `premiere` nejsou dostupné nebo to uživatel chce zprovoznit):
+postupuj podle [`INSTALACE_NA_NOVEM_PC.md`](INSTALACE_NA_NOVEM_PC.md).
+
 ## Rytmus, pauzy a tempo (teorie střihu)
 - **Nikdy neřízni doprostřed slova.** Řež na přirozené mezeře mezi slovy/frázemi/nádechem – `padBefore`/`padAfter`/`cutBounds` už tohle hlídají automaticky, ale u ručních úprav (`fromWord`/`toWord`, `remove_timeline_ranges`) na to dávej pozor sám.
 - **Nemaž úplně všechny pauzy a "ehm".** Přeplácaný střih bez jediné pauzy zní nepřirozeně a strojově – nech trochu prostoru na dech, hlavně před důležitou myšlenkou nebo po pointě. Váhání/pauza před odpovědí může být obsahově důležitá (ukazuje rozvahu) – neruš ji automaticky jen proto, že je to pauza.
@@ -64,11 +67,19 @@ Když je řeč jen na samostatné zvukové stopě (komentář namluvený dodate�
    v komentáři pro další záběr uvnitř dlouhé věty) – NOVÁ sekvence, komentář beze změny, střih těsně před větou.
    Bez `segments` to udělá lokální model sám (pomalejší, méně přesné).
 
+## YouTuber verze dílu (Detail: svisle 9:16 + na šířku 16:9 v After Effects)
+Z hotového obsahového střihu v Premiere. Návod a popis configu: `youtuber/README.md`, vzor configu `youtuber/detail-01.yaml`.
+1. Config dílu `youtuber/detail-NN.yaml` (kopie 01): zdroj, sekvence, osoby + **kotvy hlasu**, rozestavení studia, kapitoly, CTA, fotky, znělka, opravy přepisu.
+2. `yt_export_structure` → `yt_speakers` (zkontroluj rozložení mluvčích) → `yt_plan` (projdi warnings, `data/zabery.txt`; opravy v configu, ne v kódu).
+3. `yt_build_ae` (9x16, pak 16x9) → **`yt_stills` a přehled si prohlédni** (hlavy na středu, jmenovka na správné osobě) → `yt_render` → `yt_collect`.
+- Výběr fotek, textů lišt a oprav přepisu je na tobě + schválení uživatelem; nástroje dělají jen mechaniku.
+- AE je sdílené: nástroje počkají na cizí render a odmítnou zavřít neuložený cizí projekt – neobcházej to.
+
 ## Pravidla
 - Časy jsou v sekundách. Časy přepisu jsou ve zdroji, `transcribe_sequence` vrací časy timeline.
 - Destruktivní nástroje (`remove_timeline_ranges`, `remove_clips`) jen na výslovné přání – a předtím vždy zavolej `backup_project` (tlačítko "↶ Zpět" v panelu není spolehlivé, viz jeho popis).
 - `run_extendscript` jen když na úkol neexistuje nástroj.
-- Když uživatel mluví o "nově vloženém"/"právě naimportovaném" videu bez udání jména/cesty, zjisti ho přes `list_project_items` se `sort: "recent"` (nebo `get_sequence` na aktivní sekvenci, pokud už je na timeline) – NEZKOUŠEJ shell příkazy (Get-ChildItem/ls/dir) na hledání souborů mimo `O:\MYpremiereMCP`, jsou bezpečnostním sandboxem blokované a stejně by to nebyl spolehlivý postup.
+- Když uživatel mluví o "nově vloženém"/"právě naimportovaném" videu bez udání jména/cesty, zjisti ho přes `list_project_items` se `sort: "recent"` (nebo `get_sequence` na aktivní sekvenci, pokud už je na timeline) – NEZKOUŠEJ shell příkazy (Get-ChildItem/ls/dir) na hledání souborů mimo složku projektu, jsou bezpečnostním sandboxem blokované a stejně by to nebyl spolehlivý postup.
 - Když cituješ nebo shrnuješ čísla/tvrzení z přepisu, piš přesně to, co tam je (co model skutečně slyšel/napsal) – neopravuj si potichu čísla podle vlastního dopočtu (např. "1250 €" nepřepisuj na "12,50 €", i kdyby to z kontextu dávalo větší smysl). Pokud přepis vypadá jako chyba ASR, řekni to výslovně vedle citace, ale nenahrazuj hodnotu tiše.
 - Cizojazyčný materiál: `add_captions` s `translate: "cs"` = titulky rovnou přeložené do češtiny (řeč v jakémkoli
   jazyce i mixu, lokálním modelem, po celých větách). U přepisu cizojazyčného nebo vícejazyčného videa dej `transcribe_media` `language: ""`

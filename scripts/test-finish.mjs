@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
-const ROOT = 'O:/MYpremiereMCP';
+const ROOT = 'O:/ADOBEPREMIERESTRIH';
 const GT = JSON.parse(fs.readFileSync(`${ROOT}/test/multicam/gt.json`, 'utf8'));
 const REF = GT.reference;
 const FFPROBE = 'C:/Program Files/Shutter Encoder/Library/ffprobe.exe';

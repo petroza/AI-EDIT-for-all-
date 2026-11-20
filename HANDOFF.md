@@ -1,6 +1,6 @@
 # HANDOFF – MY Premiere MCP (pro navazujícího Claude)
 
-> Uživatel (Petr) píše česky, odpovídej česky, stručně. Pracuj v `O:\MYpremiereMCP`.
+> Uživatel (Petr) píše česky, odpovídej česky, stručně. Pracuj v `O:\ADOBEPREMIERESTRIH`.
 > Začni: přečti tenhle soubor, `README.md` a `CLAUDE.md`, pak `node scripts/smoke.mjs` a `worker_status`.
 > **Claude CLI je teď přihlášené** (`claude auth status` → loggedIn true, firemní účet v organizaci) – panel i `panel-run.mjs` fungují end-to-end, žádný obchvat přes přímou MCP session není potřeba.
 
@@ -94,7 +94,7 @@ Zbývá jen bod 4 (gemma3) a ověřit knihovnu hlasů na **jiné nahrávce stejn
 ## 2. Závazné preference uživatele
 - **Žádná závislost na Ollamě.** Všechny modely a nástroje **ve složce aplikace** (`models/`, `tools/`, `.venv`).
 - Netestovat na WINREC nahrávkách – **testovat na videích z internetu** (volné licence, CC). Před stažením souboru uveď název, zdroj, velikost a nech si to potvrdit.
-- Instalace/testování dělej sám, ale nic destruktivního v uživatelových projektech (jeho projekt `C:\AI porad\test.prproj` neměnit; testuje se v `O:\MYpremiereMCP\test\MCP_test.prproj`).
+- Instalace/testování dělej sám, ale nic destruktivního v uživatelových projektech (jeho projekt `C:\AI porad\test.prproj` neměnit; testuje se v `O:\ADOBEPREMIERESTRIH\test\MCP_test.prproj`).
 - Uživatelovy repo jako inspirace: `petroza/PZ_AI_DAB_ALL` (ASR), `petroza/PZ_VIDEO_TAG` (lokálně `O:\PZ_VIDEO_TAG`).
 
 ## 3. Architektura
@@ -266,7 +266,7 @@ Uživatel si po delším používání všiml: "často se ti stávalo, že jsi u
 
 ## 5l. `list_project_items` – hledání nově vloženého videa bez shellu (2026-09-17)
 
-Uživatel v panelu poslal zadání na "nově vložené video" bez udání jména. Agent (Claude v panelu) zkusil `Get-ChildItem` na `C:\Users\Petr\Downloads` – zablokoval to bezpečnostní sandbox Claude Code (přístup jen v pracovním adresáři `O:\MYpremiereMCP`), správně, tohle nechci obcházet. Náš MCP server ale na disk sahá běžně (Node `fs`, ne omezený Bash) – jen jsme dosud nevraceli datum souboru. Přidán `sort: "recent"` do `list_project_items`: doplní ke každé položce s `mediaPath` datum poslední změny (`fs.statSync`) a seřadí od nejnovějšího. `CLAUDE.md` teď agenta instruuje použít tohle (nebo `get_sequence` na aktivní sekvenci, když už je video na timeline) místo shellových příkazů. **Živě ověřeno** (po návratu bridge k Premiere): `sort: "recent"` správně vrátil klip s polem `modified` (datum ze souboru na disku), sekvence bez `mediaPath` prošla bez pádu.
+Uživatel v panelu poslal zadání na "nově vložené video" bez udání jména. Agent (Claude v panelu) zkusil `Get-ChildItem` na `C:\Users\Petr\Downloads` – zablokoval to bezpečnostní sandbox Claude Code (přístup jen v pracovním adresáři `O:\ADOBEPREMIERESTRIH`), správně, tohle nechci obcházet. Náš MCP server ale na disk sahá běžně (Node `fs`, ne omezený Bash) – jen jsme dosud nevraceli datum souboru. Přidán `sort: "recent"` do `list_project_items`: doplní ke každé položce s `mediaPath` datum poslední změny (`fs.statSync`) a seřadí od nejnovějšího. `CLAUDE.md` teď agenta instruuje použít tohle (nebo `get_sequence` na aktivní sekvenci, když už je video na timeline) místo shellových příkazů. **Živě ověřeno** (po návratu bridge k Premiere): `sort: "recent"` správně vrátil klip s polem `modified` (datum ze souboru na disku), sekvence bez `mediaPath` prošla bez pádu.
 
 ## 5m. Přísná testovací série na přesnost střihu + skutečný bug nalezen a opraven (2026-09-17)
 
@@ -420,7 +420,7 @@ Uživatel: dosavadní záložní postup (samostatné tlačítko "Otevřít instr
 
 Uživatel: "zkoušel jsem to v práci nainstalovat a nefungovalo to". Místo hádání jsem prošel, co se při kopírování projektu jinam rozbije:
 
-**Nalezená příčina: `mcp.json` měl natvrdo `O:/MYpremiereMCP/server/index.js`.** Po zkopírování projektu na jiný disk/cestu ukazoval panel (větev Claude, `--mcp-config mcp.json`) na neexistující soubor, takže se nástroje vůbec nepřipojily. Původní `install.ps1` tohle neřešil a ani nijak nekontroloval. (Stejné natvrdo psané cesty jsou i ve `scripts/*.mjs`, ale ty jsou jen vývojářské, do instalace nevstupují.)
+**Nalezená příčina: `mcp.json` měl natvrdo `O:/ADOBEPREMIERESTRIH/server/index.js`.** Po zkopírování projektu na jiný disk/cestu ukazoval panel (větev Claude, `--mcp-config mcp.json`) na neexistující soubor, takže se nástroje vůbec nepřipojily. Původní `install.ps1` tohle neřešil a ani nijak nekontroloval. (Stejné natvrdo psané cesty jsou i ve `scripts/*.mjs`, ale ty jsou jen vývojářské, do instalace nevstupují.)
 
 **Nový balík `INSTALL/`** (původní `install.ps1` v kořeni zůstal nedotčený):
 - `instalace.bat` – jediný soubor k poklepání; přepínače `-CheckOnly`, `-NoLocalLLM`, `-SkipModels` pro příkazovou řádku.
@@ -457,7 +457,7 @@ Po opravě titulků ([5aa](#5aa)) proběhly testy dalších dosud neprověřený
 ## 6. Otevřené úkoly (priorita)
 1. `install.ps1` otestovat na čistém prostředí (2026-09-16: statická revize proběhla, žádné chybějící pip/npm závislosti ani zjevné bugy nenalezeny – `undici`/`opencv-python-headless` se nainstalují automaticky, model `Qwen3-VL` se stáhne v kroku 6b/7 – ale skutečný běh na čistém PC pořád neproběhl). `make_long_test.py`/`transcribe-winrec.mjs` jsou WINREC-specifické (lze smazat).
 2. Diarizace: na nahrávce z místnosti (AMI) ztratily 2 tišší mluvčí úplně, ale na **studiovém zvuku funguje spolehlivě** i na 3 mluvčích (viz sekce 5d – nejde o obecnou slabinu, jen o room-recording scénář). Zavedená oprava pro room-nahrávky by byla **VBx shlukování** (sekce 5b) – netriviální, neimplementováno, a podle 5d možná ani není potřeba tak naléhavě, jak se zdálo. **Pro multicam vždy preferovat `speakerTracks`**, kdykoli je to možné.
-3. Undo je jen best-effort (5e), ale **teď existuje skutečná pojistka**: nový nástroj `backup_project` (uloží projekt + zkopíruje `.prproj` do `<projekt>/backups/` s časovým razítkem). `CLAUDE.md` instruuje zavolat ho před destruktivními nástroji. Obnova je ruční (otevřít zálohu v Premiere) – programové "restore" by bylo riskantnější než přínos. Ověřeno živě: `O:\MYpremiereMCP\test\backups\MCP_test.2026-09-16T12-00-56-572Z.prproj`, 1,2 MB, $0,05.
+3. Undo je jen best-effort (5e), ale **teď existuje skutečná pojistka**: nový nástroj `backup_project` (uloží projekt + zkopíruje `.prproj` do `<projekt>/backups/` s časovým razítkem). `CLAUDE.md` instruuje zavolat ho před destruktivními nástroji. Obnova je ruční (otevřít zálohu v Premiere) – programové "restore" by bylo riskantnější než přínos. Ověřeno živě: `O:\ADOBEPREMIERESTRIH\test\backups\MCP_test.2026-09-16T12-00-56-572Z.prproj`, 1,2 MB, $0,05.
 4. Zvážit v `build_multicam_sequence`/multicam.js přidat volitelný parametr pro úplné vypnutí prostřihů do jiné detailní kamery při `maxShot` bez `wide` role (teď padá na první jinou kameru) – momentálně se obchází ručním `rules.maxShot` na velké číslo.
 5. CEP→UXP: ověřeno 2026-09-16, žádné oficiální datum konce podpory CEP neexistuje (sekce 5b) – sledovat, ale neřešit akutně.
 6. `overwriteClip`/`setInPoint`+`setOutPoint` (round-trip s verifikací) v `host.jsx` stojí ~0,4–0,5 s/klip – to je skutečné dno rychlosti `buildTimeline` (ne `findClipAt`). Pro opravdu velké multicam sestavy (1000+ klipů, přes 10 min) by šlo zkusit dávkové vkládání přes QE DOM nebo vynechat verify-readback v `setItemRange`, ale nesahal jsem do toho – funguje to, jen to není bleskové. Riziko regrese převažuje nad ziskem bez jasné poptávky uživatele.
@@ -478,7 +478,7 @@ Po opravě titulků ([5aa](#5aa)) proběhly testy dalších dosud neprověřený
 
 ## 8. Užitečné příkazy
 ```powershell
-cd O:\MYpremiereMCP
+cd O:\ADOBEPREMIERESTRIH
 node scripts\smoke.mjs                        # MCP nástroje
 node scripts\test-multicam-unit.mjs           # logika kamer
 node scripts\test-worker.mjs                  # Worker + multicam (syntetika)
