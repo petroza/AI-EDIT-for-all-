@@ -823,6 +823,7 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
 
 
 _ANSWER_WORDS = re.compile(r"^(absolutně|jo|ano|ne|jasně|určitě|přesně|no|dobře|tak)\W*$", re.I)
+_TEASER_SCORES: dict[tuple, float] = {}  # (zdroj, zadání, text úderu) -> skóre; platí po dobu běhu Workeru
 
 
 def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: set | None = None,
@@ -911,11 +912,19 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
     key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731
     gpu.STAT_PHASE = "teaser"
     rated: list[tuple[float, dict]] = []
+    # hodnocení úderů z dřívějšího plánu (opakování kvůli slyšitelné hranici) se nepočítá znovu – ušetří ~20 s
+    todo = []
+    for c in cands:
+        sc = _TEASER_SCORES.get((path, instruction, text(c)))
+        if sc is None:
+            todo.append(c)
+        else:
+            rated.append((sc, c))
     B = 15
-    for b0 in range(0, len(cands), B):
+    for b0 in range(0, len(todo), B):
         ctx.check()
-        part = cands[b0: b0 + B]
-        ctx.progress(0.3 + 0.45 * b0 / len(cands), f"LLM hodnotí údery {b0 + 1}–{b0 + len(part)} z {len(cands)}")
+        part = todo[b0: b0 + B]
+        ctx.progress(0.3 + 0.45 * b0 / max(1, len(todo)), f"LLM hodnotí údery {b0 + 1}–{b0 + len(part)} z {len(todo)}")
         lines = "\n".join(f"U{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(part))
         r = _chat_json(
             f"Jsi střihač zpravodajských upoutávek. Zadání: {instruction}\n\nKrátké výroky z rozhovoru:\n{lines}\n\n"
@@ -933,7 +942,9 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
             backend=backend)
         for n, k3 in enumerate((r.get("k") or [])[: len(part)]):
             if isinstance(k3, list) and len(k3) == 3 and all(isinstance(x, int) for x in k3):
-                rated.append((3 * k3[0] + 2 * k3[1] + 1.5 * k3[2], part[n]))
+                sc = 3 * k3[0] + 2 * k3[1] + 1.5 * k3[2]
+                _TEASER_SCORES[(path, instruction, text(part[n]))] = sc
+                rated.append((sc, part[n]))
     if len(rated) < 2:
         return None
     rated.sort(key=lambda x: -x[0])
