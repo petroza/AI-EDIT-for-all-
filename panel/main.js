@@ -204,8 +204,31 @@
           names: fresh.map(function (s) { return s.name; }) });
         $('undo').disabled = false;
         if (meta) offerFeedback(meta, fresh);
+        if (meta && meta.format && meta.format !== '16:9') reframeFresh(meta.format, fresh, undoStack[undoStack.length - 1]);
       });
     };
+  }
+
+  /* ---------------- formát pro sociální sítě (Auto Reframe) ---------------- */
+  var FORMATS = { '9:16': [9, 16, 1080, 1920], '1:1': [1, 1, 1080, 1080], '4:5': [4, 5, 1080, 1350] };
+  try { var savedFormat = localStorage.getItem('format'); if (savedFormat) $('format').value = savedFormat; } catch (e) { /* bez paměti */ }
+  $('format').addEventListener('change', function () {
+    try { localStorage.setItem('format', $('format').value); } catch (e) { /* bez paměti */ }
+  });
+  /** z nově vzniklých sekvencí udělá verze ve zvoleném formátu; přidá je k položce Zpět stejného zadání */
+  function reframeFresh(format, fresh, undoEntry) {
+    var f = FORMATS[format];
+    if (!f) return;
+    fresh.reduce(function (p, s) {
+      return p.then(function () {
+        out('⚙ ' + format + ': Auto Reframe podle obličeje – „' + s.name + '“', 'dim');
+        return hostCall('reframeSequence', { sequence: s.sequenceID, num: f[0], den: f[1], width: f[2], height: f[3],
+          motion: 'slower', name: s.name + ' ' + format.replace(':', 'x') }, 600000).then(function (r) {
+          out('✔ ' + r.name + ' (' + r.width + '×' + r.height + ')', 'ai');
+          if (undoEntry) { undoEntry.ids.push(r.sequenceID); undoEntry.names.push(r.name); }
+        });
+      }).catch(function (e) { out('✖ ' + format + ' se nepovedl: ' + e.message, 'err'); });
+    }, Promise.resolve());
   }
 
   /* ---------------- hodnocení výsledku (data na ladění lokálního modelu) ---------------- */
@@ -969,7 +992,7 @@
   /** zadání z formuláře (text, agent, model, délka) – pro hned spuštění i pro frontu */
   function formTask() {
     return { prompt: $('prompt').value.trim(), agent: $('agent').value, model: $('model').value,
-      targetSec: targetSec, resume: $('pokracovat').checked };
+      targetSec: targetSec, resume: $('pokracovat').checked, format: $('format').value };
   }
 
   /** Spustí zadání. Vrací 'spawned' (běží, na konci zavolá task.onDone), 'sent' (předáno aplikaci Claude) nebo false. */
@@ -1057,7 +1080,7 @@
 
     if (agent === 'hermes' && task.targetSec) out('⚙ cílová délka ' + task.targetSec + ' s', 'dim');
     var finishTrack = trackRun(prompt.split('\n')[0].slice(0, 60),
-      { agent: agent, model: task.model, targetSec: task.targetSec, prompt: task.prompt });
+      { agent: agent, model: task.model, targetSec: task.targetSec, prompt: task.prompt, format: task.format });
     var useShell = /\.(cmd|bat)$/i.test(exe);
     var env = process.env;
     if (agent === 'hermes') {
@@ -1121,7 +1144,7 @@
       row.className = 'qi ' + j.status;
       var icon = { wait: '⏳', running: '▶', done: '✔', error: '✖' }[j.status];
       var tag = AGENT_LABEL[j.agent] + (j.model ? ' ' + j.model : '') + (j.targetSec ? ' · ' + j.targetSec + ' s' : '') +
-        (j.seqName ? ' · ' + j.seqName.slice(0, 18) : '');
+        (j.format && j.format !== '16:9' ? ' · ' + j.format : '') + (j.seqName ? ' · ' + j.seqName.slice(0, 18) : '');
       row.innerHTML = '<span class="st"></span><span class="tag"></span><span class="tx"></span>';
       row.children[0].textContent = icon;
       row.children[1].textContent = '[' + tag + ']';

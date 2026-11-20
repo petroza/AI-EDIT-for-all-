@@ -1689,6 +1689,29 @@ tool('save_project', 'Uloží projekt.', {}, () => premiere('saveProject'));
 
 tool('undo', 'Vrátí poslední akci v Premiere zpět (jako Ctrl+Z).', {}, () => premiere('undo'));
 
+// formát -> poměr stran a cílové rozlišení (sociální sítě)
+const REFRAME_FORMATS = {
+  '9:16': [9, 16, 1080, 1920], '1:1': [1, 1, 1080, 1080], '4:5': [4, 5, 1080, 1350], '16:9': [16, 9, 1920, 1080],
+};
+tool(
+  'reframe_sequence',
+  'FORMÁT PRO SOCIÁLNÍ SÍTĚ: z hotové sekvence udělá NOVOU sekvenci na výšku (9:16), čtverec (1:1) nebo 4:5 – ' +
+    'Premiere Auto Reframe sleduje obličej mluvčího a ořez se posouvá s ním; výsledek v plném rozlišení ' +
+    '(9:16 = 1080×1920). Původní sekvence zůstává. Volej až po hotovém střihu (a před titulky).',
+  {
+    sequence: z.string().optional().describe('Název nebo ID sekvence; bez zadání aktivní'),
+    format: z.enum(['9:16', '1:1', '4:5', '16:9']).optional().describe('Výchozí 9:16'),
+    motion: z.enum(['slower', 'default', 'faster']).optional()
+      .describe('Jak rychle ořez sleduje pohyb: slower = klidný (rozhovor), faster = akce. Výchozí default'),
+    name: z.string().optional(),
+  },
+  async (a) => {
+    const [num, den, width, height] = REFRAME_FORMATS[a.format || '9:16'];
+    const r = await premiere('reframeSequence', { sequence: a.sequence, num, den, width, height, motion: a.motion, name: a.name }, 600000);
+    return { ...r, summary: `Vytvořena sekvence „${r.name}“ ${r.width}×${r.height} (Auto Reframe podle obličeje, měřítko ${r.scale} %).` };
+  },
+);
+
 tool(
   'backup_project',
   'Uloží projekt a udělá časovou zálohu .prproj souboru (do podsložky backups vedle projektu). ' +

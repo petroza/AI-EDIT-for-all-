@@ -483,6 +483,13 @@ var PMCP = {};
     // Premiere 26 export odmita cesty s '/', vraci jen "Unknown Error" - vzdy zpetna lomitka
     var output = String(a.output).replace(/\//g, '\\');
     var preset = String(a.preset).replace(/\//g, '\\');
+    if (!new File(preset).exists && /systempresets/i.test(preset)) {
+      // výchozí preset z configu míří do konkrétní verze (Premiere Pro 2026) – po aktualizaci na 2027 export padal.
+      // Stejný soubor v právě běžící Premiere: app.path = složka instalace.
+      var rel = preset.replace(/^.*?(\\MediaIO\\systempresets\\.*)$/i, '$1');
+      var here = String(new Folder(app.path).fsName).replace(/\\$/, '') + rel;
+      if (new File(here).exists) preset = here;
+    }
     if (!new File(preset).exists) throw new Error('Export preset not found: ' + preset);
     var outFolder = new File(output).parent;
     if (outFolder && !outFolder.exists) outFolder.create();
@@ -499,6 +506,43 @@ var PMCP = {};
   };
 
   api.saveProject = function () { needProject(); app.project.save(); return { saved: app.project.path }; };
+
+  // Formát pro sociální sítě: Premiere Auto Reframe (sleduje obličej/hlavní objekt, efekt „Auto Reframe“ s klíčovými
+  // snímky pozice) -> nová sekvence s poměrem num:den. Auto Reframe drží výšku zdroje (720p -> 405×720), proto se
+  // sekvence přepne na plné rozlišení (např. 1080×1920) a měřítko klipů (Motion, aplikuje se po Auto Reframe) zvětší
+  // ve stejném poměru. Původní sekvence zůstává.
+  api.reframeSequence = function (a) {
+    var src = getSeq(a.sequence);
+    var num = a.num || 9, den = a.den || 16;
+    var name = a.name || (src.name + ' ' + num + 'x' + den);
+    var res = src.autoReframeSequence(num, den, a.motion || 'default', name, false);
+    if (!res) throw new Error('Auto Reframe nevytvořil sekvenci (starší Premiere nebo sekvence bez videa?)');
+    var st = res.getSettings();
+    var oldW = st.videoFrameWidth, oldH = st.videoFrameHeight, factor = 1;
+    if (a.width && a.height && (a.width !== oldW || a.height !== oldH)) {
+      factor = a.height / oldH;
+      st.videoFrameWidth = a.width;
+      st.videoFrameHeight = a.height;
+      res.setSettings(st);
+      for (var t = 0; t < res.videoTracks.numTracks; t++) {
+        var clips = res.videoTracks[t].clips;
+        for (var c = 0; c < clips.numItems; c++) {
+          var comps = clips[c].components;
+          for (var k = 0; k < comps.numItems; k++) {
+            if (comps[k].matchName !== 'AE.ADBE Motion') continue;
+            for (var p = 0; p < comps[k].properties.numItems; p++) {
+              var pr = comps[k].properties[p];
+              if (pr.displayName === 'Scale' || pr.displayName === 'Měřítko') pr.setValue(pr.getValue() * factor, true);
+            }
+          }
+        }
+      }
+    }
+    activate(res);
+    var fin = res.getSettings();
+    return { sequenceID: res.sequenceID, name: res.name, width: fin.videoFrameWidth, height: fin.videoFrameHeight,
+             reframedFrom: oldW + 'x' + oldH, scale: r3(factor * 100) };
+  };
 
   // Zpět v panelu: smaže sekvence, které vytvořilo poslední zadání (spolehlivé, na rozdíl od QE undo po krocích).
   // Jen podle sequenceID, které si panel zapamatoval před a po běhu – na nic jiného nesahá.

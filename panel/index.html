@@ -145,6 +145,14 @@
     <button class="chip" data-sec="10">10 s</button>
     <button class="chip" data-sec="20">20 s</button>
     <button class="chip" data-sec="30">30 s</button>
+    <label class="row" style="margin-left:8px;color:var(--dim)" title="Formát výsledku. Jiný než 16:9 = po střihu se z nové sekvence automaticky udělá verze pro sociální sítě (Premiere Auto Reframe sleduje obličej, plné rozlišení, např. 1080×1920). Původní 16:9 zůstává.">Formát:
+      <select id="format">
+        <option value="16:9">16:9</option>
+        <option value="9:16">9:16 na výšku</option>
+        <option value="1:1">1:1</option>
+        <option value="4:5">4:5</option>
+      </select>
+    </label>
     <span style="margin-left:auto;color:var(--dim);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%">
       Zdroj: <b id="srcName" style="color:var(--text);font-weight:600">…</b></span>
   </div>

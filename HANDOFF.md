@@ -27,6 +27,10 @@
   Otevřené: po dotažení se rozjede vyvážení témat (2 min: herectví 57 s, televize 0 s).
 - Stavby vrací `edges` (⚠ zvuk na hranici) – `build_sequence_from_transcript`, `build_from_plan` (nově i s dolaďováním
   hranic), `plan_edit_local`. Panel: 👍/👎 → `cacheeedback.jsonl`, „Zdroj:“ nad zadáním.
+- **Upoutávky** (`analysis._plan_teaser`) a **formát pro sítě** (`reframe_sequence`, host `reframeSequence` = Premiere
+  `autoReframeSequence` + přepnutí na 1080×1920 a Motion Scale × poměr). Panel: volba Formát. Export: výchozí preset se
+  hledá v běžící Premiere (config měl natvrdo 2026, Petr má 2027). Náhled: `export_sequence` + ffmpeg (QE exportFramePNG
+  vrací false).
 - **Panel:** délka 10/20/30 s, fronta zadání, Zpět = smazat sekvence posledního zadání, vytížení GPU/VRAM/RAM/CPU,
   pruh průběhu Workeru, přihlášení Claude Code tlačítkem. Schované „nástroje“. Tečky ve štítcích jen září (nezvětšují se).
 - Otevřené: podepsaný panel `.zxp` pro instalaci v Nově (v práci se nepodepsaný panel neukázal – IT/certifikáty);

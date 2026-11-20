@@ -57,6 +57,9 @@ Zadání jde i nadiktovat – tlačítko 🎤 v panelu nahraje řeč a lokálně
 
 ### Panel
 - **Délka 10 / 20 / 30 s** – rychlá volba cílové délky (přidá se k zadání, u Hermese má přednost před délkou v textu).
+- **Formát 16:9 / 9:16 / 1:1 / 4:5** – jiný než 16:9: po střihu se z nové sekvence sama udělá verze pro sociální sítě
+  (nástroj `reframe_sequence`: Premiere Auto Reframe sleduje obličej, výsledek v plném rozlišení 1080×1920 / 1080×1080 /
+  1080×1350). Původní 16:9 zůstává, Zpět smaže obě.
 - **Fronta** – „+ Do fronty“ (Ctrl+Enter) nebo Spustit, když už něco běží. Úlohy běží po jedné; každá si při přidání
   zapamatuje agenta, model, délku a aktivní sekvenci, takže lze nachystat víc střihů z různých videí. Stop frontu pozastaví.
 - **↶ Zpět** – smaže sekvence, které vytvořilo poslední zadání (opakovaným klikem i předchozí). Když zadání žádnou
@@ -77,7 +80,13 @@ a o vítězi rozhodne finále s krátkou úvahou. Pauzy uvnitř pasáže zůstan
 souhlásky, samotné časy přepisu přeslechnou mluvení přes sebe. Delší střihy (skládání vět) po výběru dotáhnou kraje
 každého úseku k nejbližší pauze (o větu dál i přes jiného mluvčího – otázka před odpovědí –, jinak o větu zpět;
 narazí-li na další vybraný úsek, spojí je) a pak dorovnají délku. Talk 2 min: slyšitelné hranice 4/22 → 0.
-Neplatí pro upoutávky, přehledy a shrnutí (ty skládají věty jako dřív).
+Neplatí pro upoutávky, přehledy a shrnutí.
+
+### Upoutávka ve stylu zpravodajství (do 40 s) lokálně
+Zadání se slovem upoutávka / teaser / promo / pozvánka: kandidáti jsou krátké samostatné výroky (1,2–8 s, i jednotlivé
+věty uvnitř segmentu přepisu přes `fromWord`/`toWord`) s pauzou na obou koncích. Hermes je ohodnotí (hák, samostatnost,
+údernost), zkontroluje s okolními větami, jestli by vytržené nezkreslily význam (citace cizích slov, ironie, fráze, kterou
+mluvčí odmítá), a složí 2–4 údery: hák → … → napětí na konec, bez prozrazení rozuzlení, délka ±15 %. Plán 12–25 s.
 
 ### Dlouhý materiál a kredity
 1. `transcribe_media` + `diarize_media` / `speakerTracks` + `rename_speakers` – vše lokálně.
