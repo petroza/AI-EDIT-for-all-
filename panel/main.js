@@ -234,6 +234,19 @@
     var vertical = $('format').value === '9:16' || $('format').value === '4:5';
     $('ccChars').value = vertical ? '25' : ($('format').value === '1:1' ? '30' : '40');
   });
+  // „📱 Převést aktivní“ – formát pro sítě hned z aktivní sekvence, bez nového střihu (16:9 -> nabídne 9:16)
+  $('reframeNow').addEventListener('click', function () {
+    var format = FORMATS[$('format').value] ? $('format').value : '9:16';
+    if (format !== $('format').value) { $('format').value = format; $('format').dispatchEvent(new Event('change')); }
+    hostCall('projectInfo').then(function (p) {
+      var a = p.activeSequence;
+      if (!a) throw new Error('žádná aktivní sekvence – otevři sekvenci v Premiere');
+      var entry = { label: format + ' z „' + a.name + '“', ids: [], names: [] };
+      undoStack.push(entry);
+      $('undo').disabled = false;
+      reframeFresh(format, [a], entry);
+    }).catch(function (e) { out('✖ ' + e.message, 'err'); });
+  });
   /** z nově vzniklých sekvencí udělá verze ve zvoleném formátu; přidá je k položce Zpět stejného zadání */
   function reframeFresh(format, fresh, undoEntry) {
     var f = FORMATS[format];

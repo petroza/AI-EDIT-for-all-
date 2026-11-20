@@ -147,12 +147,13 @@
     <button class="chip" data-sec="30">30 s</button>
     <label class="row" style="margin-left:8px;color:var(--dim)" title="Formát výsledku. Jiný než 16:9 = po střihu se z nové sekvence automaticky udělá verze pro sociální sítě (Premiere Auto Reframe sleduje obličej, plné rozlišení, např. 1080×1920). Původní 16:9 zůstává.">Formát:
       <select id="format">
-        <option value="16:9">16:9</option>
-        <option value="9:16">9:16 na výšku</option>
-        <option value="1:1">1:1</option>
-        <option value="4:5">4:5</option>
+        <option value="16:9">16:9 TV / YouTube</option>
+        <option value="9:16">9:16 Reels · TikTok · Shorts</option>
+        <option value="4:5">4:5 Instagram / FB příspěvek</option>
+        <option value="1:1">1:1 čtverec</option>
       </select>
     </label>
+    <button class="chip" id="reframeNow" title="Převede hned aktivní sekvenci (Zdroj vpravo) do formátu pro sítě – Auto Reframe podle obličeje, plné rozlišení. Vznikne nová sekvence, původní zůstává.">📱 Převést aktivní</button>
     <span style="margin-left:auto;color:var(--dim);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%">
       Zdroj: <b id="srcName" style="color:var(--text);font-weight:600">…</b></span>
   </div>
