@@ -716,16 +716,25 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
 
 def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapters: list[dict], chosen: list[int],
                   scores: dict[int, int], exclude: set, backend: str, ctx,
-                  pause_map: dict[int, bool] | None = None, avoid: set | None = None) -> dict | None:
+                  pause_map: dict[int, bool] | None = None, avoid: set | None = None,
+                  path: str | None = None) -> dict | None:
     cands = [c for c in _passage_candidates(target, segs, chapters, chosen, exclude, pause_map)
              if not (avoid and set(c["ids"]) & avoid)]
+    if path and target <= 15:
+        # Výrok do 15 s: celé „věty“ přepisu bývají dlouhé (Whisper slepí 2–3 věty), na 10 s pak nic nesedí
+        # (Talk B 10 s: jediná slabá věta 7 s). Navíc jemné jednotky = věty uvnitř segmentu (fromWord/toWord).
+        for c in _teaser_candidates(path, segs, exclude, avoid, lo=0.6 * target, hi1=1.25 * target,
+                                    hi2=1.25 * target, max_units=6):
+            c["ids"] = sorted({u["id"] for u in c["units"]})
+            cands.append(c)
     if not cands:
         return None
     if len(cands) > 60:  # dlouhý materiál: přednost jádrovým kapitolám
         ch_of = {i: k for k, c in enumerate(chapters, 1) for i in range(c["from"], c["to"] + 1)}
         cands = sorted(cands, key=lambda c: -scores.get(ch_of.get(c["ids"][0]), 0))[:60]
         cands.sort(key=lambda c: c["ids"][0])
-    text = lambda c: " ".join(segs[i]["text"].strip() for i in c["ids"])  # noqa: E731
+    text = lambda c: (" ".join(u["text"] for u in c["units"]) if c.get("units")  # noqa: E731
+                      else " ".join(segs[i]["text"].strip() for i in c["ids"]))
     gpu.STAT_PHASE = "passage"
     rated: list[tuple[int, dict]] = []
     B = 10
@@ -760,7 +769,7 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
     def dependent(c: dict) -> bool:
         """Začátek navazuje na něco, co v klipu není („A najednou byl pryč.“, „Takže to bylo v tom životopise…“,
         „Absolutně.“). „Ale už jsem měla takový pocit…“ obstojí i samo – „ale“ a „pak“ se nepočítají."""
-        first = segs[c["ids"][0]]["text"].strip().lower()
+        first = (c["units"][0]["text"] if c.get("units") else segs[c["ids"][0]]["text"]).strip().lower()
         return bool(re.match(r"(a|takže|tak|proto|protože|no|jo|taky|to|tohle|tím|že)\b", first)) or len(first.split()) <= 2
 
     def adjusted(sc: float, c: dict) -> float:
@@ -801,7 +810,8 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
             reason = r.get("uvaha")
     alts = [i for c in top if c is not pick for i in c["ids"]]
     return {
-        "note": None, "picks": pick["ids"], "estimatedSec": pick["dur"], "alternates": alts, "dropped": [],
+        "note": None, "picks": _teaser_picks(pick) if pick.get("units") else pick["ids"], "estimatedSec": pick["dur"],
+        "alternates": alts, "dropped": [],
         "mode": "passage", "passages": len(cands),
         # žebříček pro ladění: [skóre po srážkách, první–poslední věta, délka]
         "ranked": [[round(sc, 1), f"{c['ids'][0]}–{c['ids'][-1]}", c["dur"]] for sc, c in rated[:8]],
@@ -815,7 +825,8 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
 _ANSWER_WORDS = re.compile(r"^(absolutně|jo|ano|ne|jasně|určitě|přesně|no|dobře|tak)\W*$", re.I)
 
 
-def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: set | None = None) -> list[dict]:
+def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: set | None = None,
+                       lo: float = 1.2, hi1: float = 8.0, hi2: float = 9.0, max_units: int = 2) -> list[dict]:
     """Krátké samostatné výroky pro upoutávku. Jednotka = věta podle interpunkce slov, i uvnitř segmentu přepisu
     (Whisper slepí „Za tři týdny. Takže to přišlo…“ do jednoho – úder „Za tři týdny.“ by jinak neexistoval).
     Kandidát = 1–2 navazující věty jednoho mluvčího, 1,2–8 s, začátek i konec ve skutečné pauze (mezera ≥ 0,12 s
@@ -863,12 +874,14 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
     for n in range(len(units)):
         if not ok_start(n) or (avoid and units[n]["id"] in avoid):
             continue
-        for k in (0, 1):
+        for k in range(max_units):
             m = n + k
             if m >= len(units) or units[m]["spk"] != units[n]["spk"] or (avoid and units[m]["id"] in avoid):
                 break
             d = units[m]["e"] - units[n]["s"]
-            if 1.2 <= d <= (8.0 if k == 0 else 9.0) and ok_end(m):
+            if d > hi2:
+                break
+            if lo <= d <= (hi1 if k == 0 else hi2) and ok_end(m):
                 out.append({"units": units[n: m + 1], "dur": round(d, 1),
                             # okolí pro kontrolu vytržení z kontextu
                             "before": " ".join(u["text"] for u in units[max(0, n - 2): n]),
@@ -1080,7 +1093,8 @@ def plan_edit(params: dict, ctx) -> dict:
             # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
             and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",
                               instruction, re.I)):
-        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map, avoid)
+        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map, avoid,
+                            path)
         if res:
             res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
                         "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
