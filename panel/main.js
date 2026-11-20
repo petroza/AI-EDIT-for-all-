@@ -230,6 +230,9 @@
   try { var savedFormat = localStorage.getItem('format'); if (savedFormat) $('format').value = savedFormat; } catch (e) { /* bez paměti */ }
   $('format').addEventListener('change', function () {
     try { localStorage.setItem('format', $('format').value); } catch (e) { /* bez paměti */ }
+    // na výšku se 40 znaků na řádek nevejde (1080 px šířky) – titulky rovnou na 25, na šířku zpět 40
+    var vertical = $('format').value === '9:16' || $('format').value === '4:5';
+    $('ccChars').value = vertical ? '25' : ($('format').value === '1:1' ? '30' : '40');
   });
   /** z nově vzniklých sekvencí udělá verze ve zvoleném formátu; přidá je k položce Zpět stejného zadání */
   function reframeFresh(format, fresh, undoEntry) {
