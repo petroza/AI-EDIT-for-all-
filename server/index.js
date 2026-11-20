@@ -416,14 +416,19 @@ async function edgeWarnings(source, tr, ranges, extra) {
   }
   const words = allWords(tr);
   const warn = [];
-  for (const e of res.edges || []) {
+  const bad = []; // ID vět u slyšitelných hranic – pro opakovaný plán (uzavřená smyčka v plan_edit_local)
+  (res.edges || []).forEach((e, k) => {
     const w = words.find((x) => x.s < e.t - 0.01 && x.e > e.t + 0.01);
     if (e.rel > -12 || (w && e.rel > -20)) {
       warn.push(`⚠ ${tc(e.t)} ${e.kind === 'in' ? 'začátek' : 'konec'}: zvuk na hranici ${e.rel} dB proti řeči` +
         (w ? ` – možná useknuté slovo „${w.w}“` : '') + ' (zkus sousední větu nebo fromWord/toWord)');
+      const r = ranges[Math.floor(k / 2)];
+      if (r?.ids?.length) bad.push(e.kind === 'in' ? r.ids[0] : r.ids[r.ids.length - 1]);
     }
-  }
-  return warn.length ? warn : undefined;
+  });
+  if (!warn.length) return undefined;
+  Object.defineProperty(warn, 'badIds', { value: bad, enumerable: false });
+  return warn;
 }
 
 // Původní přepis bez Workeru (přímé spuštění transcribe.py) – záloha
@@ -2187,23 +2192,40 @@ tool(
       .optional(),
   },
   async (a, extra) => {
-    const plan = await runJob('plan_edit', { path: a.path, instruction: a.instruction, targetSec: a.targetSec, backend: a.backend }, extra);
+    const avoid = [];
+    let plan = await runJob('plan_edit', { path: a.path, instruction: a.instruction, targetSec: a.targetSec, backend: a.backend }, extra);
     if (a.format === 'review' && !a.build) return reviewText(plan, loadTranscript(a.path), a.targetSec);
     if (!a.build || !plan.picks.length) return plan;
     const tr = loadTranscript(a.path);
-    // souvislá pasáž (krátký výrok): pauzy uvnitř nechat – vystřižená dramatická pauza („…takový šok, že — nebyla
-    // možnost…“) rozbila rytmus a vznikl zbytečný střih uprostřed věty
-    const mergeGap = plan.mode === 'passage' ? 5 : 0.4;
-    const ranges = picksToRanges(tr, plan.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap });
-    // stejné doladění konců podle zvuku jako build_sequence_from_transcript (dřív tu chybělo)
-    await refineOutPoints(a.path, ranges, extra);
-    const sceneCuts = a.build.sceneCuts ? await snapToSceneCuts(a.build.source || a.path, tr, ranges) : undefined;
-    const built = await buildAndReport(a.build.name, withExtras(ranges, a.build.source || a.path, a.build.extraAudio), 0, {
-      continuity: continuityWarnings(tr, plan.picks),
-      sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
-      edges: await edgeWarnings(a.path, tr, ranges, extra),
-    });
-    return { plan, built };
+    // Uzavřená smyčka (pasáž, upoutávka): když kontrola po stavbě najde slyšitelnou hranici, věty u ní se vyřadí
+    // a plán se složí znovu (max. 2×) – kandidáti se vybírají podle pauz ve zvuku, ale časy slov z Whisperu bývají
+    // o stovky ms vedle a střih pak občas padne jinam než do nalezeného ticha.
+    for (let attempt = 0; ; attempt++) {
+      // souvislá pasáž (krátký výrok): pauzy uvnitř nechat – vystřižená dramatická pauza („…takový šok, že — nebyla
+      // možnost…“) rozbila rytmus a vznikl zbytečný střih uprostřed věty
+      const mergeGap = plan.mode === 'passage' ? 5 : 0.4;
+      const ranges = picksToRanges(tr, plan.picks, { padBefore: 0.08, padAfter: 0.15, mergeGap });
+      // stejné doladění konců podle zvuku jako build_sequence_from_transcript (dřív tu chybělo)
+      await refineOutPoints(a.path, ranges, extra);
+      const edges = await edgeWarnings(a.path, tr, ranges, extra);
+      const retry = edges?.badIds?.length && ['passage', 'teaser'].includes(plan.mode) && attempt < 2;
+      if (retry) {
+        avoid.push(...edges.badIds);
+        const again = await runJob('plan_edit', { path: a.path, instruction: a.instruction, targetSec: a.targetSec,
+          backend: a.backend, avoid }, extra);
+        if (again.picks?.length) {
+          plan = { ...again, retriedForEdges: avoid.slice() };
+          continue;
+        }
+      }
+      const sceneCuts = a.build.sceneCuts ? await snapToSceneCuts(a.build.source || a.path, tr, ranges) : undefined;
+      const built = await buildAndReport(a.build.name, withExtras(ranges, a.build.source || a.path, a.build.extraAudio), 0, {
+        continuity: continuityWarnings(tr, plan.picks),
+        sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
+        edges,
+      });
+      return { plan, built };
+    }
   },
 );
 

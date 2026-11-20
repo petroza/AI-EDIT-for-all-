@@ -97,10 +97,13 @@ def sync(params: dict, ctx) -> dict:
 _PAUSE_CACHE: dict = {}
 
 
-def boundary_pauses(path: str, pairs: list[tuple[float, float]]) -> list[bool] | None:
-    """Je mezi koncem jedné věty a začátkem další skutečné ticho (≥ 40 ms pod prahem šumu z okolí ±1,5 s)?
-    Mezera v časech Whisperu ticho nezaručuje – lidé mluví přes sebe, konce slov jsou v přepisu pozdě
-    (Talk: „zlomilo?“ → „Jo“ 0,14 s mezera, ve zvuku souvislá řeč). None = zvuk nejde přečíst."""
+def boundary_pauses(path: str, pairs: list[tuple[float, float]], before: float = 0.15, after: float = 0.30,
+                    min_ms: float = 90) -> list[bool] | None:
+    """Je mezi koncem jedné věty a začátkem další skutečné ticho (≥ 90 ms pod prahem šumu z okolí ±1,5 s)?
+    Rozhoduje zvuk, ne časy Whisperu: mezera v přepisu ticho nezaručuje (lidé mluví přes sebe – „zlomilo?“ → „Jo“
+    0,14 s, ve zvuku souvislá řeč) a naopak ho přeslechne, když jsou časy slov posunuté (Talk: „pryč.“ → „A já“ podle
+    přepisu 0,02 s, ve zvuku 300 ms ticha). Okno proto sahá 0,15 s před konec a 0,30 s za začátek dalšího slova.
+    90 ms: závěr souhlásky uvnitř řeči („nic.|Jsem“) dává 40–65 ms, skutečný nádech víc. None = zvuk nejde přečíst."""
     import numpy as np
 
     try:
@@ -123,13 +126,13 @@ def boundary_pauses(path: str, pairs: list[tuple[float, float]]) -> list[bool] |
             continue
         floor_db, peak_db = np.percentile(db[c0:c1], 10), np.percentile(db[c0:c1], 95)
         thr = floor_db + 0.25 * max(0.0, peak_db - floor_db)
-        s0, s1 = max(0, int((min(a, b) - 0.08) / fs)), min(len(env), int((max(a, b) + 0.08) / fs) + 1)
+        s0, s1 = max(0, int((min(a, b) - before) / fs)), min(len(env), int((max(a, b) + after) / fs) + 1)
         quiet = db[s0:s1] < thr
         run = best = 0
         for q in quiet:
             run = run + 1 if q else 0
             best = max(best, run)
-        out.append(best >= 8)
+        out.append(best * fs * 1000 >= min_ms)
     return out
 
 

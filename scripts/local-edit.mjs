@@ -160,6 +160,7 @@ try {
   for (const n of built?.sceneCuts || []) say(`🎞 ${n}`);
   for (const n of built?.continuity || []) say(`⚠ ${n}`);
   for (const n of built?.edges || []) say(n);
+  if (plan.retriedForEdges?.length) say(`ℹ plán složen znovu bez vět se slyšitelnou hranicí: #${plan.retriedForEdges.join(', #')}`);
   if (plan.mode === 'passage') {
     say(`ℹ souvislá pasáž (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
   } else if (plan.mode === 'teaser') {

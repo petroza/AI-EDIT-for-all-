@@ -497,11 +497,13 @@ def _pause_map(path: str, segs: dict[int, dict]) -> dict[int, bool]:
         return w[-1]["e"] if w else segs[i]["end"]
 
     pairs = [(le(ids[n]), fs(ids[n + 1])) for n in range(len(ids) - 1)]
-    audio = audiosync.boundary_pauses(path, pairs)
+    # úzké okno a 40 ms – střih tu pak padne na hranici podle časů slov a dolaďování ji najde v tomtéž tichu
+    audio = audiosync.boundary_pauses(path, pairs, before=0.08, after=0.08, min_ms=40)
     out = {ids[-1]: True} if ids else {}
     for n in range(len(ids) - 1):
         # obojí: mezera v přepisu ≥ 0,12 s A ticho ve zvuku – samotný zvuk mate závěr souhlásky („nic.|Jsem“ 0,08 s),
         # samotná mezera přeslechne mluvení přes sebe („zlomilo?|Jo“ 0,14 s); ověřeno na 12 přechodech Talku
+        # (čistě zvukové široké okno dalo v regresi 3/6 čistých hranic – ticho našlo jinde, než pak padl střih)
         gap_ok = pairs[n][1] - pairs[n][0] >= 0.12
         out[ids[n]] = gap_ok and (audio[n] if audio is not None else True)
     return out
@@ -714,8 +716,9 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
 
 def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapters: list[dict], chosen: list[int],
                   scores: dict[int, int], exclude: set, backend: str, ctx,
-                  pause_map: dict[int, bool] | None = None) -> dict | None:
-    cands = _passage_candidates(target, segs, chapters, chosen, exclude, pause_map)
+                  pause_map: dict[int, bool] | None = None, avoid: set | None = None) -> dict | None:
+    cands = [c for c in _passage_candidates(target, segs, chapters, chosen, exclude, pause_map)
+             if not (avoid and set(c["ids"]) & avoid)]
     if not cands:
         return None
     if len(cands) > 60:  # dlouhý materiál: přednost jádrovým kapitolám
@@ -812,7 +815,7 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
 _ANSWER_WORDS = re.compile(r"^(absolutně|jo|ano|ne|jasně|určitě|přesně|no|dobře|tak)\W*$", re.I)
 
 
-def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set) -> list[dict]:
+def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: set | None = None) -> list[dict]:
     """Krátké samostatné výroky pro upoutávku. Jednotka = věta podle interpunkce slov, i uvnitř segmentu přepisu
     (Whisper slepí „Za tři týdny. Takže to přišlo…“ do jednoho – úder „Za tři týdny.“ by jinak neexistoval).
     Kandidát = 1–2 navazující věty jednoho mluvčího, 1,2–8 s, začátek i konec ve skutečné pauze (mezera ≥ 0,12 s
@@ -834,7 +837,7 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set) -> list[d
         return []
     pairs = [(units[n]["e"], units[n + 1]["s"]) for n in range(len(units) - 1)]
     audio = audiosync.boundary_pauses(path, pairs)
-    pause_after = [((pairs[n][1] - pairs[n][0] >= 0.12) and (audio[n] if audio is not None else True))
+    pause_after = [(audio[n] if audio is not None else pairs[n][1] - pairs[n][0] >= 0.12)
                    for n in range(len(pairs))] + [True]
 
     def ok_start(n):
@@ -844,7 +847,9 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set) -> list[d
             return False
         if n and not pause_after[n - 1]:
             return False
-        return not re.match(r"(takže|tak|proto|protože|no|jo|taky|to|tohle|tím|že)\b", t.lower())
+        # „To byl prostě můj nejbližší člověk.“ je v upoutávce úder (zvědavost) – „to/tohle“ se nevyřazuje, zkreslení
+        # hlídá kontrola kontextu; spojky navazující na předchozí myšlenku ano
+        return not re.match(r"(takže|tak|proto|protože|no|jo|taky|tím|že)\b", t.lower())
 
     def ok_end(n):
         u = units[n]
@@ -856,11 +861,11 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set) -> list[d
 
     out = []
     for n in range(len(units)):
-        if not ok_start(n):
+        if not ok_start(n) or (avoid and units[n]["id"] in avoid):
             continue
         for k in (0, 1):
             m = n + k
-            if m >= len(units) or units[m]["spk"] != units[n]["spk"]:
+            if m >= len(units) or units[m]["spk"] != units[n]["spk"] or (avoid and units[m]["id"] in avoid):
                 break
             d = units[m]["e"] - units[n]["s"]
             if 1.2 <= d <= (8.0 if k == 0 else 9.0) and ok_end(m):
@@ -883,10 +888,10 @@ def _teaser_picks(c: dict) -> list:
 
 
 def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude: set, backend: str, ctx,
-                 path: str) -> dict | None:
+                 path: str, avoid: set | None = None) -> dict | None:
     """Upoutávka ve stylu zpravodajství: údery ohodnotí model (hák, samostatnost, údernost), pak z nejlepších složí
     2–4 v pořadí hák → … → napětí na konec (s krátkou úvahou), délka se dorovná celými údery."""
-    cands = _teaser_candidates(path, segs, exclude)
+    cands = _teaser_candidates(path, segs, exclude, avoid)
     if len(cands) < 2:
         return None
     text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
@@ -987,6 +992,8 @@ def plan_edit(params: dict, ctx) -> dict:
     path = params["path"]
     instruction = params["instruction"]
     target = float(params.get("targetSec") or 0)
+    # věty, jejichž hranice stavba nahlásila jako slyšitelné (server je pošle při opakovaném plánu – uzavřená smyčka)
+    avoid = {int(i) for i in (params.get("avoid") or [])}
     backend = params.get("backend") or "auto"
     if backend == "auto":  # Hermes (externí, rychlejší a přesnější), když běží; jinak vlastní model
         backend = gpu.auto_backend()
@@ -1062,7 +1069,7 @@ def plan_edit(params: dict, ctx) -> dict:
     # Krátká upoutávka (do 40 s): 2–4 krátké údery ve stylu zpravodajství (hák, napětí na konec). Obecné skládání
     # vybralo 26 s souvislého vyprávění o diagnóze na 10s upoutávku (Talk 2026-11-20).
     if target and target <= 40 and re.search(r"upoutáv|upoutav|trailer|teaser|promo|pozvánk|pozvank", instruction, re.I):
-        res = _plan_teaser(instruction, target, segs, exclude, backend, ctx, path)
+        res = _plan_teaser(instruction, target, segs, exclude, backend, ctx, path, avoid)
         if res:
             res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
                         "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
@@ -1073,7 +1080,7 @@ def plan_edit(params: dict, ctx) -> dict:
             # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
             and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",
                               instruction, re.I)):
-        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map)
+        res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map, avoid)
         if res:
             res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
                         "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
