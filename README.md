@@ -67,6 +67,7 @@ Zadání jde i nadiktovat – tlačítko 🎤 v panelu nahraje řeč a lokálně
   sekvenci nevytvořilo, vrátí jeden krok v Premiere (Ctrl+Z) s pojistkou proti opakování.
 - **GPU / VRAM / RAM / CPU** – vytížení počítače každé 2 s (GPU jen s kartou NVIDIA). Pod Workerem pruh průběhu úlohy.
 - **Zdroj:** vpravo nad zadáním – aktivní sekvence, ze které se bude stříhat.
+- **▶ Otevřít / ⬇ Export MP4** pod každým hotovým střihem (export do složky `export` vedle projektu).
 - **👍 / 👎** pod každým hotovým střihem – hodnocení se ukládá do `cacheeedback.jsonl` (zadání, agent, délka, sekvence)
   jako podklad pro ladění lokálního modelu.
 - Nepřihlášený Claude Code: tlačítko „🔑 Přihlásit Claude Code“ (jednorázově, pak zadání zopakuje samo) nebo poslat do aplikace Claude.

@@ -25,6 +25,8 @@ function summary(name, r) {
       .filter((x) => x.sequence).map((x) => `   na timeline: sekvence „${x.sequence}“`);
     return [`✔ Vloženo do projektu${r.converted ? ' (převedeno na MP4):' : '.'}`, ...(r.converted || []).map((t) => `   ${t}`), ...seqs];
   }
+  if (name === 'export_sequence' && r.output) return [`✔ Vyexportováno: ${r.output} (${r.sizeMB} MB)`];
+  if (name === 'reframe_sequence' && r.summary) return [`✔ ${r.summary}`];
   return [`✔ ${JSON.stringify(r).slice(0, 600)}`];
 }
 

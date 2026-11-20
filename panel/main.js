@@ -273,6 +273,28 @@
       });
       row.appendChild(btn);
     });
+    // rychlé akce s výsledkem: přepnout na sekvenci, vyexportovat MP4 vedle projektu (…\export\<název>.mp4)
+    fresh.forEach(function (s) {
+      var open = document.createElement('button');
+      open.textContent = '▶ Otevřít';
+      open.title = 'Otevřít „' + s.name + '“ v Premiere';
+      open.style.margin = '0 4px 0 8px';
+      open.addEventListener('click', function () {
+        hostCall('openSequence', { sequence: s.sequenceID }).catch(function (e) { out('✖ ' + e.message, 'err'); });
+      });
+      var exp = document.createElement('button');
+      exp.textContent = '⬇ Export MP4';
+      exp.title = 'Vyexportuje „' + s.name + '“ do složky export vedle projektu (H.264, jako zdroj)';
+      exp.addEventListener('click', function () {
+        hostCall('projectInfo').then(function (p) {
+          var dir = path.join(path.dirname(p.path || ROOT), 'export');
+          var file = path.join(dir, s.name.replace(/[\\/:*?"<>|]+/g, '-') + '.mp4');
+          runTool('Export „' + s.name + '“ → ' + file, 'export_sequence', { sequence: s.sequenceID, output: file });
+        }).catch(function (e) { out('✖ ' + e.message, 'err'); });
+      });
+      row.appendChild(open);
+      row.appendChild(exp);
+    });
     outEl.appendChild(row);
     outEl.scrollTop = outEl.scrollHeight;
   }
