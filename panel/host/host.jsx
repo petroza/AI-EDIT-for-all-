@@ -1,4 +1,4 @@
-/*
+﻿/*
  * MYpremiereMCP - ExtendScript strana (bezi uvnitr Premiere, ES3 syntaxe!).
  * Jediny vstup: PMCP.call(nazev, argumentyJSON) -> JSON {ok, result|error}.
  * Casy jsou vsude v sekundach.
@@ -197,6 +197,22 @@ var PMCP = {};
     }
     for (i = 0; i < qs.numVideoTracks; i++) cut(qs.getVideoTrackAt(i));
     for (i = 0; i < qs.numAudioTracks; i++) cut(qs.getAudioTrackAt(i));
+    seq.setPlayerPosition(String(prev));
+    return tc;
+  }
+
+  /** řez jen videostop (zvuk nechat celý – kvůli prolnutím a plynulosti) */
+  function razorVideo(seq, sec) {
+    app.enableQE();
+    var qs = qe.project.getActiveSequence();
+    if (!qs) throw new Error('QE: no active sequence');
+    var prev = seq.getPlayerPosition().ticks;
+    seq.setPlayerPosition(ticks(sec));
+    var tc = qs.CTI.timecode;
+    for (var i = 0; i < qs.numVideoTracks; i++) {
+      var tr = qs.getVideoTrackAt(i);
+      try { tr.razor(tc); } catch (e) { tr.razor(tc, true, true); }
+    }
     seq.setPlayerPosition(String(prev));
     return tc;
   }
@@ -541,7 +557,34 @@ var PMCP = {};
     var src = getSeq(a.sequence);
     var num = a.num || 9, den = a.den || 16;
     var name = a.name || (src.name + ' ' + num + 'x' + den);
-    var res = src.autoReframeSequence(num, den, a.motion || 'default', name, false);
+    var sst = src.getSettings();
+    // z už převedené (užší) verze by vznikl dvojí ořez a zvětšení – převádět jen ze širšího originálu
+    if (sst.videoFrameHeight && sst.videoFrameWidth / sst.videoFrameHeight < Math.max(1.2, num / den + 0.02))
+      throw new Error('„' + src.name + '“ je ' + sst.videoFrameWidth + '×' + sst.videoFrameHeight +
+        ' – na ' + num + ':' + den + ' převádím jen ze širší sekvence, otevři původní na šířku (16:9)');
+    // střihy kamery uvnitř klipů (a.splitAt, časy sekvence): na KOPII rozříznout video, ať Auto Reframe analyzuje
+    // každý záběr zvlášť (jinak ořez obličej po přepnutí kamery dohání). Řez videa obraz ani zvuk nemění,
+    // originál zůstává netknutý, kopie se po reframu smaže.
+    var work = src, tmp = null, split = 0;
+    if (a.splitAt && a.splitAt.length) {
+      var before = {}, sq = app.project.sequences, i;
+      for (i = 0; i < sq.numSequences; i++) before[sq[i].sequenceID] = true;
+      src.clone();
+      sq = app.project.sequences;
+      for (i = 0; i < sq.numSequences; i++) if (!before[sq[i].sequenceID]) tmp = sq[i];
+      if (tmp) {
+        activate(tmp);
+        var fd = tmp.getSettings().videoFrameRate.seconds;
+        for (i = 0; i < a.splitAt.length; i++) { razorVideo(tmp, snap(a.splitAt[i], fd)); split++; }
+        work = tmp;
+      }
+    }
+    var res;
+    try {
+      res = work.autoReframeSequence(num, den, a.motion || 'faster', name, false);
+    } finally {
+      if (tmp) try { app.project.deleteSequence(tmp); } catch (e) {}
+    }
     if (!res) throw new Error('Auto Reframe nevytvořil sekvenci (starší Premiere nebo sekvence bez videa?)');
     var st = res.getSettings();
     var oldW = st.videoFrameWidth, oldH = st.videoFrameHeight, factor = 1;
@@ -567,7 +610,7 @@ var PMCP = {};
     activate(res);
     var fin = res.getSettings();
     return { sequenceID: res.sequenceID, name: res.name, width: fin.videoFrameWidth, height: fin.videoFrameHeight,
-             reframedFrom: oldW + 'x' + oldH, scale: r3(factor * 100) };
+             reframedFrom: oldW + 'x' + oldH, scale: r3(factor * 100), cameraSplits: split };
   };
 
   // Zpět v panelu: smaže sekvence, které vytvořilo poslední zadání (spolehlivé, na rozdíl od QE undo po krocích).

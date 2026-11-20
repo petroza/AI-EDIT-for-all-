@@ -171,9 +171,13 @@
   });
   paintChips();
   /** zadání + zvolená délka (u Hermese jde délka zvlášť proměnnou prostředí, ať ji nepřebije slovo v textu) */
-  function withTarget(prompt, sec) {
+  function withTarget(prompt, sec, fmt) {
+    prompt = prompt.replace(/\s*Formát \S+ udělá panel sám[^\n]*$/, '');
     prompt = prompt.replace(/\s*Cílová délka výsledného střihu: [^\n]*$/, ''); // opakované zadání (tlačítka ve výpisu)
-    return sec ? prompt + '\n\nCílová délka výsledného střihu: ' + sec + ' sekund (±10 %).' : prompt;
+    if (sec) prompt += '\n\nCílová délka výsledného střihu: ' + sec + ' sekund (±10 %).';
+    // agent jinak na konci nabízí „chceš verzi 9:16?“, i když ji panel po střihu udělá sám
+    if (fmt && fmt !== '16:9') prompt += '\nFormát ' + fmt + ' udělá panel sám z hotové sekvence – stříhej v 16:9, reframe nedělej a nenabízej.';
+    return prompt;
   }
 
   /* ---------------- Zpět = smazat sekvence z posledního zadání ---------------- */
@@ -204,7 +208,8 @@
           names: fresh.map(function (s) { return s.name; }) });
         $('undo').disabled = false;
         if (meta) offerFeedback(meta, fresh);
-        if (meta && meta.format && meta.format !== '16:9') reframeFresh(meta.format, fresh, undoStack[undoStack.length - 1]);
+        // jen poslední nová sekvence = finální verze (agent občas postaví v1 a pak opravenou v2 – v1 nepřevádět)
+        if (meta && meta.format && meta.format !== '16:9') reframeFresh(meta.format, fresh.slice(-1), undoStack[undoStack.length - 1]);
       });
     };
   }
@@ -254,9 +259,14 @@
     fresh.reduce(function (p, s) {
       return p.then(function () {
         out('⚙ ' + format + ': Auto Reframe podle obličeje – „' + s.name + '“', 'dim');
-        return hostCall('reframeSequence', { sequence: s.sequenceID, num: f[0], den: f[1], width: f[2], height: f[3],
-          motion: 'slower', name: s.name + ' ' + format.replace(':', 'x') }, 600000).then(function (r) {
-          out('✔ ' + r.name + ' (' + r.width + '×' + r.height + ')', 'ai');
+        // střihy kamery uvnitř klipů -> řez videa na kopii před reframem (ořez se v každém záběru chytí hned)
+        return hostCall('getSequence', { sequence: s.sequenceID }, 30000).then(function (d) {
+          return require(path.join(ROOT, 'server', 'camera-cuts.cjs')).cameraCuts(d.clips || [], { root: ROOT });
+        }).catch(function () { return []; }).then(function (cuts) {
+          return hostCall('reframeSequence', { sequence: s.sequenceID, num: f[0], den: f[1], width: f[2], height: f[3],
+            motion: 'faster', splitAt: cuts, name: s.name + ' ' + format.replace(':', 'x') }, 600000);
+        }).then(function (r) {
+          out('✔ ' + r.name + ' (' + r.width + '×' + r.height + (r.cameraSplits ? ', střihy kamery: ' + r.cameraSplits : '') + ')', 'ai');
           if (undoEntry) { undoEntry.ids.push(r.sequenceID); undoEntry.names.push(r.name); }
         });
       }).catch(function (e) { out('✖ ' + format + ' se nepovedl: ' + e.message, 'err'); });
@@ -1055,7 +1065,7 @@
     var prompt = task.prompt;
     if (!prompt || child) return false;
     var agent = task.agent;
-    if (agent !== 'hermes') prompt = withTarget(prompt, task.targetSec);
+    if (agent !== 'hermes') prompt = withTarget(prompt, task.targetSec, task.format);
     // zadání z fronty: sekvence zapamatovaná při přidání (aktivní sekvence se mezitím mění – předchozí úloha otevře svou)
     if (task.seqName && agent !== 'hermes') {
       prompt += '\n\nPracuj se sekvencí „' + task.seqName + '“' + (task.source ? ' (zdroj ' + task.source + ')' : '') + '.';

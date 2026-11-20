@@ -33,6 +33,12 @@
   `autoReframeSequence` + přepnutí na 1080×1920 a Motion Scale × poměr). Panel: volba Formát. Export: výchozí preset se
   hledá v běžící Premiere (config měl natvrdo 2026, Petr má 2027). Náhled: `export_sequence` + ffmpeg (QE exportFramePNG
   vrací false).
+- Reframe (ověřeno exportem): motion **faster** (slower na TV materiálu po střihu kamery nechal prázdné pozadí).
+  Střihy kamery uvnitř klipů (`server/camera-cuts.cjs`, ffmpeg scene 0.3 jen na použitých úsecích, skok o 5 s dřív –
+  stažené MP4 po skoku dekódují až od klíčového snímku) -> host na dočasné kopii rozřízne jen video (`razorVideo`),
+  reframe, kopii smaže; obličej je ve středu od prvního snímku záběru. Převádí jen ze sekvence na šířku (≥ 1,2:1).
+  Panel: „📱 Převést aktivní“, formáty pojmenované podle sítí, po zadání se převádí jen poslední nová sekvence.
+  `host.jsx` má UTF-8 BOM (bez něj `$.evalFile` čte cp1250 a české hlášky z Premiere jsou rozsypané) – nemazat.
 - Stavby: 2snímkové zvukové prolnutí na každém střihu (host `addAudioFades`, QE `addTransition` Constant Power).
   Upoutávky bez osnovy (rovnou z přepisu), práh pauzy úderu 70 ms (plynulá řeč), přednost úderům s pauzou ≥ 150 ms.
   Regrese 8/8 čistých hranic (Talk + debata).

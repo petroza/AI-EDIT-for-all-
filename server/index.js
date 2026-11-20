@@ -9,6 +9,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import { execFileSync, spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
+const requireCjs = createRequire(import.meta.url);
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -1714,13 +1716,19 @@ tool(
     sequence: z.string().optional().describe('Název nebo ID sekvence; bez zadání aktivní'),
     format: z.enum(['9:16', '1:1', '4:5', '16:9']).optional().describe('Výchozí 9:16'),
     motion: z.enum(['slower', 'default', 'faster']).optional()
-      .describe('Jak rychle ořez sleduje pohyb: slower = klidný (rozhovor), faster = akce. Výchozí default'),
+      .describe('Jak rychle ořez sleduje obličej: faster (výchozí) se po střihu kamery chytí do ~8 snímků; slower na TV materiálu se střihy kamer nechá záběr bez člověka'),
     name: z.string().optional(),
   },
   async (a) => {
     const [num, den, width, height] = REFRAME_FORMATS[a.format || '9:16'];
-    const r = await premiere('reframeSequence', { sequence: a.sequence, num, den, width, height, motion: a.motion, name: a.name }, 600000);
-    return { ...r, summary: `Vytvořena sekvence „${r.name}“ ${r.width}×${r.height} (Auto Reframe podle obličeje, měřítko ${r.scale} %).` };
+    // střihy kamery uvnitř klipů -> řez videa na kopii před reframem (viz camera-cuts.cjs)
+    let splitAt = [];
+    try {
+      const d = await premiere('getSequence', { sequence: a.sequence });
+      splitAt = await requireCjs('./camera-cuts.cjs').cameraCuts(d.clips || [], { root: ROOT });
+    } catch { /* bez rozřezání */ }
+    const r = await premiere('reframeSequence', { sequence: a.sequence, num, den, width, height, motion: a.motion || 'faster', splitAt, name: a.name }, 600000);
+    return { ...r, summary: `Vytvořena sekvence „${r.name}“ ${r.width}×${r.height} (Auto Reframe podle obličeje, měřítko ${r.scale} %${r.cameraSplits ? `, střihy kamery: ${r.cameraSplits}` : ''}).` };
   },
 );
 
