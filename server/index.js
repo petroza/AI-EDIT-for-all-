@@ -2219,11 +2219,26 @@ tool(
           continue;
         }
       }
-      const sceneCuts = a.build.sceneCuts ? await snapToSceneCuts(a.build.source || a.path, tr, ranges) : undefined;
-      const built = await buildAndReport(a.build.name, withExtras(ranges, a.build.source || a.path, a.build.extraAudio), 0, {
+      // Upoutávka i po opakováních s vadnou hranicí (debata 15 s): vadný úder vyhodit, když zůstanou aspoň dva údery
+      // a 60 % délky – úder navíc nestojí za useknuté slovo
+      let finalRanges = ranges;
+      let finalEdges = edges;
+      if (edges?.badIds?.length && plan.mode === 'teaser') {
+        const bad = new Set(edges.badIds);
+        const kept = ranges.filter((r) => !r.ids.some((i) => bad.has(i)));
+        const dur = kept.reduce((s, r) => s + r.out - r.in, 0);
+        if (kept.length >= 2 && (!a.targetSec || dur >= 0.6 * a.targetSec)) {
+          finalRanges = kept;
+          finalEdges = await edgeWarnings(a.path, tr, kept, extra);
+          plan = { ...plan, droppedForEdges: [...bad] };
+        }
+      }
+      const ranges2 = finalRanges;
+      const sceneCuts = a.build.sceneCuts ? await snapToSceneCuts(a.build.source || a.path, tr, ranges2) : undefined;
+      const built = await buildAndReport(a.build.name, withExtras(ranges2, a.build.source || a.path, a.build.extraAudio), 0, {
         continuity: continuityWarnings(tr, plan.picks),
         sceneCuts: sceneCuts?.length ? sceneCuts : undefined,
-        edges,
+        edges: finalEdges,
       });
       return { plan, built };
     }

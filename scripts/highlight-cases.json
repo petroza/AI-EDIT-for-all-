@@ -91,5 +91,23 @@
     "reference": [],
     "acceptable": [],
     "note": "upoutávka: hodnotí se délka, čisté hranice a ručně obsah (hák, bez zkreslení kontextu)"
+  },
+  {
+    "name": "debata-vyrok-10s",
+    "target": 10,
+    "instruction": "Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.",
+    "sequence": "debata_6min",
+    "reference": [],
+    "acceptable": [],
+    "note": "debata (2 hosté + moderátor), 6 min z _dev-data/test/fresh/debata-nova.mp4 od 600 s; kontrola zobecnění mimo Talk"
+  },
+  {
+    "name": "debata-upoutavka-15s",
+    "target": 15,
+    "instruction": "Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.",
+    "sequence": "debata_6min",
+    "reference": [],
+    "acceptable": [],
+    "note": "debata (2 hosté + moderátor), 6 min z _dev-data/test/fresh/debata-nova.mp4 od 600 s; kontrola zobecnění mimo Talk"
   }
 ]
