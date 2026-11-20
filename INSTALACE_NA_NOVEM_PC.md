@@ -62,14 +62,26 @@ a cestu ke složce do `%APPDATA%\MYpremiereMCP\root.txt`.
 |---|---|---|
 | PowerShell skripty | `install.ps1` nejde spustit | varianta B (cmd). Hermes se pak sám nespustí (startuje přes `scripts\hermes.ps1`) → v `config.json` dej `llmBackends.hermes.autoStart: false`, plánuje gemma3. |
 | Spouštění .exe z uživatelských složek (AppLocker/WDAC) | `node.exe`, `python.exe` nebo `llama-server.exe` z `C:\MYpremiereMCP\tools` „blokováno správcem“ | zkusit složku jinde (např. `C:\Program Files` vyžaduje IT); jinak IT musí povolit složku `C:\MYpremiereMCP` – bez toho to nepůjde. Řekni to uživateli přesně (název blokovaného souboru). |
-| Nepodepsaná rozšíření Adobe (CEP) | panel v menu Rozšíření chybí, i když junction i `PlayerDebugMode` sedí | firemní politika Adobe – IT musí povolit; ověř nejdřív, že Premiere je po instalaci restartované a že je nastavená správná verze `CSXS` (Premiere 2026 = CSXS 12). |
+| Nepodepsaná rozšíření Adobe (CEP) | panel v menu Rozšíření chybí, i když junction i `PlayerDebugMode` sedí | firemní politika nepustí nepodepsané rozšíření (Nova 2026-11) → **podepsaný panel `.zxp`**, viz níže. Nejdřív ověř, že je Premiere po instalaci restartované a sedí verze `CSXS`. |
 | Zápis do `HKCU` nebo `mklink` | chyba v krocích 1/2 | výjimečné; bez toho panel nepojede → IT. |
 | MCP servery v Claude (spravovaná organizace) | nástroje `premiere` se v nové relaci neobjeví, `claude mcp list` ho nevidí nebo hlásí zákaz | musí povolit správce organizace Claude (allowlist MCP serverů). Zkus i zadání přímo z panelu (agent Claude – spouští CLI s vlastním `mcp.json`) a plugin (krok 3.4). |
 | Firewall / antivir na `127.0.0.1` | `premiere_status` nevidí panel, Worker nenaběhne | výjimka pro localhost porty 7880–7883 a 8000, případně jiný `port` v `config.json`. |
 
+### Firemní PC: podepsaný panel (.zxp)
+Kde IT nepovolí `PlayerDebugMode`, se nepodepsaný panel v Premiere neukáže. Řešení je podepsaný balíček:
+1. `ZXPSignCmd.exe` (Adobe, github.com/Adobe-CEP/CEP-Resources → ZXPSignCMD, win64) do `tools\`.
+2. Certifikát: firemní code-signing `.p12` od IT, nebo vlastní: `powershell -ExecutionPolicy Bypass -File scripts\build-zxp.ps1 -NewCert`.
+3. Podpis: `powershell -ExecutionPolicy Bypass -File scripts\build-zxp.ps1` → `INSTALL\MYPremiereMCP.zxp` (s časovým razítkem).
+4. Instalace na PC: `… scripts\build-zxp.ps1 -Install` (Adobe UPIA z Creative Cloud; odstraní vývojářský odkaz na `panel`).
+5. Instalátor `INSTALL\install.ps1` spusť i tak – zapíše `%APPDATA%\MYpremiereMCP\root.txt`, podle kterého panel z `.zxp`
+   najde server a Worker ve složce aplikace.
+
+Po každé změně v `panel\` je potřeba nový `.zxp` (podpis kontroluje každý soubor). Certifikát ani heslo nepatří do gitu.
+
 ## 2. Doladění podle tohoto PC (`config.json`)
-- **`defaultExportPreset`** ukazuje na `C:/Program Files/Adobe/Adobe Premiere Pro 2026/...`. Je-li tu jiná verze Premiere,
-  oprav cestu na existující soubor (stejný preset `01 - Match Source - High bitrate.epr` v `MediaIO\systempresets\4E49434B_48323634`).
+- **`defaultExportPreset`** ukazuje na `C:/Program Files/Adobe/Adobe Premiere Pro 2026/...`. Jiná verze Premiere nevadí –
+  když soubor neexistuje, panel stejný preset najde ve složce právě běžící Premiere (`app.path`). Ruční oprava je potřeba
+  jen pro úplně jiný preset.
 - **Hermes** (`llmBackends.hermes`, Qwen3.6-35B) se spouští automaticky (`autoStart: true`) pro `plan_edit_local`, osnovy,
   překlad titulků. Potřebuje NVIDIA s ~12 GB VRAM a ~32 GB RAM. Na slabším stroji nastav `"autoStart": false` – plánuje
   pak gemma3 12B (`models\llm`), případně rovnou Claude.
