@@ -684,7 +684,7 @@ function reviewText(plan, tr, targetSec) {
     plan.editorial?.length
       ? 'VYBRÁNO – redakčně složeno jako celek (vstup → jádro → pointa na konci), v pořadí střihu:'
       : 'VYBRÁNO (v pořadí střihu):',
-    ...plan.picks.map(line),
+    ...plan.picks.map((p) => line(typeof p === 'number' ? p : p.id)),
   ];
   if (alt.length) out.push('NÁHRADNÍCI (k tématu, vyřazeno kvůli délce):', ...alt.map(line));
   const auto = [];

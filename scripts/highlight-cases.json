@@ -73,5 +73,23 @@
         224
       ]
     ]
+  },
+  {
+    "name": "talk-upoutavka-10s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 10,
+    "instruction": "Upoutávka na rozhovor ve stylu zpravodajství: krátké silné údery, hák hned na začátku, dynamika, bez moderátorky.",
+    "reference": [],
+    "acceptable": [],
+    "note": "upoutávka: hodnotí se délka, čisté hranice a ručně obsah (hák, bez zkreslení kontextu)"
+  },
+  {
+    "name": "talk-upoutavka-20s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 20,
+    "instruction": "Upoutávka na rozhovor ve stylu zpravodajství: krátké silné údery, hák hned na začátku, dynamika, bez moderátorky.",
+    "reference": [],
+    "acceptable": [],
+    "note": "upoutávka: hodnotí se délka, čisté hranice a ručně obsah (hák, bez zkreslení kontextu)"
   }
 ]

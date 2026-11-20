@@ -31,7 +31,8 @@ for (const c of cases) {
   const clean = chk.status === 0;
   // shoda = nejlepší překryv s referencí nebo s jednou z rovnocenných alternativ (dobrých výroků bývá víc)
   const ov = (set) => Math.round((100 * ids.filter((i) => set.includes(i)).length) / new Set([...ids, ...set]).size);
-  const overlap = Math.max(ov(c.reference), ...(c.acceptable || []).map(ov));
+  // upoutávky reference nemají (dobrých kombinací úderů je mnoho) – shoda se nepočítá
+  const overlap = c.reference.length ? Math.max(ov(c.reference), ...(c.acceptable || []).map(ov)) : null;
   const row = { case: c.name, target: c.target, dur, ids: ids.join(','), ref: c.reference.join(','), overlap, clean, sec: Math.round(sec) };
   rows.push(row);
   console.log(`${clean ? '✔' : '✖'} ${c.name}: ${dur} s (cíl ${c.target}) · věty ${row.ids} · reference ${row.ref} · shoda ${overlap} % · ` +
@@ -40,7 +41,7 @@ for (const c of cases) {
 }
 const ok = rows.filter((r) => !r.error);
 console.log(`\nShrnutí: ${ok.length}/${rows.length} vzniklo · čisté hranice ${ok.filter((r) => r.clean).length}/${ok.length} · ` +
-  `průměrná shoda s referencí ${Math.round(ok.reduce((a, r) => a + r.overlap, 0) / Math.max(1, ok.length))} % · ` +
+  `průměrná shoda s referencí ${Math.round(ok.filter((r) => r.overlap !== null).reduce((a, r) => a + r.overlap, 0) / Math.max(1, ok.filter((r) => r.overlap !== null).length))} % · ` +
   `průměrná odchylka délky ${Math.round(ok.reduce((a, r) => a + Math.abs(r.dur - r.target) / r.target, 0) / Math.max(1, ok.length) * 100)} %`);
 fs.mkdirSync(path.join(ROOT, 'cache', 'test-highlight'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'cache', 'test-highlight', `${new Date().toISOString().replace(/[:.]/g, '-')}.json`),

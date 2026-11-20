@@ -162,6 +162,9 @@ try {
   for (const n of built?.edges || []) say(n);
   if (plan.mode === 'passage') {
     say(`ℹ souvislá pasáž (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
+  } else if (plan.mode === 'teaser') {
+    say(`ℹ upoutávka z úderů (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
+    if (plan.distorted?.length) say(`ℹ vyřazeno – vytržené by zkreslilo význam: ${plan.distorted.map((t) => `„${t}“`).join(', ')}`);
   }
 } catch (e) {
   say('✖ ' + (e?.message || e));

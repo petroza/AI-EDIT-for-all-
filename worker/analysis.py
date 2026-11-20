@@ -508,7 +508,7 @@ def _pause_map(path: str, segs: dict[int, dict]) -> dict[int, bool]:
 
 
 def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set,
-                          pause_map: dict[int, bool] | None = None) -> int:
+                          pause_map: dict[int, bool] | None = None, budget: float = float("inf")) -> int:
     """Kraje vybraných celků dotáhne ke skutečné pauze (mezera ≥ 0,12 s): o větu dál (max. 3 věty,
     max. 16 s), jinak o větu zpět. Věta vystřižená ze souvislé řeči bez nádechu zní useknutě, i když střih neprotne
     slovo (Talk 2 min, 2026-11-20: 4 z 22 hranic slyšitelné). Vrací počet upravených krajů."""
@@ -555,6 +555,9 @@ def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set
 
     taken = {i for u in units for i in u["ids"]}
     fixed = 0
+    # budget = kolik sekund smí dotažení přidat: když by prodloužení přesáhlo cíl, má přednost zkrácení o větu
+    # (taky končí v pauze) – dřív se pak dorovnávalo vyhozením celých celků a ze střihu zmizelo celé téma
+    left = budget
     for u in units:
         if not u.get("ids"):
             continue
@@ -573,11 +576,15 @@ def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set
                     break
                 if pause_before(ids[n - k]):
                     break
-            if ext and pause_before(ext[0]):
+            can_shrink = len(u["ids"]) > 1 and pause_before(u["ids"][1])
+            grow = sum(dur(i) for i in ext) if ext else 0.0
+            if ext and pause_before(ext[0]) and not (grow > left and can_shrink):
                 u["ids"][:0] = ext
                 taken.update(ext)
+                left -= grow
                 fixed += 1
-            elif len(u["ids"]) > 1 and pause_before(u["ids"][1]):
+            elif can_shrink:
+                left += dur(u["ids"][0])
                 taken.discard(u["ids"].pop(0))
                 fixed += 1
         # konec
@@ -607,13 +614,17 @@ def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set
                 if pause_after(nxt):
                     break
             end_ok = ext and pause_after(ext[-1]) and not re.search(r"(\.\.\.|…)\W*$", segs[ext[-1]]["text"].strip())
+            can_shrink = len(u["ids"]) > 1 and pause_after(u["ids"][-2])
+            grow = sum(dur(i) for i in ext) if ext else 0.0
             if merged:
                 pass
-            elif end_ok:
+            elif end_ok and not (grow > left and can_shrink):
                 u["ids"].extend(ext)
                 taken.update(ext)
+                left -= grow
                 fixed += 1
-            elif len(u["ids"]) > 1 and pause_after(u["ids"][-2]):
+            elif can_shrink:
+                left += dur(u["ids"][-1])
                 taken.discard(u["ids"].pop())
                 fixed += 1
         u["dur"] = sum(dur(i) for i in u["ids"])
@@ -798,6 +809,179 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
     }
 
 
+_ANSWER_WORDS = re.compile(r"^(absolutně|jo|ano|ne|jasně|určitě|přesně|no|dobře|tak)\W*$", re.I)
+
+
+def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set) -> list[dict]:
+    """Krátké samostatné výroky pro upoutávku. Jednotka = věta podle interpunkce slov, i uvnitř segmentu přepisu
+    (Whisper slepí „Za tři týdny. Takže to přišlo…“ do jednoho – úder „Za tři týdny.“ by jinak neexistoval).
+    Kandidát = 1–2 navazující věty jednoho mluvčího, 1,2–8 s, začátek i konec ve skutečné pauze (mezera ≥ 0,12 s
+    a ticho ve zvuku), dokončená věta, za ní nepokračuje souvětí. „A najednou byl pryč.“ smí – v upoutávce je to úder."""
+    units = []  # {id, w0, w1, s, e, text, spk}
+    for sid in sorted(segs):
+        ws = segs[sid].get("words") or []
+        start = 0
+        for k, w in enumerate(ws):
+            end_tok = re.search(r"[.!?]$", w["w"]) and not re.search(r"(\.\.\.|…)$", w["w"])
+            if end_tok or k == len(ws) - 1:
+                piece = ws[start: k + 1]
+                if piece:
+                    units.append({"id": sid, "w0": start, "w1": k, "s": piece[0]["s"], "e": piece[-1]["e"],
+                                  "text": " ".join(x["w"] for x in piece), "spk": segs[sid].get("speaker"),
+                                  "full": start == 0 and k == len(ws) - 1, "closed": bool(end_tok)})
+                start = k + 1
+    if not units:
+        return []
+    pairs = [(units[n]["e"], units[n + 1]["s"]) for n in range(len(units) - 1)]
+    audio = audiosync.boundary_pauses(path, pairs)
+    pause_after = [((pairs[n][1] - pairs[n][0] >= 0.12) and (audio[n] if audio is not None else True))
+                   for n in range(len(pairs))] + [True]
+
+    def ok_start(n):
+        u = units[n]
+        t = u["text"].strip()
+        if u["spk"] in exclude or not t or t[0].islower() or _ANSWER_WORDS.match(t):
+            return False
+        if n and not pause_after[n - 1]:
+            return False
+        return not re.match(r"(takže|tak|proto|protože|no|jo|taky|to|tohle|tím|že)\b", t.lower())
+
+    def ok_end(n):
+        u = units[n]
+        if not u["closed"] or not pause_after[n]:
+            return False
+        nxt = units[n + 1] if n + 1 < len(units) else None
+        # souvětí pokračuje malým písmenem u stejného mluvčího -> myšlenka by zůstala viset
+        return not (nxt and nxt["spk"] == u["spk"] and nxt["text"][:1].islower())
+
+    out = []
+    for n in range(len(units)):
+        if not ok_start(n):
+            continue
+        for k in (0, 1):
+            m = n + k
+            if m >= len(units) or units[m]["spk"] != units[n]["spk"]:
+                break
+            d = units[m]["e"] - units[n]["s"]
+            if 1.2 <= d <= (8.0 if k == 0 else 9.0) and ok_end(m):
+                out.append({"units": units[n: m + 1], "dur": round(d, 1),
+                            # okolí pro kontrolu vytržení z kontextu
+                            "before": " ".join(u["text"] for u in units[max(0, n - 2): n]),
+                            "after": " ".join(u["text"] for u in units[m + 1: m + 3])})
+    return out
+
+
+def _teaser_picks(c: dict) -> list:
+    """Kandidát -> picks pro stavbu: celá věta přepisu jako číslo, část věty jako {id, fromWord, toWord}."""
+    out = []
+    for u in c["units"]:
+        if out and isinstance(out[-1], dict) and out[-1]["id"] == u["id"] and out[-1]["toWord"] == u["w0"] - 1:
+            out[-1]["toWord"] = u["w1"]  # dvě věty z jednoho segmentu za sebou
+        else:
+            out.append(u["id"] if u["full"] else {"id": u["id"], "fromWord": u["w0"], "toWord": u["w1"]})
+    return out
+
+
+def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude: set, backend: str, ctx,
+                 path: str) -> dict | None:
+    """Upoutávka ve stylu zpravodajství: údery ohodnotí model (hák, samostatnost, údernost), pak z nejlepších složí
+    2–4 v pořadí hák → … → napětí na konec (s krátkou úvahou), délka se dorovná celými údery."""
+    cands = _teaser_candidates(path, segs, exclude)
+    if len(cands) < 2:
+        return None
+    text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
+    key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731
+    gpu.STAT_PHASE = "teaser"
+    rated: list[tuple[float, dict]] = []
+    B = 15
+    for b0 in range(0, len(cands), B):
+        ctx.check()
+        part = cands[b0: b0 + B]
+        ctx.progress(0.3 + 0.45 * b0 / len(cands), f"LLM hodnotí údery {b0 + 1}–{b0 + len(part)} z {len(cands)}")
+        lines = "\n".join(f"U{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(part))
+        r = _chat_json(
+            f"Jsi střihač zpravodajských upoutávek. Zadání: {instruction}\n\nKrátké výroky z rozhovoru:\n{lines}\n\n"
+            "Každý výrok ohodnoť třemi čísly 0–3 jako ÚDER do upoutávky:\n"
+            "1) hák – vzbudí emoci, napětí nebo zvědavost, chce se divák dívat dál? (0 = informační/nudné, 3 = silné)\n"
+            "2) samostatnost – je srozumitelný sám a vytržený z kontextu NEZMĚNÍ význam? (0 = navazuje na něco "
+            "nevyřčeného, nebo je to citace cizích slov, ironie či fráze, kterou mluvčí odmítá – např. co jí říkají "
+            "druzí a ona to nechce slyšet; 3 = jasný vlastní výrok)\n"
+            "3) údernost – krátký, citovatelný, bez vaty a odboček (0 = rozvláčný, 3 = úderný)\n"
+            f'Vrať JSON {{"k":[[h,s,u], …]}} – {len(part)} trojic ve stejném pořadí.',
+            30 + 11 * len(part),
+            schema={"type": "object", "properties": {"k": {"type": "array", "minItems": len(part), "maxItems": len(part),
+                    "items": {"type": "array", "minItems": 3, "maxItems": 3,
+                              "items": {"type": "integer", "minimum": 0, "maximum": 3}}}}, "required": ["k"]},
+            backend=backend)
+        for n, k3 in enumerate((r.get("k") or [])[: len(part)]):
+            if isinstance(k3, list) and len(k3) == 3 and all(isinstance(x, int) for x in k3):
+                rated.append((3 * k3[0] + 2 * k3[1] + 1.5 * k3[2], part[n]))
+    if len(rated) < 2:
+        return None
+    rated.sort(key=lambda x: -x[0])
+    top: list[dict] = []  # bez překryvů (věta sama i s následující) – nechat lepšího
+    for _, c in rated:
+        if not any(key(c) & key(t) for t in top):
+            top.append(c)
+        if len(top) >= 12:
+            break
+    # Kontrola vytržení z kontextu s okolními větami: bez nich model nepozná citovanou frázi („Jí už je teď dobře.“ –
+    # Bára tak cituje, co truchlící slyšet nechtějí; vytržené to zní, jako by máma byla v pořádku).
+    ctx.progress(0.75, "LLM kontroluje kontext úderů")
+    lines = "\n".join(f"U{n + 1}: „{text(c)}“\n   před: …{c['before'][-160:]}\n   po: {c['after'][:160]}…"
+                      for n, c in enumerate(top))
+    r = _chat_json(
+        "Jsi editor zpravodajství a hlídáš, aby střih nezkreslil, co člověk řekl. U každého úderu vidíš, co zaznělo "
+        f"před ním a po něm:\n{lines}\n\n"
+        "Které údery by vytržené z kontextu změnily význam? Typicky: citace cizích slov nebo frází, které mluvčí "
+        "odmítá (následuje „to nepotřebujeme slyšet“, „to nepomáhá“), ironie, nadsázka, řečnická otázka, na kterou "
+        "hned odpoví opak, nebo věta, kterou okolí popírá. Vrať JSON {\"spatne\": [čísla úderů]} (prázdné pole, když nic).",
+        80, schema={"type": "object", "properties": {"spatne": {"type": "array", "items": {"type": "integer",
+                    "minimum": 1, "maximum": len(top)}}}, "required": ["spatne"]}, backend=backend)
+    bad = {n for n in (r.get("spatne") or []) if isinstance(n, int) and 1 <= n <= len(top)}
+    distorted = [text(top[n - 1]) for n in sorted(bad)]
+    if len(top) - len(bad) >= 2:
+        top = [c for n, c in enumerate(top, 1) if n not in bad]
+    ctx.progress(0.8, "LLM skládá upoutávku")
+    lines = "\n".join(f"U{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(top))
+    r = _chat_json(
+        f"Jsi střihač zpravodajských upoutávek (TV Nova). Zadání: {instruction}. Cílová délka {target:.0f} s.\n\n"
+        f"Vybrané údery:\n{lines}\n\n"
+        f"Sestav upoutávku ze 2–4 úderů v pořadí, jak půjdou za sebou, součet délek co nejblíž {target:.0f} s. "
+        "První úder je hák (nejsilnější emoce nebo otázka), poslední nechá diváka v napětí a neprozradí rozuzlení. "
+        "Údery se nesmí opakovat ani říkat totéž; dohromady mají naznačit příběh. Nesmí zkreslit, co mluvčí myslí: "
+        "žádné citace cizích slov, ironie ani věty, které mluvčí odmítá (vytržené by znamenaly opak). "
+        'Nejdřív v poli uvaha krátce zdůvodni, pak dej pořadí čísel úderů. JSON {"uvaha": "…", "poradi": [čísla]}.',
+        400, schema={"type": "object", "properties": {"uvaha": {"type": "string", "maxLength": 600},
+                                                      "poradi": {"type": "array", "minItems": 1, "maxItems": 5,
+                                                                 "items": {"type": "integer", "minimum": 1, "maximum": len(top)}}},
+                     "required": ["uvaha", "poradi"]}, backend=backend)
+    order: list[dict] = []
+    for n in r.get("poradi") or []:
+        if isinstance(n, int) and 1 <= n <= len(top) and top[n - 1] not in order:
+            order.append(top[n - 1])
+    if not order:
+        order = top[:2]
+    # délka: nad 1,25× cíle ubírej prostřední údery (hák a konec drž), pod 0,85× přidej další nejlepší, který se vejde
+    # (20s upoutávka měla s mezí 0,7× jen 15,5 s)
+    while len(order) > 2 and sum(c["dur"] for c in order) > 1.25 * target:
+        order.remove(max(order[1:-1], key=lambda c: c["dur"]))
+    for c in top:
+        if sum(x["dur"] for x in order) >= 0.85 * target:
+            break
+        if c not in order and sum(x["dur"] for x in order) + c["dur"] <= 1.15 * target:
+            order.insert(max(1, len(order) - 1), c)
+    total = sum(c["dur"] for c in order)
+    return {
+        "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total, 1),
+        "alternates": [u["id"] for c in top if c not in order for u in c["units"]], "dropped": [],
+        "mode": "teaser", "passages": len(cands), "reason": r.get("uvaha"), "distorted": distorted,
+        "ranked": [[round(sc, 1), text(c)[:60], c["dur"]] for sc, c in rated[:8]],
+        "editorial": [], "thesis": None, "keyChapters": [], "offTopic": [], "topics": [], "balanceTopics": False,
+        "general": False, "topicSec": {}, "addedForQuestionAnswer": [], "fixedFragments": [],
+    }
+
+
 def plan_edit(params: dict, ctx) -> dict:
     """Plán střihu čistě lokálně: LLM vybere kapitoly a věty podle zadání, pak dorovnání na cílovou délku."""
     path = params["path"]
@@ -875,6 +1059,16 @@ def plan_edit(params: dict, ctx) -> dict:
     # Krátký výrok / highlight (do 60 s): jedna souvislá pasáž místo skládání vět z celého materiálu.
     # Skládání vybralo „…napadlo mě úplně z ničeho nic.“ a pak skočilo jinam – to, co ji napadlo, vypadlo
     # (Talk 2026-11-20, 20 s); Claude bral jednu ucelenou pasáž s pointou. Upoutávka má vlastní dramaturgii.
+    # Krátká upoutávka (do 40 s): 2–4 krátké údery ve stylu zpravodajství (hák, napětí na konec). Obecné skládání
+    # vybralo 26 s souvislého vyprávění o diagnóze na 10s upoutávku (Talk 2026-11-20).
+    if target and target <= 40 and re.search(r"upoutáv|upoutav|trailer|teaser|promo|pozvánk|pozvank", instruction, re.I):
+        res = _plan_teaser(instruction, target, segs, exclude, backend, ctx, path)
+        if res:
+            res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
+                        "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
+                        "elapsedSec": round(time.time() - t_start, 1), "llmStats": gpu.stats_summary(gpu.CALL_STATS)})
+            return res
+
     if (target and target <= 60 and not params.get("noPassage")
             # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
             and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",
@@ -1531,7 +1725,8 @@ def plan_edit(params: dict, ctx) -> dict:
             rebalance(pool, hi, lo)
     attach_context(refs=False)
     units.sort(key=lambda u: u["ids"][0])
-    snapped = _snap_units_to_pauses(units, segs, exclude, pause_map)
+    snapped = _snap_units_to_pauses(units, segs, exclude, pause_map,
+                                    budget=(target * 1.05 - sum(u["dur"] for u in units)) if target else float("inf"))
     if target and sum(u["dur"] for u in units) > target * 1.08:
         trim(target * 1.05, target * 0.9)  # dotažení k pauzám střih prodloužilo – dorovnat celými celky
     total = sum(u["dur"] for u in units)
