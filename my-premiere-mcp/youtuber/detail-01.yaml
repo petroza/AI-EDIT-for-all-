@@ -1,0 +1,215 @@
+# YouTuber verze dílu (9:16 + 16:9 v After Effects) – konfigurace jednoho dílu.
+# Nástroje MCP: yt_export_structure → yt_speakers → yt_plan → yt_build_ae → yt_stills → yt_render → yt_collect
+# Časy: "src" = čas ve ZDROJOVÉM souboru (přepis), "tl" = čas na timeline obsahového střihu. Vše v sekundách.
+# Cesty relativně ke koreni výbavy (vybava.koren) se doplní samy, pokud nezačínají písmenem disku.
+
+dil: "Detail 01 – Gemini vs. Claude (Martin, Tonda, Petr, Veronika)"
+zdroj: 'O:\Detail TV\01\export_pilot.mp4'
+# prepis: cesta k JSON přepisu (jinak se vezme z cache MCP podle zdroje – transcribe_media)
+
+premiere:
+  projekt: 'O:\Detail TV\01\strih PZ calaude s grafikou.prproj'   # jen informace
+  sekvence: "DYNAMIC YT – export_pilot v4 ČISTÝ"
+  stopy: {obraz: 1, hudba: 2, listy: 2}    # V1 = záběry + znělky/předěly, A2 = hudba, V2 = lišty (MOGRT)
+
+# Ruční opravy struktury po exportu (posun začátku klipu na začátek věty – lepší je opravit přímo v Premiere).
+opravy_struktury:
+  - {klip_od: 573.88, novy_od: 572.15}
+
+cil:
+  slozka: 'O:\Detail TV\01\YT_nastroje'      # pracovní složka (data, freeze, AE projekty, render)
+  nazev: DETAIL_PRVNI_DIL                      # → DETAIL_PRVNI_DIL_9x16.mp4 / _16x9.mp4
+
+vybava:
+  koren: 'F:\GDRIVE\Detail\Detail Kompletní vybava'
+  ae_projekty:                                 # importují se do AE (předěly, copyright, barva pozadí)
+    - 01_AE_projekt_logo_znelka/DetAI_logo_znelka.aep
+  svist: 03_Hudba/AARD31_348-UNDERSCORE_WHOOSH_043.wav
+  vodoznak: 'O:\Detail TV\01\AE_vertical\logo\znak_plne_1080.png'
+  navy_z: {komp: DetAI_FINAL_zrno_FHD, vrstva: MODRE POZADI}   # odkud vzít tmavě modrou pod grafiku na výšku
+  # klipy grafiky z V1 → kompozice na výšku [název kompozice v importovaných projektech, měřítko %]
+  grafika_svisle:
+    DetAI_predel_1s_R128_ProRes422HQ.mov: [DetAI_PREDEL_1s, 84]
+    DetAI_predel_2s_R128_ProRes422HQ.mov: [DetAI_PREDEL_2s, 84]
+    DetAI_predel_3s_R128_ProRes422HQ.mov: [DetAI_PREDEL_3s, 84]
+    DetAI_predel_5s_R128_ProRes422HQ.mov: [DetAI_PREDEL_5s, 84]
+    DetAI_predel_1s.mp4: [DetAI_PREDEL_1s, 84]
+    DetAI_predel_2s.mp4: [DetAI_PREDEL_2s, 84]
+    DetAI_predel_3s.mp4: [DetAI_PREDEL_3s, 84]
+    DetAI_predel_5s.mp4: [DetAI_PREDEL_5s, 84]
+    DetAI_copyright_2026_nahled.mp4: [DetAI_COPYRIGHT_2026_bila_na_alfe_5s, 84]
+
+znelka:
+  nahradit: M13_lide_a_AI                      # klip ve V1, jehož jméno začíná tímhle, se nahradí znělkou
+  svisle: 04_Exporty/06_Znelky_vertikalni_30/18_A47_Praha_3_VERTIKAL.mp4
+  sirka: 04_Exporty/05_VYSILANI_EBU_R128_ProRes/02_Znelky_79/A47_Praha_3_R128_ProRes422HQ.mov
+
+hudba:                                         # plato hudby z A2 se posune na cílovou hlasitost (poslech na telefonu)
+  pravidla:
+    - {obsahuje: ALL239, db: -24}
+  vychozi_db: -22
+  svist_db: -21
+
+osoby:                                         # id = krátké jméno (používá se všude), jmeno = text jmenovky
+  - id: Martin
+    jmeno: Martin Čermák
+    role: moderator                            # moderátor: jmenovka hned na začátku, záložní mluvčí
+    kotvy: [[0, 20], [62.0, 66.5], [705, 722], [900.6, 911]]   # src úseky, kde JISTĚ mluví jen on
+    hlava_y: 230                               # výchozí výška hlavy v celku (1920×1080)
+    pasmo_y: [40, 400]                         # povolené pásmo středu hlavy při detekci obličeje
+  - id: Tonda
+    jmeno: Antonín Rychecký
+    kotvy: [[118, 135], [151, 181], [207, 221], [338, 359]]
+    hlava_y: 470
+    pasmo_y: [230, 720]
+  - id: Petr
+    jmeno: Petr Závorka
+    kotvy: [[572, 612], [647, 662]]
+    hlava_y: 480
+    pasmo_y: [230, 720]
+  - id: Veronika
+    jmeno: Veronika Petruchová
+    kotvy: [[950, 958], [998, 1003]]
+    hlava_y: 440
+    pasmo_y: [300, 700]
+
+studio:
+  # rozestavení v celku: vodorovná poloha (x ve zdroji 1920×1080) každé osoby; úsek bez od/do = výchozí
+  sestavy:
+    - pozice: {Petr: 650, Martin: 900, Tonda: 1450}
+    - od: 925
+      do: 1045
+      pozice: {Petr: 480, Martin: 860, Veronika: 1050, Tonda: 1400}
+  # kdo právě prezentuje (záložní odhad mluvčího z pohybu, když hlas nerozhodne): [src od, src do, id]
+  prezentuje: [[0, 67, Martin], [67, 551, Tonda], [551, 686, Petr], [686, 925, Martin], [925, 1010, Veronika], [1010, 2000, Martin]]
+
+zabery:
+  delky: {wide: 3.4, close: 3.8, broll: 3.8, screen: 4.4, min: 1.3}   # max. délka úseku podle typu, min. délka
+  # Klasifikace typu záběru: barvy = podíl pixelů v rozsahu HSV (OpenCV: H 0–180, S/V 0–255),
+  # edge = hustota hran, pravidla se zkouší popořadě, první splněné vyhrává (alternativy = NEBO, klíče = A).
+  barvy:
+    red:  {h: [[0, 12], [165, 180]], s: [81, 255], v: [71, 255]}     # červená stěna studia
+    skin: {h: [[3, 20]], s: [61, 189], v: [91, 255]}
+    navy: {h: [[105, 130]], s: [141, 255], v: [0, 99]}                # tmavě modrá DetAI (zapečené logo)
+  pravidla:
+    - {typ: logo, kdyz: [{navy: [0.6, 1], skin: [0, 0.05]}]}
+    - {typ: wide, kdyz: [{red: [0.37, 1]}, {red: [0.28, 1], edge: [0.07, 1], skin: [0.09, 1]}]}
+    - {typ: close, kdyz: [{red: [0.2, 0.37], edge: [0, 0.055]}]}
+  vychozi_typ: screen
+  zapecene_logo: {navy: 0.12, skin_max: 0.05}  # záblesk loga na začátku/konci úseku → vystřihnout / zmrazit
+  # Ruční typy záběrů: src = čas uvnitř záběru (záběr se najde sám); typ wide|close|broll|screen|logo, cx/fy = hlava
+  #   (výpis záběrů s typy: <cil.slozka>/data/zabery.txt; místo src lze dát zaber: číslo – ale čísla se posunou při změně střihu)
+  prepsat:
+    - {src: 22.94, typ: logo}                     # krátký záblesk loga před znělkou
+    - {src: 46.0, typ: broll, cx: 900, fy: 540}   # Jean Philanthrop (dráha hlavy níž v drahy)
+    - {src: 53.0, typ: screen}
+    - {src: 58.0, typ: broll, cx: 900, fy: 540}
+    - {src: 88.5, typ: close, cx: 960, fy: 700}
+    - {src: 604.8, typ: close, cx: 800, fy: 600}
+  # Ruční dráha hlavy pro pohyblivý B-roll: [src čas, x, y] (1920×1080)
+  drahy:
+    - od: 42.0
+      do: 51.5
+      body: [[42.2, 960, 150], [43.0, 960, 150], [44.0, 1000, 380], [44.7, 1020, 400], [45.1, 1140, 420], [45.5, 1000, 380], [45.9, 1000, 340],
+             [46.3, 960, 340], [46.7, 1180, 340], [47.1, 1200, 260], [47.5, 1220, 240], [47.9, 1040, 280], [48.3, 1160, 280], [48.7, 1280, 320],
+             [49.1, 1040, 340], [49.5, 1180, 400], [50.5, 1170, 420], [51.3, 1170, 430]]
+    - od: 57.3
+      do: 60.2
+      body: [[57.4, 1020, 200], [57.7, 1040, 200], [58.0, 1000, 220], [58.2, 1060, 280], [58.3, 1120, 320], [58.5, 1200, 320], [58.7, 1120, 320],
+             [58.8, 1080, 320], [59.0, 1120, 400], [59.2, 1200, 400], [59.3, 1040, 400], [60.1, 1060, 400]]
+
+# Ručně složené úseky (nahradí automatický plán v rozsahu src od–do). svist = záblesk + svist na začátku úseku.
+rucni_zabery:
+  - od: 32.73
+    do: 37.54
+    poznamka: Martin představuje hosty – krátké nájezdy na Tondu a Petra
+    zabery:
+      - {od: 32.73, do: 33.89, typ: wide, cx: 900, fy: 230, spk: Martin, variant: 0}
+      - {od: 33.89, do: 34.58, kind: screen, fit: true}
+      - {od: 34.58, do: 35.22, typ: wide, cx: 1480, fy: 470, spk: Tonda, variant: 1, jump: true, svist: true}
+      - {od: 35.22, do: 35.82, typ: wide, cx: 430, fy: 480, spk: Petr, variant: 1, jump: true, svist: true}
+      - {od: 35.82, do: 37.54, kind: screen, fit: true, svist: true}
+
+louceni: {slovo: díky, od: 1105, vychozi: 1110}   # od prvního slova "díky" po src 1105 celek – všichni vidět
+
+titulky:
+  max_slov: 3
+  max_znaku: 17
+  pauza: 0.35            # delší mezera mezi slovy = nový titulek
+  zlute_od_znaku: 9      # titulek se slovem aspoň takhle dlouhým je žlutý
+
+opravy_prepisu:          # ASR → správně (slova bez ohledu na velikost písmen, fráze až ve VELKÝCH písmenech titulku)
+  slova:
+    klode: Claude
+    kloda: Clauda
+    klodu: Claudu
+    klod: Claude
+    klot: Claude
+    cloda: Clauda
+    cloud: Claude
+    cloudu: Claudu
+    clouda: Clauda
+    clodovy: Claudovi
+    clodovi: Claudovi
+    potratech: Potterových
+    potraťech: Potterových
+    produkci: predikci
+    odměňu: odměňuje
+    suchoprdi: suchopáry
+  fraze:
+    - ["5 -5C", "5.5"]
+    - ["ODMĚŇUJE JEHO", "ODMĚŇUJE HO"]
+    - ["HLEDRY SE", "HLEDÁŠ SE"]
+    - ["KOHOLEK", "KOLEGO"]
+    - ["PŘEDSEBRNODÁVKY", "PŘEDSEBEVĚDOMÉ"]
+
+listy:                   # texty lišt z V2 (MOGRT)
+  zkratky:
+    "Habituace: mozek se začne nudit": "Habituace: mozek se nudí"
+    "AI prošla kód a prezentaci udělala sama": "AI udělala prezentaci sama"
+    "Prompt: Ultimátní cestovní kancelář": "Prompt: Cestovní kancelář"
+    "AI prezentace": "Prezentace!"
+  velke: ["AI prezentace", "Prezentace!"]      # velký zvýrazňovač nahoře
+  vyradit: ["AI udělala prezentaci sama", "Dům v Praze ze dvou promptů", "Která prezentace vyhrála?", "Prompt: Cestovní kancelář"]
+  cta:
+    - {obsahuje: komentář, text: Napište do komentářů, velke: DETAIL, delka: 4.2}
+    - {obsahuje: pod videem, text: Prompt najdete pod videem, velke: "", delka: 3.4}
+
+kapitoly:                # src = začátek kapitoly ve zdroji
+  - {src: 67.05, cislo: "01", kdo: Tonda, nazev: Gemini vs. Claude}
+  - {src: 551.13, cislo: "02", kdo: Petr, nazev: Prezentace z kódu}
+  - {src: 710.6, cislo: "03", kdo: Martin, nazev: Dům ze dvou promptů}
+  - {src: 900.55, cislo: "04", kdo: Verdikt, nazev: "Kdo vyhrál?"}
+  - {src: 1033.3, cislo: "05", kdo: Bonus, nazev: Cestovní kancelář}
+
+fotky:                   # src = čas slova ve zdroji; rezim full (přes celou plochu) | corner (karta vpravo nahoře)
+  slozka: 'O:\Detail TV\01\AE_vertical\foto'   # licence: AE_vertical\foto\_zdroje.json (Bing = ověřit před vysíláním)
+  polozky:
+    - {id: zehleni, soubor: zehleni.jpg, src: 4.95, delka: 1.4, rezim: full}
+    - {id: jobs, soubor: jobs.jpg, src: 76.45, delka: 2.4, rezim: corner}
+    - {id: pes, soubor: pes.jpg, src: 166.8, delka: 1.8, rezim: full}
+    - {id: doga, soubor: doga.jpg, src: 231.95, delka: 1.15, rezim: corner}
+    - {id: pitbull, soubor: pitbull.jpg, src: 233.1, delka: 1.25, rezim: corner}
+    - {id: ovcak, soubor: ovcak.jpg, src: 234.35, delka: 1.4, rezim: corner}
+    - {id: dopamin, soubor: dopamin.jpg, src: 367.5, delka: 2.6, rezim: corner}
+    - {id: praha, soubor: praha.jpg, src: 716.4, delka: 2.0, rezim: corner}
+    - {id: smichov, soubor: smichov.jpg, src: 721.9, delka: 1.5, rezim: corner}
+    - {id: japonsko, soubor: japonsko.jpg, src: 732.2, delka: 1.7, rezim: full}
+    - {id: bydleni, soubor: bydleni.jpg, src: 853.9, delka: 1.8, rezim: full}
+    - {id: harry, soubor: harry.jpg, src: 1048.0, delka: 2.4, rezim: corner}
+    - {id: taxi, soubor: taxi.jpg, src: 1079.8, delka: 1.2, rezim: corner}
+    - {id: metro, soubor: metro.jpg, src: 1081.0, delka: 1.7, rezim: corner}
+    - {id: bus, soubor: bus.jpg, src: 1086.4, delka: 2.2, rezim: corner}
+    - {id: mozek, soubor: mozek.jpg, src: 333.5, delka: 2.0, rezim: corner}
+    - {id: londyn, soubor: londyn.jpg, src: 1045.6, delka: 1.5, rezim: corner}
+    - {id: hotel, soubor: hotel.jpg, src: 1076.8, delka: 1.9, rezim: corner}
+    - {id: libry, soubor: libry.jpg, src: 1084.3, delka: 1.9, rezim: corner}
+
+vtipy:                   # koruna dopadne na hlavu osoby (najde se záběr osoby nejblíž "stred")
+  - {typ: koruna, osoba: Veronika, obrazek: 'O:\Detail TV\01\AE_vertical\foto\koruna.png', cas: 1012.9, okno: [1008, 1022], stred: 1013.5, delka: 2.4}
+
+render:
+  rs_sablona: Best Settings
+  om_sablona: H.264 - Match Render Settings - 15 Mbps
+  zvuk_db: -1            # ffmpeg přebalení: volume, AAC 256k, faststart
+  cil_lufs: -14          # jen kontrola (ebur128), nic se nemění

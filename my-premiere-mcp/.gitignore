@@ -1,0 +1,29 @@
+# závislosti a nástroje (stáhne/nainstaluje install.ps1)
+node_modules/
+.venv/
+tools/*
+
+# stažené modely (viz install.ps1, README tabulka modelů)
+models/
+
+# offline instalační balík (~15 GB: modely, llama.cpp, wheels, node_modules) – generuje se, nepatří do gitu
+INSTALL/offline/
+
+# běhová cache (přepisy, diarizace, analýzy, joby, logy)
+cache/
+
+# testovací data a Premiere projekt (velké, generované/stažené skripty, mění se při každém běhu)
+test/
+
+# lokální stav nástrojů
+.claude/
+panel/.debug
+INSTALL/install-log.txt
+*.bak-*
+*.log
+__pycache__/
+*.pyc
+
+# podepsany panel: certifikat a balicek (scripts/build-zxp.ps1) - tajne / generovane
+INSTALL/cert/
+INSTALL/*.zxp

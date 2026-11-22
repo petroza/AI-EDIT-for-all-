@@ -1,0 +1,113 @@
+[
+  {
+    "name": "talk-A-20s",
+    "sequence": "talk_A_kariera_5min",
+    "target": 20,
+    "instruction": "Nejsilnější výrok hosty o její cestě k televizi, celá myšlenka, bez moderátora.",
+    "reference": [
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "acceptable": [
+      [
+        56,
+        57,
+        58
+      ]
+    ]
+  },
+  {
+    "name": "talk-B-10s",
+    "sequence": "talk_B_mama_5min",
+    "target": 10,
+    "instruction": "Nejsilnější výrok hosty, celá myšlenka, která obstojí sama o sobě, bez moderátora.",
+    "reference": [
+      29,
+      30,
+      31
+    ],
+    "acceptable": [
+      [
+        39,
+        40
+      ]
+    ]
+  },
+  {
+    "name": "talk-B-20s",
+    "sequence": "talk_B_mama_5min",
+    "target": 20,
+    "instruction": "Nejsilnější výrok hosty, celá myšlenka, která obstojí sama o sobě, bez moderátora.",
+    "reference": [
+      28,
+      29,
+      30,
+      31
+    ],
+    "acceptable": [
+      [
+        27,
+        28,
+        29
+      ]
+    ]
+  },
+  {
+    "name": "talk-cely-30s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 30,
+    "instruction": "Třicetisekundový sestřih: nejsilnější a nejzajímavější výrok hosta – celá myšlenka, která obstojí sama o sobě, bez moderátora.",
+    "reference": [
+      237,
+      238,
+      239,
+      240
+    ],
+    "acceptable": [
+      [
+        222,
+        223,
+        224
+      ]
+    ]
+  },
+  {
+    "name": "talk-upoutavka-10s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 10,
+    "instruction": "Upoutávka na rozhovor ve stylu zpravodajství: krátké silné údery, hák hned na začátku, dynamika, bez moderátorky.",
+    "reference": [],
+    "acceptable": [],
+    "note": "upoutávka: hodnotí se délka, čisté hranice a ručně obsah (hák, bez zkreslení kontextu)"
+  },
+  {
+    "name": "talk-upoutavka-20s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 20,
+    "instruction": "Upoutávka na rozhovor ve stylu zpravodajství: krátké silné údery, hák hned na začátku, dynamika, bez moderátorky.",
+    "reference": [],
+    "acceptable": [],
+    "note": "upoutávka: hodnotí se délka, čisté hranice a ručně obsah (hák, bez zkreslení kontextu)"
+  },
+  {
+    "name": "debata-vyrok-10s",
+    "target": 10,
+    "instruction": "Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.",
+    "sequence": "debata_6min",
+    "reference": [],
+    "acceptable": [],
+    "note": "debata (2 hosté + moderátor), 6 min z _dev-data/test/fresh/debata-nova.mp4 od 600 s; kontrola zobecnění mimo Talk"
+  },
+  {
+    "name": "debata-upoutavka-15s",
+    "target": 15,
+    "instruction": "Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.",
+    "sequence": "debata_6min",
+    "reference": [],
+    "acceptable": [],
+    "note": "debata (2 hosté + moderátor), 6 min z _dev-data/test/fresh/debata-nova.mp4 od 600 s; kontrola zobecnění mimo Talk"
+  }
+]

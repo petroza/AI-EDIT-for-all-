@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>MY Premiere MCP</title>
+<style>
+  :root { --bg:#1d1d1d; --panel:#262626; --line:#353535; --text:#d6d6d6; --dim:#8a8a8a; --accent:#6f8cff; --ok:#43c26b; --err:#e0584f; --tool:#c9a54a; }
+  * { box-sizing:border-box; }
+  * { scrollbar-width:thin; scrollbar-color:var(--line) var(--bg); }
+  *::-webkit-scrollbar { width:9px; height:9px; }
+  *::-webkit-scrollbar-track { background:var(--bg); }
+  *::-webkit-scrollbar-thumb { background:var(--line); border-radius:5px; border:2px solid var(--bg); background-clip:padding-box; }
+  *::-webkit-scrollbar-thumb:hover { background:var(--dim); background-clip:padding-box; }
+  *::-webkit-scrollbar-button { display:none; height:0; width:0; }
+  *::-webkit-scrollbar-corner { background:var(--bg); }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--text); font:12px/1.45 "Segoe UI",Tahoma,sans-serif; }
+  body { display:flex; flex-direction:column; padding:8px; gap:8px; }
+  header { display:flex; align-items:center; gap:8px; }
+  header h1 { font-size:13px; margin:0; font-weight:600; flex:1; }
+  .dot { width:9px; height:9px; border-radius:50%; background:var(--dim); flex:none; }
+  .dot.on { background:var(--ok); } .dot.err { background:var(--err); }
+  #stav { color:var(--dim); }
+  .pulse { display:none; width:8px; height:8px; border-radius:50%; flex:none; }
+  .pulse.on { display:inline-block; animation: pulse-anim 1s ease-in-out infinite; }
+  @keyframes pulse-anim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(1.7); } }
+  #workerPulse.on { background:var(--ok); animation: glow-anim 1.2s ease-in-out infinite; }
+  /* jen jas a záře, velikost stejná (zvětšování rozhazovalo zarovnání řádku) */
+  @keyframes glow-anim { 0%,100% { opacity:1; box-shadow:0 0 6px 1px rgba(67,194,107,.85); } 50% { opacity:.4; box-shadow:0 0 0 0 rgba(67,194,107,0); } }
+  .ai-icon { display:none; width:15px; height:15px; flex:none; }
+  .ai-icon.on { display:inline-block; }
+  .ai-icon.on svg { display:block; transform-origin:center; }
+  #aiClaude.on svg { animation: claude-breathe 1.6s ease-in-out infinite; }
+  #aiGpt.on svg { animation: spin-anim 1.4s linear infinite; }
+  @keyframes spin-anim { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+  @keyframes claude-breathe { 0%,100% { transform:scale(.8) rotate(0deg); opacity:.55; } 50% { transform:scale(1.15) rotate(20deg); opacity:1; } }
+  #mic.recording { background:var(--err); border-color:var(--err); color:#fff; animation: pulse-anim 1s ease-in-out infinite; }
+  .row { display:flex; gap:6px; align-items:center; }
+  textarea { width:100%; min-height:74px; resize:vertical; background:var(--panel); color:var(--text); border:1px solid var(--line); border-radius:4px; padding:6px; font:inherit; }
+  button { white-space:nowrap; flex:none; }
+  select, button { background:var(--panel); color:var(--text); border:1px solid var(--line); border-radius:4px; padding:4px 8px; font:inherit; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  button:disabled { opacity:.5; }
+  #out { flex:1; overflow:auto; background:#151515; border:1px solid var(--line); border-radius:4px; padding:6px; white-space:pre-wrap; word-break:break-word; }
+  #out .ai { color:var(--text); margin:4px 0; } #out .tool { color:var(--tool); } #out .err { color:var(--err); } #out .dim { color:var(--dim); } #out .me { color:var(--accent); margin-top:8px; }
+  #out:not(.show-tools) .tool { display:none; }
+  details { color:var(--dim); } details pre { max-height:120px; overflow:auto; margin:4px 0 0; white-space:pre-wrap; }
+  .grow { flex:1; }
+  .pill { border-radius:10px; padding:1px 9px; font-size:11px; color:var(--dim); }
+  .pill.on { color:var(--ok); border-color:var(--ok); }
+  .pill { display:inline-flex; align-items:center; gap:5px; }
+  .pill .ld { width:7px; height:7px; border-radius:50%; border:1.5px solid currentColor; box-sizing:border-box; flex:none; }
+  .pill.on .ld { background:currentColor; }
+  .actions { display:flex; gap:6px; margin-left:auto; }
+  #dropRow { border:1px dashed transparent; border-radius:4px; padding:2px; margin:-3px; }
+  #dropRow.drag { border-color:var(--accent); background:rgba(111,140,255,.12); }
+  /* průběh úlohy Workeru */
+  #workerBar { display:none; height:4px; background:var(--line); border-radius:2px; overflow:hidden; margin-top:-4px; }
+  #workerBar.on { display:block; }
+  #workerBar i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),#9fb3ff); transition:width .6s; }
+  /* fronta zadání */
+  #queue { display:none; border:1px solid var(--line); border-radius:4px; background:#181818; padding:4px 6px; max-height:140px; overflow:auto; }
+  #queue.on { display:block; }
+  #queue .qhead { display:flex; gap:8px; align-items:center; color:var(--dim); font-size:11px; margin-bottom:2px; }
+  #queue .qhead span:first-child { color:var(--text); font-weight:600; }
+  #queue .qhead a { color:var(--accent); text-decoration:none; } #queue .qhead a:first-of-type { margin-left:auto; }
+  .qi { display:flex; gap:6px; align-items:center; padding:2px 0; border-top:1px solid #222; font-size:11px; }
+  .qi:first-child { border-top:0; }
+  .qi .st { width:14px; text-align:center; flex:none; }
+  .qi .tag { color:var(--dim); flex:none; }
+  .qi .tx { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qi .x { cursor:pointer; color:var(--dim); flex:none; padding:0 3px; } .qi .x:hover { color:var(--err); }
+  .qi.running .st { color:var(--accent); animation: glow-anim 1.2s ease-in-out infinite; }
+  .qi.done .st { color:var(--ok); } .qi.error .st { color:var(--err); } .qi.done .tx, .qi.error .tx { color:var(--dim); }
+  /* rychlá volba délky */
+  .chips { display:flex; gap:4px; align-items:center; flex-wrap:wrap; }
+  .chip { border-radius:12px; padding:2px 10px; color:var(--dim); }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  /* vytížení počítače */
+  #res { display:flex; gap:10px; flex-wrap:wrap; font-size:11px; color:var(--dim); }
+  #res .m { display:flex; align-items:center; gap:4px; }
+  #res .bar { width:44px; height:5px; background:var(--line); border-radius:3px; overflow:hidden; }
+  #res .bar i { display:block; height:100%; width:0; background:var(--ok); transition:width .4s; }
+  #res .bar i.warn { background:var(--tool); } #res .bar i.hot { background:var(--err); }
+</style>
+</head>
+<body>
+  <header>
+    <span id="dot" class="dot"></span>
+    <h1>MY Premiere MCP</h1>
+    <button id="claudeLink" class="pill" title="Stav připojení aplikace Claude k pluginu"><span class="ld"></span>Připojit Claude</button>
+    <span id="stav">startuji…</span>
+    <span id="aiClaude" class="ai-icon" title="Claude pracuje">
+      <svg viewBox="0 0 24 24" width="15" height="15">
+        <g fill="#D97757">
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(45 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(90 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(135 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(180 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(225 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(270 12 12)"/>
+          <ellipse cx="12" cy="6.2" rx="1.5" ry="4.6" transform="rotate(315 12 12)"/>
+        </g>
+      </svg>
+    </span>
+    <span id="aiGpt" class="ai-icon" title="Codex (GPT) pracuje">
+      <svg viewBox="0 0 24 24" width="15" height="15">
+        <g fill="none" stroke="#10A37F" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="12" cy="5.8" r="1.4" fill="#10A37F" stroke="none"/>
+          <circle cx="17.6" cy="9" r="1.4" fill="#10A37F" stroke="none"/>
+          <circle cx="17.6" cy="15" r="1.4" fill="#10A37F" stroke="none"/>
+          <circle cx="12" cy="18.2" r="1.4" fill="#10A37F" stroke="none"/>
+          <circle cx="6.4" cy="15" r="1.4" fill="#10A37F" stroke="none"/>
+          <circle cx="6.4" cy="9" r="1.4" fill="#10A37F" stroke="none"/>
+          <path d="M12 5.8 L17.6 9 L17.6 15 L12 18.2 L6.4 15 L6.4 9 Z"/>
+        </g>
+      </svg>
+    </span>
+  </header>
+
+  <div id="worker" style="color:var(--dim);font-size:11px;display:flex;align-items:center;gap:6px">
+    <span id="workerPulse" class="pulse" title="Lokální Worker pracuje"></span>
+    <span id="workerText">Worker: …</span>
+    <button id="stopAll" style="margin-left:auto;padding:1px 8px;font-size:11px" title="Zastaví všechny AI procesy – Hermes (i z jiné složky, např. O:\Hermes), Ollamu, lokální modely a Worker s Whisperem – a uvolní grafiku a paměť pro Premiere. Rozpracovaná úloha se přeruší. Premiere zůstane běžet.">⏹ Zastavit AI</button>
+  </div>
+  <div id="workerBar" title="Průběh úlohy lokálního Workeru"><i></i></div>
+
+  <div id="res" title="Vytížení počítače (obnovuje se každé 2 s). VRAM = paměť grafické karty – když dojde, lokální modely (Whisper, Hermes) se zpomalí nebo spadnou a Premiere může zamrznout.">
+    <span class="m" id="resGpu" style="display:none">GPU <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resVram" style="display:none">VRAM <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resRam">RAM <span class="bar"><i></i></span> <b class="v">–</b></span>
+    <span class="m" id="resCpu">CPU <span class="bar"><i></i></span> <b class="v">–</b></span>
+  </div>
+
+  <div id="out"></div>
+
+  <div id="queue" title="Fronta zadání – běží postupně jedno po druhém (Premiere i grafika zvládnou bezpečně jen jednu úlohu najednou)">
+    <div class="qhead"><span>Fronta</span><span id="qCount"></span>
+      <a href="#" id="qPause">pozastavit</a><a href="#" id="qClear">vyčistit hotové</a></div>
+    <div id="qList"></div>
+  </div>
+
+  <div class="chips" title="Cílová délka výsledného střihu. Přidá se k zadání – nemusíš ji psát do textu. Druhým klikem volbu zrušíš.">
+    <span style="color:var(--dim)">Délka:</span>
+    <button class="chip" data-sec="10">10 s</button>
+    <button class="chip" data-sec="20">20 s</button>
+    <button class="chip" data-sec="30">30 s</button>
+    <label class="row" style="margin-left:8px;color:var(--dim)" title="Formát výsledku. Jiný než 16:9 = po střihu se z nové sekvence automaticky udělá verze pro sociální sítě (Premiere Auto Reframe sleduje obličej, plné rozlišení, např. 1080×1920). Původní 16:9 zůstává.">Formát:
+      <select id="format">
+        <option value="16:9">16:9 TV / YouTube</option>
+        <option value="9:16">9:16 Reels · TikTok · Shorts</option>
+        <option value="4:5">4:5 Instagram / FB příspěvek</option>
+        <option value="1:1">1:1 čtverec</option>
+      </select>
+    </label>
+    <button class="chip" id="reframeNow" title="Převede hned aktivní sekvenci (Zdroj vpravo) do formátu pro sítě – Auto Reframe podle obličeje, plné rozlišení. Vznikne nová sekvence, původní zůstává.">📱 Převést aktivní</button>
+    <span style="margin-left:auto;color:var(--dim);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%">
+      Zdroj: <b id="srcName" style="color:var(--text);font-weight:600">…</b></span>
+  </div>
+
+  <div class="chips" id="templates" title="Rychlá zadání – klik vyplní zadání, uprav ho a spusť (délku a formát vyber vedle)">
+    <span style="color:var(--dim)">Rychle:</span>
+    <button class="chip tpl" data-len="20" data-text="Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.">💬 Výrok</button>
+    <button class="chip tpl" data-len="20" data-text="Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.">🎬 Upoutávka</button>
+    <button class="chip tpl" data-len="" data-text="Zkrácená verze rozhovoru na 3 minuty: nejzajímavější myšlenky v původním pořadí, otázky moderátora jen tam, kde jsou potřeba. Vyhoď přeřeknutí a opakování.">✂ Zkrácená verze</button>
+    <button class="chip tpl" data-len="" data-text="Vystřihni hluchá místa a dlouhé pauzy, ať řeč plyne – krátké pauzy na nádech nech.">🔇 Bez pauz</button>
+  </div>
+
+  <textarea id="prompt" lang="cs" spellcheck="false" placeholder="Např.: Přepiš zvuk aktivní sekvence a udělej novou sekvenci jen s větami o cenách, ať to dává smysl. Vyhoď přeřeknutí a dlouhé pauzy."></textarea>
+  <div class="row" style="flex-wrap:wrap">
+    <select id="agent">
+      <option value="claude">Claude Code</option>
+      <option value="claudeapp" title="Předá zadání desktopové aplikaci Claude (nová relace se složkou pluginu) – funguje i na firemním účtu, kde je příkazový Claude Code zakázaný">Claude (aplikace)</option>
+      <option value="codex">Codex (GPT)</option>
+      <option value="hermes">Hermes (lokálně, zdarma)</option>
+    </select>
+    <select id="model" title="Model">
+      <option value="">výchozí model</option>
+      <option value="opus" data-agent="claude">Opus</option>
+      <option value="sonnet" data-agent="claude" selected>Sonnet</option>
+      <!-- Ověřeno naostro 2026-09-17 (`codex debug models --bundled`, visibility:"list"); při rozjetí modelů zkontroluj znovu. -->
+      <option value="gpt-6-astra" data-agent="codex">GPT-6-Astra (drahé)</option>
+      <option value="gpt-5.6-sol" data-agent="codex">GPT-5.6-Sol</option>
+      <option value="gpt-5.6-terra" data-agent="codex">GPT-5.6-Terra</option>
+      <option value="gpt-5.6-luna" data-agent="codex">GPT-5.6-Luna</option>
+      <option value="gpt-5.5" data-agent="codex">GPT-5.5</option>
+      <option value="gpt-5.2" data-agent="codex">GPT-5.2</option>
+    </select>
+    <label class="row" title="Navázat na předchozí konverzaci"><input type="checkbox" id="pokracovat" checked> navázat</label>
+    <label class="row" style="display:none" title="Zobrazit i technické volání nástrojů (ladění)"><input type="checkbox" id="nastroje"> nástroje</label>
+    <button id="mic" title="Nadiktovat zadání mikrofonem (lokálně, Whisper) - klikni, mluv, klikni znovu">🎤</button>
+    <span class="actions">
+    <button id="undo" title="Smaže sekvence, které vytvořilo poslední zadání (opakovaným klikem i ty předchozí). Původní střih ani média se nemění.">↶ Zpět</button>
+    <button id="stop" disabled>Stop</button>
+    <button id="enqueue" title="Přidá zadání do fronty (s vybraným agentem, délkou a aktuální sekvencí) – fronta běží sama po jednom, můžeš rovnou psát další. Ctrl+Enter.">+ Do fronty</button>
+    <button id="run" class="primary" title="Spustí hned (Enter). Když něco běží, zařadí se do fronty.">Spustit</button>
+    </span>
+  </div>
+
+  <div class="row" style="flex-wrap:wrap">
+    <span style="color:var(--dim)">Titulky:</span>
+    <label class="row" title="Max. znaků na jeden řádek titulku">znaků/řádek
+      <select id="ccChars">
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40" selected>40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+      </select>
+    </label>
+    <label class="row" title="Počet řádků jednoho titulku">řádky
+      <select id="ccLines">
+        <option value="1">jednořádkové</option>
+        <option value="2" selected>dvouřádkové</option>
+      </select>
+    </label>
+    <label class="row" title="Jazyk titulků: jen přepis (jak se mluví), nebo rovnou přeložené do češtiny (lokální model, zdarma) – řeč může být v jakémkoli jazyce i jejich mixu">jazyk
+      <select id="ccLang">
+        <option value="" selected>jen přepis</option>
+        <option value="cs">překlad do češtiny</option>
+      </select>
+    </label>
+    <button id="addCaptions" title="Vygeneruje titulky z přepisu podle aktuálního stavu sekvence (případně přeložené do češtiny) a přidá je do Premiery jako titulkovou stopu. Spustit až po hotovém střihu.">💬 Přidat titulky</button>
+  </div>
+  <div class="row" id="dropRow">
+    <button id="importVideo" title="Vloží video do projektu. MKV/WebM nejdřív převede na MP4 (na MKV Premiere padá už při importu); obraz se jen přebalí bez ztráty, poškozený soubor se opraví překódováním. Přepis se dělá z originálu, nic se nepřepisuje znovu.">🎬 Vložit video…</button>
+    <span style="color:var(--dim)">nebo sem přetáhni soubor · MKV se samo převede na MP4</span>
+  </div>
+
+  <details>
+    <summary>Most (port <span id="port"></span>) · požadavků: <span id="pocet">0</span> · <a href="#" id="reload" style="color:var(--accent)">znovu načíst host.jsx</a></summary>
+    <pre id="log"></pre>
+  </details>
+
+  <script src="main.js"></script>
+</body>
+</html>
