@@ -1,0 +1,9 @@
+{
+  "aiRoot": "O:\\ADOBEPREMIERESTRIH",
+  "bridgePort": "auto",
+  "ffmpeg": "",
+  "ffprobe": "",
+  "exportDir": "",
+  "videoEncoder": "libx264",
+  "crf": 18
+}

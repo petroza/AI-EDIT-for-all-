@@ -1,0 +1,9 @@
+{
+  // PZ AI Cut Web – jen statické soubory (web/dist) na Cloudflare Pages: https://pz-ai-cut.pages.dev
+  // Žádný server, žádná data uživatelů: vše běží v prohlížeči a média i projekty zůstávají na počítači uživatele.
+  // Nasazení: node web/deploy.js  (NE `wrangler deploy` – to by vytvořilo Worker s adresou se jménem účtu)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pz-ai-cut",
+  "pages_build_output_dir": "dist",
+  "compatibility_date": "2026-10-23"
+}

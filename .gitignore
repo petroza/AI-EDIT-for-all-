@@ -1,0 +1,16 @@
+node_modules/
+src/ai/main.js
+src/ai/index.html
+*.tnproj.tmp
+
+.env
+web/.env
+web/dist/
+web/test-out/
+test/media/
+test/asr-ref/*.mp4
+
+# interni: tymove reporty se snimky vysilani, ukazky prepisu TN
+team/
+test/asr-ref/
+.wrangler/
