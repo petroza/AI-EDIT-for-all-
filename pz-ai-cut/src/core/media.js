@@ -12,6 +12,7 @@ for (const d of ['proxy', 'thumbs', 'wave', 'export', 'tmp']) fs.mkdirSync(path.
 
 let cfg = {};
 try { cfg = JSON.parse(fs.readFileSync(path.join(APP_ROOT, 'config.json'), 'utf8')); } catch (e) { /* výchozí */ }
+cfg.aiRoot = require('./airoot').resolveAiRoot(cfg.aiRoot, APP_ROOT);
 
 function findTool(name) {
   const own = path.join(APP_ROOT, 'tools', 'ffmpeg', name + '.exe');

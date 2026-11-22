@@ -9,7 +9,10 @@ const APP = path.resolve(__dirname, '..');
 const OUT = path.join(APP, 'src', 'ai');
 
 function readCfg() {
-  try { return JSON.parse(fs.readFileSync(path.join(APP, 'config.json'), 'utf8')); } catch (e) { return {}; }
+  let c = {};
+  try { c = JSON.parse(fs.readFileSync(path.join(APP, 'config.json'), 'utf8')); } catch (e) { /* výchozí */ }
+  c.aiRoot = require('../src/core/airoot').resolveAiRoot(c.aiRoot, APP);
+  return c;
 }
 
 function patchMain(js) {
