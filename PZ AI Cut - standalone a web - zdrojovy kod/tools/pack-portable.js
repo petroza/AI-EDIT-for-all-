@@ -10,7 +10,7 @@ const APP = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const zip = args.includes('--zip');
 const repoRoot = path.join(APP, '..');
-const defDst = fs.existsSync(path.join(repoRoot, 'START.bat')) ? path.join(repoRoot, 'PZ AI Cut') : path.join(APP, 'dist-portable', 'PZ AI Cut');
+const defDst = fs.existsSync(path.join(repoRoot, 'START.bat')) ? path.join(repoRoot, 'PZ AI Cut - hotova aplikace pro Windows') : path.join(APP, 'dist-portable', 'PZ AI Cut');
 const DST = path.resolve(args.find((a) => !a.startsWith('--')) || defDst);
 const ELECTRON = path.join(APP, 'node_modules', 'electron', 'dist');
 

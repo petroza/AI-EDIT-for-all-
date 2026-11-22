@@ -1,0 +1,10 @@
+t=0.30 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(456, 1270, 622, 1327)  -> titulky 66.1-69.1 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(465, 498, 94, 170)]; prekryv titulku s oblicejem=False
+t=1.00 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(306, 1173, 771, 1327)  -> titulky 61.1-69.1 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(465, 483, 94, 176)]; prekryv titulku s oblicejem=False
+t=2.50 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(282, 1270, 796, 1344)  -> titulky 66.1-70.0 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(303, 419, 385, 532), (159, 991, 338, 484)]; prekryv titulku s oblicejem=True
+t=4.00 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(280, 1173, 798, 1343)  -> titulky 61.1-69.9 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(491, 452, 111, 227)]; prekryv titulku s oblicejem=False
+t=5.00 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(298, 1173, 774, 1327)  -> titulky 61.1-69.1 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(450, 487, 103, 200)]; prekryv titulku s oblicejem=False
+t=6.50 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(199, 1173, 878, 1345)  -> titulky 61.1-70.1 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(446, 476, 99, 190)]; prekryv titulku s oblicejem=False
+t=8.50 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(207, 1173, 870, 1344)  -> titulky 61.1-70.0 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(304, 389, 373, 528)]; prekryv titulku s oblicejem=False
+t=11.00 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(241, 1173, 836, 1344)  -> titulky 61.1-70.0 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(333, 341, 391, 528)]; prekryv titulku s oblicejem=False
+t=13.50 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(359, 1173, 723, 1344)  -> titulky 61.1-70.0 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(461, 499, 94, 191)]; prekryv titulku s oblicejem=False
+t=15.20 titul(x0,y0,x1,y1)=(266, 248, 815, 431)  titulky=(347, 1173, 728, 1327)  -> titulky 61.1-69.1 % vysky, nadpis od 12.9 %; obliceje(x,y,w,h)=[(265, 428, 432, 587)]; prekryv titulku s oblicejem=False

@@ -1,0 +1,8 @@
+t=2.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(223, 1106, 856, 1203)  -> titulky 81.9-89.1 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(355, 235, 309, 446)]; prekryv titulku s oblicejem=False
+t=9.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(297, 1106, 782, 1203)  -> titulky 81.9-89.1 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(485, 347, 69, 140)]; prekryv titulku s oblicejem=False
+t=13.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(229, 1106, 848, 1213)  -> titulky 81.9-89.9 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(360, 234, 311, 432)]; prekryv titulku s oblicejem=False
+t=17.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(233, 1106, 846, 1214)  -> titulky 81.9-89.9 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(332, 199, 318, 408)]; prekryv titulku s oblicejem=False
+t=20.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(332, 1106, 745, 1203)  -> titulky 81.9-89.1 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(353, 236, 289, 433)]; prekryv titulku s oblicejem=False
+t=25.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(278, 1106, 802, 1213)  -> titulky 81.9-89.9 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(347, 226, 297, 434)]; prekryv titulku s oblicejem=False
+t=30.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(215, 1106, 865, 1214)  -> titulky 81.9-89.9 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(484, 329, 88, 142)]; prekryv titulku s oblicejem=False
+t=33.00 titul(x0,y0,x1,y1)=(139, 93, 941, 144)  titulky=(234, 1106, 845, 1203)  -> titulky 81.9-89.1 % vysky, nadpis od 6.9 %; obliceje(x,y,w,h)=[(510, 323, 91, 150)]; prekryv titulku s oblicejem=False

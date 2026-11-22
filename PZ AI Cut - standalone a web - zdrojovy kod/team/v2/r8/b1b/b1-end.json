@@ -1,0 +1,437 @@
+{
+ "app": 8791,
+ "variant": "end",
+ "steps": [
+  {
+   "name": "01-v5-titulky",
+   "playhead": 16.32,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    }
+   ],
+   "ins": null
+  },
+  {
+   "name": "02-v2-vlozeno",
+   "playhead": 36.2,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    },
+    {
+     "start": 16.32,
+     "in": 1550.92,
+     "out": 1570.8,
+     "dur": 19.88
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    }
+   ],
+   "ins": null
+  },
+  {
+   "name": "03-titulky-doplneno",
+   "playhead": 36.2,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    },
+    {
+     "start": 16.32,
+     "in": 1550.92,
+     "out": 1570.8,
+     "dur": 19.88
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    },
+    {
+     "s": 16.32,
+     "e": 19.1,
+     "t": "tak neříkat tyhle fádní věci, často"
+    },
+    {
+     "s": 19.1,
+     "e": 21.95,
+     "t": "zahojí, jí je teď líp, tak to mělo"
+    },
+    {
+     "s": 21.95,
+     "e": 24.06,
+     "t": "být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 24.06,
+     "e": 25.65,
+     "t": "Prostě my ani nepotřebujeme"
+    },
+    {
+     "s": 25.65,
+     "e": 27.18,
+     "t": "nic slyšet, my potřebujeme"
+    },
+    {
+     "s": 27.18,
+     "e": 28.31,
+     "t": "jenom toho člověka,"
+    },
+    {
+     "s": 28.31,
+     "e": 30.38,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 30.38,
+     "e": 31.36,
+     "t": "dlouho neozýváme,"
+    },
+    {
+     "s": 31.36,
+     "e": 33.5,
+     "t": "aby zavolal a řekl: „Já jedu za tebou,"
+    },
+    {
+     "s": 33.5,
+     "e": 35.09,
+     "t": "já ti vezu jídlo, nebo pojď,"
+    },
+    {
+     "s": 35.09,
+     "e": 36.2,
+     "t": "kouknem se na film.“"
+    }
+   ],
+   "ins": null
+  },
+  {
+   "name": "04-zpet-titulky",
+   "playhead": 36.2,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    },
+    {
+     "start": 16.32,
+     "in": 1550.92,
+     "out": 1570.8,
+     "dur": 19.88
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    }
+   ],
+   "ins": null
+  },
+  {
+   "name": "05-zpet-vlozeni",
+   "playhead": 36.2,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    },
+    {
+     "start": 16.32,
+     "in": 1550.92,
+     "out": 1570.8,
+     "dur": 19.88
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    }
+   ],
+   "ins": null
+  },
+  {
+   "name": "06-znovu-vlozeni",
+   "playhead": 36.2,
+   "clips": [
+    {
+     "start": 0,
+     "in": 1199.7,
+     "out": 1216.02,
+     "dur": 16.32
+    },
+    {
+     "start": 16.32,
+     "in": 1550.92,
+     "out": 1570.8,
+     "dur": 19.88
+    }
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.84,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.84,
+     "e": 4.1,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.1,
+     "e": 6.17,
+     "t": "Absolutně, my jsme nechápali,"
+    },
+    {
+     "s": 6.17,
+     "e": 7.06,
+     "t": "co se stalo."
+    },
+    {
+     "s": 7.06,
+     "e": 9.23,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.23,
+     "e": 12,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 12,
+     "e": 15.09,
+     "t": "A jediné, co nám zbylo, tak se s tím"
+    },
+    {
+     "s": 15.09,
+     "e": 16.32,
+     "t": "poprat, zvládnout to."
+    }
+   ],
+   "ins": null
+  }
+ ],
+ "foot1": "4 věty · 0:16 ▶ Přehrát Vložit do nové sekvence ▾",
+ "cf1": "Vytvořit titulky | ",
+ "foot2": "4 věty · 0:20▶ PřehrátPřidat na konec sekvence▾",
+ "insLabel2": "Přidat na konec sekvence",
+ "cf2": "Doplnit titulky | Sekvence už má titulky (8). Doplní se jen úseku bez titulků (1) – hotové titulky i tvoje opravy zůstanou, jak jsou. Vrátíš to Ctrl+Z.",
+ "checks": {
+  "noShortClip": true,
+  "v5WholeFirst": true,
+  "v5CapsSameRel": true,
+  "noCapOverForeign": true,
+  "secondCaptionsAdded": true,
+  "v5CapsKept": true,
+  "undoCaptions": true,
+  "undoInsert": false,
+  "redoInsert": true
+ }
+}

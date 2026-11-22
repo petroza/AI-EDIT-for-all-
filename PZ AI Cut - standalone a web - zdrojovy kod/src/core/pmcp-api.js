@@ -299,7 +299,7 @@ function createApi(project, hooks = {}) {
   api.reframeSequence = async (a) => {
     const src = getSeq(a.sequence);
     const num = a.num || 9, den = a.den || 16;
-    if (src.width / src.height < Math.max(1.2, num / den + 0.02)) {
+    if (src.width / src.height < num / den + 0.02) { // ze širší sekvence (i 4:5 → 9:16, kolo 8)
       throw new Error(`“${src.name}” is ${src.width}×${src.height} – reframe to ${num}:${den} only from a wider sequence; open the original landscape (16:9) one`);
     }
     const H = a.height || 1920;

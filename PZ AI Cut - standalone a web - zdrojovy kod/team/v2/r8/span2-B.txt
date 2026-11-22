@@ -1,0 +1,38 @@
+| výrok | In / Out (s) | 1. slovo titulku | 1. slovo ve zvuku | posl. titulku | posl. ve zvuku | RMS In / Out (dB pod řečí) | varování | začátek | konec |
+|---|---|---|---|---|---|---|---|---|---|
+| V1 18:16 | 1096.80 / 1112.32 | Tady | Tady (0.00, p 0.84) | dál. | dál. (15.20, p 1) | -42 / -16 | – | ✔ | ✔ |
+| V2 25:51 | 1550.96 / 1570.82 | tak | tak (0.00, p 0.7) | film." | film. (19.62, p 1) | -17 / -35 | – | ✔ | ✔ |
+| V3 20:58 | 1258.39 / 1271.40 | vůbec. | To (0.00, p 0.14) | životě. | životě. (12.84, p 1) | -16 / -10 | začátek | ✔ | ✔ |
+| V4 23:23 | 1402.94 / 1416.69 | Zrovna | Zrovna (0.00, p 0.91) | furt. | furt. (13.58, p 0.99) | -27 / -29 | – | ✔ | ✔ |
+| V5 19:59 | 1199.70 / 1216.03 | My | My (0.00, p 0.79) | to. | to. (16.08, p 0.93) | -38 / -39 | – | ✔ | ✔ |
+| R 23:20 | 1399.76 / 1417.09 | Ale | ale (0.00, p 0.61) | Furt. | furt. (17.26, p 0.99) | -33 / -18 | – | ✔ | ✔ |
+| N1 14:34 | 874.57 / 888.62 | Že | Že (0.00, p 0.84) | skvělý. | skvělý. (13.80, p 1) | -28 / -39 | – | ✔ | ✔ |
+| N2 8:26 | 506.23 / 520.19 | Musí | Musí (0.00, p 0.95) | začátky. | začátky. (13.92, p 1) | -24 / -38 | začátek | ✔ | ✔ |
+| N3 1:04 | 63.87 / 87.57 | Vůbec | Vůbec (0.00, p 0.99) | nezmění. | nezmění. (23.54, p 1) | -24 / -23 | – | ✔ | ✔ |
+| N4 21:06 | 1266.16 / 1282.41 | A | musela (0.00, p 0.65) | pozice. | pozice. (15.92, p 1) | -28 / -38 | začátek | ✘ | ✔ |
+| N5 7:51 | 471.31 / 474.17 | Najednou | Najednou (0.00, p 0.93) | reportérka. | reportér. (2.70, p 0.87) | -25 / -36 | – | ✔ | ✔ |
+| N6 12:33 | 754.25 / 761.38 | Až | Až (0.00, p 0.88) | rádiu. | a. (6.96, p 0.72) | -42 / -14 | – | ✔ | ✘ |
+| N7 7:29 | 449.09 / 457.09 | A | A (0.00, p 0.5) | moderovat. | moderovat. (7.72, p 1) | -22 / -3 | – | ✔ | ✔ |
+| N8 9:15 | 555.07 / 569.35 | Já | Já (0.00, p 0.89) | kde | kde. (13.94, p 1) | -28 / -9 | – | ✔ | ✔ |
+| N9 24:27 | 1467.57 / 1473.11 | Protože | protože (0.00, p 0.86) | pocity. | pocit. (5.42, p 1) | -18 / -31 | – | ✔ | ✔ |
+| N10 17:22 | 1042.38 / 1057.37 | Protože | protože (0.00, p 0.86) | chvíli. | chvíli. (14.70, p 1) | -20 / -19 | – | ✔ | ✔ |
+| N11 22:14 | 1333.82 / 1337.66 | tím, | s (0.00, p 0.95) | práce. | práce. (3.64, p 1) | -21 / -11 | konec | ✘ | ✔ |
+| N12 9:49 | 589.17 / 599.83 | Mnozí | Množí (0.00, p 0.84) | cestu. | cestu. (10.20, p 0.98) | -32 / -43 | – | ✔ | ✔ |
+| N13 25:34 | 1534.22 / 1538.34 | A | a (0.00, p 0.46) | soustředit. | soustředit. (4.00, p 1) | -26 / -33 | začátek | ✔ | ✔ |
+| N14 5:40 | 340.79 / 349.58 | a | sportovec (0.00, p 0.9) | řekla. | řekla. (8.08, p 1) | -32 / -36 | – | ✘ | ✔ |
+| N15 7:05 | 424.96 / 434.04 | A | A (0.00, p 0.63) | pořad. | pořad. (8.86, p 0.99) | -22 / -21 | – | ✔ | ✔ |
+| N16 18:30 | 1110.73 / 1115.80 | Ty | Ty (0.00, p 0.5) | že... | že... (4.80, p 0.98) | -31 / -25 | – | ✔ | ✔ |
+| N17 17:13 | 1033.01 / 1039.94 | A | A (0.00, p 0.63) | řekla. | řekla. (6.84, p 1) | -17 / -9 | konec | ✔ | ✔ |
+| N18 2:08 | 128.63 / 146.01 | Víš, | To (0.00, p 0.47) | tom, | jak... (17.36, p 0.87) | -32 / -16 | – | ✘ | ✘ |
+| N19 10:42 | 642.89 / 653.16 | že | Vlastně (0.00, p 0.7) | pořad. | pořad. (10.16, p 0.98) | -17 / -12 | začátek | ✘ | ✔ |
+| N20 15:29 | 929.16 / 942.62 | obrečela, | se (0.00, p 0.54) | pozici. | pozici. (13.38, p 0.95) | -15 / -26 | začátek | ✘ | ✔ |
+
+začátky v pořádku 20/26, konce 24/26 (pojmenované: 6, náhodné: 20)
+
+první/poslední 3 věty přepisu:
+  #0 0.0–9.6 www.hradeckralove.cz Talk. ⚠ halucinace
+  #1 9.7–14.8 Pozvání dnes totiž přijala má kolegyně, kterou nejen diváci televizenova velmi dobře znají.
+  #2 15.1–16.8 Je velmi šikovná, je velmi krásná.
+  #448 1675.8–1677.4 Děkuji moc za pozvání, Kristýnko.
+  #449 1678.0–1681.1 No a vám přeji krásný zbytek dne a budu se zase někdy těšit na viděnou.
+  #450 1681.6–1686.8 Titulky vytvořil JohnyX. ⚠ halucinace

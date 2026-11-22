@@ -13,7 +13,8 @@ function resolveAiRoot(configured, appRoot) {
     if (process.env.APPDATA) cand.push(fs.readFileSync(path.join(process.env.APPDATA, 'MYpremiereMCP', 'root.txt'), 'utf8').replace(/^[\s]+/, '').trim());
   } catch (e) { /* instalátor neběžel */ }
   // zdroje: <repo>\pz-ai-cut → <repo>\my-premiere-mcp; přenosná: <repo>\PZ AI Cut\resources\app → <repo>\my-premiere-mcp
-  cand.push(path.join(appRoot, '..', 'my-premiere-mcp'), path.join(appRoot, '..', '..', '..', 'my-premiere-mcp'));
+  // repozitář AI-EDIT-for-all-: složky pojmenované podle programu a účelu (dřív my-premiere-mcp)
+  for (const n of ['MY Premiere MCP - plugin do Premiere - zdrojovy kod', 'my-premiere-mcp']) cand.push(path.join(appRoot, '..', n), path.join(appRoot, '..', '..', '..', n));
   for (const c of cand) if (ok(c)) return path.resolve(c);
   return '';
 }

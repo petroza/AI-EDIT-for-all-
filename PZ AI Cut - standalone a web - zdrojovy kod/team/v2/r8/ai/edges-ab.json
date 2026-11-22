@@ -1,0 +1,182 @@
+[
+ {
+  "label": "a1 #30",
+  "in": 115.2,
+  "out": 119.52,
+  "first": [
+   "Takže",
+   0.0
+  ],
+  "last": [
+   "pryč.",
+   4.02,
+   4.32
+  ],
+  "rmsIn_dB": -67.4,
+  "rmsOut_dB": -70.3,
+  "median_dB": -38.0,
+  "text": "Takže to přišlo úplně, jak my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč."
+ },
+ {
+  "label": "a2 #43-46",
+  "in": 181.96,
+  "out": 191.2,
+  "first": [
+   "To",
+   0.0
+  ],
+  "last": [
+   "životě.",
+   9.22,
+   9.24
+  ],
+  "rmsIn_dB": -66.8,
+  "rmsOut_dB": -49.6,
+  "median_dB": -34.7,
+  "text": "To byl prostě můj nejbližší člověk a najednou byl pryč a já jsem se s tím musela jako poprat a byla to ta nejtěžší věc jako v mým životě."
+ },
+ {
+  "label": "a3 #53-54",
+  "in": 220.16,
+  "out": 228.28,
+  "first": [
+   "A",
+   0.0
+  ],
+  "last": [
+   "není.",
+   7.86,
+   8.12
+  ],
+  "rmsIn_dB": -66.9,
+  "rmsOut_dB": -65.5,
+  "median_dB": -33.2,
+  "text": "A to, jak se zvedneš, tak potom tě jako sformuje podle mě už jako navždycky. Prostě jakoby ten člověk, který byl před tímhle vším, tak už jako není."
+ },
+ {
+  "label": "b1 #15-16",
+  "in": 43.92,
+  "out": 51.2,
+  "first": [
+   "Prostě",
+   0.0
+  ],
+  "last": [
+   "nemocná.",
+   7.04,
+   7.28
+  ],
+  "rmsIn_dB": -50.4,
+  "rmsOut_dB": -65.5,
+  "median_dB": -31.2,
+  "text": "Prostě to období bylo strašně jako nečekaný, protože my jsme nikdo nevěděl, že ona je nemocná."
+ },
+ {
+  "label": "b2 #28-29",
+  "in": 107.68,
+  "out": 115.16,
+  "first": [
+   "A",
+   0.0
+  ],
+  "last": [
+   "týdny.",
+   7.2,
+   7.48
+  ],
+  "rmsIn_dB": -51.1,
+  "rmsOut_dB": -70.1,
+  "median_dB": -40.8,
+  "text": "A vlastně ji hospitalizovali v nemocnici a za tři týdny vlastně byl konec. Za tři týdny."
+ },
+ {
+  "label": "b3 #31",
+  "in": 119.68,
+  "out": 123.4,
+  "first": [
+   "My",
+   0.0
+  ],
+  "last": [
+   "připravit.",
+   3.62,
+   3.72
+  ],
+  "rmsIn_dB": -68.8,
+  "rmsOut_dB": -53.1,
+  "median_dB": -33.6,
+  "text": "My jsme vlastně jak vůbec neměli možnost se na to připravit."
+ },
+ {
+  "label": "b4 #34-36",
+  "in": 136.68,
+  "out": 151.2,
+  "first": [
+   "Když",
+   0.0
+  ],
+  "last": [
+   "rodiny.",
+   14.2,
+   14.52
+  ],
+  "rmsIn_dB": -67.1,
+  "rmsOut_dB": -52.8,
+  "median_dB": -40.4,
+  "text": "Když přijde rodina člověka jako je máma, co všechno se v tu chvíli, nevím, zbortí, změní, nastavuje znova? Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny."
+ },
+ {
+  "label": "b5v1 #39",
+  "in": 163.28,
+  "out": 170.72,
+  "first": [
+   "A",
+   0.0
+  ],
+  "last": [
+   "všechno.",
+   7.16,
+   7.44
+  ],
+  "rmsIn_dB": -60.9,
+  "rmsOut_dB": -30.8,
+  "median_dB": -36.1,
+  "text": "A jako třeba moje máma byl můj nejbližší člověk, moje nejlepší kamarádka, moje prostě všechno, jako všechno."
+ },
+ {
+  "label": "b5v2 #39w0-14",
+  "in": 163.28,
+  "out": 170.0,
+  "first": [
+   "A",
+   0.0
+  ],
+  "last": [
+   "všechno.",
+   6.58,
+   6.72
+  ],
+  "rmsIn_dB": -60.9,
+  "rmsOut_dB": -65.9,
+  "median_dB": -36.0,
+  "text": "A jako třeba moje máma byl můj nejbližší člověk, moje nejlepší kamarádka, moje prostě všechno."
+ },
+ {
+  "label": "b6 #43-44",
+  "in": 181.96,
+  "out": 185.36,
+  "first": [
+   "To",
+   0.0
+  ],
+  "last": [
+   "pryč.",
+   3.14,
+   3.4
+  ],
+  "rmsIn_dB": -66.8,
+  "rmsOut_dB": -65.8,
+  "median_dB": -39.3,
+  "text": "To byl prostě můj nejbližší člověk. A najednou byl pryč."
+ }
+]

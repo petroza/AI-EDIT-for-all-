@@ -1,0 +1,107 @@
+{
+ "export": "O:/TN_strihatko/web/test-out/vystup-r8-a.mp4",
+ "seq": "vystup-r8-a",
+ "audio": {
+  "floor_db": -43.0,
+  "speech_median_db": -15.3
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 104.24,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -32.3,
+   "exp_pre10": -180,
+   "exp_post10": -31.7,
+   "src_at_in_-100_0": -36.2,
+   "src_at_in_0_+100": -49.3,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 3.2,
+   "src_in": 115.2,
+   "src_prev_out": 107.44,
+   "exp_pre50": -32.2,
+   "exp_post50": -46.9,
+   "exp_pre10": -28.6,
+   "exp_post10": -46.7,
+   "src_at_prev_out_-100_0": -42.3,
+   "src_at_prev_out_0_+100": -42.5,
+   "src_at_in_-100_0": -65.0,
+   "src_at_in_0_+100": -65.0,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 7.52,
+   "src_in": 145.88,
+   "src_prev_out": 119.52,
+   "exp_pre50": -48.9,
+   "exp_post50": -45.7,
+   "exp_pre10": -50.1,
+   "exp_post10": -45.6,
+   "src_at_prev_out_-100_0": -66.8,
+   "src_at_prev_out_0_+100": -65.7,
+   "src_at_in_-100_0": -64.3,
+   "src_at_in_0_+100": -65.3,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  },
+  {
+   "t": 12.84,
+   "src_in": 188.2,
+   "src_prev_out": 151.2,
+   "exp_pre50": -33.5,
+   "exp_post50": -40.7,
+   "exp_pre10": -26.7,
+   "exp_post10": -36.7,
+   "src_at_prev_out_-100_0": -49.0,
+   "src_at_prev_out_0_+100": -36.1,
+   "src_at_in_-100_0": -43.8,
+   "src_at_in_0_+100": -59.2,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -29.3,
+  "first50_db": -32.3,
+  "len_s": 15.854
+ },
+ "video": {
+  "frames": 396,
+  "median_diff": 0.26,
+  "visual_cuts_s": [
+   1.72,
+   3.6,
+   7.6,
+   12.84,
+   15.0
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   12.88,
+   12.96
+  ],
+  "clip_bounds_s": [
+   3.6,
+   7.6,
+   12.84
+  ],
+  "short_shots": []
+ },
+ "frame_offset_hist": {
+  "0": 352,
+  "1": 12,
+  "-1": 24,
+  "-2": 5,
+  "-3": 2,
+  "-4": 1
+ },
+ "frames_bad_match": []
+}
