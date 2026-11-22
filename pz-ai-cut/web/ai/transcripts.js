@@ -935,8 +935,10 @@ function pauseBoundary(W, q0, q1, u) {
   let best = null;
   for (let k = -1; k + 1 < W.length; k++) {
     const bt = k < 0 ? W[0].s - 0.05 : (W[k].e + W[k + 1].s) / 2;
-    if (bt < u - 0.4) continue;
-    if (bt > u + 0.9) break;
+    // okno −0,4 … +0,9 s kolem střihu; mezera, která leží v samotné pauze, se počítá vždy (přepis bývá o 0,5 s dřív –
+    // kolo 7: „Myslím“ přepis 207,84 s, zvuk 208,38 s, In 208,32 → mezera „období. | Myslím“ 0,54 s před In vypadla)
+    if (bt < Math.min(u - 0.4, q0 - 0.02)) continue;
+    if (bt > Math.max(u + 0.9, q1 + 0.02)) break;
     const bonus = k < 0 ? EW.end : /[.?!…]["“”»)]*$/.test(W[k].w) ? EW.end : /[,;:–—]["“”»)]*$/.test(W[k].w) ? EW.comma : 0;
     const d = Math.max(0, q0 + EW.bias - bt, bt - (q1 + EW.bias));
     const sc = d - bonus;

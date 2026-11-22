@@ -1,0 +1,143 @@
+{
+ "export": "../../../../web/test-out/vystup-r7-b.mp4",
+ "seq": "vystup-r7-a 9x16",
+ "audio": {
+  "floor_db": -43.0,
+  "speech_median_db": -15.3
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 104.24,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -32.3,
+   "exp_pre10": -180,
+   "exp_post10": -31.7,
+   "src_at_in_-100_0": -36.2,
+   "src_at_in_0_+100": -49.3,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 3.2,
+   "src_in": 115.2,
+   "src_prev_out": 107.44,
+   "exp_pre50": -32.2,
+   "exp_post50": -46.9,
+   "exp_pre10": -28.6,
+   "exp_post10": -46.7,
+   "src_at_prev_out_-100_0": -42.3,
+   "src_at_prev_out_0_+100": -42.5,
+   "src_at_in_-100_0": -65.0,
+   "src_at_in_0_+100": -65.0,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 7.52,
+   "src_in": 145.88,
+   "src_prev_out": 119.52,
+   "exp_pre50": -48.9,
+   "exp_post50": -45.7,
+   "exp_pre10": -50.1,
+   "exp_post10": -45.6,
+   "src_at_prev_out_-100_0": -66.8,
+   "src_at_prev_out_0_+100": -65.7,
+   "src_at_in_-100_0": -64.3,
+   "src_at_in_0_+100": -65.3,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  },
+  {
+   "t": 12.84,
+   "src_in": 188.2,
+   "src_prev_out": 151.2,
+   "exp_pre50": -33.5,
+   "exp_post50": -40.7,
+   "exp_pre10": -26.7,
+   "exp_post10": -36.7,
+   "src_at_prev_out_-100_0": -49.0,
+   "src_at_prev_out_0_+100": -36.1,
+   "src_at_in_-100_0": -43.8,
+   "src_at_in_0_+100": -59.2,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -29.3,
+  "first50_db": -32.3,
+  "len_s": 15.854
+ },
+ "video": {
+  "frames": 396,
+  "median_diff": 0.71,
+  "visual_cuts_s": [
+   1.72,
+   1.76,
+   3.2,
+   3.6,
+   3.64,
+   7.6,
+   12.84,
+   15.0,
+   15.04
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   12.88,
+   12.92,
+   12.96,
+   14.92,
+   14.96,
+   15.08
+  ],
+  "clip_bounds_s": [
+   1.76,
+   3.2,
+   3.64,
+   7.6,
+   12.84,
+   15.04
+  ],
+  "short_shots": [
+   {
+    "from_s": 1.72,
+    "frames": 1
+   },
+   {
+    "from_s": 3.2,
+    "frames": 10
+   },
+   {
+    "from_s": 3.6,
+    "frames": 1
+   },
+   {
+    "from_s": 15.0,
+    "frames": 1
+   }
+  ]
+ },
+ "crop": {
+  "checked_frames": 117,
+  "low_match": [],
+  "empty_crop_with_person_in_src": [
+   {
+    "t": 1.72,
+    "src": 105.96,
+    "crop_x": 760,
+    "crop_w": 404,
+    "match": 0.966,
+    "faces_src": 1,
+    "faces_in_crop": 0,
+    "near_cut": true
+   }
+  ],
+  "no_face_in_src": 0
+ }
+}

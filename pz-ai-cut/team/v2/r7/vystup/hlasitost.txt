@@ -1,0 +1,8 @@
+== a
+ I: -14.0 LUFS  Threshold: -24.1 LUFS  LRA: 3.4 LU  Threshold: -34.2 LUFS  Peak: -1.1 dBFS 
+== b
+ I: -14.0 LUFS  Threshold: -24.1 LUFS  LRA: 3.4 LU  Threshold: -34.2 LUFS  Peak: -1.1 dBFS 
+== c
+ I: -14.0 LUFS  Threshold: -24.2 LUFS  LRA: 7.6 LU  Threshold: -34.2 LUFS  Peak: -0.9 dBFS 
+== d
+ I: -14.0 LUFS  Threshold: -24.4 LUFS  LRA: 8.9 LU  Threshold: -34.5 LUFS  Peak: -1.0 dBFS 

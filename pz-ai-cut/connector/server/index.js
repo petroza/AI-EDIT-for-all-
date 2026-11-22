@@ -11,13 +11,15 @@
 const http = require('http');
 const { TOOLS, INSTRUCTIONS } = require('./tools');
 
-const VERSION = '1.3.0';
+const VERSION = '1.4.0';
 const PORTS = [7895, 7896, 7897];
-const ORIGINS = [
+const ORIGINS_ALL = [
   'https://pz-ai-cut.pages.dev',
   'http://127.0.0.1:8791', 'http://localhost:8791',
 ];
-const WEB_URL = ORIGINS[0];
+// testy (test/connector-pin.js): jen vybrané adresy, aby se do testu nepřipojila otevřená karta uživatele
+const ORIGINS = process.env.PZ_CONNECTOR_ORIGINS ? process.env.PZ_CONNECTOR_ORIGINS.split(',') : ORIGINS_ALL;
+const WEB_URL = ORIGINS_ALL[0];
 
 const log = (...a) => process.stderr.write('[pz-ai-cut] ' + a.join(' ') + '\n');
 
@@ -35,14 +37,24 @@ function webConnected() { return Date.now() - lastSeen < 8000 || pollers.length 
 /* Střižna může být otevřená ve víc kartách (nebo v Chrome i jinde) – úkoly jdou do té, se kterou uživatel naposledy
  * pracoval (stránka posílá ?tab=…&act=čas poslední aktivity). Když ta zrovna nečeká (právě vrací výsledek), úkol
  * chvilku počká na její další dotaz; až po 4 s ho dostane jiná karta. */
-const tabs = new Map(); // tab -> { act, seen }
+const tabs = new Map(); // tab -> { act, seen, task }
+/* Relace AI je přichycená k jedné kartě (kolo 7, AI tok): dřív šel každý úkol kartě s fokusem, takže když se uživatel
+ * přepnul do jiné karty se střižnou, další build / titulky / undo proběhly v cizím projektu. Karta se mění jen když
+ * (1) přichycená karta zmizí (zavřená, 25 s bez dotazu), nebo (2) uživatel zadal úkol z panelu AI v jiné kartě.
+ * Výsledek prvního úkolu po změně nese upozornění pro AI. */
+let pinned = null, tabNote = '';
 function bestTab() {
   let best = null;
   for (const [id, t] of tabs) {
     if (Date.now() - t.seen > 25000) { tabs.delete(id); continue; }
     if (!best || t.act > best.act) best = { id, act: t.act, seen: t.seen };
   }
-  return best;
+  const claim = [...tabs.entries()].find(([id, t]) => t.task && id !== pinned);
+  if (claim) { if (pinned) tabNote = 'the user gave a task from the AI panel in another editor tab – you now work there'; pinned = claim[0]; }
+  else if (pinned && !tabs.has(pinned)) { pinned = null; tabNote = 'the previous editor tab was closed'; }
+  if (!pinned && best) pinned = best.id;
+  const t = pinned && tabs.get(pinned);
+  return t ? { id: pinned, act: t.act, seen: t.seen } : best;
 }
 let redispatch = null;
 function dispatch() {
@@ -50,7 +62,8 @@ function dispatch() {
     const best = bestTab();
     let i = best ? pollers.findIndex((p) => p.tab === best.id) : 0;
     if (i < 0) {
-      if (Date.now() - best.seen < 4000) { clearTimeout(redispatch); redispatch = setTimeout(dispatch, 500); return; }
+      // přichycená karta právě nečeká (vrací výsledek) – počkat na její další dotaz, jiné kartě úkol nedávat
+      if (Date.now() - best.seen < 25000) { clearTimeout(redispatch); redispatch = setTimeout(dispatch, 500); return; }
       i = 0;
     }
     const job = queue.shift();
@@ -103,9 +116,20 @@ function handle(req, res) {
   const u = new URL(req.url, 'http://127.0.0.1');
   lastSeen = Date.now();
   if (u.pathname === '/hello') { send(res, 200, { app: 'pz-ai-cut-connector', version: VERSION, queued: queue.length, client: client.app, clientName: client.name }, origin); return; }
+  if (u.pathname === '/claim') {
+    // stránka: uživatel právě zadal úkol z panelu AI v téhle kartě → AI pracuje tady (bez čekání na další /next)
+    const tab = u.searchParams.get('tab') || '';
+    const t = tabs.get(tab) || { act: 0 };
+    tabs.set(tab, Object.assign(t, { seen: Date.now(), task: true }));
+    bestTab();
+    tabs.get(tab).task = false;
+    send(res, 200, { ok: true, pinned: pinned === tab }, origin);
+    dispatch();
+    return;
+  }
   if (u.pathname === '/next' && req.method === 'GET') {
     const tab = u.searchParams.get('tab') || '';
-    tabs.set(tab, { act: Number(u.searchParams.get('act')) || 0, seen: Date.now() });
+    tabs.set(tab, { act: Number(u.searchParams.get('act')) || 0, seen: Date.now(), task: u.searchParams.get('task') === '1' });
     const p = { res, origin, timer: null, tab };
     p.timer = setTimeout(() => { const i = pollers.indexOf(p); if (i >= 0) pollers.splice(i, 1); send(res, 200, { idle: true }, origin); }, 20000);
     req.on('close', () => { const i = pollers.indexOf(p); if (i >= 0) { pollers.splice(i, 1); clearTimeout(p.timer); } });
@@ -156,8 +180,12 @@ async function callTool(name, args) {
       + '(if Chrome asks to allow access to devices on the local network, they should click Allow). Then try again.', true);
   }
   const r = await callWeb(name, args || {}, def.timeoutMs || 120000);
-  if (!r.ok) return text(r.error || 'Failed', true);
-  return text(r.result === undefined ? 'OK' : r.result);
+  const note = tabNote ? `
+
+Note: ${tabNote}. Call editor_status before you edit – the project may be different.` : '';
+  tabNote = '';
+  if (!r.ok) return text((r.error || 'Failed') + note, true);
+  return text((r.result === undefined ? 'OK' : typeof r.result === 'string' ? r.result : JSON.stringify(r.result, null, 1)) + note);
 }
 
 async function onMessage(msg) {

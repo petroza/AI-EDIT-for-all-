@@ -1,0 +1,255 @@
+16:54:40.432 --- logger attached (reload)
+16:54:40.436 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/8561d140-21f6-4387-bd47-877339b53505
+16:54:40.436 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.436 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.437 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:40.437 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.437 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.438 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:40.438 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.438 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.438 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:40.439 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.439 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.439 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:40.439 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.440 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.440 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:40.748 [log.error/intervention] Blocked attempt to show a 'beforeunload' confirmation panel for a frame that never had a user gesture since its load. https://www.chromestatus.com/feature/5082396709879808 http://127.0.0.1:8791/
+16:54:40.789 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/8561d140-21f6-4387-bd47-877339b53505
+16:54:40.794 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:40.797 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:40.798 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:44.800 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:44.801 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:44.801 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:49.815 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:49.815 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:49.816 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:54:55.817 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:54:55.818 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:54:55.818 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:02.821 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:02.822 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:02.822 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:10.836 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:10.837 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:10.838 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:19.855 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:19.855 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:19.856 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:29.872 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:29.873 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:29.873 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:40.888 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:40.889 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:40.889 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:52.899 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:55:52.899 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:55:52.899 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:55:53.967 [exception] TypeError: Failed to execute 'contains' on 'Node': parameter 1 is not of type 'Node'.
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:103:65
+    at window.__closeMenus (<anonymous>:3:36)
+    at window.__openMenu (<anonymous>:4:36)
+    at window.__menuItem (<anonymous>:5:59)
+    at <anonymous>:8:17
+    at <anonymous>:8:117 @http://127.0.0.1:8791/app.js?v=mws2qvzb:102
+16:55:53.968 [exception] TypeError: Failed to execute 'contains' on 'Node': parameter 1 is not of type 'Node'.
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:1376:57
+    at window.__closeMenus (<anonymous>:3:36)
+    at window.__openMenu (<anonymous>:4:36)
+    at window.__menuItem (<anonymous>:5:59)
+    at <anonymous>:8:17
+    at <anonymous>:8:117 @http://127.0.0.1:8791/app.js?v=mws2qvzb:1375
+16:55:54.042 [exception] TypeError: Failed to execute 'contains' on 'Node': parameter 1 is not of type 'Node'.
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:1376:57
+    at window.__closeMenus (<anonymous>:3:36)
+    at window.__menuItem (<anonymous>:5:259)
+    at async <anonymous>:8:11 @http://127.0.0.1:8791/app.js?v=mws2qvzb:1375
+16:55:58.973 [exception] TypeError: Failed to execute 'contains' on 'Node': parameter 1 is not of type 'Node'.
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:1376:57
+    at window.__closeMenus (<anonymous>:3:36)
+    at window.__openMenu (<anonymous>:4:36)
+    at <anonymous>:8:17
+    at <anonymous>:8:228 @http://127.0.0.1:8791/app.js?v=mws2qvzb:1375
+16:56:05.908 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:05.909 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:05.909 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:19.921 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:19.922 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:19.922 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:34.925 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:34.925 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:34.926 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:41.115 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:41.116 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:41.117 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:45.120 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:45.120 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:45.120 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:50.134 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:50.135 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:50.135 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:56:56.138 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:56:56.138 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:56:56.138 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:03.141 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:03.141 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:03.142 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:11.144 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:11.144 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:11.144 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:20.155 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:20.156 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:20.156 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:30.162 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:30.163 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:30.163 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:33.028 [console.log] I1122 16:57:33.027000 1880752 gl_context.cc:374] GL version: 3.0 (OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium))), renderer: WebKit WebGL @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+16:57:33.029 [console.warning] W1122 16:57:33.028000 1880752 gl_context.cc:1060] OpenGL error checking is disabled @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+16:57:33.031 [console.log] Graph successfully started running. @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+16:57:41.167 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:41.167 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:41.167 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:57:53.185 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:57:53.185 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:57:53.186 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:58:06.193 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:58:06.194 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:58:06.194 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:58:20.206 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:58:20.207 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:58:20.208 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:58:35.220 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:58:35.221 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:58:35.221 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:58:50.224 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:58:50.225 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:58:50.226 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:58:53.596 [exception] SecurityError: Failed to execute 'showDirectoryPicker' on 'Window': Must be handling a user gesture to show a file picker.
+    at window.__pzPickExportDir (http://127.0.0.1:8791/app.js?v=mws2qvzb:9163:28)
+    at exportSocial (http://127.0.0.1:8791/app.js?v=mws2qvzb:1758:27)
+    at exportSocial (http://127.0.0.1:8791/app.js?v=mws2qvzb:1053:23)
+    at runCmd (http://127.0.0.1:8791/app.js?v=mws2qvzb:1067:9)
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:1069:42
+    at http://127.0.0.1:8791/app.js?v=mws2qvzb:219:57
+    at Array.forEach (<anonymous>)
+    at Object.emit (http://127.0.0.1:8791/app.js?v=mws2qvzb:219:42)
+    at run (http://127.0.0.1:8791/app.js?v=mws2qvzb:48:27)
+    at HTMLDivElement.<anonymous> (http://127.0.0.1:8791/app.js?v=mws2qvzb:66:96) @http://127.0.0.1:8791/app.js?v=mws2qvzb:9162
+16:59:05.231 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:59:05.232 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:59:05.232 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:59:20.246 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:59:20.276 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:59:20.276 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:59:35.264 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:59:35.265 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:59:35.266 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+16:59:50.280 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+16:59:50.281 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+16:59:50.281 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:00:05.290 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:00:05.290 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:00:05.290 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:00:20.300 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:00:20.301 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:00:20.301 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:00:35.318 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:00:35.319 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:00:35.320 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:00:50.326 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:00:50.327 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:00:50.328 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:01:05.337 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:01:05.337 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:01:05.338 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:26.551 --- logger attached
+17:04:26.554 [console.warning] waveform Media file is not available – allow access to it (Relink). @http://127.0.0.1:8791/app.js?v=mws2qvzb:631
+17:04:26.554 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:26.555 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:26.555 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:26.555 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:26.555 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:26.556 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:26.556 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:26.556 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:26.557 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:26.557 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:27.620 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:27.631 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:31.025 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:31.026 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:31.026 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:32.848 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:34.715 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:38.037 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:38.037 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:38.038 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:44.573 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:44.731 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:44.855 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:44.875 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:45.867 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:46.043 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:46.044 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:46.044 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:47.732 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:04:55.058 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:04:55.059 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:04:55.059 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:04:56.303 [log.error/network] Failed to load resource: net::ERR_FILE_NOT_FOUND blob:http://127.0.0.1:8791/ace952b4-4a36-4a89-b914-5b59d219a1f0
+17:05:02.806 [console.log] I1122 17:05:02.805000 1880752 gl_context.cc:374] GL version: 3.0 (OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium))), renderer: WebKit WebGL @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+17:05:02.807 [console.warning] W1122 17:05:02.806000 1880752 gl_context.cc:1060] OpenGL error checking is disabled @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+17:05:02.807 [console.log] Graph successfully started running. @https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm/vision_wasm_internal.js:8
+17:05:05.073 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:05:05.074 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:05:05.074 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:05:16.087 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:05:16.088 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:05:16.088 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:05:28.103 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:05:28.103 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:05:28.103 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:05:41.105 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:05:41.106 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:05:41.106 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:05:55.122 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:05:55.123 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:05:55.123 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:06:10.126 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:06:10.127 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:06:10.127 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:06:25.132 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:06:25.133 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:06:25.133 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:06:40.146 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:06:40.147 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:06:40.147 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:06:55.150 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:06:55.150 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:06:55.150 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:07:10.160 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:07:10.160 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:07:10.161 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:07:25.167 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:07:25.168 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:07:25.168 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:07:40.171 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:07:40.171 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:07:40.172 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:07:55.185 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:07:55.186 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:07:55.186 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:08:10.191 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:08:10.191 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:08:10.192 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:08:25.201 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:08:25.202 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:08:25.202 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:08:40.212 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:08:40.213 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:08:40.213 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello
+17:08:55.226 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7895/hello
+17:08:55.227 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7896/hello
+17:08:55.227 [log.error/network] Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:7897/hello

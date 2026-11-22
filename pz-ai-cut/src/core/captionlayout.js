@@ -10,12 +10,15 @@
 
 const FONT = '"Segoe UI", Arial, sans-serif';
 const WIDTH = 0.88; // titulek smí zabrat nejvýš tuto část šířky obrazu
+// 9:16: sloupec tlačítek Reels/TikTok vpravo (16 % šířky, 42–78 % výšky) – titulek na středu nejvýš 68 % šířky (16–84 %)
+const WIDTH_TALL = 0.68;
+function capWidth(W, H) { return shapeOf(W, H) === 'tall' ? WIDTH_TALL : WIDTH; }
 
 /* Výchozí hodnoty podle tvaru obrazu. 9:16 (Reels, TikTok, Shorts): dolní ~22 % a pravý sloupec zakrývá rozhraní
  * aplikace (jméno, popisek, ikony) → titulky výš, ve 30 % výšky, a větší písmo pro telefon. 4:5 a 1:1 ve feedu
  * rozhraní obraz nepřekrývá → níž. frac = velikost písma jako podíl výšky obrazu. */
 const SHAPES = {
-  tall: { pos: 30, maxChars: 24, frac: 0.040 },     // 9:16
+  tall: { pos: 30, maxChars: 20, frac: 0.040 },     // 9:16 (kolo 7: užší kvůli sloupci tlačítek)
   portrait: { pos: 10, maxChars: 28, frac: 0.036 }, // 4:5
   square: { pos: 7, maxChars: 30, frac: 0.042 },    // 1:1
   wide: { pos: 5, maxChars: 40, frac: 0.042 },      // 16:9
@@ -48,7 +51,7 @@ function measurer(seq, st) {
   const fs = Math.round(seq.height * fontFrac(seq.width, seq.height, st));
   const font = `700 ${fs}px ${FONT}`;
   // rezerva 6 %: okraj podkladu a zaokrouhlení písma v malém náhledu (jinak by se tam řádek zalomil navíc)
-  const maxW = seq.width * WIDTH * 0.94 - (st.box ? fs * 0.6 : 0);
+  const maxW = seq.width * capWidth(seq.width, seq.height) * 0.94 - (st.box ? fs * 0.6 : 0);
   return (t) => { mctx.font = font; return mctx.measureText(t).width <= maxW; };
 }
 
@@ -235,7 +238,7 @@ function retext(seq, cap, text) {
 /* ---------- nadpis nahoře (seq.title = { text, size }) ----------
  * Pro sítě: krátký nadpis přes celé video, bílé tučné písmo na tmavém podkladu. U 9:16 pod horní lištou aplikace
  * (Sledování / Pro tebe), jinak kousek od horního okraje. top = horní okraj v % výšky, frac = písmo / výška obrazu. */
-const TITLE = { tall: { top: 12, frac: 0.046 }, portrait: { top: 6, frac: 0.044 }, square: { top: 6, frac: 0.05 }, wide: { top: 6, frac: 0.055 } };
+const TITLE = { tall: { top: 12, frac: 0.042 }, portrait: { top: 6, frac: 0.044 }, square: { top: 6, frac: 0.05 }, wide: { top: 6, frac: 0.055 } };
 const TITLE_WIDTH = 0.84;
 function titleOf(seq) {
   const t = seq && seq.title;
@@ -252,7 +255,8 @@ function titleLines(seq) {
   // nejvýš 2 řádky: když se nevejdou, písmo se zmenší (až na 75 %), teprve pak 3 a víc řádků
   // (raději lehce menší písmo a zlom po dvojtečce/čárce než zlom za předložkou – cena = zlom + zmenšení)
   let res = null, bestCost = Infinity;
-  for (const k of [1, 0.9, 0.82, 0.75]) {
+  // kolo 7: 4 řádky nadpisu přes obličej v 9:16 → zmenšovat dál (až 62 %), než se připustí 3. řádek
+  for (const k of [1, 0.9, 0.82, 0.75, 0.68, 0.62]) {
     const fs = Math.round(seq.height * t.frac * k);
     const font = `800 ${fs}px ${FONT}`;
     const maxW = seq.width * TITLE_WIDTH - fs * 0.8; // okraj podkladu
@@ -285,4 +289,4 @@ function wrapLooseW(words, ok) {
 function czQuotes(text) {
   return String(text).replace(/(^|[\s(\[–—-])"(?=\S)/g, '$1„').replace(/(\S)"(?=$|[\s.,;:!?…)\]–—-])/g, '$1“').replace(/"/g, '“');
 }
-module.exports = { czQuotes, wordStarts, activeWord, FONT, WIDTH, SHAPES, shapeOf, fontFrac, defaultStyle, factoryStyle, styleOf, rememberStyle, layout, reflow, rewrap, retext, wordsOfCaptions, contentEnd, titleOf, titleLines, TITLE_WIDTH };
+module.exports = { czQuotes, wordStarts, activeWord, FONT, WIDTH, capWidth, SHAPES, shapeOf, fontFrac, defaultStyle, factoryStyle, styleOf, rememberStyle, layout, reflow, rewrap, retext, wordsOfCaptions, contentEnd, titleOf, titleLines, TITLE_WIDTH };

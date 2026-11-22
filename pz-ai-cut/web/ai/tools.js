@@ -52,6 +52,11 @@ function createTools(ctx) {
 
   /** Slova sekvence v čase timeline (z přepisů zdrojů klipů na zvukové stopě). */
   async function seqWords(s) {
+    // stejná cesta jako tlačítko Titulky z přepisu: kraje klipů podle zvuku, ne podle středu slova v přepisu
+    // (kolo 7: AI titulky vynechaly „Myslím“ – přepis ho časoval 0,5 s před In, ve zvuku zazní až za In)
+    if (typeof window !== 'undefined' && window.__pzASR && window.__pzASR.seqWords) {
+      try { return (await window.__pzASR.seqWords(s)).words.slice().sort((a, b) => a.s - b.s); } catch (e) { /* níž postaru */ }
+    }
     const tracks = s.tracks.audio.filter((tr) => !tr.muted);
     const tr = tracks.find((x) => x.clips.length) || null;
     const out = [];
@@ -87,6 +92,14 @@ function createTools(ctx) {
       ctx.progress('', 1);
       return '; face reframing failed (' + e.message + ') – centre crop used';
     }
+  }
+
+  /** Bez převodu formátu: zbytky jiného záběru kamery na krajích klipů převezme soused (reframe to dělá sám). */
+  async function edgeShots(seqId) {
+    try {
+      const r = await RF.fixEdgeShots(app(), seqOf(seqId), (m) => fileOf(m), ctx.progress);
+      return r.merged ? `; ${r.merged} camera-cut leftover(s) at clip edges removed` : '';
+    } catch (e) { ctx.progress('', 1); return ''; }
   }
 
   // konec obsahu sekvence (poslední klip) – titulky za něj nesmí přesahovat, jinak se sekvence prodlouží o černou
@@ -193,7 +206,7 @@ function createTools(ctx) {
         if (b.approx) approx = true;
       }
       const res = await app().api.buildSequence({ name: a.name || 'AI edit', segments, audioFades: 2 / (m.fps || 25) });
-      const fmtInfo = a.format && FORMATS[a.format] ? await setFormat(res.sequenceID, a.format) : '';
+      const fmtInfo = a.format && FORMATS[a.format] ? await setFormat(res.sequenceID, a.format) : await edgeShots(res.sequenceID);
       let capInfo = '';
       if (a.captions) {
         const s = seqOf(res.sequenceID);
@@ -210,7 +223,7 @@ function createTools(ctx) {
     async build_sequence(a) {
       const segs = (a.segments || []).map((g) => ({ source: mediaOf(g.source).id, in: g.in, out: g.out }));
       const res = await app().api.buildSequence({ name: a.name || 'AI edit', segments: segs });
-      const fmtInfo = a.format && FORMATS[a.format] ? await setFormat(res.sequenceID, a.format) : '';
+      const fmtInfo = a.format && FORMATS[a.format] ? await setFormat(res.sequenceID, a.format) : await edgeShots(res.sequenceID);
       app().timeline.zoomFit();
       return `Created sequence "${res.name}" – ${fmt(res.duration)} s${a.format ? ', format ' + a.format + fmtInfo : ''}.` + (res.warnings && res.warnings.length ? '\nWarnings: ' + res.warnings.join('; ') : '');
     },
@@ -266,7 +279,13 @@ function createTools(ctx) {
       const s = seqOf(a.name);
       const orig = s.captions || [];
       const fixes = new Map();
-      for (const fix of a.fixes || []) if (orig[fix.index] && typeof fix.text === 'string') fixes.set(fix.index, fix.text.replace(/\\n/g, ' '));
+      const bad = [];
+      for (const fix of a.fixes || []) {
+        if (orig[fix.index] && typeof fix.text === 'string') fixes.set(fix.index, fix.text.replace(/\\n/g, ' '));
+        else bad.push(fix.index);
+      }
+      // neplatné indexy nahlásit (kolo 7, AI tok: tiše zahozené, a přesto „Updated N“) – nic se neuloží, ať AI nepracuje se starými indexy
+      if (bad.length) throw new Error(`No caption with index ${bad.join(', ')} in "${s.name}" (valid 0–${orig.length - 1}). Nothing was changed – read the captions again with get_captions.`);
       // opravený text, který se do nastaveného počtu řádků nevejde, se rozdělí na víc titulků (CAP.retext)
       const caps = [];
       let split = 0;
