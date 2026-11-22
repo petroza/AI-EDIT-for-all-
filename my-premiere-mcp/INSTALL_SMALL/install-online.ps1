@@ -9,6 +9,8 @@
 #   -NoLocalLLM       bez lokalniho LLM (usetri ~9 GB)
 #   -SkipModels       jen panel a MCP, bez modelu
 #   -Branch <vetev>   vetev na GitHubu (vychozi main)
+#   -Source <slozka>  kod z mistni slozky (git clone) misto stazeni z GitHubu. Kdyz skript lezi
+#                     v naklonovanem repozitari (..\server\index.js existuje), pouzije se ten sam.
 #
 # Pozn.: zamerne bez diakritiky - Windows PowerShell 5.1 cte .ps1 bez BOM jako ANSI.
 param(
@@ -16,7 +18,8 @@ param(
     [switch]$Hermes,
     [switch]$NoLocalLLM,
     [switch]$SkipModels,
-    [string]$Branch = 'main'
+    [string]$Branch = 'main',
+    [string]$Source
 )
 
 $ErrorActionPreference = 'Stop'
@@ -55,12 +58,23 @@ function WingetInstall($id, $label) {
 
 Write-Host ''
 Write-Host '  MY Premiere MCP - online instalace' -ForegroundColor White
-Write-Host "  zdroj: https://github.com/$repo ($Branch)"
+if (-not $Source) {
+    $here = Split-Path -Parent $PSScriptRoot
+    if (Test-Path (Join-Path $here 'server\index.js')) { $Source = $here }
+}
+if ($Source) {
+    $Source = [IO.Path]::GetFullPath($Source)
+    if (-not (Test-Path (Join-Path $Source 'server\index.js'))) { Die "Ve slozce $Source neni MY Premiere MCP (server\index.js)" $null }
+    Write-Host "  zdroj: mistni slozka $Source"
+} else {
+    Write-Host "  zdroj: https://github.com/$repo ($Branch)"
+}
 
 # ------------------------------------------------------------------ 1. kam
 Head '1/4 Slozka aplikace'
 if (-not $Target) {
-    $def = Join-Path $env:USERPROFILE 'MYpremiereMCP'
+    # z naklonovaneho repozitare se instaluje rovnou do nej (modely, cache a .venv jsou v .gitignore)
+    $def = if ($Source) { $Source } else { Join-Path $env:USERPROFILE 'MYpremiereMCP' }
     $in = Read-Host "  Kam nainstalovat? [Enter = $def]"
     $Target = if ($in.Trim()) { $in.Trim().Trim('"') } else { $def }
 }
@@ -89,7 +103,19 @@ if (-not $SkipModels) {
     Ok 'Python 3.11'
 }
 
-# ------------------------------------------------------------------ 3. kod z GitHubu
+# ------------------------------------------------------------------ 3. kod (mistni slozka nebo GitHub)
+if ($Source) {
+    Head '3/4 Kod aplikace z mistni slozky'
+    if ($Source -eq $Target) { Ok "Instalace primo v $Target" }
+    else {
+        $xf = @()
+        if ($update -and (Test-Path (Join-Path $Target 'config.json'))) { $xf = @('/XF', 'config.json') }
+        & robocopy $Source $Target /E /NFL /NDL /NJH /NJS /NC /NS /R:2 /W:2 /XD .git node_modules .venv models cache test INSTALL\offline @xf | Out-Null
+        if ($LASTEXITCODE -ge 8) { Die "Kopirovani kodu selhalo (robocopy $LASTEXITCODE)" $null }
+        $global:LASTEXITCODE = 0
+        Ok "Kod zkopirovan do $Target"
+    }
+} else {
 Head '3/4 Kod aplikace z GitHubu'
 $tmp = Join-Path $env:TEMP ("mypremieremcp-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Force $tmp | Out-Null
@@ -109,6 +135,7 @@ try {
     Ok "Kod rozbalen do $Target"
 } finally {
     Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
 }
 
 # ------------------------------------------------------------------ 4. hlavni instalator (online rezim)
