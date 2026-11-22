@@ -940,6 +940,9 @@ function showContextMenu(x, y, kind) {
 /* ======================================================= modální okna */
 function openModal(html, onReady) {
   $('modalBox').innerHTML = html;
+  // pevná šířka (data-w u nadpisu): dialog se nemění podle délky textu a tlačítka neuskakují (redaktorka S2, Export)
+  const wEl = $('modalBox').querySelector('[data-w]');
+  $('modalBox').style.width = wEl ? Math.min(window.innerWidth - 40, +wEl.dataset.w) + 'px' : '';
   $('modal').classList.add('show');
   const first = $('modalBox').querySelector('input,select,button');
   if (first) setTimeout(() => first.focus(), 10);
@@ -1049,7 +1052,7 @@ async function reframeAll() {
 }
 function seqDialog(seq, opts) {
   const m = !seq && ((opts && opts.media) || app.projectPanel.selectedMedia());
-  const d = seq || { name: project.uniqueSeqName(m ? U.stripExt(m.name) : (TN.lang === 'cs' ? 'Sekvence' : 'Sequence')), width: (settings.lastSeq && settings.lastSeq[0]) || 1080, height: (settings.lastSeq && settings.lastSeq[1]) || 1920, fps: m && m.hasVideo ? m.fps : 25 };
+  const d = seq || { name: project.uniqueSeqName(m ? U.stripExt(m.name) : (TN.lang === 'cs' ? 'Sekvence' : 'Sequence')), width: settings.lastSeq ? settings.lastSeq[0] : (m && m.hasVideo && m.width > m.height ? m.width : 1080), height: settings.lastSeq ? settings.lastSeq[1] : (m && m.hasVideo && m.width > m.height ? m.height : 1920), fps: m && m.hasVideo ? m.fps : 25 };
   const mIn = m ? (m.srcIn ?? 0) : 0, mOut = m ? (m.srcOut ?? m.duration) : 0;
   const mPart = m && (mIn > 0.01 || mOut < m.duration - 0.01);
   const mmss = (x) => Math.floor(x / 60) + ':' + String(Math.round(x % 60)).padStart(2, '0');
@@ -1183,7 +1186,7 @@ function exportDialog() {
   const s = app.seq();
   if (!s) { app.toast('No sequence is open.'); return; }
   const hasIO = s.inPoint !== null || s.outPoint !== null;
-  openModal(`<h2>Export – ${s.name.replace(/</g, '&lt;')}</h2>
+  openModal(`<h2 data-w="640">Export – ${s.name.replace(/</g, '&lt;')}</h2>
     <div class="row"><label>Output Name</label><input type="text" id="exOut" value="${defaultExportPath(s).replace(/"/g, '&quot;')}"><button id="exBrowse">…</button></div>
     <div class="row"><label>Format</label><select id="exFmt">${Object.entries(exporter.FORMATS).map(([k, f]) => `<option value="${k}">${f.label}</option>`).join('')}</select></div>
     <div class="row"><label></label><span class="dim" id="exInfo"></span></div>
@@ -1215,7 +1218,9 @@ function exportDialog() {
       fmtInfo();
       // jiný formát = jiný export: starý „✔ Hotovo“ pryč; MXF je pro TV → hlasitost −23 LUFS, když byla vypnutá
       b.querySelector('#exMsg').innerHTML = '&nbsp;'; b.querySelector('#exBar').style.width = '0%';
-      if (exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf' && b.querySelector('#exLoud').value === 'off') b.querySelector('#exLoud').value = 'tv';
+      // MXF = TV → −23 LUFS; zpátky na MP4/MOV vrátit hlasitost, kterou měl dialog předtím (redaktorka + vzhled S2)
+      const lo = b.querySelector('#exLoud'), mxf = exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf';
+      if (mxf && lo.value !== 'tv') { lo.dataset.before = lo.value; lo.value = 'tv'; } else if (!mxf && lo.dataset.before) { lo.value = lo.dataset.before; delete lo.dataset.before; }
     };
     fmtInfo();
     b.querySelector('#exBrowse').onclick = async () => {
@@ -1240,7 +1245,7 @@ function exportDialog() {
           encoder: b.querySelector('#exEnc').value, format: b.querySelector('#exFmt').value, loudness: b.querySelector('#exLoud').value, signal,
           onProgress: (p, msg) => { b.querySelector('#exBar').style.width = Math.round(p * 100) + '%'; b.querySelector('#exMsg').textContent = `${Math.round(p * 100)} % ${msg || ''}`; },
         });
-        b.querySelector('#exMsg').innerHTML = `✔ Done in ${Math.round((Date.now() - t0) / 1000)} s · ${r.sizeMB} MB · <a href="#" id="exShow" style="color:var(--accent2)">reveal in Explorer</a>`;
+        b.querySelector('#exMsg').innerHTML = `✔ Done in ${Math.round((Date.now() - t0) / 1000)} s · ${r.sizeMB >= 10 ? Math.round(r.sizeMB) : r.sizeMB.toLocaleString(TN.lang === 'cs' ? 'cs-CZ' : 'en-US', { maximumFractionDigits: 1 })} MB · <a href="#" id="exShow" style="color:var(--accent2)">reveal in Explorer</a>`;
         b.querySelector('#exShow').onclick = (e) => { e.preventDefault(); ipcRenderer.invoke('reveal', r.output); };
       } catch (e) {
         // zrušené systémové okno uložení: dialog zůstane, stačí zkusit znovu

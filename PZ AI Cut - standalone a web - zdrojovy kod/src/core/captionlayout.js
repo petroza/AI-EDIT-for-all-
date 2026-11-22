@@ -165,6 +165,16 @@ function layout(words, seq, st, limitEnd) {
       last.ws = last.ws.concat(c.ws);
     } else merged.push({ ws: c.ws.slice(), whole: c.whole });
   }
+  // 4) titulek kratší než 0,7 s (krátká věta „prostě.“) by jen bleskl – připojit k předchozímu, když se vejdou a navazují;
+  //    k následujícímu jen při souvislé řeči (mezera < 0,25 s – jinak bývá mezi nimi střih). Redaktorka S2: „prostě.“ na 8 snímků.
+  const span = (c) => c.ws[c.ws.length - 1].e - c.ws[0].s;
+  for (let i = 0; i < merged.length && merged.length > 1; i++) {
+    const c = merged[i];
+    if (span(c) >= 0.7) continue;
+    const prev = merged[i - 1], next = merged[i + 1];
+    if (prev && c.ws[0].s - prev.ws[prev.ws.length - 1].e < 0.7 && fits(prev.ws.concat(c.ws))) { prev.ws = prev.ws.concat(c.ws); merged.splice(i, 1); i--; }
+    else if (next && next.ws[0].s - c.ws[c.ws.length - 1].e < 0.25 && fits(c.ws.concat(next.ws))) { next.ws = c.ws.concat(next.ws); merged.splice(i, 1); i--; }
+  }
   const caps = merged.map((c) => {
     const ws = c.ws.map((w) => w.w);
     // ws = začátky slov (pro zvýraznění vyslovovaného slova); text má stejná slova ve stejném pořadí

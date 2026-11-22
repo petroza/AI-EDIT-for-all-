@@ -186,7 +186,8 @@ function createTranscriptPanel(app) {
       }
     }
     const list0 = $('trList');
-    const keepScroll = list0 ? list0.scrollTop : 0, atEnd = list0 ? list0.scrollTop + list0.clientHeight >= list0.scrollHeight - 4 : false;
+    // na konec jen když se dopisuje rozpracovaný přepis a uživatel byl na konci (vzhled S2: po dokončení skočil na poslední větu)
+    const keepScroll = list0 ? list0.scrollTop : 0, atEnd = list0 && list0.querySelector('.tr-more') ? list0.scrollTop + list0.clientHeight >= list0.scrollHeight - 4 : false;
     const hadFocus = document.activeElement && document.activeElement.id === 'trQ';
     pane.innerHTML = html;
     const list = $('trList');
@@ -263,7 +264,7 @@ function createTranscriptPanel(app) {
     if (box.dataset.h !== htmlKey) {
       box.dataset.h = htmlKey;
       box.innerHTML = html;
-      const sb = $('trStop'); if (sb) sb.onclick = () => { a.stop(m); app.toast(L('Transcription stopped. You can use the finished part.', 'Přepis zastaven. Hotovou část můžeš používat.')); };
+      const sb = $('trStop'); if (sb) sb.onclick = () => { a.stop(m); app.toast(a.desktop ? L('Transcription stopped. Start it again any time.', 'Přepis zastaven. Spustíš ho znovu kdykoli.') : L('Transcription stopped. You can use the finished part.', 'Přepis zastaven. Hotovou část můžeš používat.')); };
       const gb = $('trGo'); if (gb) gb.onclick = () => start(m);
       const ox = $('trOfferX'); if (ox) ox.onclick = () => a.hideOffer(m);
       const ob = $('trOffer'); if (ob) ob.onclick = () => app.cmd('transcribeAccurately', m);

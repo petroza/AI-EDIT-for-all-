@@ -42,7 +42,7 @@ if (process.argv.includes('--ai')) {
   for (const f of ['token.txt', 'root.txt']) { try { fs.copyFileSync(path.join(src, f), path.join(appdata, 'MYpremiereMCP', f)); } catch (e) { /* chybí */ } }
 }
 const size = opt('--size', '1920x1080');
-const env = Object.assign({}, process.env, { APPDATA: appdata, LOCALAPPDATA: local, PZ_WINDOW_SIZE: size });
+const env = Object.assign({}, process.env, { APPDATA: appdata, LOCALAPPDATA: local, PZ_WINDOW_SIZE: size, PZ_USERDATA: path.join(appdata, 'electron') });
 const p = spawn(ELECTRON, ['.', `--remote-debugging-port=${port}`], { cwd: path.join(__dirname, '..'), env, detached: true, stdio: 'ignore' });
 p.unref();
 

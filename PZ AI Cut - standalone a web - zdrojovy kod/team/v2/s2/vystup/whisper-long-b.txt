@@ -1,0 +1,11 @@
+long vlastně jinou možnost. Ty musíš to zvládnout. Co ti vlastně jako jiného zbývá? Jako co uděláš? Ty se z toho zhroutíš? Ty se zabiješ? Nebo jako co uděláš? Prostě když přijde takováhle stráta. Prostě to nejde. Ty musíš vlastně pokračovat dál. Jako v tom svým životě. A hlavně furt vlastně myslíš jako na to, že přece ta máma by nechtěla, abych já jako skončila ten život. Aby jako tím, že ona už tady není, abych já jako přestala myslet na sebe. Prostě to období bylo strašně jako nečekaný, protože my jsme nikdo nevěděl, že ona je nemocná, jí boleli záda dlouhou dobu, mysleli jsme si, že si to nějakým způsobem udělala jako mechanicky, že spadla prostě, že jí jako boleli záda, ona chodila na fyzioterapii. A vlastně po strašně dlouhé době a po strašně moc vyšetření, až když ona už opravdu nemohla ani chodit bolestí, zjistili teprve, že ona měla vzácnou formu rakovin, jmenuje se to mnohočetný myelom, což je věc, o které jsem do posavať nikdy neslyšela. že vlastně to, co se stalo, tak ti dá takovou bombu, takovou ránu a vlastně ty spadneš úplně fakt na dno. A to, jak se zvedneš, tak potom tě sformuje podle mě už jako navždycky.
+   cut 0.00: vlastně[-0.50-0.16 0.78] jinou[0.16-0.54 1.00]
+   cut 40.00: na[39.34-39.46 0.87] fyziotéji.[39.46-40.08 0.74] A[40.08-40.50 1.00]
+   cut 58.76: neslyšelo,[58.24-58.74 0.89] že[58.76-59.08 1.00] vlastně[59.08-59.34 1.00] jako[59.34-59.46 0.87]
+   cut 71.16: navždycky.[70.52-71.14 0.94]
+b A zjistilo se to strašně, strašně pozdě. Takže to přišlo úplně, jako my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. A byla to ta nejtěžší věc jako v mým životě.
+   cut 0.00: A[-0.50-0.14 0.40] zjistilo[0.14-0.46 0.99] se[0.46-0.54 1.00] to...[0.54-0.74 0.53]
+   cut 2.76: pozdě,[2.08-2.72 0.98] takže[2.72-3.34 0.96] to[3.34-3.42 0.97]
+   cut 7.24: byla[6.50-6.68 0.96] pryč.[6.68-7.16 1.00] Všechno.[7.16-8.04 1.00]
+   cut 12.72: rodiny.[12.00-12.48 1.00] A[12.50-12.74 0.76] byla[12.74-13.34 0.99] to[13.34-13.44 1.00]
+   cut 16.00: mém[15.34-15.52 0.87] životě.[15.52-15.98 1.00]

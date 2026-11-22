@@ -481,3 +481,8 @@ ol.guide li span { color: #c9c9d2; }
 /* řádek stahování z Projektu nepatří pod Přepis ani Titulky (report-5 C11: „✓ Staženo“ dvakrát pod sebou) */
 #projectPanel.show-tr #projPf, #projectPanel.show-cap #projPf { display: none !important; }
 .tr-foot .tr-flow-i { flex: none; width: 24px; height: 24px; line-height: 24px; text-align: center; color: #fcd34d; background: #372c1b; border-radius: 3px; cursor: help; }
+
+/* timecode v monitoru jde přepsat (klik) – jako v Premiere */
+.tc.tc-click { cursor: text; }
+.tc.tc-click:hover { text-decoration: underline dotted; }
+.tc .tc-edit { width: 10.5ch; font: inherit; color: inherit; background: #111; border: 1px solid var(--accent, #2d8ceb); border-radius: 3px; padding: 0 3px; outline: none; }

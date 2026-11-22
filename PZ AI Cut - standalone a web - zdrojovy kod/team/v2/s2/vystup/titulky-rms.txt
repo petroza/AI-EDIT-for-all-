@@ -1,0 +1,46 @@
+===== vystup-s2-a.mp4 s2-a prah -27.6 dB
+  [  0.00-  2.76] dále. A zjistilo se to / strašně, strašně pozdě. zacatek   -   konec -0.05
+  [  3.13-  5.15] Takže to přišlo úplně, / jak my jsme se rozvěděl zacatek -0.12  konec   - 
+  [  5.15-  7.18] že je nemocná a za tři / týdny byla pryč.        zacatek   -   konec +0.02
+  [  7.36-  8.84] Všechno, naprosto všechno,                       zacatek -0.27  konec   - 
+  [  8.84- 12.53] protože moje máma byla / tmel té naší rodiny.    zacatek +0.68  konec   - 
+  [ 12.72- 16.00] poprat a byla to ta nejtěžší / věc v mým životě. zacatek   -   konec   - 
+  median zacatek -0.12 s (max |0.68|), konec -0.02 s (max |0.05|)
+===== vystup-s2-d.mp4 s2-d prah -27.5 dB
+  [  0.00-  4.67] že nebyla možnost / se připravit a jediné,       zacatek   -   konec +0.63
+  [  4.67-  8.56] co nám zbylo, tak se s tím / poprat, prostě zvlá zacatek +0.27  konec +0.11
+  [  8.72- 10.20] Všechno, / naprosto všechno,                     zacatek -0.27  konec   - 
+  [ 10.20- 13.89] protože moje máma byla / tmel té naší rodiny.    zacatek +0.68  konec -0.56
+  [ 14.10- 15.35] To byl někdo,                                    zacatek -0.55  konec +0.69
+  [ 15.35- 20.14] kdo držel celou rodinu / pohromadě a kdo svoláva zacatek +0.35  konec +0.67
+  [ 20.14- 24.70] nás všechny na obědy, / svátky, narozeniny.      zacatek +0.52  konec +0.71
+  [ 24.70- 26.01] Ona všechno / organizovala.                      zacatek +0.57  konec +0.03
+  [ 26.73- 27.64] A najednou byl pryč.                             zacatek -0.01  konec   - 
+  median zacatek +0.31 s (max |0.68|), konec +0.63 s (max |0.71|)
+===== vystup-s2-e.mp4 s2-e prah -27.6 dB
+  [  0.60-  1.99] Tady není jiná možnost.                          zacatek -0.01  konec +0.12
+  [  2.42-  5.96] My jsme vlastně vůbec neměli / možnost se na to  zacatek -0.02  konec +0.08
+  [  6.48-  8.25] To byl prostě můj / nejbližší člověk.            zacatek +0.16  konec +0.15
+  [  8.88-  9.80] A najednou byl pryč.                             zacatek -0.02  konec   - 
+  median zacatek -0.01 s (max |0.16|), konec +0.12 s (max |0.15|)
+===== vystup-s2-long.mp4 s2-long prah -27.6 dB
+  [  0.17-  3.97] jinou možnost, ty musíš to zvládnout, / co ti vl zacatek   -   konec   - 
+  [  3.97-  7.87] jako co uděláš, ty se z toho zhroutíš, / ty se z zacatek +0.69  konec   - 
+  [  7.87- 11.07] prostě když přijde takováhle jako / ztráta, pros zacatek   -   konec   - 
+  [ 11.07- 14.91] vlastně pokračovat dál, jako v tom svým / životě zacatek   -   konec -0.67
+  [ 14.91- 19.55] na to, že přece ta máma by nechtěla, / abych já  zacatek   -   konec   - 
+  [ 19.55- 23.44] aby jako tím, že ona už tady není, / abych já ja zacatek   -   konec +0.07
+  [ 23.85- 25.40] Prostě to období bylo...                         zacatek -0.25  konec -0.02
+  [ 26.37- 30.99] strašně jako nečekaný, protože my / jsme nikdo n zacatek -0.02  konec -0.02
+  [ 30.99- 33.64] Jí boleli záda dlouhou dobu.                     zacatek -0.36  konec   - 
+  [ 33.64- 36.87] Mysleli jsme si, že si to nějakým / způsobem udě zacatek +0.67  konec   - 
+  [ 36.87- 38.95] že spadla prostě, / že jí jako boleli záda.      zacatek   -   konec +0.69
+  [ 38.95- 40.00] Ona chodila na fyzioterapie, / A vlastně...      zacatek +0.57  konec -0.06
+  [ 41.32- 45.26] po strašně dlouhý době a po strašně / moc vyšetř zacatek -0.10  konec   - 
+  [ 45.26- 50.12] opravdu nemohla ani chodit / bolestí, zjistili t zacatek   -   konec -0.09
+  [ 50.12- 54.44] že ona měla vzácnou formu rakovy, / jmenuje se t zacatek -0.37  konec -0.03
+  [ 54.44- 58.76] což je věc, o které já jsem / doposavať nikdy ne zacatek -0.15  konec   - 
+  [ 58.77- 62.67] že vlastně jako to, co se stalo, / tak ti dá tak zacatek   -   konec   - 
+  [ 62.67- 67.39] takovou ránu a vlastně ty spadneš / úplně fakt j zacatek   -   konec   - 
+  [ 67.39- 71.16] jak se zvedneš, tak potom tě jako / sformuje pod zacatek +0.26  konec   - 
+  median zacatek -0.06 s (max |0.69|), konec -0.03 s (max |0.69|)

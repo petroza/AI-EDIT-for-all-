@@ -105,7 +105,7 @@ function install({ app, aiRoot, ffmpeg, LL }) {
     const d = JSON.parse(fs.readFileSync(job.result.file, 'utf8'));
     const words = [];
     for (const sg of d.segments || []) for (const w of sg.words || []) words.push(Object.assign({ w: w.w, s: w.s, e: Math.max(w.e, w.s + 0.03) }, w.spk ? { spk: w.spk } : {}));
-    return { words, duration: d.duration, model: d.model || 'large-v3', language: d.language || 'cs', device: d.device, speakers: d.speakers };
+    return { words, duration: d.duration, model: d.model || 'large-v3', language: d.language || 'cs', device: d.device, speakers: d.speakers, exact: true };
   }
   backend.stop = (file) => { const id = running.get(file.path); if (id) wf('/jobs/' + id + '/cancel', {}).catch(() => {}); };
   T.setDesktop({ fileOf, backend });
@@ -114,6 +114,7 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   const jobs = new Map();
   const L = new Set();
   const transcribed = new Set();
+  const checked = new Set(); // média, u kterých už scan zjistil, jestli přepis existuje
   const emitA = (id) => { for (const f of L) { try { f(id); } catch (e) { /* posluchač */ } } };
   const ls = (k, d) => { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } };
   let auto = ls('pzAutoAsr2', '1') !== '0';
@@ -123,18 +124,23 @@ function install({ app, aiRoot, ffmpeg, LL }) {
     const j = jobs.get(m.id);
     if (j) return j;
     if (T.forMedia(m)) return { state: 'done', p: 1 };
+    // hned po importu / otevření projektu se hotový přepis teprve načítá (vzhled S2: 3–8 s „ještě není přepsaná“)
+    if (!checked.has(m.id) && !m.missing) return { state: 'queued', p: 0, eta: null, msg: LL('loading the transcript…', 'načítám přepis…') };
     return { state: 'none', p: 0 };
   }
   function start(m, opts = {}) {
     const f = m && !m.missing && fileOf(m.path);
     if (!f) return Promise.reject(new Error(LL('The media file is not available.', 'Soubor média není dostupný.')));
-    const j = { state: 'queued', p: 0, eta: null, msg: '', p0: null, tp0: 0, accurate: true };
+    const est = asr.accEstimate(m) || 0, t0 = Date.now();
+    const j = { state: 'queued', p: 0, eta: est || null, msg: LL('loading the transcript…', 'načítám přepis…'), p0: null, tp0: t0, accurate: true };
     jobs.set(m.id, j); emitA(m.id);
     const job = T.transcribe(f, { language: 'cs', quality: 'accurate', force: !!opts.force }, (p, msg) => {
       if (j.state === 'stopped') return;
       j.state = 'running'; if (p > 0 || !j.p) j.p = p; j.msg = msg;
-      if (p > 0.02 && j.p0 === null) { j.p0 = p; j.tp0 = Date.now(); } else if (j.p0 !== null && p > j.p0 + 0.01 && p < 1) { j.eta = (1 - p) / ((p - j.p0) / ((Date.now() - j.tp0) / 1000)); }
-      if (p >= 1 && j.p0 !== null && m.duration >= 60) { try { localStorage.setItem('pzAsrSpeedDesk', (m.duration * (1 - j.p0) / Math.max(1, (Date.now() - j.tp0) / 1000)).toFixed(2)); } catch (e) { /* bez úložiště */ } }
+      // odhad: změřená rychlost tohoto počítače, zpřesněný podle průběhu (Worker hlásí průběh po větších kusech)
+      if (est) j.eta = Math.max(5, est - (Date.now() - t0) / 1000);
+      if (p > 0.02 && j.p0 === null) { j.p0 = p; j.tp1 = Date.now(); } else if (j.p0 !== null && p > j.p0 + 0.05 && p < 1) { j.eta = (1 - p) / ((p - j.p0) / ((Date.now() - j.tp1) / 1000)); }
+      if (p >= 1 && j.p0 !== null && m.duration >= 60) { const sp = m.duration * (1 - j.p0) / Math.max(1, (Date.now() - j.tp1) / 1000); if (sp >= 1 && sp < 500) { try { localStorage.setItem('pzAsrSpeedDesk', sp.toFixed(2)); } catch (e) { /* bez úložiště */ } } }
       app.status(p >= 1 ? '' : LL(`Transcribing ${m.name} – ${msg}`, `Přepis ${m.name} – ${msg}`));
       if (opts.onProgress) { try { opts.onProgress(p, msg); } catch (e) { /* volající */ } }
       emitA(m.id);
@@ -210,14 +216,15 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   // nově importovaná videa: hotový přepis (i z MCP mezipaměti) se jen načte, jinak se přepíše na pozadí (jedno po druhém)
   async function scan() {
     for (const m of app.project.media) {
-      if (m.missing || jobs.has(m.id) || transcribed.has(m.id) || !fileOf(m.path)) continue;
-      if (await T.loadForMedia(m)) { transcribed.add(m.id); emitA(m.id); continue; }
+      if (m.missing || jobs.has(m.id) || transcribed.has(m.id) || !fileOf(m.path)) { checked.add(m.id); continue; }
+      if (await T.loadForMedia(m)) { transcribed.add(m.id); checked.add(m.id); emitA(m.id); continue; }
       if (auto && m.hasAudio !== false) start(m).catch(() => {});
+      checked.add(m.id); emitA(m.id);
     }
   }
   let st = null;
   app.project.on((what) => { if (what === 'media') { clearTimeout(st); st = setTimeout(scan, 300); } });
-  setTimeout(scan, 2500);
+  setTimeout(scan, 600);
   window.__pzASR = asr;
   return asr;
 }

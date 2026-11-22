@@ -1,0 +1,16 @@
+a A zjistilo se to strašně, strašně pozdě. Takže to přišlo úplně, jako my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. A byla to ta nejtěžší věc jako v mým životě.
+   cut 0.00: A[-0.50-0.14 0.40] zjistilo[0.14-0.46 0.99] se[0.46-0.54 1.00] to...[0.54-0.74 0.53]
+   cut 2.76: pozdě,[2.08-2.72 0.98] takže[2.72-3.34 0.96] to[3.34-3.42 0.97]
+   cut 7.24: byla[6.50-6.68 0.96] pryč.[6.68-7.16 1.00] Všechno.[7.16-8.04 1.00]
+   cut 12.72: rodiny.[12.00-12.48 1.00] A[12.50-12.74 0.76] byla[12.74-13.34 0.99] to[13.34-13.44 1.00]
+   cut 16.00: mém[15.34-15.52 0.87] životě.[15.52-15.98 1.00]
+d Že nebyla jako možnost se připravit a jediný, co nám jako zbylo, tak se s tím poprat, prostě zvládnout to. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. To byl někdo, kdo držel celou rodinu vlastně jako pohromadě a kdo svolával nás jako všechny na obědy, svátky, narozeniny. Ona všechno organizovala. A najednou byl pryč.
+   cut 0.00: Že...[-0.50-0.22 0.66]
+   cut 8.60: zvládnu[7.88-8.28 0.98] to.[8.28-8.40 0.97] Všechno.[8.60-9.40 1.00]
+   cut 26.04: organizovala.[25.22-25.98 0.99]
+   cut 27.64: najednou[26.78-27.12 1.00] byl[27.12-27.24 1.00] pryč.[27.24-27.62 1.00]
+e Tady není jiná možnost. My jsme vlastně jak vůbec neměli možnost se na to připravit. To byl prostě můj nejbližší člověk. A najednou byl pryč.
+   cut 0.00: Tady[0.26-0.74 0.81]
+   cut 2.04: možnost.[1.28-1.84 1.00] My[1.96-2.44 0.99] jsme[2.44-2.66 1.00]
+   cut 6.28: To[5.90-6.28 0.59] byl[6.28-6.94 0.97]
+   cut 9.80: byl[9.22-9.34 1.00] pryč.[9.34-9.74 1.00]

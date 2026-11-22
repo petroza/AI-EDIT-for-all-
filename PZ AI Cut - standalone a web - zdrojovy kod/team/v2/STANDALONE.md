@@ -23,3 +23,14 @@ Rozdíly proti webu:
   (model `…\models\whisper-large-v3`, cuda, `int8_float16`, krátké úseky).
 - Reporty: `APP\team\v2\s<N>\<role>.md`, snímky `APP\team\v2\s<N>\shots-<role>\`.
 - Nikdy uživatelova běžící aplikace PZ AI Cut, Premiere ani panel prohlížeče Claude. Nic neopravuj, nenasazuj, necommituj.
+
+## Od kola S2 (opravy po S1, commity f29957c, d0ca5cd)
+- **Přepis řeči ve standalone**: panel Přepis (vedle Projektu), pravý klik na klip → Přepsat řeč, automatický přepis po importu a
+  Sekvence → Titulky → Vytvořit titulky z přepisu fungují bez AI. Motor = lokální Worker MY Premiere MCP (Whisper large-v3 na GPU,
+  sdílená mezipaměť přepisů – 5min výřez je už přepsaný, 50 s nového záznamu ≈ 5 s). Rozhraní `window.__pzASR` (src/ai/asr-desktop.js).
+  Izolovaná instance potřebuje `--ai` (token Workeru), jinak přepis hlásí chybu přístupu.
+- Opraveno v S1 (ověř, jestli opravdu): zbytky cizího záběru na krajích klipů (i po AI sestřihu/Auto Reframe), MXF s vypálenými titulky
+  na snímek přesně, hlasitost dvouprůchodově (TV −23, sítě −14), XDCAM jen 1920×1080 25/29,97/50 a 1280×720 50/59,94, dialog Export
+  (staré Hotovo, posun tlačítka, MXF → TV hlasitost), Ctrl+R už nenačítá okno (Reload = Ctrl+Shift+F5), Ctrl+Q konec, čeština chyb
+  a kroků AI, nová sekvence si pamatuje poslední velikost, nápověda bez „na webu“.
+- **Bez AI panelu a MCP v kolech, kde běží víc instancí naráz** (most 7880/7890 by se pletl mezi okny). AI tok běží sám.

@@ -1,0 +1,56 @@
+== vystup-s2-a.mp4
+stream|index=0|codec_name=h264|profile=High|width=1280|height=720|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=1042178|nb_read_frames=400
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=16.000000|bit_rate=245322|nb_read_frames=750
+format|duration=16.000000
+== vystup-s2-a1080-dnxhr.mxf
+stream|index=0|codec_name=dnxhd|profile=DNXHR HQ|width=1920|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=N/A|nb_read_frames=400
+stream|index=1|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=16.000000|bit_rate=1152000|nb_read_frames=400
+stream|index=2|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=16.000000|bit_rate=1152000|nb_read_frames=400
+format|duration=16.000000|tag:timecode=00:00:00:00
+== vystup-s2-a1080-xdcam.mxf
+stream|index=0|codec_name=mpeg2video|profile=4:2:2|width=1920|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=50000000|nb_read_frames=400|
+stream|index=1|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=16.000000|bit_rate=1152000|nb_read_frames=400
+stream|index=2|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=16.000000|bit_rate=1152000|nb_read_frames=400
+format|duration=16.000000|tag:timecode=00:00:00:00
+== vystup-s2-b-h265.mp4
+stream|index=0|codec_name=hevc|profile=Main|width=1080|height=1920|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=1441115|nb_read_frames=400
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=16.000000|bit_rate=245322|nb_read_frames=750
+format|duration=16.000000
+== vystup-s2-b.mp4
+stream|index=0|codec_name=h264|profile=High|width=1080|height=1920|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=2885988|nb_read_frames=400
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=16.000000|bit_rate=245322|nb_read_frames=750
+format|duration=16.000000
+== vystup-s2-c.mp4
+stream|index=0|codec_name=h264|profile=High|width=1080|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=16.000000|bit_rate=1583019|nb_read_frames=400
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=16.000000|bit_rate=245322|nb_read_frames=750
+format|duration=16.000000
+== vystup-s2-d.mp4
+stream|index=0|codec_name=h264|profile=High|width=1080|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=27.640000|bit_rate=2152944|nb_read_frames=691
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=27.640000|bit_rate=241838|nb_read_frames=1293
+format|duration=27.640000
+== vystup-s2-d.mxf
+stream|index=0|codec_name=dnxhd|profile=DNXHR HQ|width=1080|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=27.640000|bit_rate=N/A|nb_read_frames=691
+stream|index=1|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=27.640000|bit_rate=1152000|nb_read_frames=691
+stream|index=2|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=27.640000|bit_rate=1152000|nb_read_frames=691
+format|duration=27.640000|tag:timecode=00:00:00:00
+== vystup-s2-e.mp4
+stream|index=0|codec_name=h264|profile=High|width=1280|height=720|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=9.800000|bit_rate=1404926|nb_read_frames=245
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=9.800000|bit_rate=239247|nb_read_frames=460
+format|duration=9.800000
+== vystup-s2-e1080-xdcam.mxf
+stream|index=0|codec_name=mpeg2video|profile=4:2:2|width=1920|height=1080|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=9.800000|bit_rate=50000000|nb_read_frames=245|
+stream|index=1|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=9.800000|bit_rate=1152000|nb_read_frames=245
+stream|index=2|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=1|r_frame_rate=0/0|duration=9.800000|bit_rate=1152000|nb_read_frames=245
+format|duration=9.800000|tag:timecode=00:00:00:00
+== vystup-s2-long-tv.mp4
+stream|index=0|codec_name=h264|profile=High|width=1280|height=720|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=71.160000|bit_rate=1250514|nb_read_frames=1779
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=71.160000|bit_rate=242000|nb_read_frames=3336
+format|duration=71.160000
+== vystup-s2-long.mov
+stream|index=0|codec_name=prores|profile=HQ|width=1280|height=720|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=71.160000|bit_rate=80125995|nb_read_frames=1779
+stream|index=1|codec_name=pcm_s24le|profile=unknown|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=71.160000|bit_rate=2304000|nb_read_frames=3336
+format|duration=71.160000
+== vystup-s2-long.mp4
+stream|index=0|codec_name=h264|profile=High|width=1280|height=720|color_range=tv|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|duration=71.160000|bit_rate=1250514|nb_read_frames=1779
+stream|index=1|codec_name=aac|profile=LC|sample_rate=48000|channels=2|r_frame_rate=0/0|duration=71.160000|bit_rate=245172|nb_read_frames=3334
+format|duration=71.160000

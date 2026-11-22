@@ -24,6 +24,9 @@ function localize(items) {
 
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 app.setName(APP_NAME);
+// testovací instance (test/standalone.js): vlastní úložiště okna (localStorage, IndexedDB s přepisy) – Electron jinak bere skutečnou
+// složku AppData uživatele i při přesměrovaném APPDATA a test by sahal do nastavení a mezipaměti jeho aplikace
+if (process.env.PZ_USERDATA) app.setPath('userData', process.env.PZ_USERDATA);
 // vlastní identita na liště úloh Windows (ikona a seskupení oken PZ AI Cut, ne Electron)
 if (process.platform === 'win32') app.setAppUserModelId('cz.pz.aicut.standalone');
 

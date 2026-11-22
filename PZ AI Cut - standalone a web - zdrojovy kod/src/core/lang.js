@@ -167,6 +167,7 @@ const RULES = [
   [/^(\d+) media file\(s\) were not found – import them again \(File → Import\)\.$/, 'Nenalezená média: $1 – naimportuj je znovu (Soubor → Importovat).'],
   [/^Version (\S+)\n/, 'Verze $1\n'],
   [/^Auto Reframe: detecting camera cuts…$/, 'Auto Reframe: hledám střihy kamery…'], [/^Auto Reframe: finding faces in (\d+) shots…$/, 'Auto Reframe: hledám obličeje (záběrů: $1)…'],
+  [/^Reframe for (\d+×\d+)$/, 'Převod formátu na $1'],
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],
   [/^Delete sequence “(.+)”\?$/, 'Smazat sekvenci „$1“?'], [/^✖ (.+)$/, (m, a) => '✖ ' + tr(a)],
   [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/29,97/50 fps nebo 1280×720 50/59,94 fps – použij MXF DNxHR HQ nebo H.264.'],

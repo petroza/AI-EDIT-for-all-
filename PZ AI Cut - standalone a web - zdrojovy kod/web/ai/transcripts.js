@@ -325,7 +325,7 @@ async function transcribeNow(file, opts = {}, onProgress) {
     check();
     const hal = dropHallucinations(dedupe(r.words.slice().sort((a, b) => a.s - b.s)));
     const sk = cid ? cid + '|' + lang : keyOf(file, lang);
-    const t = { engine: ENGINE, key: sk, sig, file: file.name, language: r.language || lang, model: r.model, device: r.device, duration: r.duration, words: hal.words, sentences: sentences(hal.words), removed: hal.removed, speakers: r.speakers || null, created: Date.now() };
+    const t = { engine: ENGINE, key: sk, sig, file: file.name, language: r.language || lang, model: r.model, device: r.device, duration: r.duration, words: hal.words, sentences: sentences(hal.words), removed: hal.removed, speakers: r.speakers || null, exact: !!r.exact, created: Date.now() };
     mem.set(sk, t); dbPut(sk, t);
     onProgress && onProgress(1, 'done');
     return t;
@@ -954,6 +954,13 @@ async function clipCaptionWords(file, t, c) {
       if (o.e - o.s < 0.04) o.s = Math.max(c.in, o.e - 0.04);
       last = o.s;
       words.push(o);
+    }
+    // přesné časy slov (faster-whisper ve standalone, t.exact): první/poslední slovo, ze kterého v klipu zazní jen kousek
+    // (< 0,12 s a < polovina slova), do titulku nepatří – kontrolor S2: „dále.“ 0,09 s jako samostatný 4snímkový titulek, „poprat“ 0,02 s
+    if ((t.exact || (t.model && !/\//.test(t.model))) && words.length) { // faster-whisper (large-v3) – webové modely mají „onnx-community/…“
+      const tiny = (o) => { const w = W[o.k]; if (!w) return false; const ov = Math.min(w.e, c.out) - Math.max(w.s, c.in); return ov < 0.12 && ov < 0.5 * (w.e - w.s); };
+      while (words.length && tiny(words[0])) words.shift();
+      while (words.length && tiny(words[words.length - 1])) words.pop();
     }
     src = { words };
   } catch (e) { /* bez zvuku: časy z přepisu */ }

@@ -109,6 +109,8 @@ function createProgram(app) {
 
   bindScrub(scrub, () => { const s = app.seq(); return s ? app.seqDuration(s) : 0; }, null,
     (t) => { app.focusPanel('program'); app.setPlayhead(t, { scrub: true }); }, () => app.scrubEnd());
+  editableTc(tc, { ok: () => !!app.seq(), fps: () => app.seq().fps || 25, now: () => app.seq().playhead || 0, max: () => app.seqDuration(app.seq()),
+    seek: (t) => { app.focusPanel('program'); player.pause && player.pause(); app.setPlayhead(t); } });
 
   return {
     player, ui, layout,
@@ -120,6 +122,49 @@ function createProgram(app) {
     toggle() { player.toggle(); app.updatePlayButtons(); },
     reset() { player.pause(); player.time = 0; layout(); ui(); player.seek((app.seq() || {}).playhead || 0); },
   };
+}
+
+/** Timecode v monitoru jde přepsat jako v Premiere (redaktorka S1): klik → čas (00:01:02:10; jen číslice zprava = 1021510 → 01:02:15:10;
+ *  +15 / -15 = posun o snímky, +1:00 = o sekundu), Enter skočí, Esc / klik jinam zruší. */
+function parseTcInput(v, fps, now) {
+  v = String(v).trim();
+  const rel = /^[+-]/.test(v) ? v[0] : '';
+  const s = rel ? v.slice(1).trim() : v;
+  let t;
+  if (/^\d+$/.test(s)) {
+    if (rel) t = Number(s) / fps;
+    else { const d = s.padStart(8, '0').slice(-8); t = +d.slice(0, 2) * 3600 + +d.slice(2, 4) * 60 + +d.slice(4, 6) + +d.slice(6, 8) / fps; }
+  } else {
+    const p = s.split(/[:;.,]/).map((x) => (x === '' ? 0 : Number(x)));
+    if (!p.length || p.length > 4 || p.some((x) => isNaN(x))) return NaN;
+    while (p.length < 4) p.unshift(0);
+    t = p[0] * 3600 + p[1] * 60 + p[2] + p[3] / fps;
+  }
+  if (rel === '+') t = now + t; else if (rel === '-') t = now - t;
+  return Math.round(t * fps) / fps;
+}
+function editableTc(el, ctx) {
+  if (!el) return;
+  el.classList.add('tc-click');
+  el.title = 'Click and type a time (Enter = go, +15 = 15 frames forward)';
+  el.addEventListener('click', () => {
+    if (el.querySelector('input') || !ctx.ok()) return;
+    const old = el.textContent;
+    const inp = document.createElement('input');
+    inp.className = 'tc-edit'; inp.value = old; inp.spellcheck = false;
+    el.textContent = ''; el.appendChild(inp); inp.focus(); inp.select();
+    let done = false;
+    const finish = (go) => {
+      if (done) return; done = true;
+      const v = inp.value;
+      el.textContent = old;
+      if (!go) return;
+      const t = parseTcInput(v, ctx.fps(), ctx.now());
+      if (isFinite(t)) ctx.seek(Math.max(0, Math.min(ctx.max(), t)));
+    };
+    inp.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') { e.preventDefault(); finish(true); } else if (e.key === 'Escape') { e.preventDefault(); finish(false); } });
+    inp.addEventListener('blur', () => finish(false));
+  });
 }
 
 /* ---------------- Zdroj ---------------- */
@@ -149,6 +194,8 @@ function createSource(app) {
   player.onStop = () => { ui(); app.updatePlayButtons(); };
 
   bindScrub(scrub, () => (media ? media.duration : 0), null, (t) => { app.focusPanel('source'); player.pause(); player.seek(t); });
+  editableTc(tc, { ok: () => !!media, fps: () => media.fps || 25, now: () => player.time, max: () => media.duration,
+    seek: (t) => { app.focusPanel('source'); player.pause(); player.seek(t); ui(); } });
 
   // přetažení obrazu zdroje na timeline (s in/out)
   screen.draggable = true;
