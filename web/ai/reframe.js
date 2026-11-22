@@ -177,12 +177,13 @@ async function cameraCuts(src, a, b, fps, ah, stepS = 0.5) {
  * @param fileOf    (media) => File
  * @param progress  (text, p) => void
  */
-async function reframeSequence(app, seq, fileOf, progress = () => {}) {
+async function reframeSequence(app, seq, fileOf, progress = () => {}, only = null) {
   const p = app.project;
   const W = seq.width, H = seq.height;
   const plan = []; // { track, clip, cuts:[src times], shots:[{in,out,x}] }
   const vclips = [];
-  seq.tracks.video.forEach((track) => track.clips.forEach((clip) => vclips.push({ track, clip })));
+  // only = Set id klipů (úsek přidaný do hotové sekvence 9:16/4:5) – ostatní klipy a jejich výřez zůstanou
+  seq.tracks.video.forEach((track) => track.clips.forEach((clip) => { if (!only || only.has(clip.id)) vclips.push({ track, clip }); }));
   let done = 0, faced = 0, splits = 0;
   const srcs = new Map();
   try {
@@ -202,7 +203,7 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}) {
         const tg = await shotTarget(src, bounds[i], bounds[i + 1], ah);
         shots.push({ in: bounds[i], out: bounds[i + 1], x: tg ? tg.x : null });
       }
-      plan.push({ track, clip, k, iw: m.width, shots, src, ah, m });
+      plan.push({ track, clip, k, iw: m.width, shots, src, ah, m, file: fileOf(m) });
       done++;
     }
     await edgeFragments(plan, seq);
@@ -217,6 +218,17 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}) {
   p.edit('AI: Reframe for ' + W + '×' + H, () => {
     // zbytky záběru na kraji klipu (pár snímků před/za střihem kamery) převezme sousední klip – jinak ve výsledku bliknou
     for (const e of plan) {
+      if (e.head) {
+        const { d } = e.head;
+        trimSeqHead(seq, d);
+        e.shots.shift(); e.shots[0].in = e.clip.in;
+        merged++;
+      }
+      if (e.foot) {
+        trimSeqFoot(seq, e.clip, e.foot.d);
+        e.shots.pop(); e.shots[e.shots.length - 1].out = e.clip.out;
+        merged++;
+      }
       if (e.lead) {
         const { prev, d } = e.lead;
         prev.clip.out += d; prev.shots[prev.shots.length - 1].out += d; prev.clip.linkId = null;
@@ -252,7 +264,36 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}) {
   return { clips: vclips.length, splits, faced, merged, shots: plan.reduce((a, x) => a + x.shots.length, 0) };
 }
 
-const MIN_SHOT = 0.5; // kratší záběr na kraji klipu = probliknutí (kolo 7: zbytky 0,36–0,40 s divák vidí jako blik)
+const MIN_SHOT = 0.5;
+/** Je ve zvuku [a, a + d + 0,03 s] ticho (pod prahem 15 dB pod řečí následujících 8 s)? */
+async function quietHead(file, a, d) {
+  try {
+    const T = require('./transcripts');
+    const thr = (await T.speechLevel(file, a, a + 8)) * Math.pow(10, -15 / 20);
+    const x = await T.audio16k(file, a, a + d + 0.06);
+    for (let u = a + 0.015; u <= a + d + 0.03; u += 0.01) { const v = T.rmsWin(x, a, u, 0.03); if (v !== null && v > thr) return false; }
+    return true;
+  } catch (e) { return false; }
+}
+/** Zkrátit konec sekvence o d s (klip na konci obrazu a zvuk, který s ním končí). */
+function trimSeqFoot(seq, clip, d) {
+  const end = clipEnd(clip);
+  for (const kind of ['video', 'audio']) for (const tr of seq.tracks[kind]) for (const c of tr.clips) {
+    if (Math.abs(clipEnd(c) - end) < 0.02) c.out -= d;
+  }
+  seq.captions = (seq.captions || []).map((c) => c.end > end - d ? Object.assign({}, c, { end: Math.max(c.start + 0.05, end - d) }) : c);
+}
+/** Odstřihnout prvních d s celé sekvence (všechny stopy, titulky, značky) – zbytek jiného záběru na úplném začátku. */
+function trimSeqHead(seq, d) {
+  for (const kind of ['video', 'audio']) for (const tr of seq.tracks[kind]) {
+    for (const c of tr.clips) {
+      if (c.start < d - 1e-6) { const cut = d - c.start; c.in += cut; c.start = 0; } else c.start -= d;
+    }
+    tr.clips = tr.clips.filter((c) => c.out - c.in > 1e-3);
+  }
+  seq.captions = (seq.captions || []).map((c) => Object.assign({}, c, { start: Math.max(0, c.start - d), end: c.end - d })).filter((c) => c.end > 0.05);
+  seq.markers = (seq.markers || []).map((mk) => Object.assign({}, mk, { time: Math.max(0, (mk.time || 0) - d) }));
+} // kratší záběr na kraji klipu = probliknutí (kolo 7: zbytky 0,36–0,40 s divák vidí jako blik)
 
 /**
  * Najde zbytky záběru kratší než MIN_SHOT na začátku (lead) / konci (tail) klipu a ověří, že je převezme sousední
@@ -274,16 +315,26 @@ async function edgeFragments(plan, seq) {
     const d0 = Math.round((sh[0].out - sh[0].in) * fps) / fps;
     if (d0 > 0 && d0 < MIN_SHOT) {
       const prev = plan.find((q) => q !== e && q.track === e.track && Math.abs(clipEnd(q.clip) - e.clip.start) < tol);
+      // obraz předchozího záběru by běžel pod začátkem nové repliky – jen když tam není řeč, nebo jde o ≤ 3 snímky
+      // (kolo 8, kontrolor: 0,27 s řeči „Takže“ pod cizími rty)
+      const lipsOk = (d) => d <= 3.5 / fps || !e.file ? true : quietHead(e.file, e.clip.in, d);
       if (prev && !prev.tail && prev.clip.out + d0 <= (prev.m.duration || 0) - 0.05 &&
-          await same(prev, prev.clip.out - 0.04, prev.clip.out + d0 - 0.02)) e.lead = { prev, d: d0 };
+          await same(prev, prev.clip.out - 0.04, prev.clip.out + d0 - 0.02) && await lipsOk(d0)) e.lead = { prev, d: d0 };
+      // úplný začátek sekvence (není soused, který by zbytek převzal): zbytek se odstřihne i se zvukem a sekvence se posune,
+      // jen když v něm není řeč (kolo 8, redaktorka: video 4:5 začínalo 2 snímky moderátorky)
+      else if (!prev && e.clip.start < tol && e.file && await quietHead(e.file, e.clip.in, d0)) e.head = { d: d0 };
     }
     const L = sh[sh.length - 1];
     const d1 = Math.round((L.out - L.in) * fps) / fps;
-    if (d1 > 0 && d1 < MIN_SHOT && !(e.lead && sh.length < 3)) {
+    if (d1 > 0 && d1 < MIN_SHOT && !((e.lead || e.head) && sh.length < 3)) {
       const end = clipEnd(e.clip);
       const next = plan.find((q) => q !== e && q.track === e.track && Math.abs(q.clip.start - end) < tol);
+      const lipsT = d1 <= 3.5 / fps || !e.file ? true : await quietHead(e.file, e.clip.out - d1 - 0.03, d1);
       if (next && !next.lead && next.clip.in - d1 >= 0 &&
-          await same(next, next.clip.in - d1 + 0.02, next.clip.in + 0.04)) e.tail = { next, d: d1 };
+          await same(next, next.clip.in - d1 + 0.02, next.clip.in + 0.04) && lipsT) e.tail = { next, d: d1 };
+      // úplný konec sekvence (nic za klipem): zbytek odstřihnout i se zvukem, když v něm není řeč (kolo 8: d 10 snímků celku na konci)
+      else if (!next && e.file && !plan.some((q) => q !== e && q.track === e.track && q.clip.start > e.clip.start) &&
+          await quietHead(e.file, e.clip.out - d1 - 0.03, d1)) e.foot = { d: d1 };
     }
   }
 }
@@ -296,7 +347,12 @@ async function edgeFragments(plan, seq) {
 async function reframeCopy(app, src, num, den, W, H, fileOf, status = () => {}) {
   const { uid, uuid } = require('../../src/core/util');
   const CL = require('../../src/core/captionlayout');
-  if (src.width / src.height < Math.max(1.2, num / den + 0.02)) throw new Error(`“${src.name}” is ${src.width}×${src.height} – reframe only from a wider (16:9) sequence`);
+  // z jakékoli širší sekvence (4:5 → 9:16 taky – klipy odkazují na původní 16:9 záběry, výřez se počítá znovu z nich; kolo 8)
+  if (src.width / src.height < num / den + 0.02) {
+    const cz = typeof window !== 'undefined' && window.TN && window.TN.lang === 'cs';
+    throw new Error(cz ? `„${src.name}“ má ${src.width}×${src.height} – na ${num}:${den} jde převést jen ze širší sekvence (např. 16:9 nebo 4:5).`
+      : `“${src.name}” is ${src.width}×${src.height} – ${num}:${den} can only be made from a wider sequence (e.g. 16:9 or 4:5).`);
+  }
   const seq = JSON.parse(JSON.stringify(src));
   for (const kind of ['video', 'audio']) for (const tr of seq.tracks[kind]) for (const c of tr.clips) c.id = uid('c');
   seq.id = uuid();
@@ -355,17 +411,19 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
         const bounds = [clip.in, ...head.slice(-1), ...tail.slice(0, 1), clip.out];
         const shots = [];
         for (let i = 0; i < bounds.length - 1; i++) shots.push({ in: bounds[i], out: bounds[i + 1], x: null });
-        plan.push({ track, clip, shots, src, ah, m });
+        plan.push({ track, clip, shots, src, ah, m, file: fileOf(m) });
       }
     }
     progress('', 0.5);
     await edgeFragments(plan, seq);
   } finally { for (const s of srcs.values()) s.close(); }
   progress('', 1);
-  const todo = plan.filter((e) => e.lead || e.tail);
+  const todo = plan.filter((e) => e.lead || e.tail || e.head || e.foot);
   if (!todo.length) return { merged: 0 };
   p.edit('Clean up camera-cut leftovers', () => {
     for (const e of todo) {
+      if (e.head) trimSeqHead(seq, e.head.d);
+      if (e.foot) trimSeqFoot(seq, e.clip, e.foot.d);
       if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
       if (e.tail) { const { next, d } = e.tail; next.clip.in -= d; next.clip.start -= d; next.clip.linkId = null; e.clip.out -= d; e.clip.linkId = null; }
     }

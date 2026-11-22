@@ -77,9 +77,9 @@ window.addEventListener('pagehide', () => {
 
 /* Auto Reframe ve webové verzi (Sekvence → Auto Reframe sekvence): NOVÁ sekvence v cílovém formátu, obraz posunutý
  * na obličej / mluvčího (web/ai/reframe.js – MediaPipe v prohlížeči), titulky přeskládané na novou šířku. */
-window.__pzReframeHere = (s) => {
-  app.edit('Set to Fill', () => { for (const tr of s.tracks.video) for (const c of tr.clips) { c.fit = 'cover'; c.scale = 1; c.posX = 0; c.posY = 0; } });
-  return require('./ai/reframe').reframeSequence(app, s, (m) => { const f = vfs.getFile(m.path); if (!f) throw new Error(t('The file is not accessible – click "Allow access to media".')); return f; }, (text) => app.status(t(text)));
+window.__pzReframeHere = (s, only) => {
+  app.edit('Set to Fill', () => { for (const tr of s.tracks.video) for (const c of tr.clips) { if (only && !only.has(c.id)) continue; c.fit = 'cover'; c.scale = 1; c.posX = 0; c.posY = 0; } });
+  return require('./ai/reframe').reframeSequence(app, s, (m) => { const f = vfs.getFile(m.path); if (!f) throw new Error(t('The file is not accessible – click "Allow access to media".')); return f; }, (text) => app.status(t(text)), only || null);
 };
 window.__pzEdgeShots = (s) => require('./ai/reframe').fixEdgeShots(app, s, (m) => { const f = vfs.getFile(m.path); if (!f) throw new Error('not accessible'); return f; });
 window.__pzReframe = (src, num, den, W, H) => require('./ai/reframe').reframeCopy(app, src, num, den, W, H, (m) => {

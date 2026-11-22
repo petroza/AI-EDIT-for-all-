@@ -1,0 +1,32 @@
+| výrok | In / Out (s) | 1. slovo titulku | 1. slovo ve zvuku | posl. titulku | posl. ve zvuku | RMS In / Out (dB pod řečí) | varování | začátek | konec |
+|---|---|---|---|---|---|---|---|---|---|
+| V1 18:16 | 1096.80 / 1112.32 | Tady | Tady (0.00, p 0.84) | dál. | dál. (15.20, p 1) | -42 / -16 | – | ✔ | ✔ |
+| V2 25:51 | 1550.96 / 1570.82 | tak | tak (0.00, p 0.7) | film." | film. (19.62, p 1) | -17 / -35 | – | ✔ | ✔ |
+| V3 20:58 | 1258.39 / 1271.40 | vůbec. | To (0.00, p 0.14) | životě. | životě. (12.84, p 1) | -16 / -10 | začátek | ✔ | ✔ |
+| V4 23:23 | 1402.94 / 1416.69 | Zrovna | Zrovna (0.00, p 0.91) | furt. | furt. (13.58, p 0.99) | -27 / -29 | – | ✔ | ✔ |
+| V5 19:59 | 1199.70 / 1216.03 | My | My (0.00, p 0.79) | to. | to. (16.08, p 0.93) | -38 / -39 | – | ✔ | ✔ |
+| R 23:20 | 1399.76 / 1417.09 | Ale | ale (0.00, p 0.61) | Furt. | furt. (17.26, p 0.99) | -33 / -18 | – | ✔ | ✔ |
+| N1 7:14 | 433.92 / 449.12 | Proto | Protože (0.00, p 0.66) | moderátorech. | moderátorech. (15.14, p 1) | -38 / -23 | – | ✔ | ✔ |
+| N2 8:10 | 490.51 / 507.07 | Ano, | Ano, (0.00, p 0.96) | schválit? | musíš... (16.10, p 0.97) | -12 / -29 | začátek | ✔ | ✘ |
+| N3 5:21 | 321.63 / 326.04 | No | No (0.34, p 0.82) | ne. | ne. (3.82, p 1) | -24 / 0 | – | ✔ | ✔ |
+| N4 23:40 | 1420.23 / 1434.80 | A | A (0.00, p 0.65) | bolesti. | bolesti. (14.04, p 1) | -29 / -32 | začátek | ✔ | ✔ |
+| N5 21:48 | 1308.42 / 1319.60 | Není. | Není. (0.00, p 0.87) | že... | že... (10.80, p 0.99) | -33 / -33 | – | ✔ | ✔ |
+| N6 18:32 | 1112.24 / 1119.62 | Jako | jako (0.00, p 0.69) | život. | život. (7.28, p 1) | -16 / -1 | – | ✔ | ✔ |
+| N7 6:32 | 392.77 / 404.80 | To, | Jakoby (0.00, p 0.61) | nebylo? | nebylo. (11.58, p 0.82) | -27 / -7 | začátek, konec | ✘ | ✔ |
+| N8 17:05 | 1025.77 / 1032.85 | A | A (0.00, p 0.8) | udělat. | udělat. (6.98, p 1) | -29 / -20 | začátek | ✔ | ✔ |
+| N9 14:07 | 847.64 / 862.99 | tak | tak (0.00, p 0.79) | mě | vzhlížela. (14.76, p 0.97) | -22 / -6 | konec | ✔ | ✘ |
+| N10 9:23 | 562.89 / 569.35 | A | A (0.00, p 0.63) | rozhovorů, | kde... (6.14, p 0.82) | -27 / -4 | – | ✔ | ✘ |
+| N11 25:58 | 1558.84 / 1570.82 | Prostě | A (0.00, p 0.33) | film." | film. (11.74, p 1) | -30 / -38 | – | ✔ | ✔ |
+| N12 5:00 | 300.78 / 312.95 | doma? | No, (0.00, p 0.31) | neumíš, | neumíš. (12.08, p 1) | -16 / -4 | začátek | ✘ | ✔ |
+| N13 19:07 | 1147.06 / 1157.01 | A | A (0.00, p 0.83) | teprve, | teprve. (9.72, p 1) | -26 / -20 | – | ✔ | ✔ |
+| N14 25:32 | 1532.39 / 1538.34 | Protože | protože (0.00, p 0.76) | soustředit. | soustředit. (5.84, p 1) | -29 / -33 | – | ✔ | ✔ |
+
+začátky v pořádku 18/20, konce 17/20 (pojmenované: 6, náhodné: 14)
+
+první/poslední 3 věty přepisu:
+  #0 0.0–9.6 www.hradeckralove.cz Talk. ⚠ halucinace
+  #1 9.7–14.8 Pozvání dnes totiž přijala má kolegyně, kterou nejen diváci televizenova velmi dobře znají.
+  #2 15.1–16.8 Je velmi šikovná, je velmi krásná.
+  #448 1675.8–1677.4 Děkuji moc za pozvání, Kristýnko.
+  #449 1678.0–1681.1 No a vám přeji krásný zbytek dne a budu se zase někdy těšit na viděnou.
+  #450 1681.6–1686.8 Titulky vytvořil JohnyX. ⚠ halucinace

@@ -1,0 +1,91 @@
+{
+ "export": "O:/TN_strihatko/web/test-out/vystup-r8-c.mp4",
+ "seq": "vystup-r8-c",
+ "audio": {
+  "floor_db": -41.4,
+  "speech_median_db": -15.2
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 67.04,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -40.9,
+   "exp_pre10": -180,
+   "exp_post10": -40.7,
+   "src_at_in_-100_0": -51.9,
+   "src_at_in_0_+100": -56.2,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  },
+  {
+   "t": 18.84,
+   "src_in": 212.04,
+   "src_prev_out": 85.88,
+   "exp_pre50": -18.0,
+   "exp_post50": -33.9,
+   "exp_pre10": -17.6,
+   "exp_post10": -44.9,
+   "src_at_prev_out_-100_0": -34.9,
+   "src_at_prev_out_0_+100": -29.9,
+   "src_at_in_-100_0": -35.5,
+   "src_at_in_0_+100": -44.6,
+   "jump_vs_p995": 0.01,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -49.1,
+  "first50_db": -40.9,
+  "len_s": 35.093
+ },
+ "video": {
+  "frames": 877,
+  "median_diff": 1.19,
+  "visual_cuts_s": [
+   6.84,
+   10.8,
+   18.84,
+   28.28,
+   34.0
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   6.88,
+   6.92,
+   10.68,
+   10.72,
+   10.76,
+   33.88,
+   33.92,
+   33.96
+  ],
+  "clip_bounds_s": [
+   6.84,
+   10.8,
+   18.84,
+   28.28,
+   34
+  ],
+  "short_shots": []
+ },
+ "crop": {
+  "checked_frames": 205,
+  "low_match": [],
+  "empty_crop_with_person_in_src": [
+   {
+    "t": 31.28,
+    "src": 224.48,
+    "crop_x": 676,
+    "crop_w": 576,
+    "match": 0.998,
+    "faces_src": 1,
+    "faces_in_crop": 0,
+    "near_cut": false
+   }
+  ],
+  "no_face_in_src": 0
+ }
+}

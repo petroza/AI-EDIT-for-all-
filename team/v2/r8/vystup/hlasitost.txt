@@ -1,0 +1,9 @@
+== a
+ I: -14.0 LUFS  LRA: 3.4 LU  Peak: -1.1 dBFS 
+== b
+ I: -14.0 LUFS  LRA: 3.4 LU  Peak: -1.1 dBFS 
+== c
+ I: -14.0 LUFS  LRA: 7.6 LU  Peak: -0.9 dBFS 
+== d
+ I: -14.0 LUFS  LRA: 8.9 LU  Peak: -1.0 dBFS 
+ I: -14.0 LUFS  LRA: 7.5 LU  Peak: -1.0 dBFS 

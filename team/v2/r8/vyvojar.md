@@ -18,3 +18,16 @@ Výstupy: `edges-pred.*`, `edges-po.*`, `edges2-pred.*`, `edges2-po.*` (PŘED = 
 Zbývá (souvislá řeč, varování „začátek/konec“ se ukáže): N2, N7, N9, N12 na seedu A.
 
 Testy 37/37, B1 9/9, connector-pin 5/5.
+
+## Kolo 8b (app.js?v=mws7717d)
+Podle redaktorky a kontrolora kola 8:
+| Nález | Záv. | Oprava | Ověření |
+|---|---|---|---|
+| a/b začíná útržkem „(tak) dále.“, konce v další větě (kontrolor) | 3 | hranice v mezeře mezi slovy i bez úplného ticha, když je aspoň 10 dB pod řečí (`EW.gapDb` 15→10) | seed A 17/20·17/20 → 18/20·18/20 (N2 začátek, N7 konec), seed B beze změny; a nově In 104,72 („A zjistilo se to…“) |
+| Titulky d bez prvního slova „Nebyla“ (kontrolor, regrese kola 7) | 2 | začátek: mezera mezi slovy jako celý úsek (2s ticho před slovem), konec postaru | „Nebyla možnost se…“ od 0,18 s; seedy beze změny |
+| 0,27 s řeči pod cizími rty po převzetí zbytku záběru (kontrolor) | 2 | převzetí zbytku jen když pod ním není řeč (nebo ≤ 3 snímky) | b: 0,4s záběr zůstává samostatný (2,72–3,12) |
+| Export 4:5 začínal 2 snímky moderátorky (redaktorka) | 3 | zbytek na úplném začátku/konci sekvence se odstřihne i se zvukem, když v něm není řeč | segment In 145,88 → začátek 145,96 (obraz i zvuk) |
+| „Přidat na konec“ ve 4:5 bez výřezu podle obličeje (redaktorka) | 3 | výřez jen pro přidané klipy, kroky Zpět sloučené s vložením | B1 9/9 (undoInsert ✔) |
+| 9:16 ze 4:5 odmítnuto anglicky (redaktorka) | 2 | převod z jakékoli širší sekvence, hláška česky | kód |
+| Text v obraze ukazoval předchozí sekvenci (redaktorka) | 2 | panel se při změně aktivní sekvence přestaví | kód |
+Testy 37/37, B1 9/9, connector-pin 5/5.

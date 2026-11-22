@@ -159,8 +159,19 @@ const app = {
     // výslovná volba z menu ▾ (design-4 §1.2): na konec / na začátek; na hlavu jen když stojí na hranici
     if (mode === 'start') p = { at: 0, where: 'start' };
     if (mode === 'end') { let end = 0; for (const k of ['video', 'audio']) for (const tr of s.tracks[k]) for (const c of tr.clips) end = Math.max(end, c.start + (c.out - c.in)); p = { at: end, where: 'end' }; }
+    const before = new Set(s.tracks.video.flatMap((tr) => tr.clips.map((c) => c.id)));
     app.dropMedia(m, a, b, p.at, true, {});
     app.setPlayhead(p.at + (b - a));
+    // sekvence na výšku (9:16, 4:5, 1:1) ze širšího záběru: přidaný úsek dostane výřez podle obličeje jako zbytek (kolo 8 –
+    // „Přidat na konec“ ve 4:5 nechal středový výřez s prázdným celkem); jinak jen úklid zbytků záběru na krajích
+    const added = new Set(s.tracks.video.flatMap((tr) => tr.clips.map((c) => c.id)).filter((id) => !before.has(id)));
+    if (added.size && m.hasVideo && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
+      app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
+      // výřez je součást vložení: jeho kroky Zpět sloučit s vložením (jedno Ctrl+Z vrátí obojí – B1 undoInsert)
+      const h0 = project.history.length;
+      const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); };
+      window.__pzReframeHere(s, added).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
+    }
     app.status(p.where === 'end' ? LL('Added at the end of the sequence', 'Přidáno na konec sekvence') : LL('Inserted at the playhead', 'Vloženo na místo hlavy'));
     return Object.assign(p, { dur: b - a, seqId: s.id });
   },
@@ -301,6 +312,8 @@ project.on((what, detail) => {
     return;
   }
   if (what === 'active') {
+    // otevřený panel Text v obraze patří k nové sekvenci (kolo 8: ukazoval název a hodnoty předchozí, dokud se nepsalo)
+    try { require('./ui/captionstyle').relangCaptionStyle(app); } catch (e) { /* bez panelu */ }
     app.sel.clear();
     app.gapSel = null;
     app.program.reset();
