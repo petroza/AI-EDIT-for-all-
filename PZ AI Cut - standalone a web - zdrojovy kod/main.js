@@ -66,7 +66,9 @@ function createWindow() {
       spellcheck: false,
     },
   });
-  win.maximize();
+  // testy (test/standalone.js): PZ_WINDOW_SIZE=1366x768 = pevná velikost okna místo maximalizace
+  const fixed = /^(\d+)x(\d+)$/.exec(process.env.PZ_WINDOW_SIZE || '');
+  if (fixed) { win.setMinimumSize(800, 500); win.setBounds({ x: 30, y: 30, width: +fixed[1], height: +fixed[2] }); } else win.maximize();
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   win.on('close', (e) => {
     if (forceClose) return;
