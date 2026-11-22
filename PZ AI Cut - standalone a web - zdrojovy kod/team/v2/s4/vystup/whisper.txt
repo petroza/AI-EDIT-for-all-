@@ -1,0 +1,58 @@
+a A zjistilo se to strašně, strašně pozdě. Takže to přišlo úplně, jak my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. A byla to ta nejtěžší věc jako v mým životě.
+   cut 0.00: A[-0.50-0.12 0.42] zjistilo[0.12-0.46 0.99] se[0.46-0.54 1.00] to...[0.54-0.74 0.53]
+   cut 2.76: pozdě.[2.08-2.66 0.98] Takže[2.76-3.34 0.94] to[3.34-3.42 0.96]
+   cut 7.24: byla[6.52-6.68 0.97] pryč.[6.68-7.16 1.00] Všechno.[7.16-8.04 1.00]
+   cut 12.72: rodiny.[12.00-12.48 1.00] ...a[12.56-13.08 0.57] byla[13.08-13.34 1.00] to[13.34-13.44 0.99]
+   cut 16.00: mém[15.34-15.52 0.88] životě.[15.52-15.96 1.00]
+b A zjistilo se to strašně, strašně pozdě. Takže to přišlo úplně, jak my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. A byla to ta nejtěžší věc jako v mým životě.
+   cut 0.00: A[-0.50-0.12 0.42] zjistilo[0.12-0.46 0.99] se[0.46-0.54 1.00] to...[0.54-0.74 0.53]
+   cut 2.76: pozdě.[2.08-2.66 0.98] Takže[2.76-3.34 0.94] to[3.34-3.42 0.96]
+   cut 7.24: byla[6.52-6.68 0.97] pryč.[6.68-7.16 1.00] Všechno.[7.16-8.04 1.00]
+   cut 12.72: rodiny.[12.00-12.48 1.00] ...a[12.56-13.08 0.57] byla[13.08-13.34 1.00] to[13.34-13.44 0.99]
+   cut 16.00: mém[15.34-15.52 0.88] životě.[15.52-15.96 1.00]
+c A zjistilo se to strašně, strašně pozdě. Takže to přišlo úplně, jak my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč. Všechno, naprosto všechno, protože moje máma byla vlastně jako tmel té naší rodiny. A byla to ta nejtěžší věc jako v mým životě.
+   cut 0.00: A[-0.50-0.12 0.42] zjistilo[0.12-0.46 0.99] se[0.46-0.54 1.00] to...[0.54-0.74 0.53]
+   cut 2.76: pozdě.[2.08-2.66 0.98] Takže[2.76-3.34 0.94] to[3.34-3.42 0.96]
+   cut 7.24: byla[6.52-6.68 0.97] pryč.[6.68-7.16 1.00] Všechno.[7.16-8.04 1.00]
+   cut 12.72: rodiny.[12.00-12.48 1.00] ...a[12.56-13.08 0.57] byla[13.08-13.34 1.00] to[13.34-13.44 0.99]
+   cut 16.00: mém[15.34-15.52 0.88] životě.[15.52-15.96 1.00]
+d Že nebyla možnost se připravit a jediné, co nám zbylo, tak se s tím poprát, zvládnout to. Všechno, naprosto všechno, protože moje máma byla tmel té naší rodiny. To byl někdo, kdo držel celou rodinu pohromadě a kdo svolával nás všechny na obědy, svátky, narozeniny. Ona všechno organizovala. A najednou byl pryč.
+   cut 0.00: Děkujeme.[-0.50-0.26 0.75]
+   cut 8.60: zvládnu[7.88-8.28 0.98] to.[8.28-8.40 0.98] Všechno.[8.60-9.40 1.00]
+   cut 26.04: organizovala[25.22-25.98 0.99] a[25.98-26.78 0.27]
+   cut 27.64: najednou[26.78-27.12 1.00] byl[27.12-27.24 1.00] pryč.[27.24-27.62 0.99]
+e Tady není jiná možnost. My jsme vlastně jak vůbec neměli možnost se na to připravit. To byl prostě můj nejbližší člověk. A najednou byl pryč.
+   cut 0.00: Tady[0.26-0.74 0.77]
+   cut 2.04: možnost.[1.28-1.84 1.00] My[1.94-2.44 0.99] jsme[2.44-2.66 1.00]
+   cut 6.28: 
+   cut 9.80: byl[9.22-9.34 1.00] pryč.[9.34-9.72 1.00]
+sim Bych jako doporučila všem, kdo přichází nebo přišli do styku s někým, komu se tohle stalo, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku něco. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.
+   cut 0.00: bych[-0.50-0.50 0.77] jako[0.50-0.62 0.91]
+   cut 29.80: něco[29.12-29.38 0.73] prostě,[29.38-29.84 0.97] ale[29.86-30.30 1.00] my[30.30-30.48 0.73]
+   cut 45.92: cokoliv.[45.28-45.88 1.00]
+sim916 Bych jako doporučila všem, kdo přichází nebo přišli do styku s někým, komu se tohle stalo, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku něco. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.
+   cut 0.00: bych[-0.50-0.50 0.77] jako[0.50-0.62 0.91]
+   cut 29.80: něco[29.12-29.38 0.73] prostě,[29.38-29.84 0.97] ale[29.86-30.30 1.00] my[30.30-30.48 0.73]
+   cut 45.92: cokoliv.[45.28-45.88 1.00]
+sim11 Bych jako doporučila všem, kdo přichází nebo přišli do styku s někým, komu se tohle stalo, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku něco. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.
+   cut 0.00: bych[-0.50-0.50 0.77] jako[0.50-0.62 0.91]
+   cut 29.80: něco[29.12-29.38 0.73] prostě,[29.38-29.84 0.97] ale[29.86-30.30 1.00] my[30.30-30.48 0.73]
+   cut 45.92: cokoliv.[45.28-45.88 1.00]
+k219b To byl prostě můj nejbližší člověk. A najednou byl pryč.
+   cut 0.00: To[-0.50-0.28 0.68] byl[0.28-0.46 0.86] prostě[0.46-0.68 0.58]
+   cut 1.60: nejbližší[0.82-1.14 0.99] člověk.[1.14-1.66 1.00]
+   cut 3.12: najednou[2.32-2.66 1.00] byl[2.66-2.78 1.00] pryč.[2.78-3.12 0.97]
+k138 A pak jsem začala dělat moderátorku v rádiu.
+   cut 0.00: Na[-0.50-0.20 0.24] nové[0.20-0.40 0.89] a[0.40-0.44 0.24] pak[0.44-0.64 0.99]
+   cut 4.16: rádiu.[3.30-3.82 0.97]
+k30 Ty umělecké.
+   cut 0.00: Ne[-0.50-0.04 0.25] takové[0.04-0.50 0.93] ty...[0.50-0.80 0.83]
+   cut 1.68: umělecké.[0.86-1.62 0.96]
+L1dlg916 Bych jako doporučila všem, kdo přichází nebo přišli do styku s někým, komu se tohle stalo, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku něco. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.
+   cut 0.00: bych[-0.50-0.50 0.77] jako[0.50-0.62 0.91]
+   cut 29.80: něco[29.12-29.38 0.73] prostě,[29.38-29.84 0.97] ale[29.86-30.30 1.00] my[30.30-30.48 0.73]
+   cut 45.92: cokoliv.[45.28-45.88 1.00]
+L1api916 Bych jako doporučila všem, kdo přichází nebo přišli do styku s někým, komu se tohle stalo, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku něco. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.
+   cut 0.00: bych[-0.50-0.50 0.77] jako[0.50-0.62 0.91]
+   cut 29.80: něco[29.12-29.38 0.73] prostě,[29.38-29.84 0.97] ale[29.86-30.30 1.00] my[30.30-30.48 0.73]
+   cut 45.92: cokoliv.[45.28-45.88 1.00]

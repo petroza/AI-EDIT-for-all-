@@ -44,3 +44,10 @@ Rozdíly proti webu:
   MCP `export_sequence` ve standalone vypálí titulky a srovná hlasitost (parametry burnCaptions, srt, loudness, format).
 - Testovací instance mají vlastní úložiště okna (PZ_USERDATA) – nový profil = opravdu čisté první spuštění.
 - Hermes (lokální LLM ve Workeru) teď padá na „CUDA error“ – AI tok a plan_edit_local v tomhle kole nespouštěj.
+
+## Od kola S4 (commity 56dd814 … bc6a7a8 a další)
+- Hermes opraven (cc9df28) – AI tok může Hermes používat. Automatické ukládání jen do zálohy (projekt přepíše až Ctrl+S, po pádu obnova),
+  Zesílení G = Nastavit na / Změnit o, chybějící médium vidět (dlaždice, klip, monitor „Médium offline“, export to ohlásí předem),
+  čitelné chyby importu, titulky se neslučují přes střih, konec sekvence bez probliknutí (prodloužení do pauzy / zopakované snímky),
+  upoutávka: úder se spojkou jen za svou předchozí větou, moderátor max 1 úder; add_captions lines/charsPerLine ve standalone,
+  timecode i na časové ose, AI panel na nízkém okně, drobnosti vzhledu S3.

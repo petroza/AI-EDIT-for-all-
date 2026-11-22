@@ -142,7 +142,8 @@ function layout(words, seq, st, limitEnd) {
             // vyrovnané délky (součet čtverců) + zlom po čárce ano, za předložkou ne
             const len = txt(S.slice(b, e)).length;
             const bc = e < n ? breakCost(S[e - 1].w) : 0;
-            const cost = p.cost + len * len / 20 + (bc > 0 ? bc * 9 : bc * 4);
+            const span0 = S[e - 1].e - S[b].s;
+            const cost = p.cost + len * len / 20 + (bc > 0 ? bc * 9 : bc * 4) + (span0 < 0.7 ? 400 : 0);
             if (!best[j][e] || cost < best[j][e].cost) best[j][e] = { cost, prev: b };
           }
         }
@@ -186,6 +187,27 @@ function layout(words, seq, st, limitEnd) {
     return { start: r3(c.ws[0].s), end: r3(c.ws[c.ws.length - 1].e + 0.15), text: (wrap(ws) || wrapLoose(seq, st, ws)).join('\n'), ws: c.ws.map((w) => r3(w.s)) };
   });
   for (let i = 0; i < caps.length - 1; i++) if (caps[i].end > caps[i + 1].start) caps[i].end = caps[i + 1].start;
+  // titulek kratší než 0,7 s divák nestihne přečíst (bleskne): ukázat ho dřív (mezera, pak čas od předchozího titulku, který
+  // zůstane ≥ 0,7 s) a déle (čas od dalšího, který zůstane ≥ 0,7 s). Hranice se od řeči posunou nejvýš o 0,3 s (kontrolor S4:
+  // jednořádkové 9:16 – 15 ze 46 titulků < 0,7 s). Dva průchody: uvolněný čas se může přelít o titulek dál.
+  for (let pass = 0; pass < 2; pass++) {
+    for (let i = 0; i < caps.length; i++) {
+      const c = caps[i], p = caps[i - 1], n = caps[i + 1];
+      let need = 0.7 - (c.end - c.start);
+      if (need <= 0.005) continue;
+      const s0 = c.ws && c.ws.length ? c.ws[0] : c.start;
+      let back = Math.max(0, Math.min(need, 0.3 - (s0 - c.start), c.start - (p ? p.end : 0)));
+      c.start = r3(c.start - back); need -= back;
+      if (need > 0.005 && p && Math.abs(p.end - c.start) < 0.01) {
+        const take = Math.max(0, Math.min(need, 0.3 - (s0 - c.start), (p.end - p.start) - 0.7));
+        if (take > 0) { p.end = r3(p.end - take); c.start = r3(c.start - take); need -= take; }
+      }
+      if (need > 0.005 && n) {
+        const fwd = Math.max(0, Math.min(need, 0.3, (n.end - n.start) - 0.7));
+        if (fwd > 0) { c.end = r3(c.end + fwd); if (n.start < c.end) n.start = c.end; }
+      } else if (need > 0.005) c.end = r3(c.end + need);
+    }
+  }
   if (limitEnd) for (const c of caps) { c.end = r3(Math.min(c.end, limitEnd)); c.start = r3(Math.min(c.start, c.end - 0.1)); }
   return caps;
 }

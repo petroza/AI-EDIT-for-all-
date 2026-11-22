@@ -1,0 +1,24 @@
+vystup-s4-a.mp4 | h264,1280,720,400 | A: aac,2,16.000000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-b.mp4 | h264,1080,1920,400 | A: aac,2,16.000000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-c.mp4 | h264,1080,1080,400 | A: aac,2,16.000000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-d.mp4 | h264,1080,1080,691 | A: aac,2,27.640000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-e.mp4 | h264,1280,720,245 | A: aac,2,9.800000  |  I: -14.0 LUFS  Peak: -1.5 dBFS 
+vystup-s4-sim.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-sim916.mp4 | h264,1080,1920,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-sim11.mp4 | h264,1080,1080,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-sim-tv.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s4-k219a.mp4 | h264,1280,720,38 | A: aac,2,1.520000  |  I: -16.4 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k219b.mp4 | h264,1280,720,78 | A: aac,2,3.120000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k219b916.mp4 | h264,1080,1920,78 | A: aac,2,3.120000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k219b11.mp4 | h264,1080,1080,78 | A: aac,2,3.120000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k138.mp4 | h264,1280,720,104 | A: aac,2,4.160000  |  I: -14.0 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k138916.mp4 | h264,1080,1920,104 | A: aac,2,4.160000  |  I: -14.0 LUFS  Peak: -1.5 dBFS 
+vystup-s4-k30.mp4 | h264,1280,720,42 | A: aac,2,1.680000  |  I: -14.0 LUFS  Peak: -3.7 dBFS 
+vystup-s4-L1dlg916.mp4 | h264,1080,1920,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-L1dlg169.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-L1api916.mp4 | h264,1080,1920,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-L1api169.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s4-d.mxf | dnxhd,1080,1080,691 | A: pcm_s24le,1,27.640000 pcm_s24le,1,27.640000  |  I: -22.9 LUFS  Peak: -7.1 dBFS 
+vystup-s4-a1080-xdcam.mxf | mpeg2video,1920,1080,400, | A: pcm_s24le,1,16.000000 pcm_s24le,1,16.000000  |  I: -23.4 LUFS  Peak: -8.2 dBFS 
+vystup-s4-a1080-dnxhr.mxf | dnxhd,1920,1080,400 | A: pcm_s24le,1,16.000000 pcm_s24le,1,16.000000  |  I: -23.4 LUFS  Peak: -8.2 dBFS 
+vystup-s4-e1080-xdcam.mxf | mpeg2video,1920,1080,245, | A: pcm_s24le,1,9.800000 pcm_s24le,1,9.800000  |  I: -23.0 LUFS  Peak: -7.2 dBFS 

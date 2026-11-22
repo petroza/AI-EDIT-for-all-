@@ -1,0 +1,12 @@
+L1dlg916 (s4-L1dlg916): 46 titulku, text x 20.8-79.1 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(39.414, 'Já potřebuju slyšet', (np.float64(20.8), np.float64(79.1), 1)), (42.009, 'byla skvělá, tak jim', (np.float64(21.3), np.float64(78.6), 1))]
+L1api916 (s4-L1api916): 46 titulku, text x 20.8-79.1 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(39.414, 'Já potřebuju slyšet', (np.float64(20.8), np.float64(79.1), 1)), (42.009, 'byla skvělá, tak jim', (np.float64(21.3), np.float64(78.6), 1))]
+L1api916b (s4-L1api916b): 46 titulku, text x 20.8-79.1 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(39.414, 'Já potřebuju slyšet', (np.float64(20.8), np.float64(79.1), 1)), (42.009, 'byla skvělá, tak jim', (np.float64(21.3), np.float64(78.6), 1))]
+L1dlg169 (s4-L1dlg169): 20 titulku, text x 28.7-71.4 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(29.99, 'Ale my nepotřebujeme prostě někoho, aby', (np.float64(28.7), np.float64(71.4), 1)), (0.19, 'Bych jako doporučila všem, kdo přichází', (np.float64(29.4), np.float64(70.7), 1))]
+L1api169 (s4-L1api169): 27 titulku, text x 33.4-66.4 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(17.187, 'jenom toho člověka, aby s náma', (np.float64(33.4), np.float64(66.4), 1)), (0.19, 'Bych jako doporučila všem, kdo', (np.float64(33.7), np.float64(66.3), 1))]
+L1post916 (s4-L1post916): 46 titulku, text x 20.8-79.1 % sirky, max radku 1, prazdne 0, pretek/vic radku: zadne
+   nejsirsi: [(39.414, 'Já potřebuju slyšet', (np.float64(20.8), np.float64(79.1), 1)), (42.009, 'byla skvělá, tak jim', (np.float64(21.3), np.float64(78.6), 1))]

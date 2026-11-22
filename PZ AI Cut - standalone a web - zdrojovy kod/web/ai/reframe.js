@@ -261,6 +261,7 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}, only = nul
       });
     }
   });
+  syncRepeats(seq);
   return { clips: vclips.length, splits, faced, merged, shots: plan.reduce((a, x) => a + x.shots.length, 0) };
 }
 
@@ -412,8 +413,19 @@ class FsFile {
  * na začátku/konci klipu převezme sousední klip na stopě (stejně jako reframeSequence). Hledá jen v okně MIN_SHOT u krajů,
  * In/Out zvuku se nemění. Kolo 7 (kontrolor výstupu): 16:9 export ukázal 2 snímky moderátorky na začátku klipu.
  */
+/** Zopakované snímky na konci sekvence (footRepeat, `rep`) mají výřez jako záběr, který opakují – jinak výřez 9:16
+ *  poskočí (kontrolor S4: o 23 px), protože se obličej hledá v každém klipu zvlášť. */
+function syncRepeats(seq) {
+  for (const tr of seq.tracks.video) for (const c of tr.clips) {
+    if (!c.rep) continue;
+    const q = tr.clips.find((x) => x !== c && x.mediaId === c.mediaId && Math.abs(clipEnd(x) - c.start) < 0.02);
+    if (q) for (const k of ['posX', 'posY', 'scale', 'fit']) c[k] = q[k];
+  }
+}
 async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
   const p = app.project;
+  syncRepeats(seq); // Auto Reframe ve standalone (ffmpeg + OpenCV) hledá obličej i v zopakovaném kousku
+
   const plan = [];
   const srcs = new Map();
   try {
@@ -448,7 +460,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
         for (const tr of seq.tracks.audio) for (const a of tr.clips) if (c.linkId && a.linkId === c.linkId) a.linkId = null;
         c.out -= d; c.linkId = null;
         const { uid } = require('../../src/core/util');
-        e.track.clips.push(Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c) }));
+        e.track.clips.push(Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c), rep: true }));
         e.track.clips.sort((x, y) => x.start - y.start);
       }
       if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
