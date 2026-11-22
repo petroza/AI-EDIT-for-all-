@@ -968,6 +968,8 @@ const PRESETS = [
   ['1920×1080 (Full HD 16:9)', 1920, 1080], ['1280×720 (HD 16:9)', 1280, 720], ['3840×2160 (4K)', 3840, 2160],
 ];
 if (!media.WEB) {
+  // přepis řeči lokálním Workerem MY Premiere MCP – panel Přepis, Přepsat řeč a titulky z přepisu jako na webu (kolo S1)
+  try { require('./ai/asr-desktop').install({ app, aiRoot: cfg.aiRoot, ffmpeg: media.FFMPEG, LL: (en, cz) => (window.TN && window.TN.lang === 'cs' ? cz : en) }); } catch (e) { console.warn('asr', e.message); }
   // přesné snímky v monitoru tam, kde přehrávač po skoku ukazuje zastaralý obraz (TN MP4 s ne-IDR I-snímky)
   try {
     const RFm = require('../web/ai/reframe');
@@ -1037,7 +1039,7 @@ async function reframeAll() {
 }
 function seqDialog(seq, opts) {
   const m = !seq && ((opts && opts.media) || app.projectPanel.selectedMedia());
-  const d = seq || { name: project.uniqueSeqName(m ? U.stripExt(m.name) : (TN.lang === 'cs' ? 'Sekvence' : 'Sequence')), width: 1080, height: 1920, fps: m && m.hasVideo ? m.fps : 25 };
+  const d = seq || { name: project.uniqueSeqName(m ? U.stripExt(m.name) : (TN.lang === 'cs' ? 'Sekvence' : 'Sequence')), width: (settings.lastSeq && settings.lastSeq[0]) || 1080, height: (settings.lastSeq && settings.lastSeq[1]) || 1920, fps: m && m.hasVideo ? m.fps : 25 };
   const mIn = m ? (m.srcIn ?? 0) : 0, mOut = m ? (m.srcOut ?? m.duration) : 0;
   const mPart = m && (mIn > 0.01 || mOut < m.duration - 0.01);
   const mmss = (x) => Math.floor(x / 60) + ':' + String(Math.round(x % 60)).padStart(2, '0');
@@ -1062,6 +1064,7 @@ function seqDialog(seq, opts) {
       const fps = Number(b.querySelector('#sqFps').value);
       const put = !!(b.querySelector('#sqPut') && b.querySelector('#sqPut').checked);
       closeModal();
+      if (!seq) { settings.lastSeq = [w, h]; saveSettings(); } // příště stejný formát (redaktorka S1: 16:9 klip → nabízelo 9:16)
       if (seq) app.edit('Sequence Settings', () => Object.assign(seq, { name, width: w, height: h, fps }));
       else {
         app.edit('New Sequence', () => {

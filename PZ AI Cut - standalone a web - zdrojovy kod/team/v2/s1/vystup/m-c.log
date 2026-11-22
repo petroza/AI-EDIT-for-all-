@@ -1,0 +1,75 @@
+{
+ "export": "../../../../web/test-out/vystup-s1-c.mov",
+ "seq": "s1-c",
+ "audio": {
+  "floor_db": -40.0,
+  "speech_median_db": -14.2
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 66.72,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -30.1,
+   "exp_pre10": -180,
+   "exp_post10": -39.4,
+   "src_at_in_-100_0": -32.1,
+   "src_at_in_0_+100": -38.4,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.995
+  },
+  {
+   "t": 18.76,
+   "src_in": 212,
+   "src_prev_out": 85.48,
+   "exp_pre50": -19.4,
+   "exp_post50": -40.7,
+   "exp_pre10": -30.4,
+   "exp_post10": -39.8,
+   "src_at_prev_out_-100_0": -28.8,
+   "src_at_prev_out_0_+100": -28.0,
+   "src_at_in_-100_0": -34.1,
+   "src_at_in_0_+100": -42.0,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.989
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -38.7,
+  "first50_db": -30.1,
+  "len_s": 31.12
+ },
+ "video": {
+  "frames": 779,
+  "median_diff": 1.29,
+  "visual_cuts_s": [
+   7.16,
+   11.12,
+   18.76,
+   28.24
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   7.2,
+   7.24,
+   11.0,
+   11.04,
+   11.08
+  ],
+  "clip_bounds_s": [
+   7.16,
+   11.12,
+   18.76,
+   28.24
+  ],
+  "short_shots": []
+ },
+ "crop": {
+  "checked_frames": 180,
+  "low_match": [],
+  "empty_crop_with_person_in_src": [],
+  "no_face_in_src": 0
+ }
+}

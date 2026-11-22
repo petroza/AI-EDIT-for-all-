@@ -1,0 +1,39 @@
+=== vystup-s1-a-xdcam.mxf
+stream|index=0|codec_name=mpeg2video|profile=4:2:2|codec_tag_string=[0][0][0][0]|width=1280|height=720|sample_aspect_ratio=1:1|display_aspect_ratio=16:9|pix_fmt=yuv422p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=15.960000|bit_rate=50000000|bits_per_raw_sample=N/A|nb_frames=N/A|
+stream|index=1|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=15.960000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+stream|index=2|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=15.960000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+format|format_name=mxf|duration=15.960000|bit_rate=52641333|tag:operational_pattern_ul=060e2b34.04010101.0d010201.01010900|tag:company_name=FFmpeg|tag:product_name=OP1a Muxer
+=== vystup-s1-a.mp4
+stream|index=0|codec_name=h264|profile=High|codec_tag_string=avc1|width=1280|height=720|sample_aspect_ratio=1:1|display_aspect_ratio=16:9|pix_fmt=yuv420p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=16.000000|bit_rate=1031330|bits_per_raw_sample=8|nb_frames=400
+stream|index=1|codec_name=aac|profile=LC|codec_tag_string=mp4a|sample_fmt=fltp|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=16.000000|bit_rate=245771|bits_per_raw_sample=N/A|nb_frames=751
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=16.000000|bit_rate=1284231
+=== vystup-s1-b-h265.mp4
+stream|index=0|codec_name=hevc|profile=Main|codec_tag_string=hvc1|width=1080|height=1920|sample_aspect_ratio=1:1|display_aspect_ratio=9:16|pix_fmt=yuv420p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=16.000000|bit_rate=1414870|bits_per_raw_sample=N/A|nb_frames=400
+stream|index=1|codec_name=aac|profile=LC|codec_tag_string=mp4a|sample_fmt=fltp|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=16.000000|bit_rate=245771|bits_per_raw_sample=N/A|nb_frames=751
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=16.000000|bit_rate=1668925
+=== vystup-s1-b.mp4
+stream|index=0|codec_name=h264|profile=High|codec_tag_string=avc1|width=1080|height=1920|sample_aspect_ratio=1:1|display_aspect_ratio=9:16|pix_fmt=yuv420p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=16.000000|bit_rate=2840216|bits_per_raw_sample=8|nb_frames=400
+stream|index=1|codec_name=aac|profile=LC|codec_tag_string=mp4a|sample_fmt=fltp|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=16.000000|bit_rate=245771|bits_per_raw_sample=N/A|nb_frames=751
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=16.000000|bit_rate=3093100
+=== vystup-s1-c.mov
+stream|index=0|codec_name=prores|profile=HQ|codec_tag_string=apch|width=1080|height=1350|sample_aspect_ratio=1:1|display_aspect_ratio=4:5|pix_fmt=yuv422p10le|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=31.160000|bit_rate=105935415|bits_per_raw_sample=10|nb_frames=779
+stream|index=1|codec_name=pcm_s24le|profile=unknown|codec_tag_string=in24|sample_fmt=s32|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=31.120000|bit_rate=2304000|bits_per_raw_sample=24|nb_frames=1493760
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=31.160000|bit_rate=108238980
+=== vystup-s1-d.mp4
+stream|index=0|codec_name=h264|profile=High|codec_tag_string=avc1|width=1080|height=1080|sample_aspect_ratio=1:1|display_aspect_ratio=1:1|pix_fmt=yuv420p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=27.640000|bit_rate=2108193|bits_per_raw_sample=8|nb_frames=691
+stream|index=1|codec_name=aac|profile=LC|codec_tag_string=mp4a|sample_fmt=fltp|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=27.640000|bit_rate=241227|bits_per_raw_sample=N/A|nb_frames=1294
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=27.640000|bit_rate=2356108
+=== vystup-s1-d.mxf
+stream|index=0|codec_name=dnxhd|profile=DNXHR HQ|codec_tag_string=[0][0][0][0]|width=1080|height=1080|sample_aspect_ratio=1:1|display_aspect_ratio=1:1|pix_fmt=yuv422p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=27.600000|bit_rate=N/A|bits_per_raw_sample=8|nb_frames=N/A
+stream|index=1|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=27.600000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+stream|index=2|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=27.600000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+format|format_name=mxf|duration=27.600000|bit_rate=106703187|tag:operational_pattern_ul=060e2b34.04010101.0d010201.01010900|tag:company_name=FFmpeg|tag:product_name=OP1a Muxer
+=== vystup-s1-e.mp4
+stream|index=0|codec_name=h264|profile=High|codec_tag_string=avc1|width=1920|height=1080|sample_aspect_ratio=1:1|display_aspect_ratio=16:9|pix_fmt=yuv420p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=9.800000|bit_rate=3408093|bits_per_raw_sample=8|nb_frames=245
+stream|index=1|codec_name=aac|profile=LC|codec_tag_string=mp4a|sample_fmt=fltp|sample_rate=48000|channels=2|channel_layout=stereo|r_frame_rate=0/0|avg_frame_rate=0/0|duration=9.800000|bit_rate=239815|bits_per_raw_sample=N/A|nb_frames=461
+format|format_name=mov,mp4,m4a,3gp,3g2,mj2|duration=9.800000|bit_rate=3655715
+=== vystup-s1-e.mxf
+stream|index=0|codec_name=mpeg2video|profile=4:2:2|codec_tag_string=[0][0][0][0]|width=1920|height=1080|sample_aspect_ratio=1:1|display_aspect_ratio=16:9|pix_fmt=yuv422p|color_range=tv|color_space=bt709|color_transfer=bt709|color_primaries=bt709|field_order=progressive|r_frame_rate=25/1|avg_frame_rate=25/1|duration=9.800000|bit_rate=50000000|bits_per_raw_sample=N/A|nb_frames=N/A|
+stream|index=1|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=9.800000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+stream|index=2|codec_name=pcm_s24le|profile=unknown|codec_tag_string=[0][0][0][0]|sample_fmt=s32|sample_rate=48000|channels=1|channel_layout=unknown|r_frame_rate=0/0|avg_frame_rate=0/0|duration=9.800000|bit_rate=1152000|bits_per_raw_sample=24|nb_frames=N/A
+format|format_name=mxf|duration=9.800000|bit_rate=52643677|tag:operational_pattern_ul=060e2b34.04010101.0d010201.01010900|tag:company_name=FFmpeg|tag:product_name=OP1a Muxer

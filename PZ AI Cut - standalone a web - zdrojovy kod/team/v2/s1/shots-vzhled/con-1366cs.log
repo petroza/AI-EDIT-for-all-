@@ -1,0 +1,55 @@
+20:07:58 attached [src/index.html]
+20:07:58 [src/index.html] context 3 file:// 
+20:07:58 [src/index.html] context 1 file:// 
+20:07:58 [src/index.html] console.warning ctx1: %cElectron Security Warning (Disabled webSecurity) font-weight: bold; This renderer process has "webSecurity" disabled. This
+  exposes users of this app to severe security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:07:58 [src/index.html] console.warning ctx1: %cElectron Security Warning (allowRunningInsecureContent) font-weight: bold; This renderer process has "allowRunningInsecureContent"
+  enabled. This exposes users of this app to severe security risks.
+
+  
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:07:58 [src/index.html] console.warning ctx1: %cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:09:22 [src/index.html] context 4 file:// 
+20:14:37 [src/index.html] context 5 file:// 
+20:16:48 [src/index.html] context 6 file:// 
+20:16:48 [src/index.html] context 7 file:// 
+20:16:48 [src/index.html] context 8 file:// 
+20:16:48 [src/index.html] console.warning ctx6: %cElectron Security Warning (Disabled webSecurity) font-weight: bold; This renderer process has "webSecurity" disabled. This
+  exposes users of this app to severe security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:16:48 [src/index.html] console.warning ctx6: %cElectron Security Warning (allowRunningInsecureContent) font-weight: bold; This renderer process has "allowRunningInsecureContent"
+  enabled. This exposes users of this app to severe security risks.
+
+  
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:16:48 [src/index.html] console.warning ctx6: %cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged. @renderer_init:2
+20:17:14 closed [src/index.html]

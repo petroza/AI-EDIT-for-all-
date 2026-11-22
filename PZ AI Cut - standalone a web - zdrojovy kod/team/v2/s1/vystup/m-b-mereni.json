@@ -1,0 +1,122 @@
+{
+ "export": "../../../../web/test-out/vystup-s1-b.mp4",
+ "seq": "s1-b",
+ "audio": {
+  "floor_db": -43.8,
+  "speech_median_db": -14.8
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 104.6,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -32.6,
+   "exp_pre10": -180,
+   "exp_post10": -40.1,
+   "src_at_in_-100_0": -33.9,
+   "src_at_in_0_+100": -40.7,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 2.76,
+   "src_in": 114.88,
+   "src_prev_out": 107.36,
+   "exp_pre50": -26.7,
+   "exp_post50": -37.3,
+   "exp_pre10": -41.2,
+   "exp_post10": -49.0,
+   "src_at_prev_out_-100_0": -37.8,
+   "src_at_prev_out_0_+100": -46.3,
+   "src_at_in_-100_0": -38.1,
+   "src_at_in_0_+100": -48.0,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.967
+  },
+  {
+   "t": 7.24,
+   "src_in": 145.68,
+   "src_prev_out": 119.36,
+   "exp_pre50": -50.0,
+   "exp_post50": -56.5,
+   "exp_pre10": -69.8,
+   "exp_post10": -69.0,
+   "src_at_prev_out_-100_0": -49.0,
+   "src_at_prev_out_0_+100": -63.8,
+   "src_at_in_-100_0": -48.8,
+   "src_at_in_0_+100": -65.8,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.999
+  },
+  {
+   "t": 12.72,
+   "src_in": 187.96,
+   "src_prev_out": 151.16,
+   "exp_pre50": -41.9,
+   "exp_post50": -13.0,
+   "exp_pre10": -70.4,
+   "exp_post10": -26.6,
+   "src_at_prev_out_-100_0": -40.0,
+   "src_at_prev_out_0_+100": -43.2,
+   "src_at_in_-100_0": -22.7,
+   "src_at_in_0_+100": -23.2,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.998
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -26.3,
+  "first50_db": -32.6,
+  "len_s": 16.0
+ },
+ "video": {
+  "frames": 400,
+  "median_diff": 0.6,
+  "visual_cuts_s": [
+   1.36,
+   2.76,
+   3.48,
+   7.24,
+   7.52,
+   12.72,
+   15.12
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   1.24,
+   1.28,
+   1.32,
+   12.76,
+   12.8,
+   12.84,
+   15.0,
+   15.04,
+   15.08
+  ],
+  "clip_bounds_s": [
+   1.36,
+   2.76,
+   3.48,
+   7.24,
+   7.52,
+   12.72,
+   15.12
+  ],
+  "short_shots": [
+   {
+    "from_s": 7.24,
+    "frames": 7
+   }
+  ]
+ },
+ "crop": {
+  "checked_frames": 122,
+  "low_match": [],
+  "empty_crop_with_person_in_src": [],
+  "no_face_in_src": 0
+ }
+}

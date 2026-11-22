@@ -1,0 +1,9 @@
+vystup-s1-a-xdcam.mxf (2 a-stopy):  I: -22.3 LUFS  LRA: 3.2 LU  Peak: -7.3 dBFS 
+vystup-s1-a.mp4 (1 a-stopy):  I: -13.6 LUFS  LRA: 2.9 LU  Peak: -1.4 dBFS 
+vystup-s1-b-h265.mp4 (1 a-stopy):  I: -13.6 LUFS  LRA: 2.9 LU  Peak: -1.4 dBFS 
+vystup-s1-b.mp4 (1 a-stopy):  I: -13.6 LUFS  LRA: 2.9 LU  Peak: -1.4 dBFS 
+vystup-s1-c.mov (1 a-stopy):  I: -13.5 LUFS  LRA: 5.5 LU  Peak: -1.5 dBFS 
+vystup-s1-d.mp4 (1 a-stopy):  I: -13.4 LUFS  LRA: 6.6 LU  Peak: -1.5 dBFS 
+vystup-s1-d.mxf (2 a-stopy):  I: -22.0 LUFS  LRA: 7.9 LU  Peak: -6.6 dBFS 
+vystup-s1-e.mp4 (1 a-stopy):  I: -14.0 LUFS  LRA: 2.8 LU  Peak: -1.5 dBFS 
+vystup-s1-e.mxf (2 a-stopy):  I: -23.0 LUFS  LRA: 2.8 LU  Peak: -7.2 dBFS 

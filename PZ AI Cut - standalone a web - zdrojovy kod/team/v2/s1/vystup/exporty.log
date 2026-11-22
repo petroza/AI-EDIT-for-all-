@@ -1,0 +1,83 @@
+[
+ [
+  "s1-a",
+  "h264",
+  "social",
+  "vystup-s1-a.mp4",
+  2.449,
+  16,
+  "2.3 s"
+ ],
+ [
+  "s1-b",
+  "h264",
+  "social",
+  "vystup-s1-b.mp4",
+  5.9,
+  16,
+  "3.1 s"
+ ],
+ [
+  "s1-b",
+  "h265",
+  "social",
+  "vystup-s1-b-h265.mp4",
+  3.183,
+  16,
+  "6.9 s"
+ ],
+ [
+  "s1-c",
+  "prores_hq",
+  "social",
+  "vystup-s1-c.mov",
+  402.06,
+  31.16,
+  "7.7 s"
+ ],
+ [
+  "s1-d",
+  "h264",
+  "social",
+  "vystup-s1-d.mp4",
+  7.763,
+  27.64,
+  "2.7 s"
+ ],
+ [
+  "s1-d",
+  "dnxhr",
+  "tv",
+  "vystup-s1-d.mxf",
+  351.072,
+  27.64,
+  "2.4 s"
+ ],
+ [
+  "s1-e",
+  "xdcam",
+  "tv",
+  "vystup-s1-e.mxf",
+  61.501,
+  9.8,
+  "2.1 s"
+ ],
+ [
+  "s1-e",
+  "h264",
+  "social",
+  "vystup-s1-e.mp4",
+  4.271,
+  9.8,
+  "1.9 s"
+ ],
+ [
+  "s1-a",
+  "xdcam",
+  "tv",
+  "vystup-s1-a-xdcam.mxf",
+  100.154,
+  16,
+  "1.2 s"
+ ]
+]

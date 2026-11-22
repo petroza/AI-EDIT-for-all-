@@ -1,0 +1,98 @@
+{
+ "export": "../../../../web/test-out/vystup-s1-d.mp4",
+ "seq": "s1-d",
+ "audio": {
+  "floor_db": -47.3,
+  "speech_median_db": -14.2
+ },
+ "audio_cuts": [
+  {
+   "t": 0,
+   "src_in": 127.36,
+   "src_prev_out": null,
+   "exp_pre50": -180,
+   "exp_post50": -24.5,
+   "exp_pre10": -180,
+   "exp_post10": -43.2,
+   "src_at_in_-100_0": -34.1,
+   "src_at_in_0_+100": -30.2,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  },
+  {
+   "t": 8.6,
+   "src_in": 145.68,
+   "src_prev_out": 135.96,
+   "exp_pre50": -53.1,
+   "exp_post50": -58.4,
+   "exp_pre10": -71.3,
+   "exp_post10": -70.9,
+   "src_at_prev_out_-100_0": -62.8,
+   "src_at_prev_out_0_+100": -65.0,
+   "src_at_in_-100_0": -48.8,
+   "src_at_in_0_+100": -65.8,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 1.0
+  },
+  {
+   "t": 26.04,
+   "src_in": 183.56,
+   "src_prev_out": 163.12,
+   "exp_pre50": -37.6,
+   "exp_post50": -54.5,
+   "exp_pre10": -52.0,
+   "exp_post10": -73.4,
+   "src_at_prev_out_-100_0": -43.3,
+   "src_at_prev_out_0_+100": -42.2,
+   "src_at_in_-100_0": -48.9,
+   "src_at_in_0_+100": -53.6,
+   "jump_vs_p995": 0.0,
+   "audio_offset_ms": 0.0,
+   "audio_corr": 0.998
+  }
+ ],
+ "audio_tail": {
+  "last50_db": -29.4,
+  "first50_db": -24.5,
+  "len_s": 27.58
+ },
+ "video": {
+  "frames": 691,
+  "median_diff": 1.16,
+  "visual_cuts_s": [
+   8.6,
+   8.88,
+   26.04,
+   27.44
+  ],
+  "black_frames": [],
+  "frozen_frames_near_cuts": [
+   27.48,
+   27.52,
+   27.56
+  ],
+  "clip_bounds_s": [
+   8.6,
+   8.88,
+   26.04,
+   27.44
+  ],
+  "short_shots": [
+   {
+    "from_s": 8.6,
+    "frames": 7
+   },
+   {
+    "from_s": 27.44,
+    "frames": 5
+   }
+  ]
+ },
+ "crop": {
+  "checked_frames": 162,
+  "low_match": [],
+  "empty_crop_with_person_in_src": [],
+  "no_face_in_src": 0
+ }
+}

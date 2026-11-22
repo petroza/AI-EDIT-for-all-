@@ -1,0 +1,9 @@
+  a export = 1.000*zdroj +0.0 | zdroj p1/p99 37/208, export p1/p99 37/209 | prum. abs. odchylka 0.2 | export min/max 26/229
+  a export = 1.000*zdroj +0.0 | zdroj p1/p99 37/208, export p1/p99 37/209 | prum. abs. odchylka 0.3 | export min/max 26/229
+  c export = 0.987*zdroj +1.6 | zdroj p1/p99 46/190, export p1/p99 46/190 | prum. abs. odchylka 1.9 | export min/max 30/231
+  b export = 0.978*zdroj +2.3 | zdroj p1/p99 51/191, export p1/p99 51/191 | prum. abs. odchylka 2.4 | export min/max 32/226
+  b export = 0.979*zdroj +2.4 | zdroj p1/p99 51/191, export p1/p99 51/191 | prum. abs. odchylka 2.4 | export min/max 32/226
+  e export = 0.897*zdroj +5.3 | zdroj p1/p99 40/220, export p1/p99 16/217 | prum. abs. odchylka 8.0 | export min/max 16/230
+  e export = 0.898*zdroj +5.4 | zdroj p1/p99 40/220, export p1/p99 16/217 | prum. abs. odchylka 8.0 | export min/max 16/230
+  d export = 0.934*zdroj +8.7 | zdroj p1/p99 53/175, export p1/p99 61/175 | prum. abs. odchylka 1.5 | export min/max 32/227
+  d export = 0.933*zdroj +8.9 | zdroj p1/p99 53/175, export p1/p99 61/175 | prum. abs. odchylka 1.6 | export min/max 33/228

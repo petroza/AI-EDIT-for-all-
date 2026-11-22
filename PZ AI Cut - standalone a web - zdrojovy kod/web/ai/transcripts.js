@@ -15,6 +15,10 @@ const LANGS = { cs: 'czech', en: 'english', sk: 'slovak', uk: 'ukrainian', de: '
 const WINDOW = 240; // s zvuku na jedno dekódování (dělí se na ≤29s kousky)
 
 const mem = new Map(); // key -> transcript
+/* Desktop (standalone): soubory z disku místo vfs a přepis lokálním Workerem MY Premiere MCP (src/ai/asr-desktop.js). */
+let fileOf = (p) => vfs.getFile(p);
+let backend = null; // async (file, opts, onProgress, isStopped) -> { words, duration, model, language, device }
+function setDesktop(o) { if (o.fileOf) fileOf = o.fileOf; if (o.backend) backend = o.backend; }
 const partials = new Map(); // key -> rozpracovaný přepis (hotová část během přepisování; zmizí po dokončení)
 // verze postupu přepisu: starší uložené přepisy (jiný model, chyby) se ignorují a udělají znovu
 const ENGINE = 2;
@@ -62,6 +66,7 @@ async function dbDel(k) { try { const d = await db(); d.transaction('t', 'readwr
 async function audio16k(file, t0, t1) {
   // test/edges.js (Node): celý zvuk 16 kHz předem dekódovaný ffmpegem
   if (file && file.pcm16k) return file.pcm16k.slice(Math.max(0, Math.round(t0 * 16000)), Math.max(0, Math.round(t1 * 16000)));
+  if (file && file.decode16k) return file.decode16k(t0, t1); // desktop: ffmpeg
   const pcm = await decodeAudioRange(file, t0, t1);
   const a = pcm.channels[0], b = pcm.channels[1] || a;
   const ratio = pcm.sampleRate / 16000;
@@ -315,6 +320,16 @@ async function transcribeNow(file, opts = {}, onProgress) {
   const cid = await contentId(file);
   const pkey = 'p|' + (cid || sig) + '|' + lang;
   const check = () => { if (cancelled.has(sig)) throw abortErr(); };
+  if (backend) {
+    const r = await backend(file, opts, onProgress, () => cancelled.has(sig));
+    check();
+    const hal = dropHallucinations(dedupe(r.words.slice().sort((a, b) => a.s - b.s)));
+    const sk = cid ? cid + '|' + lang : keyOf(file, lang);
+    const t = { engine: ENGINE, key: sk, sig, file: file.name, language: r.language || lang, model: r.model, device: r.device, duration: r.duration, words: hal.words, sentences: sentences(hal.words), removed: hal.removed, speakers: r.speakers || null, created: Date.now() };
+    mem.set(sk, t); dbPut(sk, t);
+    onProgress && onProgress(1, 'done');
+    return t;
+  }
   const { openMp4 } = require('../engine/mp4');
   const mp = await openMp4(file);
   if (!mp.audio) throw new Error(file.name + ' has no audio.');
@@ -682,14 +697,14 @@ function quietest20(x, x0, a, b) {
 }
 
 function forMedia(m, lang) {
-  const f = vfs.getFile(m.path);
+  const f = fileOf(m.path);
   if (!f) return null;
   const sig = sigOf(f), cid = sigCid.get(sig);
   for (const [k, v] of mem) if ((cid && k.startsWith(cid + '|')) || v.sig === sig || k.startsWith(sig + '|')) { if (!lang || v.language === lang) return v; }
   return null;
 }
 async function loadForMedia(m) {
-  const f = vfs.getFile(m.path);
+  const f = fileOf(m.path);
   if (!f) return null;
   const hit = forMedia(m);
   if (hit) return hit;
@@ -775,14 +790,14 @@ async function transcribeRange(file, a, b, opts = {}, onProgress) {
 
 /** Rozpracovaný přepis média (hotová část), nebo null. */
 function partialForMedia(m) {
-  const f = vfs.getFile(m.path);
+  const f = fileOf(m.path);
   if (!f) return null;
   for (const [k, v] of partials) if (k.startsWith(`${f.name}|${f.size}|${f.lastModified}|`)) return v;
   return null;
 }
 /** Rozpracovaný přepis z úložiště (po Zastavit nebo zavření stránky) – pro zobrazení „zastaveno“. */
 async function savedPartial(m, lang = 'cs') {
-  const f = vfs.getFile(m.path);
+  const f = fileOf(m.path);
   if (!f) return null;
   const mp = partialForMedia(m);
   if (mp) return mp;
@@ -800,6 +815,7 @@ function stop(file) {
   const err = abortErr();
   for (const x of waiters.values()) x.reject(err);
   waiters.clear();
+  if (backend && backend.stop) backend.stop(file);
   if (worker) { worker.terminate(); worker = null; }
   for (let i = 0; i < pool.length; i++) if (pool[i]) { pool[i].terminate(); pool[i] = null; }
 }
@@ -1005,4 +1021,4 @@ function edgeWord(W, x, x0, thr, u, isIn) {
   return -1;
 }
 
-module.exports = { prefetch, prefetchState, onPrefetch, modelStored, transcribeRange, hallucinated, dropHallucinations, edgeIn, edgeOut, clipCaptionWords, findHoles, levelOf, dropEdgeFragments, matchSpan, applyFixes, clipWords, pauseNear, tightenIn, tightenOut, speechAlign, speechLevel, rmsWin, partialForMedia, savedPartial, stop, isStopped, contentId, transcribe, cutBounds, forMedia, loadForMedia, textOf, sentences, MODELS, LANGS, audio16k, device };
+module.exports = { setDesktop, prefetch, prefetchState, onPrefetch, modelStored, transcribeRange, hallucinated, dropHallucinations, edgeIn, edgeOut, clipCaptionWords, findHoles, levelOf, dropEdgeFragments, matchSpan, applyFixes, clipWords, pauseNear, tightenIn, tightenOut, speechAlign, speechLevel, rmsWin, partialForMedia, savedPartial, stop, isStopped, contentId, transcribe, cutBounds, forMedia, loadForMedia, textOf, sentences, MODELS, LANGS, audio16k, device };

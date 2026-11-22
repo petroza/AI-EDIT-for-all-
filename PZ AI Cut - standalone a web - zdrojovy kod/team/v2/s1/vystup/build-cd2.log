@@ -1,0 +1,12 @@
+
+=== reframe_sequence (3.0 s)
+{"sequenceID":"bb09c9ce-e51d-4ee2-9161-2c59ce6d7724","name":"s1-c","width":1080,"height":1350,"reframedFrom":"1280x720","scale":100,"cameraSplits":3,"shots":5,"facesFound":5,"summary":"Vytvořena sekvence „s1-c“ 1080×1350 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 3)."}
+
+=== reframe_sequence (2.5 s)
+{"sequenceID":"8f9f9676-1d20-4e00-a465-29dbfa556010","name":"s1-d","width":1080,"height":1080,"reframedFrom":"1280x720","scale":100,"cameraSplits":2,"shots":5,"facesFound":5,"summary":"Vytvořena sekvence „s1-d“ 1080×1080 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 2)."}
+
+=== add_captions (2.0 s)
+{"cues":7,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\s1-c.bb09c9ce.srt","sequence":"s1-c","sample":["A vlastně... po strašně dlouhý době a po strašně moc vyšetření,","až když ona už opravdu nemohla ani chodit bolestí, zjistili teprve,","že ona měla vzácnou formu rakovy, jmenuje se to mnohočetný myelom,"]}
+
+=== add_captions (1.0 s)
+{"cues":7,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\s1-d.8f9f9676.srt","sequence":"s1-d","sample":["Nebyla možnost se připravit a jediné,","co nám zbylo, tak se s tím poprat, prostě zvládnout to.","Všechno, naprosto všechno, protože moje máma byla tmel té naší rodiny."]}
