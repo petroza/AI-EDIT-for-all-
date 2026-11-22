@@ -1,12 +1,22 @@
+<p align="right">
+  <a href="README.md"><img src="docs/img/flag-cz.svg" width="30" height="20" alt="Čeština"> <b>Čeština</b></a>
+  &nbsp;·&nbsp;
+  <a href="README.en.md"><img src="docs/img/flag-gb.svg" width="30" height="20" alt="English"> English</a>
+</p>
+
 # AI EDIT for all – AI střih videa třemi způsoby
 
-Jeden repozitář, tři programy. Každý si z něj může postavit, co potřebuje:
+Jeden repozitář, tři programy. Claude, Codex nebo lokální model Hermes stříhají video **podle toho, co se v něm říká**:
+vyberou nejlepší výroky, složí upoutávku nebo zkrácenou verzi, přidají titulky a převedou záběr na 9:16 pro sítě.
+Výsledek je vždy **nová sekvence** – originál zůstane netknutý. Videa nikdy neopustí počítač, AI dostane jen text přepisu.
 
 | | Co to je | Pro koho |
 |---|---|---|
-| **1 · Premiere plugin** (MY Premiere MCP) | panel a AI nástroje přímo v **Adobe Premiere Pro**: přepis, střih podle obsahu, upoutávky, multicam, titulky a překlad, převod na 9:16; Claude / lokální model Hermes stříhá v Premiere | kdo má Premiere |
-| **2 · Standalone** (PZ AI Cut) | samostatná střižna pro Windows, ovládání jako Premiere (stejné zkratky), s AI panelem – **bez Adobe** | kdo nemá Premiere |
-| **3 · Web** (PZ AI Cut Web) | stejná střižna v prohlížeči Chrome/Edge, nic se neinstaluje, videa neopouštějí počítač; AI přes Claude Desktop nebo Codex | kdokoli, hned |
+| **1 · Premiere plugin** (MY Premiere MCP) | panel a AI nástroje přímo v **Adobe Premiere Pro**: přepis, střih podle obsahu, upoutávky, multicam podle mluvčího, titulky a překlad, Auto Reframe 9:16 | kdo má Premiere |
+| **2 · Standalone** (PZ AI Cut) | samostatná střižna pro Windows, ovládání jako Premiere (stejné zkratky a rozložení) s AI panelem – **bez Adobe** | kdo nemá Premiere |
+| **3 · Web** (PZ AI Cut Web) | stejná střižna v Chrome/Edge, nic se neinstaluje, přepis běží v prohlížeči; AI přes Claude Desktop nebo Codex | kdokoli, hned |
+
+<img src="docs/img/schema-overview-cs.svg" alt="Tři programy, jedno AI jádro" width="100%">
 
 ## Rychle (Windows)
 
@@ -14,37 +24,93 @@ Jeden repozitář, tři programy. Každý si z něj může postavit, co potřebu
 git clone https://github.com/petroza/AI-EDIT-for-all-.git
 ```
 
-Pak ve složce dvojklik na **`START.bat`** (rozcestník), nebo přímo:
-
-| Soubor | Co udělá | Potřeba |
-|---|---|---|
-| `1 Premiere plugin - instalace.bat` | nainstaluje MY Premiere MCP **přímo do naklonované složky** `my-premiere-mcp\`: Node/Python (winget, když chybí), balíčky, modely Whisper + diarizace + lokální LLM, panel do Premiere, registrace MCP serveru do Claude Code / Claude Desktop / Codexu. Ptá se na Hermes (+23 GB, GPU 12 GB+). Pak restartuj Premiere → **Okno › Rozšíření › MY Premiere MCP** | Windows 10/11, Adobe Premiere Pro, ~15 GB místa, internet; NVIDIA GPU výrazně zrychlí přepis |
-| `2 Standalone - postavit.bat` | `npm install` (Electron) a sestaví přenosnou aplikaci do složky **`PZ AI Cut\`** → `PZ AI Cut.exe` | Node.js 18+, ffmpeg (přibalený v MY Premiere MCP, jinak `winget install Gyan.FFmpeg`) |
-| `3 Web - postavit a spustit.bat` | sestaví web (`pz-ai-cut\web\dist`) a spustí ho na **http://127.0.0.1:8791/** | Node.js 18+, Chrome nebo Edge |
-
-Hotová webová verze běží i online: **https://pz-ai-cut.pages.dev**. Hotová přenosná aplikace je v **Releases**
+Pak ve složce dvojklik na **`START.bat`** (rozcestník), nebo přímo na jeden ze tří souborů níž.
+Hotová webová verze běží i online na **https://pz-ai-cut.pages.dev**, hotová přenosná aplikace je v **Releases**
 (`PZ-AI-Cut-portable.zip` – rozbalit vedle `START.bat`).
 
-### AI ve standalone verzi
-AI panel standalone verze je panel MY Premiere MCP (přepis, Hermes, Claude). Složku najde sám: `my-premiere-mcp\`
-vedle v tomhle repozitáři, `%APPDATA%\MYpremiereMCP\root.txt` (zapíše instalátor z bodu 1), proměnná
-`MYPREMIEREMCP_ROOT`, nebo ručně `pz-ai-cut\config.json` → `aiRoot`. Pro AI tedy nejdřív spusť bod 1
-(Premiere k tomu mít nemusíš). Bez toho střih funguje, AI panel ne.
+---
 
-### AI ve webové verzi
-Přes Claude Desktop: plugin `Plugin pz-ai-cut\pz-ai-cut-plugin.zip` (Customize › Plugins › Add › Upload plugin,
-funguje v Cowork a záložce Code) nebo rozšíření `.mcpb` z AI panelu stránky; Codex jedním příkazem z AI panelu.
-Řeč se přepisuje přímo v prohlížeči, Claude dostane jen text.
+## 1 · Premiere plugin – `1 Premiere plugin - instalace.bat`
 
-## Struktura
+<img src="docs/img/screen-premiere.png" alt="Adobe Premiere Pro s panelem MY Premiere MCP" width="100%">
+
+Panel **MY Premiere MCP** v Premiere (Okno › Rozšíření): stav lokální AI (GPU, VRAM), délka a formát výsledku,
+rychlé akce (Výrok, Upoutávka, Zkrácená verze, Bez pauz), zadání vlastními slovy, výběr agenta (Claude Code, Codex,
+Hermes), titulky a převod na 9:16. Zadání z panelu provede agent přímo v otevřeném projektu.
+
+**Co se nainstaluje** (vše do naklonované složky `my-premiere-mcp\`, bez práv správce):
+
+| Co | Kam / odkud | Velikost |
+|---|---|---|
+| Node.js LTS, Python 3.11 – jen když chybí | winget | ~100 MB |
+| npm a pip balíčky (faster-whisper, CUDA knihovny, sherpa-onnx, OpenCV…) | `node_modules\`, `.venv\` | ~1,5 GB |
+| Whisper large-v3 – přepis s časy slov | `models\` (Hugging Face) | 3 GB |
+| diarizace – kdo kdy mluví | `models\diarization` | 40 MB |
+| gemma3 12B + vision model + llama.cpp – osnova, slabá místa | `models\llm`, `tools\llama.cpp` | ~10 GB |
+| **Hermes** (Qwen3.6-35B) – plán střihu zdarma, volitelně (ptá se) | `models\hermes` | ~23 GB |
+| panel do Premiere | odkaz `%APPDATA%\Adobe\CEP\extensions\com.pz.premieremcp`, `PlayerDebugMode` v `HKCU\Software\Adobe\CSXS.*` | – |
+| MCP server `premiere` | registrace do Claude Code, Claude Desktop a Codexu | – |
+
+Potřeba: Windows 10/11, Adobe Premiere Pro, ~15 GB místa (+23 GB s Hermesem), internet. NVIDIA GPU výrazně zrychlí
+přepis, Hermes potřebuje ~12 GB VRAM. Po instalaci restartuj Premiere → **Okno › Rozšíření › MY Premiere MCP**
+a v Claude začni novou relaci.
+
+<img src="docs/img/schema-premiere-cs.svg" alt="Jak je zapojený Premiere plugin" width="100%">
+
+---
+
+## 2 · Standalone – `2 Standalone - postavit.bat`
+
+<img src="docs/img/screen-standalone-cs.png" alt="PZ AI Cut Standalone" width="100%">
+
+**PZ AI Cut** – střižna pro Windows bez Adobe: Zdroj / Program / Projekt / Timeline jako v Premiere, stejné zkratky
+(J/K/L, I/O, C, Q/W…), přechody, titulky, export MP4 · MOV (ProRes) · MXF (XDCAM pro TV), převod na 9:16 podle obličeje.
+Vpravo AI panel – stejný jako v Premiere.
+
+**Co se nainstaluje:** `npm install` stáhne Electron (~100 MB) do `pz-ai-cut\node_modules`, skript sestaví přenosnou
+aplikaci do složky `PZ AI Cut\` (`PZ AI Cut.exe`, nic se nezapisuje do systému). Nastavení a automatické zálohy
+jsou v `%APPDATA%\TN_strihatoko`. Potřeba Node.js 18+ a ffmpeg (přibalený v MY Premiere MCP, jinak
+`winget install Gyan.FFmpeg`).
+
+**AI ve standalone:** AI panel používá MY Premiere MCP (přepis, Hermes, Claude) – spusť nejdřív bod 1 (Premiere k tomu
+mít nemusíš). Složku najde sám: `my-premiere-mcp\` vedle v repozitáři, `%APPDATA%\MYpremiereMCP\root.txt`,
+proměnná `MYPREMIEREMCP_ROOT`, nebo `pz-ai-cut\config.json` → `aiRoot`. Bez ní funguje střih, AI panel ne.
+
+<img src="docs/img/schema-standalone-cs.svg" alt="Jak je zapojený Standalone" width="100%">
+
+---
+
+## 3 · Web – `3 Web - postavit a spustit.bat`
+
+<img src="docs/img/screen-web-cs.png" alt="PZ AI Cut Web v prohlížeči" width="100%">
+
+Stejná střižna v prohlížeči (na obrázku sekvence převedená na 9:16 a průvodce připojením AI). Videa se čtou přímo
+z disku, nic se nenahrává; řeč se přepisuje v prohlížeči (Whisper, model se stáhne jednou ~1 GB).
+
+**Co se nainstaluje:** nic – skript jen sestaví `pz-ai-cut\web\dist` a spustí ho na **http://127.0.0.1:8791/**
+(potřeba Node.js 18+, Chrome nebo Edge). Pro AI si v AI panelu stránky stáhneš konektor:
+
+- **Claude Desktop** – rozšíření `pz-ai-cut.mcpb` (dvojklik → Instalovat), nebo plugin
+  `Plugin pz-ai-cut\pz-ai-cut-plugin.zip` (Customize › Plugins › Add › Upload plugin; funguje v Cowork a záložce Code),
+- **Codex (ChatGPT)** – jeden příkaz z AI panelu.
+
+Chrome se jednou zeptá na přístup k zařízením v místní síti – **Povolit** (stránka mluví s konektorem na 127.0.0.1).
+Na vlastní web stačí nahrát `web\dist` jako statické soubory (např. Cloudflare Pages).
+
+<img src="docs/img/schema-web-cs.svg" alt="Jak je zapojený Web" width="100%">
+
+---
+
+## Struktura repozitáře
 
 | Složka | Obsah |
 |---|---|
-| `my-premiere-mcp\` | MY Premiere MCP: `panel\` (CEP panel Premiere), `server\` (MCP server, Node), `worker\` (Python: Whisper, diarizace, analýzy), `INSTALL_SMALL\` (online instalace), `INSTALL\` (hlavní instalátor), `PLUGIN CLAUDE\` (plugin pro Claude), `youtuber\` (verze dílu pro AE). Návod `my-premiere-mcp\README.md`, pokyny pro AI `CLAUDE.md`, jiný PC `INSTALACE_NA_NOVEM_PC.md` |
-| `pz-ai-cut\` | PZ AI Cut: `src\` (střižna – jádro, UI), `web\` (webová verze, build bez bundleru), `connector\` (MCP konektor pro web), `tools\` (`pack-portable.js`, obličeje, synchronizace AI panelu), `test\`, `team\` (zápisy z vývoje). Návod `pz-ai-cut\README.md`, web `pz-ai-cut\web\README.md` |
+| `my-premiere-mcp\` | MY Premiere MCP: `panel\` (CEP panel Premiere), `server\` (MCP server, Node), `worker\` (Python: Whisper, diarizace, analýzy), `INSTALL_SMALL\` (online instalace), `INSTALL\` (hlavní instalátor), `PLUGIN CLAUDE\` (plugin pro Claude), `youtuber\` (verze dílu pro After Effects). Návod `my-premiere-mcp\README.md`, pokyny pro AI `CLAUDE.md` |
+| `pz-ai-cut\` | PZ AI Cut: `src\` (střižna – jádro a UI), `web\` (webová verze, build bez bundleru), `connector\` (MCP konektor pro web), `tools\` (`pack-portable.js`, obličeje, synchronizace AI panelu), `test\`, `team\` (zápisy z vývoje) |
 | `Plugin pz-ai-cut\` | hotový plugin pro Claude k webové verzi |
+| `docs\` | obrázky a schémata (`python docs\make_diagrams.py` je vygeneruje znovu) |
 
-Ručně (bez .bat): `cd pz-ai-cut` → `npm install` → `npm start` (spustit ze zdrojů) / `npm run pack` (přenosná) /
+Ručně (bez .bat): `cd pz-ai-cut` → `npm install` → `npm start` (ze zdrojů) / `npm run pack` (přenosná) /
 `npm run web:serve` (web) / `npm test` (testy).
 MY Premiere MCP ručně: `powershell -ExecutionPolicy Bypass -File my-premiere-mcp\INSTALL_SMALL\install-online.ps1`
 (přepínače `-Hermes`, `-NoLocalLLM`, `-SkipModels`, `-Target <složka>`).
