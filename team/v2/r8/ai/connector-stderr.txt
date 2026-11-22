@@ -1,0 +1,3 @@
+[pz-ai-cut] PZ AI Cut connector 1.4.0 started
+[pz-ai-cut] listening on 127.0.0.1:7895
+[pz-ai-cut] client: claude-ai-r8-test 1
