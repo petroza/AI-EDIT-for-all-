@@ -34,7 +34,14 @@ fs.rmSync(path.join(DST, 'resources', 'default_app.asar'), { force: true });
 const APPDST = path.join(DST, 'resources', 'app');
 const SKIP_DIR = new Set(['node_modules', '.git', '.wrangler', 'test', 'team', 'dist-portable', 'dist', 'test-out', 'codex']);
 const SKIP_FILE = new Set(['.env', 'START.bat', 'package-lock.json', 'deploy.js', 'wrangler.jsonc']);
-const keepCfg = fs.existsSync(path.join(APPDST, 'config.json'));
+// vlastní config.json v cíli zůstane (nastavení uživatele) – ale ne do zipu pro GitHub Releases (čistý config ze zdrojů, aiRoot
+// prázdné = aplikace si MY Premiere MCP najde sama) a ne, když aiRoot ukazuje na neexistující složku (2026-11-23: zůstal
+// O:\ADOBEPREMIERESTRIH z doby před přestěhováním)
+let keepCfg = false;
+try {
+  const c = JSON.parse(fs.readFileSync(path.join(APPDST, 'config.json'), 'utf8'));
+  keepCfg = !zip && (!c.aiRoot || fs.existsSync(path.join(c.aiRoot, 'server', 'index.js')));
+} catch (e) { /* žádný config v cíli */ }
 for (const d of ['src', 'tools', 'web', 'connector', 'build']) fs.rmSync(path.join(APPDST, d), { recursive: true, force: true });
 (function copy(src, dst) {
   fs.mkdirSync(dst, { recursive: true });
