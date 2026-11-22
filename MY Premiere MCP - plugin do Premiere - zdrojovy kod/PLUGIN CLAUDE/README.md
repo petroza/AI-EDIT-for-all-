@@ -16,7 +16,7 @@ Obsahuje:
    `INSTALL\offline` zkopíruj, když tam není internet (jinak se modely stáhnou, ~10–35 GB).
 2. V aplikaci Claude nahraj plugin (`PLUGIN CLAUDE\my-premiere-mcp.zip`).
 3. V nové relaci Claude Code napiš `/my-premiere-mcp:install` – Claude najde složku a spustí instalátor.
-   (Ručně: `INSTALL\instalace.bat`.) Potřeba je Node.js a Python 3.11 – instalátor řekne, co chybí.
+   (Ručně: `INSTALL\Instalace.cmd`.) Potřeba je Node.js a Python 3.11 – instalátor řekne, co chybí.
 4. Restartuj Premiere a otevři panel (Okno › Rozšíření › MY Premiere MCP), v aplikaci Claude začni novou relaci.
 
 Složka na jiném místě než `X:\MYpremiereMCP`: instalátor si cestu zapamatuje (`%APPDATA%\MYpremiereMCP\root.txt`),
