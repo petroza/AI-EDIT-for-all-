@@ -336,7 +336,7 @@ function createApi(project, hooks = {}) {
         const m = project.mediaById(c.mediaId);
         if (!m || !m.hasVideo) continue;
         const d = c.out - c.in;
-        shotsList.push({ c, m, item: { path: m.path, times: [0.2, 0.5, 0.8].map((f) => c.in + d * f) } });
+        shotsList.push({ c, m, item: { path: m.path, times: [0.2, 0.5, 0.8].map((f) => c.in + d * f), range: [c.in, c.out], transcript: transcriptFor(m.path) } });
       }
       shots = shotsList.length;
       if (hooks.progress) hooks.progress(`Auto Reframe: finding faces in ${shots} shots…`);
@@ -421,7 +421,17 @@ function createApi(project, hooks = {}) {
   return api;
 }
 
-/** Obličeje přes tools/faces.py (Python s OpenCV z MY Premiere MCP). null = není k dispozici. */
+/** Přepis zdroje z cache MY Premiere MCP (kvůli mluvčím pro výřez širokých záběrů). null = není. */
+function transcriptFor(file) {
+  try {
+    const dir = path.join(media.cfg.aiRoot || '', 'cache', 'transcripts');
+    const idx = JSON.parse(fs.readFileSync(path.join(dir, 'index.json'), 'utf8'));
+    const p = idx[path.resolve(file).toLowerCase()];
+    return p && fs.existsSync(p) ? p : null;
+  } catch (e) { return null; }
+}
+
+/** Obličeje přes tools/faces.py (Python s OpenCV z MY Premiere MCP; YuNet z jeho models/opencv_face). null = není k dispozici. */
 function faceCenters(items) {
   if (!items.length) return Promise.resolve([]);
   const root = media.cfg.aiRoot || '';
@@ -434,7 +444,9 @@ function faceCenters(items) {
     p.stderr.on('data', () => {});
     p.on('error', () => resolve(null));
     p.on('close', () => { try { resolve(JSON.parse(out)); } catch (e) { resolve(null); } });
-    p.stdin.end(JSON.stringify(items));
+    let yunet = null;
+    try { const d = path.join(root, 'models', 'opencv_face'); const f = fs.readdirSync(d).find((n) => /yunet.*\.onnx$/i.test(n)); if (f) yunet = path.join(d, f); } catch (e) { /* jen Haar */ }
+    p.stdin.end(JSON.stringify({ items, yunet }));
   });
 }
 
