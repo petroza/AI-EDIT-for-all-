@@ -506,3 +506,6 @@ ol.guide li span { color: #c9c9d2; }
 .mon-offline.show { display: flex; }
 .tl-tc.tc-click { cursor: text; }
 .tl-tc .tc-edit { width: 11ch; font: inherit; color: inherit; background: #111; border: 1px solid var(--accent, #2d8ceb); border-radius: 3px; padding: 0 3px; outline: none; }
+
+/* velká obrazovka (2560×1440, vzhled S3 #29): panel Projekt/Přepis širší – víc vět bez zalomení */
+@media (min-width: 2200px) { #projectPanel { width: 460px; } }

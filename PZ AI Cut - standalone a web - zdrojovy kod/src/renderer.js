@@ -1083,7 +1083,7 @@ function seqDialog(seq, opts) {
     <div class="row"><label>Sequence Name</label><input type="text" id="sqName" value="${d.name.replace(/"/g, '&quot;')}"></div>
     <div class="row"><label>Preset</label><select id="sqPreset"><option value="">custom</option>${PRESETS.map((p, i) => `<option value="${i}" ${p[1] === d.width && p[2] === d.height ? 'selected' : ''}>${p[0]}</option>`).join('')}</select></div>
     <div class="row"><label>Frame Size</label><input type="number" id="sqW" value="${d.width}" style="width:90px"> × <input type="number" id="sqH" value="${d.height}" style="width:90px"></div>
-    <div class="row"><label>Timebase (fps)</label><select id="sqFps">${[23.976, 24, 25, 29.97, 30, 50, 59.94, 60].map((f) => `<option ${Math.abs(f - d.fps) < 0.01 ? 'selected' : ''}>${f}</option>`).join('')}</select></div>
+    <div class="row"><label>Timebase (fps)</label><select id="sqFps">${[23.976, 24, 25, 29.97, 30, 50, 59.94, 60].map((f) => `<option value="${f}" ${Math.abs(f - d.fps) < 0.01 ? 'selected' : ''}>${TN.lang === 'cs' ? String(f).replace('.', ',') : f}</option>`).join('')}</select></div>
     ${!seq && m ? `<label class="row" style="gap:8px;cursor:pointer"><input type="checkbox" id="sqPut" ${opts && opts.put ? 'checked' : ''}> <span>${mPart ? 'Place the selected clip in it (In–Out, ' + mmss(mOut - mIn) + ')' : 'Place the selected clip in it (whole clip, ' + mmss(m.duration) + ')'}</span></label><div class="cs-warn" id="sqPutInfo" style="display:none">${TN.lang === 'cs' ? `Vloží se celý klip (${mmss(m.duration)}). Pro krátké video nejdřív označ úsek – třeba kliknutím na větu v záložce Přepis.` : `The whole clip is placed (${mmss(m.duration)}). For a short video mark a part first – e.g. click a sentence on the Transcript tab.`}</div>` : ''}
     <div class="btns"><button id="sqNo">Cancel</button><button class="primary" id="sqOk">OK</button></div>`, (b) => {
     b.querySelector('#sqPreset').onchange = (e) => { const p = PRESETS[e.target.value]; if (p) { b.querySelector('#sqW').value = p[1]; b.querySelector('#sqH').value = p[2]; } };
@@ -1157,7 +1157,7 @@ function socialGuide() {
   const cs = TN.lang === 'cs';
   const steps = cs ? [
     ['Import', 'Soubor → Importovat, nebo přetáhni video do okna. ' + (window.__pzASR ? (window.__pzASR.auto ? '<b>Řeč se přepíše sama hned po importu</b> – v tomto počítači, bez AI. Průběh vidíš u klipu a v záložce <b>Přepis</b> vedle panelu Projekt.' : 'Přepis spustíš pravým klikem na klip → <b>Přepsat řeč</b>.') : '')],
-    ['Najdi výrok', 'V záložce <b>Přepis</b> hledej slovo (Ctrl+F) a klikni na větu – nastaví se začátek a konec úseku (Shift+klik přidá další věty). Pak <b>Vložit do sekvence</b>.'],
+    ['Najdi výrok', 'V záložce <b>Přepis</b> hledej slovo (Ctrl+F) a klikni na větu – nastaví se začátek a konec úseku (Shift+klik přidá další věty). Pak tlačítko <b>Vložit…</b> pod přepisem (do nové sekvence, na konec nebo na hlavu).'],
     ['Střih s AI', 'V panelu AI (vpravo) napiš zadání nebo klikni na rychlou akci – třeba <b>Upoutávka</b>. Stopáž a formát vybereš pod ní. AI postaví <b>novou</b> sekvenci, původní zůstane.'],
     ['Formát pro sítě', '<b>Sekvence → Auto Reframe sekvence</b> – 9:16, 4:5, 1:1 nebo <b>Všechny formáty</b> najednou. Výřez sleduje obličej (v širokém záběru toho, kdo mluví), titulky se přeskládají.'],
     ['Titulky', '<b>Sekvence → Titulky → Vytvořit titulky z přepisu</b> (nebo tlačítko v okně Text v obraze). Bez AI.'],
@@ -1166,7 +1166,7 @@ function socialGuide() {
     ['Export', '<b>Soubor → Exportovat verze pro sítě</b> uloží všechny formáty do jedné složky (titulky vypálené, hlasitost −14 LUFS). Jednu sekvenci: Soubor → Exportovat média.'],
   ] : [
     ['Import', 'File → Import, or drop the video into the window. ' + (window.__pzASR ? (window.__pzASR.auto ? '<b>Speech is transcribed automatically right after import</b> – on this computer, without AI. You see the progress on the clip and on the <b>Transcript</b> tab next to the Project panel.' : 'Start the transcript with a right-click on the clip → <b>Transcribe Speech</b>.') : '')],
-    ['Find the quote', 'On the <b>Transcript</b> tab search for a word (Ctrl+F) and click a sentence – it sets the start and end of the part (Shift+click adds more). Then <b>Insert into sequence</b>.'],
+    ['Find the quote', 'On the <b>Transcript</b> tab search for a word (Ctrl+F) and click a sentence – it sets the start and end of the part (Shift+click adds more). Then the <b>Insert…</b> button under the transcript (into a new sequence, at the end or at the playhead).'],
     ['Edit with AI', 'In the AI panel (right) write a task or click a quick action – e.g. <b>Teaser</b>. Pick the length and format below it. The AI builds a <b>new</b> sequence; the original stays.'],
     ['Social format', '<b>Sequence → Auto Reframe Sequence</b> – 9:16, 4:5, 1:1 or <b>All Social Formats</b> at once. The crop follows the face (the speaker in wide shots); captions are re-laid out.'],
     ['Captions', '<b>Sequence → Captions → Create Captions from Transcript</b> (or the button in the Text on video window). No AI needed.'],
@@ -1499,7 +1499,7 @@ function setLanguage(l, initial) {
   i18n.setLang(l);
   renderLangSwitch();
   if (app.program && app.program.ui) app.program.ui(); // úvodní obrazovka v monitoru je v jazyce rozhraní
-  if (changed && !initial) { reloadAiPanel(); app.projectPanel.render(); app.timeline.render(); app.updatePlayButtons && app.updatePlayButtons(); if (app.transcript && app.transcript.relang) app.transcript.relang(); if (app.captionList && app.captionList.visible) app.captionList.render(); require('./ui/captionstyle').relangCaptionStyle(app); repaintAiRail(); }
+  if (changed && !initial) { app.status(''); reloadAiPanel(); app.projectPanel.render(); app.timeline.render(); app.updatePlayButtons && app.updatePlayButtons(); if (app.transcript && app.transcript.relang) app.transcript.relang(); if (app.captionList && app.captionList.visible) app.captionList.render(); require('./ui/captionstyle').relangCaptionStyle(app); repaintAiRail(); }
 }
 commands.setLang = (l) => setLanguage(l);
 // ovládání AI panelu (layout.js) se překládá jen v češtině – v angličtině běží uvnitř panelu jeho vlastní překlad
@@ -1794,7 +1794,7 @@ async function captionsFromTranscript() {
   const mmss = (x) => Math.floor(x / 60) + ':' + String(Math.round(x % 60)).padStart(2, '0');
   openModal(`<h2>${LL('Captions from the transcript', 'Titulky z přepisu')}</h2>
     <div class="dim" style="margin:-4px 0 10px">${esc(s.name)} · ${mmss(seqDuration(s))} · ${fmtName}</div>
-    <div id="cfMsg" style="line-height:1.5;min-height:72px;width:420px"><span class="dim">${LL('Finding the words heard in the sequence…', 'Zjišťuji, která slova v sekvenci zazní…')}</span></div>
+    <div id="cfMsg" style="line-height:1.5;min-height:${media.WEB ? 72 : 36}px;width:420px"><span class="dim">${LL('Finding the words heard in the sequence…', 'Zjišťuji, která slova v sekvenci zazní…')}</span></div>
     <label class="row" style="gap:8px;cursor:pointer;min-height:28px;margin-top:8px"><input type="checkbox" id="cfHl" ${hl ? 'checked' : ''}> <span>${LL('Highlight the spoken word', 'Zvýrazňovat vyslovované slovo')}</span></label>
     <div class="dim" style="font-size:11.5px">${LL(`Look follows the format: ${st.lines} line${st.lines === 1 ? '' : 's'}, ${Math.round(st.pos)} % from the bottom. Change it in the Text on video window.`, `Vzhled podle formátu: ${st.lines} ${st.lines === 1 ? 'řádek' : 'řádky'}, ${Math.round(st.pos)} % od spodu. Změníš ho v okně Text v obraze.`)}</div>
     ${fill ? `<div class="cs-warn" style="margin-top:10px">${LL(`The sequence already has captions (${has}). Captions are added only to the ${gaps} part${gaps === 1 ? '' : 's'} without captions – the existing ones and your fixes stay as they are. Undo with Ctrl+Z.`, `Sekvence už má titulky (${has}). Doplní se jen ${gaps === 1 ? 'úseku' : 'úsekům'} bez titulků (${gaps}) – hotové titulky i tvoje opravy zůstanou, jak jsou. Vrátíš to Ctrl+Z.`)}</div>` : has ? `<div class="cs-warn" style="margin-top:10px">${LL(`The sequence already has captions (${has}). They are made again from the transcript – your text fixes stay, because they are saved in the transcript too. The caption style stays. Undo with Ctrl+Z.`, `Sekvence už má titulky (${has}). Vytvoří se znovu z přepisu – tvoje opravy textu zůstanou, protože se ukládají i do přepisu. Styl titulků zůstane. Vrátíš to Ctrl+Z.`)}</div>` : ''}

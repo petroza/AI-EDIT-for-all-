@@ -62,7 +62,7 @@ function createProjectPanel(app) {
       let prog = '';
       if (!m.playable && !m.proxy && !m.proxyError) prog = `<div class="prog" title="Creating a playback proxy"><i style="width:${Math.round((m.proxyProgress || 0) * 100)}%"></i></div>`;
       if (m.proxyError) info += ' · ✖ proxy';
-      if (m.missing) info += ' · media offline';
+      if (m.missing) info += window.TN && window.TN.lang === 'cs' ? ' · médium offline' : ' · media offline';
       h += `<div class="pi${sel}${m.missing ? ' missing' : ''}" data-type="media" data-id="${m.id}" draggable="true" title="${esc(m.path)}">
         ${th}<div class="meta"><div class="nm">${esc(m.name)}</div><div class="info">${info}<span class="asr-info" data-mid="${m.id}"></span></div>${prog}<span class="asr-prog row" data-mid="${m.id}"><i></i></span></div></div>`;
     }
