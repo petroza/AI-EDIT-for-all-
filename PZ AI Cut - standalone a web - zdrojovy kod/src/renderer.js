@@ -958,14 +958,28 @@ function gainDialog() {
   const s = app.seq(); if (!s || !app.sel.size) { app.status('Select clips first'); return; }
   const clips = [...app.sel].map((id) => E.findClip(s, id)).filter((x) => x && x.kind === 'audio').map((x) => x.clip);
   if (!clips.length) { app.status('Select audio clips'); return; }
+  // jako Premiere: „Nastavit zesílení na“ (stejné všem) nebo „Změnit zesílení o“ (každému klipu zvlášť přičíst) – redaktorka S3
+  const same = clips.every((c) => (c.gainDb || 0) === (clips[0].gainDb || 0));
   openModal(`<h2>Audio Gain</h2>
-    <div class="row"><label>Adjust Gain by (dB)</label><input type="number" id="gDb" step="0.5" value="${clips[0].gainDb || 0}" style="width:90px"></div>
-    <div class="dim">Applies to ${clips.length} selected audio clip(s). 0 = original level, −60 = silent.</div>
+    <label class="row" style="gap:8px;cursor:pointer"><input type="radio" name="gMode" id="gSetR" value="set"> <span style="width:150px">Set Gain to (dB)</span><input type="number" id="gSet" step="0.5" value="${same ? clips[0].gainDb || 0 : ''}" style="width:90px"></label>
+    <label class="row" style="gap:8px;cursor:pointer"><input type="radio" name="gMode" id="gAdjR" value="adj" checked> <span style="width:150px">Adjust Gain by (dB)</span><input type="number" id="gAdj" step="0.5" value="0" style="width:90px"></label>
+    <div class="dim">${TN.lang === 'cs' ? `Pro vybrané zvukové klipy: ${clips.length}. 0 dB = původní hlasitost, −60 = ticho.` : `Applies to ${clips.length} selected audio clip(s). 0 dB = original level, −60 = silent.`}</div>
     <div class="btns"><button id="gNo">Cancel</button><button class="primary" id="gOk">OK</button></div>`, (b) => {
     b.querySelector('#gNo').onclick = closeModal;
-    const ok = () => { const v = Number(b.querySelector('#gDb').value) || 0; closeModal(); app.edit('Audio Gain', () => { for (const c of clips) c.gainDb = Math.max(-60, Math.min(24, v)); }); };
+    const pick = (m) => () => { b.querySelector(m === 'set' ? '#gSetR' : '#gAdjR').checked = true; };
+    b.querySelector('#gSet').addEventListener('focus', pick('set'));
+    b.querySelector('#gAdj').addEventListener('focus', pick('adj'));
+    const lim = (v) => Math.max(-60, Math.min(24, v));
+    const ok = () => {
+      const set = b.querySelector('#gSetR').checked;
+      const v = Number(b.querySelector(set ? '#gSet' : '#gAdj').value) || 0;
+      closeModal();
+      if (!set && !v) return;
+      app.edit('Audio Gain', () => { for (const c of clips) c.gainDb = lim(set ? v : (c.gainDb || 0) + v); });
+    };
     b.querySelector('#gOk').onclick = ok;
-    b.querySelector('#gDb').onkeydown = (e) => { if (e.key === 'Enter') ok(); };
+    for (const id of ['#gSet', '#gAdj']) b.querySelector(id).onkeydown = (e) => { if (e.key === 'Enter') ok(); };
+    setTimeout(() => { const i = b.querySelector('#gAdj'); i.focus(); i.select(); }, 20);
   });
 }
 
@@ -1315,6 +1329,7 @@ async function saveProject(as) {
     p = r.filePath;
   }
   writeProject(p);
+  if (!media.WEB) dropAutosave();
   project.path = p;
   project.name = U.baseName(p).replace(/\.(pzcut|tnproj)$/i, '');
   project.dirty = false;
@@ -1328,8 +1343,8 @@ function writeProject(p) {
   fs.writeFileSync(tmp, JSON.stringify(project.toJSON(), null, 1), 'utf8');
   fs.renameSync(tmp, p);
 }
-function loadProjectFile(p, asUntitled) {
-  const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+function loadProjectFile(p, asUntitled, data0) {
+  const data = data0 || JSON.parse(fs.readFileSync(p, 'utf8'));
   require('./ui/captionstyle').discardCaptionStyle();
   app.source.close();
   app.waves.clear();
@@ -1371,19 +1386,23 @@ async function confirmDiscard() {
   const r = await ipcRenderer.invoke('dialog', 'message', { type: 'question', buttons: ['Save', "Don't Save", 'Cancel'], defaultId: 0, cancelId: 2, message: 'Save changes to the project?' });
   if (r.response === 2) return false;
   if (r.response === 0) return !!(await saveProject(false));
+  if (!media.WEB) dropAutosave(); // Neukládat: změny zahodit i ze zálohy (jinak by se po startu „obnovily“)
   return true;
 }
 async function confirmClose() {
   if (await confirmDiscard()) { try { if (fs.existsSync(AUTOSAVE) && !project.dirty) fs.unlinkSync(AUTOSAVE); } catch (e) {} ipcRenderer.send('closeNow'); }
 }
-// automatické uložení každou minutu (do souboru projektu, jinak do záložního souboru)
+// automatické uložení každou minutu. Desktop: jen do záložního souboru (jako Premiere Auto-Save) – soubor projektu přepíše
+// až Ctrl+S, takže pokus jde zahodit („Neukládat“). Redaktorka S3: značka byla v .pzcut za 43 s bez uložení, „*“ zmizela.
+// Web: do projektu (zápis do prohlížeče, jiný model ukládání).
 setInterval(() => {
   if (!project.dirty || window.__pzAutosaveOff) return; // web: v jiné kartě se pracuje → tady neukládat
   try {
-    if (project.path) { writeProject(project.path); project.dirty = false; updateTitle(); app.status('Auto-saved'); }
-    else fs.writeFileSync(AUTOSAVE, JSON.stringify(project.toJSON()), 'utf8');
+    if (media.WEB && project.path) { writeProject(project.path); project.dirty = false; updateTitle(); app.status('Auto-saved'); }
+    else { const j = project.toJSON(); j.autosaveOf = project.path || null; fs.writeFileSync(AUTOSAVE, JSON.stringify(j), 'utf8'); }
   } catch (e) { console.warn('autosave', e.message); }
 }, media.WEB ? 10000 : 60000); // web: častěji (zápis do prohlížeče je levný)
+const dropAutosave = () => { try { if (fs.existsSync(AUTOSAVE)) fs.unlinkSync(AUTOSAVE); } catch (e) { /* bez zálohy */ } };
 
 /* ======================================================= AI panel a most */
 // Port mostu: standardní 7880 (jako panel v Premiere – funguje tak i Claude v aplikaci s pluginem). Když na něm
@@ -1880,8 +1899,12 @@ async function captionsFromTranscript() {
 /* ======================================================= start */
 (function start() {
   try {
-    if (settings.lastProject && fs.existsSync(settings.lastProject)) loadProjectFile(settings.lastProject);
-    else if (fs.existsSync(AUTOSAVE)) { loadProjectFile(AUTOSAVE, true); app.toast('Recovered an unsaved project from the auto-save.'); }
+    // záloha neuložených změn uloženého projektu (novější než projekt) → otevřít projekt se změnami, označený jako neuložený
+    let rec = null;
+    try { if (!media.WEB && settings.lastProject && fs.existsSync(AUTOSAVE)) { const j = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); if (j.autosaveOf && fs.existsSync(j.autosaveOf) && path.resolve(j.autosaveOf).toLowerCase() === path.resolve(settings.lastProject).toLowerCase() && fs.statSync(AUTOSAVE).mtimeMs > fs.statSync(j.autosaveOf).mtimeMs) rec = j; } } catch (e) { rec = null; }
+    if (rec) { loadProjectFile(settings.lastProject, false, rec); project.dirty = true; updateTitle(); app.toast('Recovered unsaved changes from the auto-save. Save them with Ctrl+S, or close without saving to discard them.'); }
+    else if (settings.lastProject && fs.existsSync(settings.lastProject)) loadProjectFile(settings.lastProject);
+    else if (fs.existsSync(AUTOSAVE) && !(JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')).autosaveOf)) { loadProjectFile(AUTOSAVE, true); app.toast('Recovered an unsaved project from the auto-save.'); }
   } catch (e) { app.toast('Cannot open the last project: ' + e.message, true); }
   app.projectPanel.render();
   renderTabs();

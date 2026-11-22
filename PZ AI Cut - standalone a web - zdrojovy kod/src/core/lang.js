@@ -8,7 +8,8 @@ const CS = {
   'Delete Sequences': 'Smazat sekvence', 'Extract Ranges': 'Vyjmout úseky', 'Import Media': 'Importovat média', 'Set Playhead': 'Posunout hlavu',
   'Detect Camera Cuts': 'Najít střihy kamery', 'Open Sequence': 'Otevřít sekvenci', 'Clean up camera-cut leftovers': 'Úklid zbytků záběrů na krajích klipů',
   'The sequence is empty – nothing to export.': 'Sekvence je prázdná – není co exportovat.', 'Export cancelled.': 'Export zrušen.',
-  'Add captions': 'Přidat titulky', 'Delete': 'Smazat', 'You can bring it back with Edit → Undo.': 'Vrátíš ji přes Úpravy → Zpět.',
+  'Add captions': 'Přidat titulky', 'Set Gain to (dB)': 'Nastavit zesílení na (dB)',
+  'Recovered unsaved changes from the auto-save. Save them with Ctrl+S, or close without saving to discard them.': 'Obnoveny neuložené změny z automatické zálohy. Uložíš je Ctrl+S, nebo je zahodíš zavřením bez uložení.', 'Delete': 'Smazat', 'You can bring it back with Edit → Undo.': 'Vrátíš ji přes Úpravy → Zpět.',
   ' – not for this frame size': ' – ne pro tuhle velikost obrazu',
   // ---------- menu
   'File': 'Soubor', 'New Project': 'Nový projekt', 'Open Project…': 'Otevřít projekt…', 'Save': 'Uložit', 'Save As…': 'Uložit jako…',
