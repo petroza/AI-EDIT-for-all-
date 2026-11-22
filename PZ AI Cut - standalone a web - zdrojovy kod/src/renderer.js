@@ -113,7 +113,7 @@ const app = {
   _waveLoading: new Set(),
 
   async importPaths(paths) {
-    const out = [];
+    const out = [], bad = [];
     for (const p of paths) {
       app.status('Importing: ' + U.baseName(p));
       try {
@@ -121,8 +121,14 @@ const app = {
         out.push(m);
         loadThumb(m);
         app.loadWave(m.id);
-      } catch (e) { app.toast(`${U.baseName(p)}: ${e.message}`, true); out.push({ error: e.message }); }
+      } catch (e) {
+        // srozumitelně místo surové chyby ffprobe („moov atom not found“) a všechny vadné soubory v jedné zprávě (vzhled S3)
+        const raw = String(e && e.message || e);
+        const why = /exited with code|moov atom|Invalid data|could not find codec|no such file/i.test(raw) ? 'damaged or unsupported file' : raw;
+        bad.push(`${U.baseName(p)} (${why})`); out.push({ error: raw });
+      }
     }
+    if (bad.length) app.toast(`Cannot import: ${bad.join(', ')}`, true);
     app.status(`Imported: ${out.filter((x) => !x.error).length}`);
     app.projectPanel.render();
     return out;

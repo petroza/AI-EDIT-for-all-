@@ -16,7 +16,7 @@ function createProjectPanel(app) {
     const tile = (type, id, name, thumbUrl, badge, dur, extra) => {
       const sel = selected && selected.id === id ? ' sel' : '';
       return `<div class="pi tile${sel}${extra || ''}" data-type="${type}" data-id="${id}" draggable="true" title="${esc(name)}">
-        <div class="tthumb" style="${thumbUrl ? `background-image:url('${thumbUrl}')` : ''}"><span class="tbadge">${badge}</span><span class="tdur">${dur}</span>${type === 'media' ? `<span class="asr-tag" data-mid="${id}"></span><span class="asr-prog" data-mid="${id}"><i></i></span>` : ''}</div>
+        <div class="tthumb" style="${thumbUrl ? `background-image:url('${thumbUrl}')` : ''}"><span class="tbadge">${badge}</span><span class="tdur">${dur}</span>${extra && /missing/.test(extra) ? '<span class="toffline">Media Offline</span>' : ''}${type === 'media' ? `<span class="asr-tag" data-mid="${id}"></span><span class="asr-prog" data-mid="${id}"><i></i></span>` : ''}</div>
         <div class="tname"><i class="lbl ${type}"></i>${esc(name)}</div></div>`;
     };
     for (const m of p.media) {

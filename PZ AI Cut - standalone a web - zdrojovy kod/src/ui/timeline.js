@@ -168,6 +168,9 @@ function createTimeline(app) {
     }
     h += `<div class="th addtracks"><button class="tl" data-act="addV" title="Add Video Track">+V</button><button class="tl" data-act="addA" title="Add Audio Track">+A</button></div>`;
     heads.innerHTML = h;
+    // timecode časové osy jde přepsat jako v Premiere (vzhled S3) – stejné jako v monitorech
+    require('./monitors').editableTc(document.getElementById('tlTc'), { ok: () => !!seq(), fps: () => seq().fps || 25, now: () => seq().playhead || 0,
+      max: () => app.seqDuration(seq()), seek: (t) => { app.focusPanel('timeline'); app.setPlayhead(t); } });
   }
 
   heads.addEventListener('click', (ev) => {
@@ -225,7 +228,8 @@ function createTimeline(app) {
       inner += `<div class="thumbs" style="width:${Math.min(w - 2, 72)}px;background-image:url('${m.thumbUrl}')"></div>`;
     }
     const vis = c.kind === 'audio' && (app.view || {}).waves !== false && left + w > viewL && left < viewR;
-    return { html: `<div class="clip ${c.kind}${sel}${c.disabled ? ' disabled' : ''}" data-id="${c.id}" style="left:${left}px;width:${w}px">${inner}${vis ? '<canvas></canvas>' : ''}</div>`, vis };
+    if (m && m.missing) inner = `<span class="cl"><b class="offl">${window.TN && window.TN.lang === 'cs' ? 'Médium offline' : 'Media Offline'}</b> ${name}</span>`;
+    return { html: `<div class="clip ${c.kind}${sel}${c.disabled ? ' disabled' : ''}${m && m.missing ? ' offline' : ''}" data-id="${c.id}" style="left:${left}px;width:${w}px" title="${m && m.missing ? 'Media offline: ' + (m.path || '').replace(/"/g, '&quot;') : ''}">${inner}${vis ? '<canvas></canvas>' : ''}</div>`, vis };
   }
 
   function renderLanes(s, width) {
@@ -364,7 +368,7 @@ function createTimeline(app) {
     if (!s) return;
     phEl.style.left = xOf(s.playhead || 0) + 'px';
     const tc = document.getElementById('tlTc');
-    if (tc) tc.textContent = timecode(s.playhead || 0, s.fps);
+    if (tc && !tc.querySelector('input')) tc.textContent = timecode(s.playhead || 0, s.fps);
   }
 
   function setPlayheadView(t, follow) {

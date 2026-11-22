@@ -165,7 +165,7 @@ function createTranscriptPanel(app) {
     let html = '';
     if (!app.project.media.length) html = empty(L('Here you will see what is said in the video', 'Tady uvidíš, co se ve videu říká'), (asr() && asr().auto === false ? L('Import a video – then start the transcript with right-click on the clip → Transcribe Speech (on this computer, without AI).', 'Importuj video – přepis pak spustíš pravým klikem na klip → Přepsat řeč (v tomto počítači, bez AI).') : L('Import a video – speech is transcribed automatically, on this computer and without AI.', 'Importuj video – řeč se přepíše sama, v tomto počítači a bez AI.')), L('Import video…', 'Importovat video…'));
     else if (!m) html = empty(L('Here you will see what is said in the video', 'Tady uvidíš, co se ve videu říká'), L('Double-click a clip on the Project tab.', 'Dvojklikem otevři klip v záložce Projekt.'));
-    else if (m.missing) html = empty(L('The clip file is missing', 'Soubor klipu chybí'), L('Find it via the missing-media bar, then the transcript appears.', 'Najdi ho přes lištu Nenalezená média, pak se přepis ukáže.'));
+    else if (m.missing) html = empty(L('The clip file is missing', 'Soubor klipu chybí'), (asr() && asr().desktop ? L('The file was moved or renamed – import it again (File → Import), then the transcript appears.', 'Soubor byl přesunut nebo přejmenován – naimportuj ho znovu (Soubor → Importovat), pak se přepis ukáže.') : L('Find it via the missing-media bar, then the transcript appears.', 'Najdi ho přes lištu Nenalezená média, pak se přepis ukáže.')));
     else if (m.hasAudio === false) html = empty(L('The clip has no sound', 'Klip nemá zvuk'), L('There is nothing to transcribe.', 'Není co přepsat.'));
     else if (!t && (st.state === 'none' || st.state === 'error')) {
       html = `<div class="tr-clip"><span class="nm">${esc(m.name)}</span></div><div id="trStatus"></div>`
@@ -236,7 +236,10 @@ function createTranscriptPanel(app) {
     if (st.state === 'queued') {
       let other = '';
       for (const x of app.project.media) if (x !== m && a.status(x).state === 'running') other = x.name;
-      html = `<div class="tr-st"><span><b>${esc(L('Waiting to transcribe', 'Čeká na přepis'))}</b>${other ? ' · ' + esc(L(`“${other}” is finished first`, `nejdřív se dopíše „${other}“`)) : ''}</span><button id="trStop">${esc(L('Stop', 'Zastavit'))}</button></div>`;
+      // standalone: hotový přepis se teprve načítá (Worker / mezipaměť) – ne „čeká na přepis“ (vzhled S3)
+      html = a.desktop && st.msg && !other
+        ? `<div class="tr-st"><span><b>${esc(L('Loading the transcript…', 'Načítám přepis…'))}</b></span></div><div class="tr-bar indet"><i></i></div>`
+        : `<div class="tr-st"><span><b>${esc(L('Waiting to transcribe', 'Čeká na přepis'))}</b>${other ? ' · ' + esc(L(`“${other}” is finished first`, `nejdřív se dopíše „${other}“`)) : ''}</span><button id="trStop">${esc(L('Stop', 'Zastavit'))}</button></div>`;
     } else if (st.state === 'running') {
       const prep = !(st.p > 0.0005) || /model/.test(st.msg || '');
       // stahování (jen poprvé, součet MB všech souborů) × načítání z mezipaměti (pár sekund, „jen poprvé“ by lhalo)
@@ -249,7 +252,10 @@ function createTranscriptPanel(app) {
         : `<div class="tr-st"><span><b>${esc(up ? L(`Transcribing more accurately… ${Math.floor(st.p * 100)} %`, `Přepisuji přesněji… ${Math.floor(st.p * 100)} %`) : L(`Transcribing speech… ${Math.floor(st.p * 100)} %`, `Přepisuji řeč… ${Math.floor(st.p * 100)} %`))}</b> · ${esc(etaText(st))}${up ? esc(L(' · the current transcript stays valid meanwhile', ' · zatím platí dosavadní přepis')) : ''}${a.weak ? '<br><span class="dim">' + esc(L('This computer can only do the standard transcript – the accurate one would take too long.', 'Na tomto počítači jde jen standardní přepis – přesný by trval příliš dlouho.')) + '</span>' : ''}</span><button id="trStop">${esc(L('Stop', 'Zastavit'))}</button></div>${bar(st.p)}`;
     } else if (st.state === 'stopped') {
       const up = t && t.upTo;
-      html = `<div class="tr-st"><span><b>${esc(up ? L(`Transcription stopped at ${mmss(up)}`, `Přepis zastaven u ${mmss(up)}`) : L('Transcription stopped', 'Přepis zastaven'))}</b> (${Math.floor((st.p || 0) * 100)} %) · ${esc(L('you can use the finished part', 'hotovou část můžeš používat'))}</span><button id="trGo" class="go">${esc(L('Resume', 'Pokračovat'))}</button></div>${bar(st.p)}`;
+      // standalone: Worker rozpracovanou část neukládá – nic neslibovat, tlačítko spustí přepis znovu (vzhled S3)
+      html = a.desktop
+        ? `<div class="tr-st"><span><b>${esc(L('Transcription stopped', 'Přepis zastaven'))}</b></span><button id="trGo" class="go">${esc(L('Start again', 'Spustit znovu'))}</button></div>`
+        : `<div class="tr-st"><span><b>${esc(up ? L(`Transcription stopped at ${mmss(up)}`, `Přepis zastaven u ${mmss(up)}`) : L('Transcription stopped', 'Přepis zastaven'))}</b> (${Math.floor((st.p || 0) * 100)} %) · ${esc(L('you can use the finished part', 'hotovou část můžeš používat'))}</span><button id="trGo" class="go">${esc(L('Resume', 'Pokračovat'))}</button></div>${bar(st.p)}`;
     } else if (st.state === 'error') {
       html = `<div class="tr-st err"><span><b>${esc(L('Transcription failed.', 'Přepis se nepodařil.'))}</b> ${esc(errText(st.msg))}</span><button id="trGo">${esc(L('Try again', 'Zkusit znovu'))}</button></div>`;
     } else {

@@ -84,15 +84,30 @@ function createProgram(app) {
     step(L('Or let the AI cut: write a task in the AI panel, e.g. “20 s teaser for Reels”.', 'Nebo nech stříhat AI: napiš zadání v panelu AI, třeba „20s upoutávka pro Reels“.'), L('AI panel', 'Panel AI'), () => app.cmd('toggleAi', true));
     empty.appendChild(ol);
   }
+  const offl = document.createElement('div');
+  offl.className = 'mon-offline';
+  screen.appendChild(offl);
+  function offlineAt(s) {
+    const t = s.playhead || 0;
+    for (const tr of s.tracks.video) for (const c of tr.clips) {
+      if (c.disabled || t < c.start || t >= c.start + (c.out - c.in)) continue;
+      const m = app.project.mediaById(c.mediaId);
+      if (m && m.missing) return m;
+    }
+    return null;
+  }
   function ui() {
     const s = app.seq();
+    const om = s && offlineAt(s);
+    offl.classList.toggle('show', !!om);
+    if (om) offl.textContent = (window.TN && window.TN.lang === 'cs' ? 'Médium offline: ' : 'Media Offline: ') + om.name;
     empty.style.display = s ? 'none' : 'block';
     if (!s) onboard();
     screen.style.visibility = s ? 'visible' : 'hidden';
     title.textContent = s ? `${s.name} · ${s.width}×${s.height} · ${s.fps} fps` : '(no sequence)';
     if (!s) { tc.textContent = dur.textContent = '00:00:00:00'; return; }
     const d = app.seqDuration(s);
-    tc.textContent = timecode(s.playhead || 0, s.fps);
+    if (!tc.querySelector('input')) tc.textContent = timecode(s.playhead || 0, s.fps);
     const a = s.inPoint, b = s.outPoint;
     dur.textContent = timecode(a !== null || b !== null ? (b !== null ? b : d) - (a || 0) : d, s.fps);
     drawScrub(scrub, d, s.playhead || 0, a, b);
@@ -161,6 +176,7 @@ function editableTc(el, ctx) {
       if (!go) return;
       const t = parseTcInput(v, ctx.fps(), ctx.now());
       if (isFinite(t)) ctx.seek(Math.max(0, Math.min(ctx.max(), t)));
+      else if (window.TN && window.TN.app) window.TN.app.status(window.TN.lang === 'cs' ? 'Neplatný čas – napiš třeba 00:01:02:10, 1015 nebo +5' : 'Invalid time – type e.g. 00:01:02:10, 1015 or +5', true);
     };
     inp.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') { e.preventDefault(); finish(true); } else if (e.key === 'Escape') { e.preventDefault(); finish(false); } });
     inp.addEventListener('blur', () => finish(false));
@@ -184,7 +200,7 @@ function createSource(app) {
     if (!media) { title.textContent = '(no clip)'; tc.textContent = dur.textContent = '00:00:00:00'; drawScrub(scrub, 0, 0, null, null); if (app.onSourceUi) app.onSourceUi(null, 0); return; }
     const fps = media.fps || 25;
     title.textContent = media.name + (media.proxy && !media.playable ? ' · proxy' : '') + (!media.playable && !media.proxy ? ' · creating proxy…' : '');
-    tc.textContent = timecode(player.time, fps);
+    if (!tc.querySelector('input')) tc.textContent = timecode(player.time, fps);
     const a = media.srcIn ?? null, b = media.srcOut ?? null;
     dur.textContent = timecode((b !== null ? b : media.duration) - (a || 0), fps);
     drawScrub(scrub, media.duration, player.time, a, b);
@@ -232,4 +248,4 @@ function createSource(app) {
   };
 }
 
-module.exports = { createProgram, createSource };
+module.exports = { editableTc, parseTcInput, createProgram, createSource };

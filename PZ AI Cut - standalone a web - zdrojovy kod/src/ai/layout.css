@@ -157,3 +157,11 @@ body.pz-layout {
 .pz-tab:focus, .pz-tab:focus-visible { outline: none; }
 .pz-tab.on::after { left: 0; right: 0; border-radius: 0; }
 .pz-seqbar > * { white-space: nowrap; } .pz-seqbar #srcName { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* nízké okno (notebook 1366×768, 1280×720 – vzhled S3: tlačítko Spustit pod okrajem): bez úvodního nadpisu, menší karty */
+@media (max-height: 700px) {
+  .pz-hero { display: none; }
+  .pz-card { padding: 7px 12px; }
+  .pz-qcard { padding-top: 8px !important; padding-bottom: 8px !important; min-height: 0 !important; }
+}
+/* úzký panel (340 px na notebooku): v patičce přednost stavu před vytížením GPU (vzhled S3: „Systém při…“) */
+@media (max-width: 360px) { .pz-foot .pz-gpu { display: none; } }

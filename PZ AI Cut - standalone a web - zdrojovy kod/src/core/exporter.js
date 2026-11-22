@@ -162,11 +162,12 @@ function captionsSrt(seq, rs, re) {
 }
 
 async function pool(items, limit, fn) {
-  let i = 0;
+  let i = 0, failed = null;
   const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (i < items.length) { const k = i++; await fn(items[k], k); }
+    while (i < items.length && !failed) { const k = i++; try { await fn(items[k], k); } catch (e) { failed = failed || e; } }
   });
   await Promise.all(workers);
+  if (failed) throw failed; // první chyba (ne průběh dalšího úseku, který ji přepsal)
 }
 
 /**
@@ -196,6 +197,17 @@ async function exportSequence(project, seq, opts) {
   const mediaOf = (c) => project.mediaById(c.mediaId);
   const ff = (args) => run(FFMPEG, ['-y', '-hide_banner', '-loglevel', 'error', ...args], { proc: track });
 
+  // chybějící média předem (jinak export spadl uprostřed na chybě ffmpeg bez vysvětlení)
+  const offline = new Set();
+  for (const k of ['video', 'audio']) for (const t of seq.tracks[k]) for (const c of t.clips) {
+    if (c.disabled || clipEnd(c) <= rs || c.start >= re || (k === 'audio' && t.muted)) continue;
+    const m = mediaOf(c);
+    if (!m || m.missing || !fs.existsSync(m.path)) offline.add(m ? m.name : '?');
+  }
+  if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`);
+  // zápis do cílové složky ověřit hned (vzhled S3: „Permission denied“ až po 60 % renderu)
+  try { const probe = path.join(path.dirname(output), '.pz-write-test-' + process.pid); fs.writeFileSync(probe, ''); fs.unlinkSync(probe); }
+  catch (e) { throw new Error(`Cannot write to the folder ${path.dirname(output)} – choose another place to save.`); }
   const vsegs = videoSegments(seq, rs, re);
   const audioTracks = seq.tracks.audio.filter((t) => !t.muted && t.clips.some((c) => clipEnd(c) > rs && c.start < re));
   const totalUnits = vsegs.length + audioTracks.reduce((a, t) => a + t.clips.length + 1, 0) + 2;
