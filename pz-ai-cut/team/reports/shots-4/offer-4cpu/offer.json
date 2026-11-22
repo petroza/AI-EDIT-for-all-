@@ -1,0 +1,1292 @@
+{
+ "cpu": 4,
+ "profile": "C:\\Users\\Petr\\AppData\\Local\\Temp\\pz-tester4-offer-4-1795316447091",
+ "events": [
+  {
+   "phase": "std",
+   "t": 0.1,
+   "state": "none",
+   "p": 0,
+   "model": null,
+   "status": null
+  },
+  {
+   "phase": "std",
+   "t": 2.1,
+   "state": "running",
+   "p": 0,
+   "msg": "downloading the speech model 8 / 240 MB (once)",
+   "eta": null,
+   "model": null,
+   "status": "Stahuji rozpoznávání řeči… 8 z 240 MB · jen jednou Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 34.3,
+   "state": "running",
+   "p": 0.001,
+   "msg": "0 %",
+   "eta": null,
+   "model": null,
+   "status": "Přepisuji řeč… 0 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 70.7,
+   "state": "running",
+   "p": 0.24,
+   "msg": "24 %",
+   "eta": 108.6799525562691,
+   "model": null,
+   "status": "Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 131.6,
+   "state": "running",
+   "p": 0.719,
+   "msg": "72 %",
+   "eta": 37.31008327162739,
+   "model": null,
+   "status": "Přepisuji řeč… 71 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 164,
+   "state": "done",
+   "p": 1,
+   "model": "onnx-community/whisper-small_timestamped",
+   "status": "Přepsat přesněji · asi 6 min o polovinu méně chyb ×"
+  },
+  {
+   "phase": "acc",
+   "t": 169.6,
+   "state": "running",
+   "p": 0,
+   "msg": "downloading the speech model 23 / 1037 MB (once)",
+   "eta": null,
+   "model": "onnx-community/whisper-small_timestamped",
+   "status": "Stahuji rozpoznávání řeči… 23 z 1037 MB · jen jednou Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 292.2,
+   "state": "running",
+   "p": 0.001,
+   "msg": "0 %",
+   "eta": null,
+   "model": "onnx-community/whisper-small_timestamped",
+   "status": "Přepisuji přesněji… 0 % · odhaduji čas… · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 343,
+   "state": "running",
+   "p": 0.16,
+   "msg": "16 %",
+   "eta": 261.78047203855175,
+   "model": "onnx-community/whisper-small_timestamped",
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 578.2,
+   "state": "running",
+   "p": 0.933,
+   "msg": "93 %",
+   "eta": 20.612379129285305,
+   "model": "onnx-community/whisper-small_timestamped",
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 598.4,
+   "state": "done",
+   "p": 1,
+   "model": "onnx-community/whisper-large-v3-turbo_timestamped",
+   "status": null
+  }
+ ],
+ "etas": [
+  {
+   "phase": "std",
+   "t": 56.5,
+   "p": 0.16,
+   "eta": 114,
+   "status": "Přepisuji řeč… 15 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 58.5,
+   "p": 0.16,
+   "eta": 114,
+   "status": "Přepisuji řeč… 15 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 60.5,
+   "p": 0.16,
+   "eta": 114,
+   "status": "Přepisuji řeč… 15 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 62.5,
+   "p": 0.16,
+   "eta": 114,
+   "status": "Přepisuji řeč… 15 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 64.5,
+   "p": 0.16,
+   "eta": 114,
+   "status": "Přepisuji řeč… 15 % · odhaduji čas… Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 70.7,
+   "p": 0.24,
+   "eta": 109,
+   "status": "Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 72.7,
+   "p": 0.24,
+   "eta": 109,
+   "status": "Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 74.7,
+   "p": 0.24,
+   "eta": 109,
+   "status": "Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 76.8,
+   "p": 0.32,
+   "eta": 92,
+   "status": "Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 78.8,
+   "p": 0.32,
+   "eta": 92,
+   "status": "Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 80.8,
+   "p": 0.32,
+   "eta": 92,
+   "status": "Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 82.8,
+   "p": 0.32,
+   "eta": 92,
+   "status": "Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 84.8,
+   "p": 0.32,
+   "eta": 92,
+   "status": "Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 91,
+   "p": 0.4,
+   "eta": 83,
+   "status": "Přepisuji řeč… 39 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 93,
+   "p": 0.4,
+   "eta": 83,
+   "status": "Přepisuji řeč… 39 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 95,
+   "p": 0.4,
+   "eta": 83,
+   "status": "Přepisuji řeč… 39 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 97,
+   "p": 0.4,
+   "eta": 83,
+   "status": "Přepisuji řeč… 39 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 99,
+   "p": 0.479,
+   "eta": 70,
+   "status": "Přepisuji řeč… 47 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 101.1,
+   "p": 0.479,
+   "eta": 70,
+   "status": "Přepisuji řeč… 47 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 103.1,
+   "p": 0.479,
+   "eta": 70,
+   "status": "Přepisuji řeč… 47 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 105.1,
+   "p": 0.479,
+   "eta": 70,
+   "status": "Přepisuji řeč… 47 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 111.3,
+   "p": 0.559,
+   "eta": 59,
+   "status": "Přepisuji řeč… 55 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 113.3,
+   "p": 0.559,
+   "eta": 59,
+   "status": "Přepisuji řeč… 55 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 115.3,
+   "p": 0.559,
+   "eta": 59,
+   "status": "Přepisuji řeč… 55 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 117.3,
+   "p": 0.559,
+   "eta": 59,
+   "status": "Přepisuji řeč… 55 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 119.4,
+   "p": 0.639,
+   "eta": 48,
+   "status": "Přepisuji řeč… 63 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 121.4,
+   "p": 0.639,
+   "eta": 48,
+   "status": "Přepisuji řeč… 63 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 123.4,
+   "p": 0.639,
+   "eta": 48,
+   "status": "Přepisuji řeč… 63 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 125.4,
+   "p": 0.639,
+   "eta": 48,
+   "status": "Přepisuji řeč… 63 % · zbývá asi 2 min Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 131.6,
+   "p": 0.719,
+   "eta": 37,
+   "status": "Přepisuji řeč… 71 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 133.7,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 135.7,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 137.7,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 139.7,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 141.7,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 143.8,
+   "p": 0.799,
+   "eta": 25,
+   "status": "Přepisuji řeč… 79 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 145.8,
+   "p": 0.866,
+   "eta": 17,
+   "status": "Přepisuji řeč… 86 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 151.9,
+   "p": 0.866,
+   "eta": 17,
+   "status": "Přepisuji řeč… 86 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 153.9,
+   "p": 0.866,
+   "eta": 17,
+   "status": "Přepisuji řeč… 86 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 156,
+   "p": 0.866,
+   "eta": 17,
+   "status": "Přepisuji řeč… 86 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 158,
+   "p": 0.933,
+   "eta": 9,
+   "status": "Přepisuji řeč… 93 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 160,
+   "p": 0.933,
+   "eta": 9,
+   "status": "Přepisuji řeč… 93 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "std",
+   "t": 162,
+   "p": 0.933,
+   "eta": 9,
+   "status": "Přepisuji řeč… 93 % · zbývá méně než minuta Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 343,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 345,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 347,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 349,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 351,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 353,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 355.1,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 357.1,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 363.6,
+   "p": 0.16,
+   "eta": 262,
+   "status": "Přepisuji přesněji… 15 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 365.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 367.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 369.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 371.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 373.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 375.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 377.8,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 383.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 385.7,
+   "p": 0.24,
+   "eta": 237,
+   "status": "Přepisuji přesněji… 23 % · zbývá asi 5 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 387.7,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 389.8,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 391.8,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 393.8,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 395.8,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 397.8,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 403.9,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 405.9,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 407.9,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 409.9,
+   "p": 0.32,
+   "eta": 206,
+   "status": "Přepisuji přesněji… 31 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 412,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 414,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 416,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 418,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 424,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 426,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 428,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 430,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 432.1,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 434.1,
+   "p": 0.4,
+   "eta": 182,
+   "status": "Přepisuji přesněji… 39 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 436.1,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 438.1,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 444.1,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 446.1,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 448.1,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 450.2,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 452.2,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 454.2,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 456.2,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 458.2,
+   "p": 0.479,
+   "eta": 156,
+   "status": "Přepisuji přesněji… 47 % · zbývá asi 4 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 464.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 466.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 468.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 470.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 472.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 474.7,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 476.8,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 478.8,
+   "p": 0.559,
+   "eta": 133,
+   "status": "Přepisuji přesněji… 55 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 485.3,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 487.4,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 489.4,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 491.4,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 493.4,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 495.4,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 497.5,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 499.5,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 505.6,
+   "p": 0.639,
+   "eta": 108,
+   "status": "Přepisuji přesněji… 63 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 507.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 509.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 511.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 513.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 515.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 517.7,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 519.8,
+   "p": 0.719,
+   "eta": 84,
+   "status": "Přepisuji přesněji… 71 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 525.7,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 527.7,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 529.7,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 531.7,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 533.7,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 535.8,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 537.8,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 539.8,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 546,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 548.1,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 550.1,
+   "p": 0.799,
+   "eta": 59,
+   "status": "Přepisuji přesněji… 79 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 552.1,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 554.1,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 556.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 558.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 560.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 566.1,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 568.1,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 570.1,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 572.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 574.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 576.2,
+   "p": 0.866,
+   "eta": 40,
+   "status": "Přepisuji přesněji… 86 % · zbývá asi 2 min · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 578.2,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 580.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 586.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 588.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 590.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 592.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 594.3,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  },
+  {
+   "phase": "acc",
+   "t": 596.4,
+   "p": 0.933,
+   "eta": 21,
+   "status": "Přepisuji přesněji… 93 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"
+  }
+ ],
+ "samples": [
+  {
+   "phase": "std",
+   "t": 44.3,
+   "cpuPct": 111,
+   "ramGB": 1.85,
+   "aff": "15"
+  },
+  {
+   "phase": "std",
+   "t": 64.5,
+   "cpuPct": 108,
+   "ramGB": 1.84,
+   "aff": "15"
+  },
+  {
+   "phase": "std",
+   "t": 84.8,
+   "cpuPct": 99,
+   "ramGB": 1.9,
+   "aff": "15"
+  },
+  {
+   "phase": "std",
+   "t": 105.1,
+   "cpuPct": 105,
+   "ramGB": 1.88,
+   "aff": "15"
+  },
+  {
+   "phase": "std",
+   "t": 125.4,
+   "cpuPct": 110,
+   "ramGB": 1.95,
+   "aff": "15"
+  },
+  {
+   "phase": "std",
+   "t": 145.8,
+   "cpuPct": 117,
+   "ramGB": 1.83,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 316.4,
+   "cpuPct": 108,
+   "ramGB": 4.98,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 336.5,
+   "cpuPct": 110,
+   "ramGB": 3.69,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 357.1,
+   "cpuPct": 118,
+   "ramGB": 3.56,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 377.8,
+   "cpuPct": 110,
+   "ramGB": 3.71,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 397.8,
+   "cpuPct": 111,
+   "ramGB": 3.63,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 418,
+   "cpuPct": 109,
+   "ramGB": 3.65,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 438.1,
+   "cpuPct": 112,
+   "ramGB": 3.55,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 458.2,
+   "cpuPct": 109,
+   "ramGB": 3.55,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 478.8,
+   "cpuPct": 114,
+   "ramGB": 3.92,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 499.5,
+   "cpuPct": 114,
+   "ramGB": 3.66,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 519.8,
+   "cpuPct": 109,
+   "ramGB": 3.78,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 539.8,
+   "cpuPct": 116,
+   "ramGB": 3.51,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 560.2,
+   "cpuPct": 108,
+   "ramGB": 3.79,
+   "aff": "15"
+  },
+  {
+   "phase": "acc",
+   "t": 580.3,
+   "cpuPct": 113,
+   "ramGB": 3.52,
+   "aff": "15"
+  }
+ ],
+ "stdDone": 164,
+ "offer": {
+  "label": "Přepsat přesněji · asi 6 min",
+  "title": "Přesný přepis má asi o polovinu méně chyb. Běží na pozadí – můžeš dál pracovat, do té doby platí dosavadní přepis."
+ },
+ "dialog": "Přepsat přesněji? Přesný přepis dělá méně chyb, ale trvá déle – u tohoto klipu asi 6 min. Dosavadní přepis platí, dokud nebude nový – dál v něm můžeš hledat. Titulky v sekvencích se nezmění. Tvoje opravy z titulků se přenesou. Poprvé se stáhne asi 1 GB – jen jednou. Zrušit Přepsat přesněji",
+ "accDone": 598.4,
+ "accDur": 434.4,
+ "final": {
+  "model": "onnx-community/whisper-large-v3-turbo_timestamped",
+  "sentences": 69,
+  "removed": [],
+  "first": [
+   "a ty jsi to zvládla a zvládáš to dál, i když si myslím,",
+   "že ta ztráta a ta bolest a ta rána se nikdy vlastně nezahojí.",
+   "Tady si myslím, že je strašně důležitý říct, když ty říkáš, ty si to zvládla a zvládáš to."
+  ],
+  "last": [
+   "Protože samozřejmě ono, když se to stane, tak ten šok je velký.",
+   "A ty si to, podle mě, často nedokáže uvědomit, protože ty řešíš další věci.",
+   "Ty musíš najednou řešit, pohřeb prostě ty řešíš věci, které se týkají ty pozůstalosti, ty řešíš jako strašně moc vlastně věci,"
+  ]
+ }
+}

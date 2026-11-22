@@ -1,0 +1,802 @@
+[
+ {
+  "name": "V1 18:16",
+  "in": 1096.8049999999755,
+  "out": 1112.3187575757306,
+  "b0": "Tady",
+  "b1": "dál.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Tady",
+   "w1": "dál."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Tady",
+   "w1": "dál."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Tady",
+   "w1": "dál."
+  }
+ },
+ {
+  "name": "V2 25:51",
+  "in": 1550.9649999999708,
+  "out": 1570.8196628098801,
+  "b0": "tak",
+  "b1": "film.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "tak",
+   "w1": "film."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "tak",
+   "w1": "film."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "tak",
+   "w1": "film."
+  }
+ },
+ {
+  "name": "V3 20:58",
+  "in": 1258.3863829787156,
+  "out": 1271.3956923076726,
+  "b0": "To",
+  "b1": "životě.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Ne,",
+   "w1": "životě."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "To",
+   "w1": "životě."
+  },
+  "beam1": {
+   "s": false,
+   "e": true,
+   "w0": "Vůbec,",
+   "w1": "životě."
+  }
+ },
+ {
+  "name": "V4 23:23",
+  "in": 1402.9449999999624,
+  "out": 1416.6902947368,
+  "b0": "Zrovna",
+  "b1": "furt.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Zrovna",
+   "w1": "furt."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Zrovna",
+   "w1": "furt."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Zrovna",
+   "w1": "furt."
+  }
+ },
+ {
+  "name": "V5 19:59",
+  "in": 1199.7049999999924,
+  "out": 1216.0328813558995,
+  "b0": "My",
+  "b1": "to.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "My",
+   "w1": "to."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "My",
+   "w1": "to."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "My",
+   "w1": "to."
+  }
+ },
+ {
+  "name": "R 23:20",
+  "in": 1399.7599999999586,
+  "out": 1417.0940727272268,
+  "b0": "ale",
+  "b1": "furt.",
+  "wide": {
+   "s": false,
+   "e": true,
+   "w0": "stalo,",
+   "w1": "furt."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "ale",
+   "w1": "furt."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "ale",
+   "w1": "furt."
+  }
+ },
+ {
+  "name": "N1 19:02",
+  "in": 1142.6220481927346,
+  "out": 1157.0076705882034,
+  "b0": "Nikdo",
+  "b1": "teprve.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Nikdo",
+   "w1": "teprve."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Nikdo",
+   "w1": "teprve."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Nikdo",
+   "w1": "teprve."
+  }
+ },
+ {
+  "name": "N2 8:46",
+  "in": 526.7449999999845,
+  "out": 538.9975999999806,
+  "b0": "Hrozně",
+  "b1": "tak...",
+  "wide": {
+   "s": false,
+   "e": true,
+   "w0": "A",
+   "w1": "tak..."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Hrozně",
+   "w1": "tak..."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Hrozně",
+   "w1": "tak..."
+  }
+ },
+ {
+  "name": "N3 16:42",
+  "in": 1001.9799999999825,
+  "out": 1017.039947826068,
+  "b0": "Přišla",
+  "b1": "dělá?",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Přišla",
+   "w1": "děláte?"
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Přišla",
+   "w1": "dělá?"
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Přišla",
+   "w1": "dělá?"
+  }
+ },
+ {
+  "name": "N4 22:34",
+  "in": 1353.9876923076513,
+  "out": 1359.9745145630748,
+  "b0": "A",
+  "b1": "potlačovala.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "A",
+   "w1": "potlačovala."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "A",
+   "w1": "potlačovala."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "a",
+   "w1": "potlačovala."
+  }
+ },
+ {
+  "name": "N5 25:00",
+  "in": 1500.6849999999745,
+  "out": 1513.9147282051033,
+  "b0": "Já",
+  "b1": "mluvit.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Já",
+   "w1": "mluvit."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Já",
+   "w1": "mluvit."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Já",
+   "w1": "mluvit."
+  }
+ },
+ {
+  "name": "N6 23:03",
+  "in": 1383.43999999996,
+  "out": 1393.9699253730932,
+  "b0": "Jsou",
+  "b1": "chytit.",
+  "wide": {
+   "s": true,
+   "e": false,
+   "w0": "Jsou",
+   "w1": "chvíli."
+  },
+  "narrow": {
+   "s": true,
+   "e": false,
+   "w0": "Jsou",
+   "w1": "tu..."
+  },
+  "beam1": {
+   "s": true,
+   "e": false,
+   "w0": "Jsou",
+   "w1": "ch..."
+  }
+ },
+ {
+  "name": "N7 6:18",
+  "in": 378.7799999999837,
+  "out": 389.99208791206945,
+  "b0": "A",
+  "b1": "víme.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "A",
+   "w1": "víme."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "A",
+   "w1": "víme."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "a",
+   "w1": "víme?"
+  }
+ },
+ {
+  "name": "N8 21:04",
+  "in": 1264.782307692289,
+  "out": 1282.4143650793312,
+  "b0": "pryč.",
+  "b1": "pozice.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "prýč.",
+   "w1": "pozice."
+  },
+  "narrow": {
+   "s": false,
+   "e": true,
+   "w0": "A",
+   "w1": "pozice."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "pryč.",
+   "w1": "pozice."
+  }
+ },
+ {
+  "name": "N9 2:33",
+  "in": 153.5800000000039,
+  "out": 158.49871578947253,
+  "b0": "Tak",
+  "b1": "herečka.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Tak",
+   "w1": "herečka."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Tak",
+   "w1": "herečka."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Tak",
+   "w1": "herečka."
+  }
+ },
+ {
+  "name": "N10 5:40",
+  "in": 340.7899999999845,
+  "out": 346.69833333331815,
+  "b0": "sportovec",
+  "b1": "běháš?",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "sportovec",
+   "w1": "běháš?"
+  },
+  "narrow": {
+   "s": false,
+   "e": true,
+   "w0": "a",
+   "w1": "běháš?"
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "sportovec",
+   "w1": "běháš?"
+  }
+ },
+ {
+  "name": "N11 27:13",
+  "in": 1633.8449999999602,
+  "out": 1648.087492307649,
+  "b0": "Takže",
+  "b1": "vyvíjet.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Takže",
+   "w1": "vyvíjet."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Takže",
+   "w1": "vyvíjet."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Takže",
+   "w1": "vyvíjet."
+  }
+ },
+ {
+  "name": "N12 25:38",
+  "in": 1538.2949999999728,
+  "out": 1558.8756701030625,
+  "b0": "Možná",
+  "b1": "nepomáhá.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Možná",
+   "w1": "nepomáhá."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Možná",
+   "w1": "nepomáhá."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Možná",
+   "w1": "nepomáhá."
+  }
+ },
+ {
+  "name": "N13 6:03",
+  "in": 363.5399999999837,
+  "out": 374.28511428569794,
+  "b0": "Víš,",
+  "b1": "běhu.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Víš,",
+   "w1": "běhu."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Víš,",
+   "w1": "běhu."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Víš,",
+   "w1": "běhu."
+  }
+ },
+ {
+  "name": "N14 0:26",
+  "in": 26.1000000000006,
+  "out": 37.12776595744748,
+  "b0": "Kristýnku,",
+  "b1": "profík.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Kristýnku,",
+   "w1": "profík."
+  },
+  "narrow": {
+   "s": false,
+   "e": true,
+   "w0": "Tak",
+   "w1": "profík."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Kristýnku,",
+   "w1": "profík."
+  }
+ },
+ {
+  "name": "6174 N1 17:05",
+  "in": 1025.7699999999857,
+  "out": 1040.2952046511446,
+  "b0": "A",
+  "b1": "řekla.",
+  "wide": {
+   "s": true,
+   "e": false,
+   "w0": "A",
+   "w1": "vlastně."
+  },
+  "narrow": {
+   "s": true,
+   "e": false,
+   "w0": "A",
+   "w1": "vlastně..."
+  },
+  "beam1": {
+   "s": true,
+   "e": false,
+   "w0": "A",
+   "w1": "vlastně..."
+  }
+ },
+ {
+  "name": "6174 N2 20:11",
+  "in": 1211.5849999999898,
+  "out": 1224.2925905882075,
+  "b0": "Jediné,",
+  "b1": "změní?",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Jediné,",
+   "w1": "změní?"
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Jediné,",
+   "w1": "změní?"
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Jediné,",
+   "w1": "změní?"
+  }
+ },
+ {
+  "name": "6174 N3 26:26",
+  "in": 1586.4849999999647,
+  "out": 1592.8662222222,
+  "b0": "jako",
+  "b1": "prostě...",
+  "wide": {
+   "s": true,
+   "e": false,
+   "w0": "jako",
+   "w1": "ty..."
+  },
+  "narrow": {
+   "s": false,
+   "e": false,
+   "w0": "je",
+   "w1": "mírnější."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "jako",
+   "w1": "prostě..."
+  }
+ },
+ {
+  "name": "6174 N4 22:25",
+  "in": 1345.4499999999762,
+  "out": 1359.9745145630748,
+  "b0": "čas",
+  "b1": "potlačovala.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "si",
+   "w1": "potlačovala."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "čas",
+   "w1": "potlačovala."
+  },
+  "beam1": {
+   "s": false,
+   "e": true,
+   "w0": "a",
+   "w1": "potlačovala."
+  }
+ },
+ {
+  "name": "6174 N5 5:30",
+  "in": 330.2548888888761,
+  "out": 345.7013999999848,
+  "b0": "To",
+  "b1": "sněhu.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "To",
+   "w1": "sněhu."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "To",
+   "w1": "sněhu."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "To",
+   "w1": "sněhu."
+  }
+ },
+ {
+  "name": "6174 N7 3:41",
+  "in": 221.6799999999889,
+  "out": 237.10004255317907,
+  "b0": "No",
+  "b1": "nebylo.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "No",
+   "w1": "nebylo."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "No",
+   "w1": "nebylo."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "No",
+   "w1": "nebylo."
+  }
+ },
+ {
+  "name": "6174 N8 2:01",
+  "in": 121.50500000000369,
+  "out": 128.6004408163302,
+  "b0": "Vlastně",
+  "b1": "reportérka.",
+  "wide": {
+   "s": false,
+   "e": true,
+   "w0": "Tak",
+   "w1": "reportérka."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Vlastně",
+   "w1": "reportérka."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Vlastně",
+   "w1": "reportérka."
+  }
+ },
+ {
+  "name": "6174 N9 4:48",
+  "in": 288.6399999999919,
+  "out": 301.253999999992,
+  "b0": "pošlu",
+  "b1": "No.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "jako",
+   "w1": "No."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "pošlu",
+   "w1": "No."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "pošlu",
+   "w1": "No."
+  }
+ },
+ {
+  "name": "6174 N10 2:33",
+  "in": 153.5800000000039,
+  "out": 163.81658333333215,
+  "b0": "Tak",
+  "b1": "televize...",
+  "wide": {
+   "s": true,
+   "e": false,
+   "w0": "Tak",
+   "w1": "je..."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Tak",
+   "w1": "televize..."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Tak",
+   "w1": "televize..."
+  }
+ },
+ {
+  "name": "6174 N11 27:37",
+  "in": 1656.8899999999512,
+  "out": 1675.7504444443955,
+  "b0": "Nicméně",
+  "b1": "víc.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Nicméně",
+   "w1": "víc."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Nicméně",
+   "w1": "víc."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Nicméně",
+   "w1": "víc."
+  }
+ },
+ {
+  "name": "6174 N13 17:58",
+  "in": 1077.8784545454323,
+  "out": 1081.186143636339,
+  "b0": "Přišlo",
+  "b1": "to?",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "Přišlo",
+   "w1": "to?"
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "Přišlo",
+   "w1": "to?"
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "Přišlo",
+   "w1": "to?"
+  }
+ },
+ {
+  "name": "6174 N14 24:27",
+  "in": 1467.5699999999797,
+  "out": 1473.1135565217155,
+  "b0": "protože",
+  "b1": "pocit.",
+  "wide": {
+   "s": true,
+   "e": true,
+   "w0": "protože",
+   "w1": "pocity."
+  },
+  "narrow": {
+   "s": true,
+   "e": true,
+   "w0": "protože",
+   "w1": "pocit."
+  },
+  "beam1": {
+   "s": true,
+   "e": true,
+   "w0": "protože",
+   "w1": "pocit."
+  }
+ }
+]

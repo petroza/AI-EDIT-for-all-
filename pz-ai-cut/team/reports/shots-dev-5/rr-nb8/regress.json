@@ -1,0 +1,449 @@
+{
+ "cpu": 8,
+ "slow": true,
+ "video": "O:/TN_strihatoko/test/media/vyrez-5min.mp4",
+ "profile": "C:\\Users\\Petr\\AppData\\Local\\Temp\\pz-regress-1795321003359",
+ "steps": [
+  {
+   "step": "02",
+   "state": "pripravuji",
+   "sizes": {
+    "1366x768": {
+     "rows": 0,
+     "listH": 234,
+     "list": "trList",
+     "status": "Připravuji přepis… 0:00 · obvykle pár sekund až 2 min Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    },
+    "1040x1100": {
+     "rows": 0,
+     "listH": 321,
+     "list": "trList",
+     "status": "Stahuji rozpoznávání řeči… 3 z 3 MB · jen jednou Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "01",
+   "state": "stahovani",
+   "sizes": {
+    "1366x768": {
+     "rows": 0,
+     "listH": 234,
+     "list": "trList",
+     "status": "Stahuji rozpoznávání řeči… 3 z 240 MB · jen jednou Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    },
+    "1040x1100": {
+     "rows": 0,
+     "listH": 321,
+     "list": "trList",
+     "status": "Stahuji rozpoznávání řeči… 4 z 240 MB · jen jednou Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "03b",
+   "state": "stahuji-presne",
+   "sizes": {
+    "1366x768": {
+     "rows": 0,
+     "listH": 194,
+     "list": "trList",
+     "status": "Přepisuji řeč… 0 % · odhaduji čas… Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    },
+    "1040x1100": {
+     "rows": 0,
+     "listH": 281,
+     "list": "trList",
+     "status": "Přepisuji řeč… 0 % · odhaduji čas… Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "03",
+   "state": "prepis",
+   "sizes": {
+    "1366x768": {
+     "rows": 0,
+     "listH": 194,
+     "list": "trList",
+     "status": "Přepisuji řeč… 23 % · zbývá asi 7 min Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    },
+    "1040x1100": {
+     "rows": 0,
+     "listH": 281,
+     "list": "trList",
+     "status": "Přepisuji řeč… 23 % · zbývá asi 7 min Zastavit",
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "04",
+   "state": "hotovo",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 275,
+     "list": "trList",
+     "status": null,
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 8,
+     "listH": 365,
+     "list": "trList",
+     "status": null,
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "05",
+   "state": "hledani",
+   "sizes": {
+    "1366x768": {
+     "rows": 6,
+     "listH": 275,
+     "list": "trList",
+     "status": null,
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 8,
+     "listH": 365,
+     "list": "trList",
+     "status": null,
+     "foot": "Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "06",
+   "state": "vyber-varovani",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 244,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ Přehrát Vložit do nové sekvence ▾",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 7,
+     "listH": 335,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ Přehrát Vložit do nové sekvence ▾",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "07",
+   "state": "sekvence",
+   "sizes": {
+    "1366x768": {
+     "rows": 4,
+     "listH": 210,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Titulky z přepisu… ▾",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 6,
+     "listH": 301,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Titulky z přepisu… ▾",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "08",
+   "state": "dialog-titulky",
+   "sizes": {
+    "1366x768": {
+     "rows": 4,
+     "listH": 210,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Titulky z přepisu… ▾",
+     "modal": null,
+     "ok8": true
+    },
+    "1040x1100": {
+     "rows": 6,
+     "listH": 301,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Titulky z přepisu… ▾",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "09",
+   "state": "titulky",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 247,
+     "list": "capList",
+     "status": null,
+     "foot": "Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled…",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 7,
+     "listH": 363,
+     "list": "capList",
+     "status": null,
+     "foot": "Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled…",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "10",
+   "state": "oprava",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 247,
+     "list": "capList",
+     "status": null,
+     "foot": "Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled…",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 7,
+     "listH": 363,
+     "list": "capList",
+     "status": null,
+     "foot": "Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled…",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "11",
+   "state": "smazani",
+   "sizes": {
+    "1366x768": {
+     "rows": 6,
+     "listH": 284,
+     "list": "capList",
+     "status": null,
+     "foot": "Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 6,
+     "listH": 400,
+     "list": "capList",
+     "status": null,
+     "foot": "Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "12",
+   "state": "po-exportu",
+   "sizes": {
+    "1366x768": {
+     "rows": 4,
+     "listH": 210,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 6,
+     "listH": 301,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci · 0:00–0:15 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  },
+  {
+   "step": "12b",
+   "state": "druhy-vyrok",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 244,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16–0:27 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 8,
+     "listH": 335,
+     "list": "trList",
+     "status": null,
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16–0:27 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "12c",
+   "state": "dva-vyroky-titulky",
+   "sizes": {
+    "1366x768": {
+     "rows": 6,
+     "listH": 284,
+     "list": "capList",
+     "status": null,
+     "foot": "Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 8,
+     "listH": 400,
+     "list": "capList",
+     "status": null,
+     "foot": "Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…",
+     "modal": null,
+     "ok8": true
+    }
+   }
+  },
+  {
+   "step": "13",
+   "state": "slaby-pc",
+   "sizes": {
+    "1366x768": {
+     "rows": 5,
+     "listH": 219,
+     "list": "trList",
+     "status": "Na tomto počítači jde jen standardní přepis – přesný by tu trval příliš dlouho.",
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16–0:27 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": false
+    },
+    "1040x1100": {
+     "rows": 7,
+     "listH": 309,
+     "list": "trList",
+     "status": "Na tomto počítači jde jen standardní přepis – přesný by tu trval příliš dlouho.",
+     "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16–0:27 ▶ Přehrát Doplnit titulky… ▾",
+     "modal": null,
+     "ok8": false
+    }
+   }
+  }
+ ],
+ "transcribeS": 416,
+ "transcript": {
+  "model": "onnx-community/whisper-small_timestamped",
+  "sentences": 66,
+  "words": 819,
+  "removed": [],
+  "first": [
+   "A ty se to zvládla a zvládáš to dále i když si myslím,",
+   "že ta spráta a ta bolesť a ta rána se nikdy vlastně nezahoji.",
+   "Tady si myslím, že je strašně důležitý říct, když ty říkáš."
+  ],
+  "last": [
+   "Ty musíš na jednou řešit jako...",
+   "pohřeb.",
+   "Ty řešíš věci, který se týkají tý pozustalosti, ty řešíš jako strašně moc."
+  ],
+  "name": "vyrez-5min-standard.json"
+ },
+ "selection": [
+  11,
+  13,
+  false,
+  true
+ ],
+ "captionWords": [
+  "že přece ta máma\nby nechtěla,",
+  "abych já skončila\nten život.",
+  "Aby tím, že ona\nuž tady není,",
+  "abych já přestala\nmyslet na sebe.",
+  "Prostě to období bylo\nstrašně nečekané,",
+  "protože my jsme\nnikdo nevěděli,",
+  "že ona je\nnemocná."
+ ],
+ "captionSec": 15.173,
+ "export": {
+  "output": "/disk/mwrc1kno3/regress-4-8cpu.mp4",
+  "sizeMB": 9.3,
+  "audioCodec": "opus",
+  "secs": 1.3,
+  "bytes": 9721046,
+  "saved": "O:\\TN_strihatoko\\web\\test-out\\regress-4-8cpu.mp4"
+ },
+ "insLabel2": "Přidat na konec sekvence",
+ "second": {
+  "clips": [
+   [
+    0,
+    16
+   ],
+   [
+    16,
+    11.64
+   ]
+  ],
+  "caps": 11,
+  "before": 6
+ }
+}

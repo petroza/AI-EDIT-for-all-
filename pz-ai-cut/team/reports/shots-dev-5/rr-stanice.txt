@@ -1,0 +1,18 @@
+02-pripravuji: řádky 0/0 | Stahuji rozpoznávání řeči… 3 z 3 MB · jen jednou Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+01-stahovani: řádky 0/0 | Stahuji rozpoznávání řeči… 20 z 1037 MB · jen jednou Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+03-prepis: řádky 0/0 | Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+přepis 260 s, onnx-community/whisper-large-v3-turbo_timestamped, 69 vět → web/test-out/vyrez-5min-accurate.json
+04-hotovo: řádky 5/9 ✘ pod 8 | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+05-hledani: řádky 7/9 ✘ pod 8 | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+06-vyber-varovani: řádky 8/10 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:04 ▶ P
+07-sekvence: řádky 7/9 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+08-dialog-titulky: řádky 7/9 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+09-titulky: řádky 3/3 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+10-oprava: řádky 3/3 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+11-smazani: řádky 2/2 ✘ pod 8 | Smazán titulek „Ty musíš to zvládnout.“ Vrátit Vzhled…
+export {"output":"/disk/mwrc89213/regress-4-32cpu.mp4","sizeMB":2.8,"audioCodec":"opus","secs":0.9,"bytes":2894894,"saved":"O:\\TN_strihatoko\\web\\test-out\\regress-4-32cpu.mp4"}
+12-po-exportu: řádky 7/9 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+12b-druhy-vyrok: řádky 6/8 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:04
+12c-dva-vyroky-titulky: řádky 6/6 ✘ pod 8 | Smazán titulek „Ty musíš to zvládnout.“ Vrátit Vzhled…
+13-slaby-pc: řádky 6/8 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:04
+hotovo → O:\TN_strihatoko\team\reports\shots-dev-5\rr-stanice
