@@ -16,7 +16,35 @@ Výsledek je vždy **nová sekvence** – originál zůstane netknutý. Videa ni
 | **2 · Standalone** (PZ AI Cut) | samostatná střižna pro Windows, ovládání jako Premiere (stejné zkratky a rozložení) s AI panelem – **bez Adobe** | kdo nemá Premiere |
 | **3 · Web** (PZ AI Cut Web) | stejná střižna v Chrome/Edge, nic se neinstaluje, přepis běží v prohlížeči; AI přes Claude Desktop nebo Codex | kdokoli, hned |
 
+## Ukázka
+
+<img src="docs/img/demo-ai-cs.webp" alt="Zadání v panelu → Claude stříhá → hotová upoutávka a verze 9:16" width="100%">
+
+Skutečný běh ve standalone verzi: zadání *„Z aktivní sekvence udělej 20s upoutávku na Instagram z nejsilnějších
+výroků. Začni hákem.“* → Claude (Sonnet) přečetl přepis 28min rozhovoru, vybral výroky, ověřil, že žádný střih
+neutíná slovo, a postavil novou sekvenci (2 min 22 s, 0,41 $). Panel z ní sám udělal verzi 9:16 podle obličeje.
+
+<img src="docs/img/before-after-cs.png" alt="Před: 28min rozhovor 16:9 → po: 20s upoutávka 9:16 s titulky" width="100%">
+
+Titulky jsou z automatického přepisu – v ukázce je vidět i typická chyba rozpoznávání („máma byl“), kterou
+před zveřejněním opraví člověk nebo AI (`get_captions` / `set_captions`).
+
 <img src="docs/img/schema-overview-cs.svg" alt="Tři programy, jedno AI jádro" width="100%">
+
+## Srovnání
+
+| | 1 · Premiere plugin | 2 · Standalone | 3 · Web |
+|---|---|---|---|
+| **Potřebuješ** | Adobe Premiere Pro, Windows | Windows | Chrome nebo Edge |
+| **Instalace** | ~15 GB (+23 GB s Hermesem) | aplikace ~350 MB + AI jádro z bodu 1 | nic (model přepisu ~1 GB se stáhne do prohlížeče) |
+| **Přepis řeči** | Whisper large-v3 na GPU | Whisper large-v3 na GPU | Whisper v prohlížeči |
+| **Kdo kdy mluví, multicam** | ✅ diarizace, střih kamer podle mluvčího | ✅ stejné nástroje | – |
+| **AI agent** | Claude Code, Claude Desktop, Codex, **Hermes lokálně** | Claude Code, Claude Desktop, Codex, **Hermes lokálně** | Claude Desktop, Codex |
+| **Bez kreditů (vše lokálně)** | ✅ Hermes | ✅ Hermes | – (přepis ano, střih potřebuje Claude/Codex) |
+| **9:16 · 4:5 · 1:1** | Premiere Auto Reframe | výřez podle obličeje (OpenCV) | výřez podle obličeje a mluvčího (MediaPipe) |
+| **Titulky** | ✅ i překlad do češtiny | ✅ | ✅ + nadpis nahoře |
+| **Export** | vše, co umí Premiere | MP4, MOV (ProRes), MXF (XDCAM HD422), −14 / −23 LUFS | MP4 (H.264) |
+| **Kde jsou videa** | jen na tvém PC | jen na tvém PC | jen na tvém PC (čtou se z disku, nic se nenahrává) |
 
 ## Rychle (Windows)
 

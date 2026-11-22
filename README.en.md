@@ -17,7 +17,36 @@ receives the transcript text.
 | **2 · Standalone** (PZ AI Cut) | a standalone Windows editor that works like Premiere (same shortcuts and layout) with an AI panel – **no Adobe needed** | anyone without Premiere |
 | **3 · Web** (PZ AI Cut Web) | the same editor in Chrome/Edge, nothing to install, transcription runs in the browser; AI via Claude Desktop or Codex | anyone, right now |
 
+## Demo
+
+<img src="docs/img/demo-ai-en.webp" alt="Task in the panel → Claude edits → finished teaser and 9:16 version" width="100%">
+
+A real run in the standalone app (Czech UI): the task *"Make a 20 s Instagram teaser from the strongest soundbites of the
+active sequence. Start with a hook."* → Claude (Sonnet) read the transcript of a 28-minute interview, picked the
+soundbites, checked that no cut clips a word and built a new sequence (2 min 22 s, $0.41). The panel then made a
+face-tracked 9:16 version on its own.
+
+<img src="docs/img/before-after-en.png" alt="Before: 28-min interview 16:9 → after: 20 s 9:16 teaser with captions" width="100%">
+
+Captions come from automatic speech recognition – the demo even shows a typical recognition slip, which a human or
+the AI fixes before publishing (`get_captions` / `set_captions`).
+
 <img src="docs/img/schema-overview-en.svg" alt="Three apps, one AI core" width="100%">
+
+## Comparison
+
+| | 1 · Premiere plugin | 2 · Standalone | 3 · Web |
+|---|---|---|---|
+| **You need** | Adobe Premiere Pro, Windows | Windows | Chrome or Edge |
+| **Install size** | ~15 GB (+23 GB with Hermes) | app ~350 MB + the AI core from step 1 | nothing (the ~1 GB speech model downloads into the browser) |
+| **Speech recognition** | Whisper large-v3 on GPU | Whisper large-v3 on GPU | Whisper in the browser |
+| **Who speaks when, multicam** | ✅ diarization, camera switching by speaker | ✅ same tools | – |
+| **AI agent** | Claude Code, Claude Desktop, Codex, **local Hermes** | Claude Code, Claude Desktop, Codex, **local Hermes** | Claude Desktop, Codex |
+| **No credits (fully local)** | ✅ Hermes | ✅ Hermes | – (transcription yes, editing needs Claude/Codex) |
+| **9:16 · 4:5 · 1:1** | Premiere Auto Reframe | face-based crop (OpenCV) | face and speaker-based crop (MediaPipe) |
+| **Captions** | ✅ incl. translation to Czech | ✅ | ✅ + headline on top |
+| **Export** | anything Premiere can do | MP4, MOV (ProRes), MXF (XDCAM HD422), −14 / −23 LUFS | MP4 (H.264) |
+| **Where your videos are** | only on your PC | only on your PC | only on your PC (read from disk, nothing is uploaded) |
 
 ## Quick start (Windows)
 
