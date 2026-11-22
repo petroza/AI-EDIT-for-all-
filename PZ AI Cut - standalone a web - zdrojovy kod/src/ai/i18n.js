@@ -66,6 +66,7 @@
     'Spustí hned (Enter). Když něco běží, zařadí se do fronty.': 'Runs now (Enter). If something is running, it is queued.',
     'Max. znaků na jeden řádek titulku': 'Max. characters per caption line', 'Počet řádků jednoho titulku': 'Lines per caption',
     'Model': 'Model',
+    'Např.: Vyber nejlepší momenty a udělej krátký sestřih pro Instagram.': 'E.g.: Pick the best moments and make a short edit for Instagram.',
   };
   // dlouhé popisky (title / placeholder) – podle začátku
   var STARTS = [

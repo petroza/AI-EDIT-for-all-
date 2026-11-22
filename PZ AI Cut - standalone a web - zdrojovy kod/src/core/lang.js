@@ -3,6 +3,13 @@
  * Používá ho hlavní proces (menu, dialogy) i okno (DOM přes src/i18n-app.js). Klíč = anglický text v kódu. */
 
 const CS = {
+  // ---------- kroky AI ve stavovém řádku a Zpět, chyby exportu a importu (vzhled S1)
+  'Add Markers': 'Přidat značky', 'Build Sequence': 'Sestavit sekvenci', 'Build Timeline': 'Sestavit časovou osu', 'Clear Clips': 'Odstranit klipy',
+  'Delete Sequences': 'Smazat sekvence', 'Extract Ranges': 'Vyjmout úseky', 'Import Media': 'Importovat média', 'Set Playhead': 'Posunout hlavu',
+  'Detect Camera Cuts': 'Najít střihy kamery', 'Open Sequence': 'Otevřít sekvenci', 'Clean up camera-cut leftovers': 'Úklid zbytků záběrů na krajích klipů',
+  'The sequence is empty – nothing to export.': 'Sekvence je prázdná – není co exportovat.', 'Export cancelled.': 'Export zrušen.',
+  'Delete': 'Smazat', 'You can bring it back with Edit → Undo.': 'Vrátíš ji přes Úpravy → Zpět.',
+  ' – not for this frame size': ' – ne pro tuhle velikost obrazu',
   // ---------- menu
   'File': 'Soubor', 'New Project': 'Nový projekt', 'Open Project…': 'Otevřít projekt…', 'Save': 'Uložit', 'Save As…': 'Uložit jako…',
   'Import…': 'Importovat…', 'New Sequence…': 'Nová sekvence…', 'Export Media…': 'Exportovat média…', 'Exit': 'Konec',
@@ -159,6 +166,10 @@ const RULES = [
   [/^The project uses (\d+) media file\(s\) from your computer\. Chrome needs your permission to read them again\.$/, 'Projekt používá médií z tvého počítače: $1. Chrome potřebuje tvoje svolení, aby je znovu načetl.'],
   [/^(\d+) media file\(s\) were not found – import them again \(File → Import\)\.$/, 'Nenalezená média: $1 – naimportuj je znovu (Soubor → Importovat).'],
   [/^Version (\S+)\n/, 'Verze $1\n'],
+  [/^Auto Reframe: detecting camera cuts…$/, 'Auto Reframe: hledám střihy kamery…'], [/^Auto Reframe: finding faces in (\d+) shots…$/, 'Auto Reframe: hledám obličeje (záběrů: $1)…'],
+  [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],
+  [/^Delete sequence “(.+)”\?$/, 'Smazat sekvenci „$1“?'], [/^✖ (.+)$/, (m, a) => '✖ ' + tr(a)],
+  [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/29,97/50 fps nebo 1280×720 50/59,94 fps – použij MXF DNxHR HQ nebo H.264.'],
   [/^Undo: (.+)$/, (m, a) => 'Zpět: ' + tr(a)], [/^Redo: (.+)$/, (m, a) => 'Znovu: ' + tr(a)], [/^AI: (.+)$/, (m, a) => 'AI: ' + tr(a)],
   [/^(\d+) items?$/, (m, n) => n + ' ' + plural(+n, 'položka', 'položky', 'položek')],
   [/^Importing: (.*)$/, 'Importuji: $1'], [/^Imported: (\d+)$/, 'Importováno: $1'], [/^Saved: (.*)$/, 'Uloženo: $1'], [/^Saved a copy: (.*)$/, 'Uložena kopie: $1'],

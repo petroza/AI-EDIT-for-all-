@@ -130,7 +130,7 @@ function createApi(project, hooks = {}) {
       resolved.push({ sg, m: await resolveMedia(sg.source, true), extra });
     }
     const tmpl = (resolved.find((r) => r.m.hasVideo) || resolved[0]).m;
-    return project.edit('AI: Build Sequence', () => {
+    const res = project.edit('AI: Build Sequence', () => {
       const seq = seqFromMedia(a.name || 'AI Edit', tmpl);
       const fd = 1 / seq.fps;
       const warnings = [], placed = [];
@@ -171,7 +171,18 @@ function createApi(project, hooks = {}) {
       project.addSequence(seq, a.open !== false);
       return { sequenceID: seq.id, name: seq.name, duration: r3(cursor), segments: placed.length, placed, warnings, audioFades: fades };
     });
+    await edgeShots(res);
+    return res;
   };
+  /* Zbytky jiného záběru kamery na krajích klipů (pár snímků před/za střihem kamery) převezme sousední klip – jako web (kolo 7/8).
+   * Kontrolor výstupu S1: AI sestřih ve standalone ukázal 7 snímků moderátorky na začátku klipu. Zvuk (In/Out) se nemění. */
+  async function edgeShots(res) {
+    if (!hooks.edgeShots || !res || !res.sequenceID) return;
+    try {
+      const r = await hooks.edgeShots(getSeq(res.sequenceID));
+      if (r && r.merged) res.edgeShotsFixed = r.merged;
+    } catch (e) { /* bez opravy krajů – sekvence platí */ }
+  }
 
   /* Klipy na přesné pozice: [{kind:'video'|'audio', source, in, at, dur, track, videoOnly}] (multicam, komentář) */
   api.buildTimeline = async (a) => {
@@ -356,13 +367,16 @@ function createApi(project, hooks = {}) {
         });
       }
     }
-    return project.edit('Auto Reframe Sequence', () => {
+    if (hooks.progress) hooks.progress('');
+    const res = project.edit('Auto Reframe Sequence', () => {
       seq.id = require('./util').uuid();
       seq.name = project.uniqueSeqName(a.name || `${src.name} ${num}x${den}`);
       project.addSequence(seq);
       return { sequenceID: seq.id, name: seq.name, width: W, height: H, reframedFrom: `${src.width}x${src.height}`, scale: 100,
         cameraSplits: splits, shots, facesFound: faced };
     });
+    await edgeShots(res);
+    return res;
   };
 
   api.deleteSequences = (a) => project.edit('AI: Delete Sequences', () => {

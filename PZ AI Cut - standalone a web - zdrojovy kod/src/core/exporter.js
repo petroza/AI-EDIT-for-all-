@@ -9,6 +9,11 @@ const path = require('path');
 const { run, FFMPEG, CACHE, cfg } = require('./media');
 const { clipEnd } = require('./model');
 const { dbToGain, uid } = require('./util');
+/** XDCAM HD422 jen ve standardních variantách (kontrolor S1: 1280×720 25p prošlo, vysílání ho nezná). */
+const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 29.97, 50].includes(seq.fps))
+  || (seq.width === 1280 && seq.height === 720 && [50, 59.94].includes(seq.fps));
+/** fps jako výraz ffmpeg (29,97 = 30000/1001 – desetinné číslo by se po snímcích rozjíždělo). */
+const fpsExpr = (f) => (Math.abs(f - Math.round(f)) > 0.001 ? `${Math.round(f) * 1000}/1001` : String(Math.round(f)));
 
 const ESC = (s) => String(s).replace(/\\/g, '/');
 
@@ -40,9 +45,8 @@ function videoCodec(fmt, seq, encoder) {
       args: ['-c:v', 'prores_ks', '-profile:v', fmt === 'prores_hq' ? '3' : '2', '-vendor', 'apl0'], final: [],
     };
     case 'xdcam': {
-      const ok = (seq.width === 1920 && seq.height === 1080) || (seq.width === 1280 && seq.height === 720);
-      if (!ok || ![25, 50, 29.97, 59.94].includes(seq.fps)) {
-        throw new Error(`XDCAM HD422 needs 1920×1080 or 1280×720 at 25/50/29.97/59.94 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ instead.`);
+      if (!xdcamOk(seq)) {
+        throw new Error(`XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead.`);
       }
       return {
         pix: 'yuv422p', seg: 'ts',
@@ -333,8 +337,11 @@ async function exportSequence(project, seq, opts) {
       vf.push('subtitles=subs.ass');
     } else vf.push(`subtitles=subs.srt:force_style='FontName=Arial,Bold=1,FontSize=${fsz},PrimaryColour=${col}${box},Shadow=0,MarginV=${mv},MarginL=23,MarginR=23'`);
   }
+    // časy snímků podle pořadí (spojené úseky TS s B-snímky mají na švech nemonotónní časy → překódování 1 snímek zahodilo,
+    // kontrolor S1: XDCAM 399/400, obraz o snímek napřed) + přesný počet snímků
+    vf.unshift(`setpts=N/(${fpsExpr(fps)})/TB`);
     args.push('-vf', `${vf.join(',')},format=${V.pix}`);
-    args.push(...V.args, '-pix_fmt', V.pix);
+    args.push(...V.args, '-pix_fmt', V.pix, '-r', fpsExpr(fps), '-frames:v', String(Math.round((re - rs) * fps)));
   } else args.push('-c:v', 'copy');
   args.push(...V.final);
   // zvuk: smíchat stopy, volitelně srovnat hlasitost (EBU R128)
@@ -343,7 +350,21 @@ async function exportSequence(project, seq, opts) {
   let aIn = null;
   if (trackFiles.length > 1) { chain.push(trackFiles.map((_, i) => `[${i + 1}:a]`).join('') + `amix=inputs=${trackFiles.length}:normalize=0:dropout_transition=0[mx]`); aIn = '[mx]'; }
   else if (trackFiles.length === 1) aIn = '[1:a]';
-  if (aIn && lufs !== null && lufs !== undefined) { chain.push(`${aIn}loudnorm=I=${lufs}:TP=${lufs <= -20 ? -2 : -1.5}:LRA=${lufs <= -20 ? 15 : 11},aresample=${SR}[ln]`); aIn = '[ln]'; }
+  if (aIn && lufs !== null && lufs !== undefined) {
+    // dvouprůchodově (kontrolor S1: jednoprůchodový loudnorm dal TV −21,7 až −22,3 místo −23, sítě −13,4 místo −14):
+    // 1) smíchat a změřit, 2) lineární zesílení podle měření (bez dynamické komprese, přesně na cíl)
+    const norm = `I=${lufs}:TP=${lufs <= -20 ? -2 : -1.5}:LRA=${lufs <= -20 ? 15 : 11}`;
+    let measured = '';
+    try {
+      const mixF = path.join(work, 'mix.wav');
+      if (trackFiles.length > 1) await ff([...trackFiles.flatMap((f) => ['-i', f]), '-filter_complex', trackFiles.map((_, i) => `[${i}:a]`).join('') + `amix=inputs=${trackFiles.length}:normalize=0:dropout_transition=0`, '-c:a', 'pcm_s24le', mixF]);
+      else fs.copyFileSync(trackFiles[0], mixF);
+      const r = await run(FFMPEG, ['-hide_banner', '-nostats', '-i', mixF, '-af', `loudnorm=${norm}:print_format=json`, '-f', 'null', '-'], { proc: track });
+      const j = JSON.parse(r.err.slice(r.err.lastIndexOf('{'), r.err.lastIndexOf('}') + 1));
+      if (isFinite(+j.input_i) && +j.input_i > -70) measured = `:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
+    } catch (e) { /* měření selhalo → jednoprůchodově */ }
+    chain.push(`${aIn}loudnorm=${norm}${measured},aresample=${SR}[ln]`); aIn = '[ln]';
+  }
   args.push('-map', '0:v');
   if (aIn) {
     if (F.audio === 'pcm_mono') {
@@ -368,4 +389,4 @@ async function exportSequence(project, seq, opts) {
   return { output, format: fmt, sizeMB: Math.round(st.size / 1048576 * 1000) / 1000, duration: Math.round((re - rs) * 1000) / 1000 };
 }
 
-module.exports = { exportSequence, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };
+module.exports = { xdcamOk, exportSequence, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };

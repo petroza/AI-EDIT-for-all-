@@ -19,7 +19,7 @@ function menuTemplate() {
       m('Export Media…', 'export', 'CmdOrCtrl+M', false),
       m('Export Social Versions…', 'exportSocial', undefined, false),
       { desktop: true, sep: true },
-      { label: 'Exit', role: 'quit', desktop: true },
+      { label: 'Exit', role: 'quit', desktop: true, accel: 'CmdOrCtrl+Q' },
     ] },
     { label: 'Edit', submenu: [
       m('Undo', 'undo', 'CmdOrCtrl+Z'), m('Redo', 'redo', 'CmdOrCtrl+Shift+Z'), '-',
@@ -72,7 +72,7 @@ function menuTemplate() {
       m('AI Panel', 'toggleAi', 'F4', false), m('Maximize Frame', 'maximizeFrame', '`'),
       { role: 'togglefullscreen', label: 'Full Screen', cmd: 'fullScreen', accel: 'F11' },
       { desktop: true, sep: true },
-      { role: 'reload', label: 'Reload', desktop: true }, { role: 'toggleDevTools', label: 'Developer Tools', desktop: true },
+      { role: 'reload', label: 'Reload', desktop: true, accel: 'CmdOrCtrl+Shift+F5' }, { role: 'toggleDevTools', label: 'Developer Tools', desktop: true },
       '-',
       { label: 'Language', submenu: [
         { label: 'English', keepLabel: true, cmd: 'setLang', arg: 'en', radio: 'en' },

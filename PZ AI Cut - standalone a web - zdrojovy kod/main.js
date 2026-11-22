@@ -42,7 +42,8 @@ function buildMenu() {
       return { label: 'About ' + APP_NAME, click: () => dialog.showMessageBox(win, { title: APP_NAME, message: APP_NAME, detail: ABOUT[LANG](app.getVersion(), false) }) };
     }
     if (it.cmd === 'openAppFolder') return { label: it.label, click: () => shell.openPath(__dirname) };
-    if (it.role) return { role: it.role, label: it.label };
+    // Reload bez Ctrl+R (vzhled S1: v Premiere je to Rychlost/Trvání – tady tiše znovu načetl okno a smazal historii Zpět)
+    if (it.role) return Object.assign({ role: it.role, label: it.label }, it.accel ? { accelerator: it.accel } : {});
     const o = { label: it.label, keepLabel: it.keepLabel, accelerator: it.accel, click: () => send(it.cmd, it.arg) };
     if (it.local) o.registerAccelerator = false;
     if (it.radio) { o.type = 'radio'; o.checked = LANG === it.radio; }

@@ -981,6 +981,16 @@ if (!media.WEB) {
       return files.get(p);
     });
   } catch (e) { console.warn('still frames', e.message); }
+  // zbytky jiného záběru na krajích klipů (16:9 vložení, AI sestřih, Auto Reframe) – jako web (kolo 7/8, kontrolor S1)
+  window.__pzEdgeShots = (s) => {
+    const RF = require('../web/ai/reframe');
+    const files = new Map();
+    return RF.fixEdgeShots(app, s, (m) => {
+      const p = importer.playPath(m) || m.path;
+      if (!files.has(p)) files.set(p, new RF.FsFile(p));
+      return files.get(p);
+    });
+  };
   window.__pzReframe = async (src, num, den, W, H) => {
     const RF = require('../web/ai/reframe');
     const files = new Map();
@@ -1126,7 +1136,7 @@ function socialGuide() {
     ['Formát pro sítě', '<b>Sekvence → Auto Reframe sekvence</b> – 9:16, 4:5, 1:1 nebo <b>Všechny formáty</b> najednou. Výřez sleduje obličej (v širokém záběru toho, kdo mluví), titulky se přeskládají.'],
     ['Titulky', '<b>Sekvence → Titulky → Vytvořit titulky z přepisu</b> (nebo tlačítko v okně Text v obraze). Bez AI.'],
     ['Text v obraze', '<b>Aa</b> u stopy titulků (nebo Sekvence → Titulky): nadpis nahoře, řádky, velikost, výška, barva, podklad a <b>zvýraznění vyslovovaného slova</b>. Titulek přepíšeš kliknutím na něj.'],
-    ['Kontrola', 'U 9:16 tlačítko <b>Bezpečné zóny</b> v monitoru ukáže, co na telefonu zakryje Instagram / TikTok. Poslechni místa střihů – na webu jsou přibližná.'],
+    ['Kontrola', 'U 9:16 tlačítko <b>Bezpečné zóny</b> v monitoru ukáže, co na telefonu zakryje Instagram / TikTok. ' + (media.WEB ? 'Poslechni místa střihů – na webu jsou přibližná.' : 'Před exportem si střih jednou celý poslechni.')],
     ['Export', '<b>Soubor → Exportovat verze pro sítě</b> uloží všechny formáty do jedné složky (titulky vypálené, hlasitost −14 LUFS). Jednu sekvenci: Soubor → Exportovat média.'],
   ] : [
     ['Import', 'File → Import, or drop the video into the window. ' + (window.__pzASR ? (window.__pzASR.auto ? '<b>Speech is transcribed automatically right after import</b> – on this computer, without AI. You see the progress on the clip and on the <b>Transcript</b> tab next to the Project panel.' : 'Start the transcript with a right-click on the clip → <b>Transcribe Speech</b>.') : '')],
@@ -1135,7 +1145,7 @@ function socialGuide() {
     ['Social format', '<b>Sequence → Auto Reframe Sequence</b> – 9:16, 4:5, 1:1 or <b>All Social Formats</b> at once. The crop follows the face (the speaker in wide shots); captions are re-laid out.'],
     ['Captions', '<b>Sequence → Captions → Create Captions from Transcript</b> (or the button in the Text on video window). No AI needed.'],
     ['Text on video', '<b>Aa</b> on the caption track (or Sequence → Captions): headline at the top, lines, size, height, colour, background and <b>highlighting of the spoken word</b>. Click a caption to rewrite it.'],
-    ['Check', 'For 9:16 the <b>Safe zones</b> button in the monitor shows what Instagram / TikTok cover on a phone. Listen to the cut points – on the web they are approximate.'],
+    ['Check', 'For 9:16 the <b>Safe zones</b> button in the monitor shows what Instagram / TikTok cover on a phone. ' + (media.WEB ? 'Listen to the cut points – on the web they are approximate.' : 'Listen to the whole edit once before exporting.')],
     ['Export', '<b>File → Export Social Versions</b> saves all formats into one folder (captions burned in, loudness −14 LUFS). One sequence: File → Export Media.'],
   ];
   openModal(`<h2>${cs ? 'Jak na video pro sítě' : 'How to make a social video'}</h2>
@@ -1185,7 +1195,10 @@ function exportDialog() {
     <div class="bar"><i id="exBar"></i></div><div class="dim" id="exMsg">&nbsp;</div>
     <div class="btns"><button id="exNo">Close</button><button class="primary" id="exGo">Export</button></div>`, (b) => {
     b.querySelector('#exEnc').value = settings.encoder || cfg.videoEncoder || 'libx264';
-    b.querySelector('#exFmt').value = settings.exportFormat || 'h264';
+    // XDCAM jen pro sekvence, které ten formát má (1920×1080 25/29,97/50; 1280×720 50/59,94) – jinak nabídnout H.264 (redaktorka S1: „XDCAM 1080×1920“)
+    for (const o of b.querySelectorAll('#exFmt option')) if (o.value === 'xdcam' && !exporter.xdcamOk(s)) { o.disabled = true; o.textContent += LL(' – not for this frame size', ' – ne pro tuhle velikost obrazu'); }
+    const fmt0 = settings.exportFormat || 'h264';
+    b.querySelector('#exFmt').value = fmt0 === 'xdcam' && !exporter.xdcamOk(s) ? 'h264' : fmt0;
     // formát pro sítě (9:16, 4:5, 1:1) → rovnou −14 LUFS, pokud si uživatel pro sítě nevybral jinak
     const socialFmt = s.width / s.height < 1.06;
     b.querySelector('#exLoud').value = socialFmt ? (settings.loudnessSocial || 'social') : (settings.loudness || 'off');
@@ -1195,9 +1208,15 @@ function exportDialog() {
       out.value = out.value.replace(/.[^.\/]+$/, '') + '.' + F.ext;
       const a = exporter.audioLabel ? exporter.audioLabel : F.audio === 'aac' ? 'AAC 256 kb/s' : F.audio === 'pcm' ? 'PCM 24-bit 48 kHz' : '2× mono PCM 24-bit 48 kHz';
       b.querySelector('#exInfo').textContent = `${s.width}×${s.height} · ${s.fps} fps · ${a}`;
-      b.querySelector('#exEncRow').style.display = ['h264', 'h265', 'mov_h264'].includes(k) && !media.WEB ? '' : 'none';
+      // skrýt, ale nechat místo – jinak se dialog zmenší a tlačítko Exportovat uskočí pod kurzorem (redaktorka S1)
+      b.querySelector('#exEncRow').style.visibility = ['h264', 'h265', 'mov_h264'].includes(k) && !media.WEB ? '' : 'hidden';
     };
-    b.querySelector('#exFmt').onchange = fmtInfo;
+    b.querySelector('#exFmt').onchange = () => {
+      fmtInfo();
+      // jiný formát = jiný export: starý „✔ Hotovo“ pryč; MXF je pro TV → hlasitost −23 LUFS, když byla vypnutá
+      b.querySelector('#exMsg').innerHTML = '&nbsp;'; b.querySelector('#exBar').style.width = '0%';
+      if (exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf' && b.querySelector('#exLoud').value === 'off') b.querySelector('#exLoud').value = 'tv';
+    };
     fmtInfo();
     b.querySelector('#exBrowse').onclick = async () => {
       const r = await ipcRenderer.invoke('dialog', 'save', { title: 'Export', defaultPath: b.querySelector('#exOut').value, filters: [{ name: exporter.FORMATS[b.querySelector('#exFmt').value].label, extensions: [exporter.FORMATS[b.querySelector('#exFmt').value].ext] }] });
@@ -1381,6 +1400,7 @@ const api = createApi(project, {
   save: () => (project.path ? (writeProject(project.path), project.dirty = false, updateTitle(), project.path) : saveProject(false)),
   exportProgress: (p, msg) => app.status(`Export ${Math.round(p * 100)} % ${msg || ''}`),
   progress: (msg) => app.status(msg),
+  edgeShots: (s) => (window.__pzEdgeShots ? window.__pzEdgeShots(s) : null),
 });
 app.api = api;
 
@@ -1397,7 +1417,11 @@ async function evalScript(code) {
   try {
     const result = await fn(args || {});
     if (name !== 'projectInfo' && name !== 'getSequence' && name !== 'ping' && name !== 'listItems' && name !== 'getMarkers') {
-      app.status('AI: ' + name);
+      // čitelný název kroku místo interního názvu funkce (vzhled S1: „AI: addMarkers“)
+      const STEP = { importFiles: 'Import Media', buildSequence: 'Build Sequence', buildTimeline: 'Build Timeline', razor: 'Add Edit', removeRanges: 'Extract Ranges',
+        removeClips: 'Clear Clips', addMarkers: 'Add Markers', setPlayhead: 'Set Playhead', exportSequence: 'Export', saveProject: 'Save', openSequence: 'Open Sequence',
+        reframeSequence: 'Auto Reframe Sequence', deleteSequences: 'Delete Sequences', undo: 'Undo', addCaptions: 'Captions', detectSceneCuts: 'Detect Camera Cuts' };
+      app.status('AI: ' + (STEP[name] || name));
       if (/^build|reframe|import/.test(name)) app.timeline.zoomFit();
     }
     return JSON.stringify({ ok: true, result });

@@ -110,7 +110,7 @@
 
     A.appendChild(el('div', 'pz-label', 'Task'));
     var taskBox = el('div', 'pz-task');
-    var prompt = $('prompt'); if (prompt) { prompt.placeholder = 'Např.: Vyber nejlepší momenty a udělej krátký sestřih pro Instagram.'; prompt.lang = 'cs'; taskBox.appendChild(prompt); }
+    var prompt = $('prompt'); if (prompt) { var en = (window.parent && window.parent.TN && window.parent.TN.lang) === 'en'; prompt.placeholder = en ? 'E.g.: Pick the best moments and make a short edit for Instagram.' : 'Např.: Vyber nejlepší momenty a udělej krátký sestřih pro Instagram.'; prompt.lang = en ? 'en' : 'cs'; taskBox.appendChild(prompt); }
     var mic = $('mic'); if (mic) { mic.innerHTML = I.mic; mic.className = 'pz-mic'; mic.title = 'Dictate the task (local Whisper) – click, speak, click again'; taskBox.appendChild(mic); }
     A.appendChild(taskBox);
 
