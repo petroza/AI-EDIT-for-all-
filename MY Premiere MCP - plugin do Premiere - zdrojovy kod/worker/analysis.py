@@ -1460,6 +1460,55 @@ def _plan_story(instruction: str, target: float, segs: dict[int, dict], chapters
     }
 
 
+_CONJ_START = re.compile(r"(a|ale|i|aby|a pak|a najednou|a tak|a proto|takže)\b", re.I)
+
+
+def _teaser_guard(order: list, cands: list, top: list, instruction: str, target: float, text, key) -> list:
+    """Kontrola složené upoutávky bez modelu (AI tok S3 – Hermes pravidla v zadání ignoroval):
+    1) úder začínající spojkou („A najednou byl pryč.“) bez vlastního podmětu divák vztáhne k předchozímu úderu
+       („…věci s ním.“ → zemřel respondent, ne máma). Když před ním ve střihu nestojí jeho původní předchozí věta,
+       nahradí se delší variantou, která ji obsahuje, jinak vypadne;
+    2) moderátor/ka (mluvčí s nejkratší řečí) nejvýš jedním úderem, když zadání moderátora výslovně nechce."""
+    first = lambda c: c["units"][0]["id"]  # noqa: E731
+    last = lambda c: c["units"][-1]["id"]  # noqa: E731
+    out: list = []
+    for c in order:
+        prev = out[-1] if out else None
+        if _CONJ_START.match(text(c).strip()) and not (prev and last(prev) == first(c) - 1):
+            alt = [x for x in cands if last(x) == last(c) and first(x) == first(c) - 1
+                   and x["units"][0].get("spk") == c["units"][0].get("spk") and not any(key(x) & key(y) for y in out)]
+            if alt:
+                out.append(min(alt, key=lambda x: x["dur"]))
+                continue
+            if len(order) > 2:
+                continue
+        out.append(c)
+    order = out or order
+    if not re.search(r"moder", instruction, re.I):
+        spk: dict = {}
+        for c in cands:
+            for u in c["units"]:
+                if u.get("spk"):
+                    spk[u["spk"]] = spk.get(u["spk"], 0.0) + (u["e"] - u["s"])
+        if len(spk) >= 2:
+            host = min(spk, key=lambda k: spk[k])
+            for c in [c for c in order if c["units"][0].get("spk") == host][1:]:
+                if len(order) > 2:
+                    order.remove(c)
+            # doplnit délku hostem – jen tam, kam časově patří
+            st0 = lambda c: c["units"][0]["s"]  # noqa: E731
+            for c in top:
+                if sum(x["dur"] for x in order) >= 0.85 * target:
+                    break
+                if c in order or c["units"][0].get("spk") == host or any(key(c) & key(y) for y in order) \
+                        or _CONJ_START.match(text(c).strip()) or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
+                    continue
+                slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
+                if slot is not None:
+                    order.insert(slot, c)
+    return order
+
+
 def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude: set, backend: str, ctx,
                  path: str, avoid: set | None = None) -> dict | None:
     """Upoutávka ve stylu zpravodajství: údery ohodnotí model (hák, samostatnost, údernost), pak z nejlepších složí
@@ -1549,7 +1598,9 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         "Údery se nesmí opakovat ani říkat totéž; dohromady mají naznačit příběh. Nesmí zkreslit, co mluvčí myslí: "
         "žádné citace cizích slov, ironie ani věty, které mluvčí odmítá (vytržené by znamenaly opak). Pořadí nesmí "
         "vytvořit souvislost, která v rozhovoru není: úder, který zazněl dřív a týká se jiného období nebo tématu, "
-        "nedávej hned za pozdější tak, aby vyzněl jako jeho důsledek (např. „…a proto…“ po větě o úmrtí). "
+        "nedávej hned za pozdější tak, aby vyzněl jako jeho důsledek (např. „…a proto…“ po větě o úmrtí). Úder bez "
+        "vlastního podmětu („A najednou byl pryč.“) divák vztáhne k osobě z předchozího úderu – dej ho jen za úder o "
+        "téže osobě. Upoutávka je hlavně o hostovi: moderátor/ka nejvýš jeden krátký úder (otázka), když je potřeba. "
         'Nejdřív v poli uvaha krátce zdůvodni, pak dej pořadí čísel úderů. JSON {"uvaha": "…", "poradi": [čísla]}.',
         400, schema={"type": "object", "properties": {"uvaha": {"type": "string", "maxLength": 600},
                                                       "poradi": {"type": "array", "minItems": 1, "maxItems": 5,
@@ -1578,6 +1629,7 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
         if slot is not None:
             order.insert(slot, c)
+    order = _teaser_guard(order, cands, top, instruction, target, text, key)
     total = sum(c["dur"] for c in order)
     return {
         "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total, 1),

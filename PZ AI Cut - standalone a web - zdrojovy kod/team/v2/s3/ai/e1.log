@@ -1,0 +1,27 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"STRIH HERMES 20s 23:26:10 9x16"}
+
+=== add_captions (1.9 s)
+{"cues":12,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\STRIH_HERMES_20s_23_26_10_9x16.6efaf75e.srt","sequence":"STRIH HERMES 20s 23:26:10 9x16","sample":["Za tři týdny. Takže to","přišlo úplně,","jak my jsme se rozvěděli,"]}
+
+=== export_sequence (3.3 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s3-panel-hermes-916-tit.mp4","format":"h264","sizeMB":10.277,"duration":17,"captionsBurned":true,"loudness":"social"}
+
+=== export_sequence (3.0 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s3-panel-hermes-916.mxf","format":"dnxhr","sizeMB":377.278,"duration":17,"captionsBurned":true,"loudness":"tv"}
+
+=== export_sequence (0.0 s) ERROR
+Premiere (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead.
+
+=== export_sequence (0.0 s) ERROR
+Premiere (exportSequence): Cannot write to the folder C:/Program Files – choose another place to save.
+
+=== export_sequence (3.4 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/neexistuje/ai-s3-x.mp4","format":"h264","sizeMB":10.277,"duration":17,"captionsBurned":true,"loudness":"social"}
+
+=== export_sequence (5.9 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s3-x.mov","format":"prores","sizeMB":220.724,"duration":17,"captionsBurned":true,"loudness":"social"}
+
+=== export_sequence (0.0 s) ERROR
+Premiere (exportSequence): Sequence not found: neni takova

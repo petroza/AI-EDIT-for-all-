@@ -86,7 +86,8 @@ async function premiere(fn, args = {}, timeoutMs) {
   } catch {
     throw new Error('Neplatná odpověď z ExtendScriptu: ' + String(raw).slice(0, 400));
   }
-  if (!out.ok) throw new Error(`Premiere (${fn}): ${out.error}${out.line ? ` [host.jsx:${out.line}]` : ''}`);
+  // host.jsx (Premiere) posílá číslo řádku, most PZ AI Cut ne – předpona podle toho, kdo chybu hlásí (AI tok S3)
+  if (!out.ok) throw new Error(`${out.line ? 'Premiere' : 'Střihový program'} (${fn}): ${out.error}${out.line ? ` [host.jsx:${out.line}]` : ''}`);
   return out.result;
 }
 
@@ -1512,10 +1513,12 @@ tool(
     const srtPath = path.join(dir, `${(seq.name || 'sequence').replace(/[^\w.-]+/g, '_')}.${seq.sequenceID.slice(0, 8)}${a.translate ? `.${a.translate}` : ''}.srt`);
     fs.writeFileSync(srtPath, srtLines.join('\n'), 'utf8');
 
-    await premiere('addCaptions', { sequence: seq.sequenceID, srtPath });
+    // lines/charsPerLine: PZ AI Cut titulky přeskládá podle stylu sekvence – výslovné zadání agenta má přednost (AI tok S3);
+    // Premiere je ignoruje (řádky jsou už v SRT)
+    const capRes = await premiere('addCaptions', { sequence: seq.sequenceID, srtPath, lines: a.lines, charsPerLine: a.charsPerLine });
     capIdx[seq.sequenceID] = { when: new Date().toISOString(), srt: srtPath, sequence: seq.name, fingerprint };
     saveCaptionsIndex(capIdx);
-    return { cues: cues.length, srt: srtPath, sequence: seq.name, translated: translated || undefined,
+    return { cues: (capRes && capRes.count) || cues.length, srt: srtPath, sequence: seq.name, translated: translated || undefined,
       sample: cues.slice(0, 3).map((c) => c.text.trim()) };
   },
 );

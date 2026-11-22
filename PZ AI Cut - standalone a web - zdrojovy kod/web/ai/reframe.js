@@ -283,6 +283,13 @@ function trimSeqFoot(seq, clip, d) {
   }
   seq.captions = (seq.captions || []).map((c) => c.end > end - d ? Object.assign({}, c, { end: Math.max(c.start + 0.05, end - d) }) : c);
 }
+/** Prodloužit konec sekvence o d s (klip na konci obrazu a zvuk, který s ním končí) – do pauzy za posledním slovem. */
+function extendSeqFoot(seq, clip, d) {
+  const end = clipEnd(clip);
+  for (const kind of ['video', 'audio']) for (const tr of seq.tracks[kind]) for (const c of tr.clips) {
+    if (Math.abs(clipEnd(c) - end) < 0.02) c.out += d;
+  }
+}
 /** Odstřihnout prvních d s celé sekvence (všechny stopy, titulky, značky) – zbytek jiného záběru na úplném začátku. */
 function trimSeqHead(seq, d) {
   for (const kind of ['video', 'audio']) for (const tr of seq.tracks[kind]) {
@@ -333,8 +340,19 @@ async function edgeFragments(plan, seq) {
       if (next && !next.lead && next.clip.in - d1 >= 0 &&
           await same(next, next.clip.in - d1 + 0.02, next.clip.in + 0.04) && lipsT) e.tail = { next, d: d1 };
       // úplný konec sekvence (nic za klipem): zbytek odstřihnout i se zvukem, když v něm není řeč (kolo 8: d 10 snímků celku na konci)
-      else if (!next && e.file && !plan.some((q) => q !== e && q.track === e.track && q.clip.start > e.clip.start) &&
-          await quietHead(e.file, e.clip.out - d1 - 0.03, d1)) e.foot = { d: d1 };
+      else if (!next && e.file && !plan.some((q) => q !== e && q.track === e.track && q.clip.start > e.clip.start)) {
+        if (await quietHead(e.file, e.clip.out - d1 - 0.03, d1)) e.foot = { d: d1 };
+        else {
+          // pod zbytkem ještě doznívá poslední slovo (AI tok S3: 4 snímky celku pod „pryč.“) – odstřihnout nejde, tak konec
+          // prodloužit do pauzy za slovem: ze zbytku je normální záběr ≥ 0,6 s bez řeči, ne probliknutí
+          const ext = Math.ceil((MIN_SHOT + 0.1 - d1) * fps) / fps;
+          if (e.clip.out + ext <= ((e.m && e.m.duration) || 0) - 0.05 && e.src && await quietHead(e.file, e.clip.out + 0.02, ext - 0.02)
+              && !(await cameraCuts(e.src, e.clip.out, e.clip.out + ext + 0.04, fps, e.ah, 0.1)).length) e.footExt = { ext };
+          // řeč pokračuje i za slovem (prodloužit nejde): posledních pár snímků obrazu = zopakované poslední snímky záběru
+          // před střihem kamery (jako krátké zastavení obrazu); zvuk beze změny. Jen ≤ 5 snímků – delší by bylo vidět.
+          else if (d1 <= 5.5 / fps) e.footRepeat = { d: d1 };
+        }
+      }
     }
   }
 }
@@ -418,12 +436,21 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
     await edgeFragments(plan, seq);
   } finally { for (const s of srcs.values()) s.close(); }
   progress('', 1);
-  const todo = plan.filter((e) => e.lead || e.tail || e.head || e.foot);
+  const todo = plan.filter((e) => e.lead || e.tail || e.head || e.foot || e.footExt || e.footRepeat);
   if (!todo.length) return { merged: 0 };
   p.edit('Clean up camera-cut leftovers', () => {
     for (const e of todo) {
       if (e.head) trimSeqHead(seq, e.head.d);
       if (e.foot) trimSeqFoot(seq, e.clip, e.foot.d);
+      if (e.footExt) extendSeqFoot(seq, e.clip, e.footExt.ext);
+      if (e.footRepeat) {
+        const { d } = e.footRepeat, c = e.clip;
+        for (const tr of seq.tracks.audio) for (const a of tr.clips) if (c.linkId && a.linkId === c.linkId) a.linkId = null;
+        c.out -= d; c.linkId = null;
+        const { uid } = require('../../src/core/util');
+        e.track.clips.push(Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c) }));
+        e.track.clips.sort((x, y) => x.start - y.start);
+      }
       if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
       if (e.tail) { const { next, d } = e.tail; next.clip.in -= d; next.clip.start -= d; next.clip.linkId = null; e.clip.out -= d; e.clip.linkId = null; }
     }

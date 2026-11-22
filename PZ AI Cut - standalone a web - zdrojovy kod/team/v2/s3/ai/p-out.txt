@@ -1,0 +1,20 @@
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S3 upoutavka MCP 9x16": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 57
+   54 % LLM hodnotí údery 31–45 z 57
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 4 vět, odhad 16 s
+✔ hotovo: sekvence „STRIH HERMES 20s 23:26:10" (Vytvořena sekvence „STRIH HERMES 20s 23:26:10“ (00:00:17.00) z 3 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 9 s
+🎞 ⚠ 00:20:25.69: střih obrazu 0.26 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+🎞 ⚠ 00:21:03.60: střih obrazu 1.34 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+🎞 ⚠ 00:21:05.12: střih obrazu 0.18 s před koncem klipu, uvnitř řeči – obraz jen bleskne
+ℹ plán složen znovu bez vět se slyšitelnou hranicí: #220, #220, #238, #218
+ℹ upoutávka z úderů (52 kandidátů) – Cílem je vytvořit dramatickou narativní arcu o rychlém a nečekaném úmrtí matky, které změnilo životní dráhu Barbory Šimkové. U2 (5s) funguje jako silný hák, který okamžitě nastolí tempo a tragédii ('za tři týdny byla pryč'). Následuje U3 (4s), které vysvětluje šok a beznaděj situace ('neměli možnost se připravit'). U8 (5s) dodává emocionální váhu a kontext ('máma byla tmel'). U4 (1s) uzavírá sekci o úmrtí krátkým, úderným konstatováním faktu. Celková délka 15s je blízko limitu, ale přidání dalších úderů by narušilo rytmus nebo vyžadovalo méně relevantní obsah z kariérní části (U5-U11), která v
+Jak dopadl střih „STRIH HERMES 20s 23:26:10“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 20s 23:26:10“
+✔ STRIH HERMES 20s 23:26:10 9x16 (1080×1920, střihy kamery: 3)

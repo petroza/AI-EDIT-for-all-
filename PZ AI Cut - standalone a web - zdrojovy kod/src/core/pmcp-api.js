@@ -403,8 +403,11 @@ function createApi(project, hooks = {}) {
       const CL = require('./captionlayout');
       const srtLines = Math.max(1, ...caps.map((c) => String(c.text).split('\n').length));
       const st = Object.assign(CL.styleOf(seq), seq.captionStyle ? {} : { lines: Math.min(3, srtLines) });
+      // výslovné zadání agenta (add_captions lines / charsPerLine) má přednost před stylem sekvence (AI tok S3: lines:1 ignorováno)
+      if (a.lines) st.lines = Math.max(1, Math.min(3, Math.round(a.lines)));
+      if (a.charsPerLine) st.maxChars = Math.max(12, Math.min(60, Math.round(a.charsPerLine)));
       if (caps.length) caps = CL.layout(CL.wordsOfCaptions(caps), seq, st, CL.contentEnd(seq) || undefined);
-      if (!seq.captionStyle) newStyle = st;
+      if (!seq.captionStyle || a.lines || a.charsPerLine) newStyle = Object.assign({}, seq.captionStyle || {}, st);
     } catch (e) { /* bez přeskládání */ }
     return project.edit('AI: Captions', () => {
       seq.captions = caps;
