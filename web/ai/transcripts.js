@@ -468,6 +468,15 @@ async function edgeIn(file, t, a) {
     if (best) pi = { t: Math.min(best.pz.q1, Math.max(best.pz.q0, best.pz.q1 - 0.02)), ok: true };
   }
   if (!pi) pi = pauseNear(x, i0, Math.max(0, first.s - 0.25), first.s + 0.1, Math.max(0, first.s - 0.75), -1, thr, EW.nearest);
+  // kolo 8: pauza (nebo nejtišší místo) až před celým slovem předchozí věty = klip by začal útržkem cizí věty („nasbírala, ne?“,
+  // „neřekla ani doma?“) – raději střih v nejtišším místě mezery mezi slovy na hranici, je-li tam ticho
+  const prv = a > 0 ? t.words[a - 1] : null;
+  if (prv && EW.noOverreach && prv.e - prv.s > 0.1 && pi.t < prv.e - 0.12) {
+    const q = quietest20(x, i0, Math.max(i0, prv.e - 0.1), first.s + 0.08);
+    const v = rmsWin(x, i0, q, 0.03);
+    // jen když je tam opravdu ticho (mezera mezi slovy) – jinak by střih padl do slova (časy přepisu bývají posunuté, R 23:20)
+    if (deepAt(x, i0, q, thr) || (v !== null && v <= thr)) pi = { t: q, ok: true };
+  }
   let tin = pi.t, ok = pi.ok;
   // hák pro sítě: z pauzy jen krátký nádech (0,15 s) před nástupem řeči (tester kolo 2: 0,9 s ticha na začátku)
   if (ok) {
@@ -498,6 +507,14 @@ async function edgeOut(file, t, b) {
     if (best) po = { t: Math.max(best.pz.q0, Math.min(best.pz.q1, best.pz.q0 + 0.02)), ok: true };
   }
   if (!po) po = pauseNear(y, o0, last.e - 0.1, Math.min(t.duration, last.e + 0.25), Math.min(t.duration, last.e + 0.75), 1, thr, EW.nearest);
+  // kolo 8: pauza až za celým slovem další věty = klip by skončil začátkem cizí věty („Musí ho někdo“, „Aby“, „Já jsem“) –
+  // střih v nejtišším místě mezery mezi slovy na hranici, je-li tam ticho
+  const nxt = b + 1 < t.words.length ? t.words[b + 1] : null;
+  if (nxt && EW.noOverreach && nxt.e - nxt.s > 0.1 && po.t > nxt.s + 0.12) {
+    const q = quietest20(y, o0, last.e - 0.08, Math.min(t.duration, nxt.s + 0.1));
+    const v = rmsWin(y, o0, q, 0.03);
+    if (deepAt(y, o0, q, thr) || (v !== null && v <= thr)) po = { t: q, ok: true };
+  }
   let tout = po.t;
   // konec: doznění ~0,2 s po posledním slově, ale nikdy do dalšího slova (tester: konec jen 70 ms po slově)
   if (po.ok) tout = tightenOut(y, o0, tout, thr);
@@ -927,7 +944,7 @@ async function clipCaptionWords(file, t, c) {
   return clipWords(src, c);
 }
 /* Ladění edgeWord (test/edges.js, kolo 4): posun přepisu proti zvuku a přednost konce věty / čárky (s). */
-const EW = { bias: 0, end: 0.4, comma: 0.1, inFrac: 1, mapIn: 'accurate', nearest: false, consistent: false }; // consistent: kolo 6 zkoušeno, na ladicích sadách horší (30→27, 34→30 ze 40)
+const EW = { bias: 0, end: 0.4, comma: 0.1, inFrac: 1, mapIn: 'accurate', nearest: false, consistent: false, noOverreach: true }; // consistent: kolo 6 zkoušeno, na ladicích sadách horší (30→27, 34→30 ze 40)
 if (typeof process !== 'undefined' && process.env && process.env.PZ_EW) Object.assign(EW, JSON.parse(process.env.PZ_EW));
 /** Mezera mezi slovy k | k+1, kterou pauza [q0, q1] ve zvuku odděluje (nejblíž pauze, konec věty/čárka mají přednost);
  *  k = −1 = před prvním slovem přepisu. u = bod střihu (okno hledání −0,4 … +0,9 s). null = žádná. */

@@ -598,3 +598,7 @@ Opraveno: klíčové snímky na střizích (rozpad obrazu), „Myslím“ v titu
 Odloženo: kraje slov (cutBounds), rozsah jasu exportu, nadpis/titulky v 9:16 vs. obličej a zóny, Opus na Windows N.
 Kolo 7b (mws42y85, konektor 1.4.0): relace AI přichycená ke kartě (dřív úkoly šly kartě s fokusem – i cizí), rozsah jasu exportu
 (hardwarový kodér plný rozsah → zkouška + stlačení), set_captions hlásí neplatné indexy, 9:16 užší titulky a menší nadpis.
+
+## Kolo 8 (2026-11-22, mws68wvn)
+Kraje klipů: střih už nepřeskočí celé slovo sousední věty, když je na hranici ticho (`EW.noOverreach`); seed A konce 16→17/20, seed B beze změny.
+Agenti kola 8: kontrolor výstupu (regrese a–d + nový výstup), redaktorka (4:5 Facebook, 9:16, přepnutí jazyka), pak AI tok (konektor jen pro 127.0.0.1:8791).
