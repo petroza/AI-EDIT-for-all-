@@ -1,0 +1,101 @@
+===== vystup-s3-a.mp4 s3-a prah -27.6 dB
+  [  0.13-  2.76] A zjistilo se to strašně, / strašně pozdě.       zacatek   -   konec +0.02
+  [  3.13-  5.15] Takže to přišlo úplně, / jak my jsme se rozvěděl zacatek -0.12  konec   - 
+  [  5.15-  7.18] že je nemocná a za tři / týdny byla pryč.        zacatek   -   konec +0.02
+  [  7.36-  8.84] Všechno, naprosto všechno,                       zacatek -0.27  konec   - 
+  [  8.84- 12.53] protože moje máma byla / tmel té naší rodiny.    zacatek +0.68  konec   - 
+  [ 12.93- 16.00] a byla to ta nejtěžší / věc v mým životě.        zacatek   -   konec   - 
+  median zacatek -0.12 s (max |0.68|), konec +0.02 s (max |0.02|)
+===== vystup-s3-b.mp4 s3-b prah -27.6 dB
+  [  0.13-  1.45] A zjistilo / se to strašně,                      zacatek   -   konec -0.74
+  [  1.45-  2.76] strašně pozdě.                                   zacatek   -   konec +0.02
+  [  3.13-  4.41] Takže to přišlo / úplně,                         zacatek -0.12  konec   - 
+  [  4.41-  5.15] jak my jsme / se rozvěděli,                      zacatek   -   konec   - 
+  [  5.15-  7.18] že je nemocná a za / tři týdny byla pryč.        zacatek   -   konec +0.02
+  [  7.36-  8.84] Všechno, / naprosto všechno,                     zacatek -0.27  konec   - 
+  [  8.84- 10.26] protože moje / máma byla                         zacatek +0.68  konec   - 
+  [ 10.26- 12.53] tmel té / naší rodiny.                           zacatek   -   konec   - 
+  [ 12.93- 14.82] a byla to / ta nejtěžší                          zacatek   -   konec   - 
+  [ 14.82- 16.00] věc v mým / životě.                              zacatek   -   konec   - 
+  median zacatek -0.12 s (max |0.68|), konec +0.02 s (max |0.74|)
+===== vystup-s3-d.mp4 s3-d prah -27.5 dB
+  [  0.01-  4.67] nebyla možnost se / připravit a jediné,          zacatek   -   konec +0.63
+  [  4.67-  8.56] co nám zbylo, tak se s tím / poprat, prostě zvlá zacatek +0.27  konec +0.11
+  [  8.72- 10.20] Všechno, / naprosto všechno,                     zacatek -0.27  konec   - 
+  [ 10.20- 13.89] protože moje máma byla / tmel té naší rodiny.    zacatek +0.68  konec -0.56
+  [ 14.10- 15.35] To byl někdo,                                    zacatek -0.55  konec +0.69
+  [ 15.35- 20.14] kdo držel celou rodinu / pohromadě a kdo svoláva zacatek +0.35  konec +0.67
+  [ 20.14- 24.70] nás všechny na obědy, / svátky, narozeniny.      zacatek +0.52  konec +0.71
+  [ 24.70- 26.01] Ona všechno / organizovala.                      zacatek +0.57  konec +0.10
+  [ 26.73- 27.64] A najednou byl pryč.                             zacatek -0.01  konec   - 
+  median zacatek +0.31 s (max |0.68|), konec +0.63 s (max |0.71|)
+===== vystup-s3-e.mp4 s3-e prah -27.7 dB
+  [  0.60-  1.99] Tady není jiná možnost.                          zacatek -0.01  konec +0.12
+  [  2.42-  5.96] My jsme vlastně vůbec neměli / možnost se na to  zacatek -0.02  konec +0.08
+  [  6.48-  8.25] To byl prostě můj / nejbližší člověk.            zacatek +0.16  konec +0.15
+  [  8.88-  9.80] A najednou byl pryč.                             zacatek -0.02  konec   - 
+  median zacatek -0.01 s (max |0.16|), konec +0.12 s (max |0.15|)
+===== vystup-s3-sim.mp4 s3-sim prah -27.2 dB
+  [  0.19-  5.06] Bych jako doporučila všem, kdo / přichází nebo p zacatek -0.02  konec   - 
+  [  5.06-  9.67] komu se tohle stalo, / tak neříkat tyhle fádní v zacatek   -   konec   - 
+  [  9.67- 14.41] často zahojí, je teď líp, / tak to mělo být, toh zacatek   -   konec   - 
+  [ 14.41- 18.16] Prostě my ani nepotřebujeme nic slyšet, / my pot zacatek   -   konec   - 
+  [ 18.16- 22.25] aby s náma byl, aby, když se třeba / dlouho neoz zacatek   -   konec   - 
+  [ 22.25- 26.36] já jedu za tebou, já ti vezu jídlo, / nebo prost zacatek   -   konec +0.05
+  [ 26.38- 29.80] Jenom ta přítomnost toho člověka / chytne vás za zacatek -0.10  konec +0.08
+  [ 29.99- 34.50] Ale my nepotřebujeme prostě někoho, aby / nám ří zacatek +0.08  konec -0.01
+  [ 35.53- 39.41] Jí už je teď dobře. / To nepotřebujeme slyšet.   zacatek -0.01  konec -0.07
+  [ 39.41- 42.74] Já potřebuju slyšet něco / jako máma byla skvělá zacatek -0.21  konec   - 
+  [ 42.74- 45.92] tak jim i chybí a jsem tady / pro tebe, kdyby co zacatek   -   konec +0.22
+  median zacatek -0.02 s (max |0.21|), konec +0.05 s (max |0.22|)
+===== vystup-s3-sim916.mp4 s3-sim916 prah -27.2 dB
+  [  0.19-  1.83] Bych jako / doporučila všem,                     zacatek -0.02  konec   - 
+  [  1.83-  4.06] kdo přichází nebo / přišli do styku              zacatek   -   konec   - 
+  [  4.06-  6.09] s někým, komu / se tohle stalo,                  zacatek   -   konec -0.00
+  [  6.09-  9.67] tak neříkat / tyhle fádní věci,                  zacatek -0.29  konec   - 
+  [  9.67- 12.70] často zahojí, je teď / líp, tak to mělo          zacatek   -   konec -0.55
+  [ 12.70- 14.41] být, tohle / fakt nepomáhá.                      zacatek +0.49  konec   - 
+  [ 14.41- 15.91] Prostě my ani / nepotřebujeme                    zacatek   -   konec   - 
+  [ 15.91- 17.19] nic slyšet, / my potřebujeme                     zacatek   -   konec   - 
+  [ 17.19- 18.16] jenom toho / člověka,                            zacatek   -   konec   - 
+  [ 18.16- 20.62] aby s náma byl, / aby, když se třeba             zacatek   -   konec   - 
+  [ 20.62- 21.42] dlouho / neozýváme,                              zacatek +0.64  konec   - 
+  [ 21.42- 23.41] aby zavolal a řekl, / já jedu za tebou,          zacatek   -   konec   - 
+  [ 23.41- 25.51] já ti vezu jídlo, / nebo prostě pojď,            zacatek   -   konec -0.79
+  [ 25.51- 26.36] kouknem / se na film.                            zacatek   -   konec +0.05
+  [ 26.38- 27.50] Jenom ta / přítomnost toho                       zacatek -0.10  konec -0.58
+  [ 27.50- 29.46] člověka chytne / vás za ruku, něco.              zacatek +0.59  konec -0.26
+  [ 29.46- 29.80] prostě. Ale my / nepotřebujeme                   zacatek -0.45  konec +0.08
+  [ 31.05- 32.71] prostě někoho, / aby nám říkal                   zacatek   -   konec -0.31
+  [ 32.71- 34.50] takový ty / chlácholivý věci.                    zacatek -0.45  konec -0.01
+  [ 35.53- 37.12] Jí už je / teď dobře.                            zacatek -0.01  konec -0.14
+  [ 37.37- 39.41] To nepotřebujeme / slyšet.                       zacatek -0.02  konec -0.07
+  [ 39.41- 42.01] Já potřebuju slyšet / něco jako máma             zacatek -0.21  konec +0.77
+  [ 42.01- 44.05] byla skvělá, tak jim / i chybí a jsem            zacatek +0.16  konec   - 
+  [ 44.05- 45.92] tady pro tebe, / kdyby cokoliv.                  zacatek   -   konec +0.22
+  median zacatek -0.02 s (max |0.64|), konec -0.07 s (max |0.79|)
+===== vystup-s3-upoutavka-169.mp4 S3V upoutavka prah -42.8 dB
+  [  0.02-  3.67] Když přijde rodina / o člověka jako je máma?     zacatek -0.75  konec -0.03
+  [  3.92-  7.52] A najednou byl pryč. / Tady není jiná možnost.   zacatek -0.58  konec +0.01
+  [  7.75- 10.25] Ty nemáš v tu chvíli / jako vlastně jinou možnos zacatek -0.35  konec +0.10
+  [ 10.27- 12.71] A to je teda krásný, / že odvážním štěstí přeje. zacatek +0.00  konec -0.13
+  [ 12.71- 15.69] Ty jsi prostě byla odvážná / a řekla si, já to z zacatek +0.22  konec   - 
+  [ 15.72- 18.73] Vlastně jsem si pak uvědomila, / že bych radši s zacatek   -   konec   - 
+  [ 18.73- 22.84] jako psala sama a proto jsem se / dostala na nov zacatek   -   konec +0.13
+  median zacatek -0.35 s (max |0.75|), konec +0.01 s (max |0.13|)
+===== vystup-s3-upoutavka-916.mp4 S3V upoutavka 916 prah -27.8 dB
+  [  0.02-  1.57] Když přijde / rodina                             zacatek -0.75  konec -0.53
+  [  1.57-  3.67] o člověka / jako je máma?                        zacatek +0.80  konec -0.03
+  [  3.92-  5.41] A najednou / byl pryč.                           zacatek -0.06  konec +0.16
+  [  5.55-  7.52] Tady není / jiná možnost.                        zacatek -0.70  konec +0.01
+  [  7.75-  8.76] Ty nemáš / v tu chvíli                           zacatek -0.35  konec   - 
+  [  8.76- 10.25] jako vlastně / jinou možnost.                    zacatek +0.66  konec +0.10
+  [ 10.27- 11.32] A to je / teda krásný,                           zacatek +0.00  konec   - 
+  [ 11.32- 12.71] že odvážním / štěstí přeje.                      zacatek +0.54  konec -0.13
+  [ 12.71- 14.79] Ty jsi prostě byla / odvážná a řekla si,         zacatek +0.22  konec   - 
+  [ 14.79- 15.69] já to zkusím.                                    zacatek   -   konec   - 
+  [ 15.72- 17.11] Vlastně jsem / si pak uvědomila,                 zacatek   -   konec   - 
+  [ 17.11- 18.73] že bych radši si ty / příběhy vlastně            zacatek   -   konec   - 
+  [ 18.73- 20.53] jako psala sama / a proto jsem                   zacatek   -   konec   - 
+  [ 20.53- 22.84] se dostala na novu / jako reportérka.            zacatek   -   konec   - 
+  median zacatek +0.00 s (max |0.80|), konec -0.01 s (max |0.53|)

@@ -1,0 +1,11 @@
+vystup-s3-a.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s3-b.mp4: 400 snimku, strihy 1.36 2.76 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s3-d.mp4: 691 snimku, strihy 26.04 27.44 | kratke zabery (<13 sn.): [('27.44', np.int64(5))]
+vystup-s3-e.mp4: 245 snimku, strihy 2.04 2.84 9.60 | kratke zabery (<13 sn.): [('9.60', np.int64(5))]
+vystup-s3-sim.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s3-sim916.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s3-upoutavka-169.mp4: 571 snimku, strihy 0.96 3.36 3.80 5.20 10.20 12.96 15.64 21.20 | kratke zabery (<13 sn.): [('3.36', np.int64(11))]
+vystup-s3-upoutavka-916.mp4: 571 snimku, strihy 0.96 3.36 3.80 5.20 5.36 10.20 10.88 10.92 12.96 15.64 21.20 | kratke zabery (<13 sn.): [('3.36', np.int64(11)), ('5.20', np.int64(4)), ('10.88', np.int64(1))]
+vystup-s3-d.mxf: 691 snimku, strihy 26.04 27.44 | kratke zabery (<13 sn.): [('27.44', np.int64(5))]
+vystup-s3-a1080-xdcam.mxf: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s3-e1080-xdcam.mxf: 245 snimku, strihy 2.04 2.84 9.60 | kratke zabery (<13 sn.): [('9.60', np.int64(5))]

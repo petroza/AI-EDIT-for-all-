@@ -34,3 +34,13 @@ Rozdíly proti webu:
   (staré Hotovo, posun tlačítka, MXF → TV hlasitost), Ctrl+R už nenačítá okno (Reload = Ctrl+Shift+F5), Ctrl+Q konec, čeština chyb
   a kroků AI, nová sekvence si pamatuje poslední velikost, nápověda bez „na webu“.
 - **Bez AI panelu a MCP v kolech, kde běží víc instancí naráz** (most 7880/7890 by se pletl mezi okny). AI tok běží sám.
+
+## Od kola S3 (commity f1f6d64, a84d073)
+- Opraveno po S2 (ověř): titulky bez kousku slova z vedlejšího úseku (přesné časy Workeru), titulek kratší než 0,7 s se připojí k předchozímu,
+  timecode v monitorech jde přepsat (klik; `1015` = 00:00:10:15, `+5` / `-1:00` posun), panel Přepis (po importu „načítám přepis“, bez skoku
+  na poslední větu, odhad času, Zastavit bez slibu „hotové části“), dialog Export pevně široký, hlasitost podle formátu (MXF → TV, zpět vrátí),
+  velikost česky, Esc zavře dialog i z textového pole, F1 nahoře, nová sekvence poprvé podle klipu, AI panel 340 px na obrazovkách ≤ 1500 px,
+  prázdný Projekt / časová osa / karta Začni tady (bez posuvníku i při 1280×720), zbytek cizího záběru do 5 snímků převezme soused i při řeči,
+  MCP `export_sequence` ve standalone vypálí titulky a srovná hlasitost (parametry burnCaptions, srt, loudness, format).
+- Testovací instance mají vlastní úložiště okna (PZ_USERDATA) – nový profil = opravdu čisté první spuštění.
+- Hermes (lokální LLM ve Workeru) teď padá na „CUDA error“ – AI tok a plan_edit_local v tomhle kole nespouštěj.

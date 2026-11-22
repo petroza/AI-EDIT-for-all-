@@ -1,0 +1,21 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"S3V upoutavka"}
+
+=== reframe_sequence (15.0 s)
+{"sequenceID":"6f8798b4-ee49-438b-b435-ad00235bd65a","name":"S3V upoutavka 916","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":4,"shots":9,"facesFound":9,"summary":"Vytvořena sekvence „S3V upoutavka 916“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 4)."}
+
+=== add_captions (1.9 s)
+{"cues":8,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\S3V_upoutavka_916.6f8798b4.srt","sequence":"S3V upoutavka 916","sample":["Když přijde rodina o člověka jako je máma?","A najednou byl pryč.","Tady není jiná možnost."]}
+
+=== add_captions (1.0 s)
+{"cues":8,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\S3V_upoutavka.c86a0718.srt","sequence":"S3V upoutavka","sample":["Když přijde rodina o člověka jako je máma?","A najednou byl pryč.","Tady není jiná možnost."]}
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"S3V upoutavka 916"}
+
+=== export_sequence (4.8 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/vystup-s3-upoutavka-916.mp4","format":"h264","sizeMB":15.143,"duration":22.84,"captionsBurned":true,"loudness":"social"}
+
+=== export_sequence (1.9 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/vystup-s3-upoutavka-169.mp4","format":"h264","sizeMB":5.87,"duration":22.84,"captionsBurned":true,"loudness":"off"}

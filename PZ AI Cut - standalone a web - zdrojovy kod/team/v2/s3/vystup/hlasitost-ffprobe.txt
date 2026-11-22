@@ -1,0 +1,13 @@
+vystup-s3-a.mp4 | h264,1280,720,400 | A: aac,2,16.000000  |  I: -13.9 LUFS 
+vystup-s3-b.mp4 | h264,1080,1920,400 | A: aac,2,16.000000  |  I: -13.9 LUFS 
+vystup-s3-d.mp4 | h264,1080,1080,691 | A: aac,2,27.640000  |  I: -13.9 LUFS 
+vystup-s3-e.mp4 | h264,1280,720,245 | A: aac,2,9.800000  |  I: -14.0 LUFS 
+vystup-s3-sim-tv.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -22.9 LUFS 
+vystup-s3-sim.mp4 | h264,1280,720,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS 
+vystup-s3-sim916.mp4 | h264,1080,1920,1148 | A: aac,2,45.920000  |  I: -13.9 LUFS 
+vystup-s3-upoutavka-169.mp4 | h264,1280,720,571 | A: aac,2,22.840000  |  I: -28.6 LUFS 
+vystup-s3-upoutavka-916.mp4 | h264,1080,1920,571 | A: aac,2,22.840000  |  I: -13.9 LUFS 
+vystup-s3-a1080-dnxhr.mxf | dnxhd,1920,1080,400 | A: pcm_s24le,1,16.000000 pcm_s24le,1,16.000000  |  I: -26.4 LUFS 
+vystup-s3-a1080-xdcam.mxf | mpeg2video,1920,1080,400, | A: pcm_s24le,1,16.000000 pcm_s24le,1,16.000000  |  I: -26.4 LUFS 
+vystup-s3-d.mxf | dnxhd,1080,1080,691 | A: pcm_s24le,1,27.640000 pcm_s24le,1,27.640000  |  I: -25.9 LUFS 
+vystup-s3-e1080-xdcam.mxf | mpeg2video,1920,1080,245, | A: pcm_s24le,1,9.800000 pcm_s24le,1,9.800000  |  I: -26.0 LUFS 

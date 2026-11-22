@@ -1,0 +1,9 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"s3-e1080"}
+
+=== export_sequence (2.5 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/vystup-s3-upoutavka-169-social.mp4","format":"h264","sizeMB":5.892,"duration":22.84,"captionsBurned":true,"loudness":"social"}
+
+=== export_sequence (4.2 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/vystup-s3-upoutavka-169.mxf","format":"dnxhr","sizeMB":228.073,"duration":22.84,"captionsBurned":true,"loudness":"tv"}

@@ -165,15 +165,20 @@ function layout(words, seq, st, limitEnd) {
       last.ws = last.ws.concat(c.ws);
     } else merged.push({ ws: c.ws.slice(), whole: c.whole });
   }
-  // 4) titulek kratší než 0,7 s (krátká věta „prostě.“) by jen bleskl – připojit k předchozímu, když se vejdou a navazují;
-  //    k následujícímu jen při souvislé řeči (mezera < 0,25 s – jinak bývá mezi nimi střih). Redaktorka S2: „prostě.“ na 8 snímků.
-  const span = (c) => c.ws[c.ws.length - 1].e - c.ws[0].s;
-  for (let i = 0; i < merged.length && merged.length > 1; i++) {
-    const c = merged[i];
-    if (span(c) >= 0.7) continue;
-    const prev = merged[i - 1], next = merged[i + 1];
-    if (prev && c.ws[0].s - prev.ws[prev.ws.length - 1].e < 0.7 && fits(prev.ws.concat(c.ws))) { prev.ws = prev.ws.concat(c.ws); merged.splice(i, 1); i--; }
-    else if (next && next.ws[0].s - c.ws[c.ws.length - 1].e < 0.25 && fits(c.ws.concat(next.ws))) { next.ws = c.ws.concat(next.ws); merged.splice(i, 1); i--; }
+  // 4) titulek kratší než 0,7 s (krátká věta „prostě.“) by jen bleskl (redaktorka S2: 8 snímků) – připojit k předchozímu, když se
+  //    vejdou a navazují; když se nevejdou, převzít od předchozího pár posledních slov (oba pak ≥ 0,7 s). Nikdy přes střih klipů:
+  //    titulek se na konci klipu uřízne a řeč za střihem by zůstala bez titulku (kontrolor S3: „prostě. Ale my / nepotřebujeme“).
+  const span = (ws) => ws[ws.length - 1].e - ws[0].s;
+  const atr = seq && seq.tracks && (seq.tracks.audio || []).filter((x) => !x.muted).find((x) => x.clips.length);
+  const cuts = atr ? atr.clips.filter((k) => !k.disabled).map((k) => k.start).filter((t) => t > 0.01) : [];
+  const cutBetween = (a, b) => cuts.some((t) => t > a.ws[a.ws.length - 1].s + 0.01 && t <= b.ws[0].s + 0.01);
+  for (let i = 1; i < merged.length; i++) {
+    const c = merged[i], prev = merged[i - 1];
+    if (span(c.ws) >= 0.7 || c.ws[0].s - prev.ws[prev.ws.length - 1].e >= 0.7 || cutBetween(prev, c)) continue;
+    if (fits(prev.ws.concat(c.ws))) { prev.ws = prev.ws.concat(c.ws); merged.splice(i, 1); i--; continue; }
+    const a = prev.ws.slice(), b = c.ws.slice();
+    while (span(b) < 0.7 && a.length > 1) { const w = a.pop(); b.unshift(w); if (!fits(b) || span(a) < 0.7) { b.shift(); a.push(w); break; } }
+    if (span(b) >= 0.7 && fits(a) && fits(b)) { prev.ws = a; c.ws = b; }
   }
   const caps = merged.map((c) => {
     const ws = c.ws.map((w) => w.w);
