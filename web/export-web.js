@@ -60,6 +60,31 @@ function drawClip(ctx, frame, clip, m, W, H, alpha) {
   }
   ctx.globalAlpha = 1;
 }
+/** Kóduje kodér RGB do plného rozsahu jasu (bílá → Y > 240)? Jeden bílý snímek ve SKUTEČNÉ velikosti exportu tam a zpět
+ *  dekodérem – malý snímek (64×64) dostal softwarový kodér se správným TV rozsahem, plná velikost hardwarový s plným (kolo 7). */
+async function encoderFullRange(vcfg) {
+  const W = vcfg.width, H = vcfg.height;
+  const cfg = Object.assign({}, vcfg);
+  if (!(await VideoEncoder.isConfigSupported(cfg)).supported) return false;
+  const cv = new OffscreenCanvas(W, H), c2 = cv.getContext('2d');
+  c2.fillStyle = '#fff'; c2.fillRect(0, 0, W, H);
+  let chunk = null, meta = null;
+  const enc = new VideoEncoder({ output: (c, m) => { if (!chunk) { chunk = c; meta = m; } }, error: () => {} });
+  enc.configure(cfg);
+  const f = new VideoFrame(cv, { timestamp: 0 });
+  enc.encode(f, { keyFrame: true }); f.close();
+  await enc.flush(); enc.close();
+  if (!chunk || !meta || !meta.decoderConfig) return false;
+  let y = null;
+  const dec = new VideoDecoder({ output: async (fr) => {
+    try { const buf = new Uint8Array(fr.allocationSize()); await fr.copyTo(buf); if (/^(I4|NV12)/.test(fr.format || '')) y = buf[(fr.visibleRect ? fr.visibleRect.width : W) * Math.floor(H / 2) + Math.floor(W / 2)]; } finally { fr.close(); }
+  }, error: () => {} });
+  dec.configure(meta.decoderConfig);
+  dec.decode(chunk);
+  await dec.flush(); dec.close();
+  await new Promise((r) => setTimeout(r, 0));
+  return y !== null && y > 240;
+}
 /** Vypálený titulek – stejný styl jako náhled v monitoru (src/core/captionlayout.js, src/ui/player.js). */
 function drawCaption(ctx, text, W, H, st, active) {
   const fs = Math.round(H * CL.fontFrac(W, H, st));
@@ -251,6 +276,10 @@ async function exportSequence(project, seq, opts) {
     if (!(await AudioEncoder.isConfigSupported(acfg)).supported) throw new Error('This browser cannot encode audio – use Google Chrome.');
   }
 
+  // rozsah jasu: Chrome na Windows kóduje RGB do plného rozsahu Y 0–255 bez značky, přehrávače ho čtou jako TV 16–235
+  // → vyšší kontrast, přepálené bílé (kolo 7, kontrolor: Y 27/242 proti zdroji 40/222). Zkušební bílý snímek to zjistí;
+  // když je plný rozsah, obraz se před kódováním stlačí (jinak beze změny – jiné kodéry rozsah převádějí správně).
+  const squeeze = await encoderFullRange(vcfg).catch(() => false);
   const handle = vfs.getHandle(output);
   const writable = await handle.createWritable();
   const mux = new Mp4Writer(writable, { video: { width: W, height: H, fps }, audio: hasAudio ? { sampleRate: SR, channels: 2, bitrate: acfg.bitrate, codec: aCodec } : null });
@@ -292,6 +321,18 @@ async function exportSequence(project, seq, opts) {
   }
   const base = hasAudio && target != null ? 0.15 : 0;
 
+  // změna obrazu proti minulému snímku (zmenšenina 32×18, průměrný rozdíl jasu) – střih kamery uvnitř jednoho klipu
+  const thumb = new OffscreenCanvas(32, 18), tctx = thumb.getContext('2d', { willReadFrequently: true });
+  let prevLum = null, prevClipKey = null, lastKey = -1e9;
+  const sceneChange = () => {
+    tctx.drawImage(canvas, 0, 0, 32, 18);
+    const d = tctx.getImageData(0, 0, 32, 18).data, lum = new Float32Array(32 * 18);
+    for (let k = 0; k < lum.length; k++) lum[k] = d[k * 4] * 0.3 + d[k * 4 + 1] * 0.59 + d[k * 4 + 2] * 0.11;
+    let diff = 0;
+    if (prevLum) { for (let k = 0; k < lum.length; k++) diff += Math.abs(lum[k] - prevLum[k]); diff /= lum.length; }
+    prevLum = lum;
+    return diff > 22;
+  };
   try {
     let aNext = 0; // další zvukový blok (s)
     for (let i = 0; i < nFrames; i++) {
@@ -332,8 +373,18 @@ async function exportSequence(project, seq, opts) {
         const c = seq.tracks.video.flatMap((tr) => tr.clips).find((x) => x.id === id);
         if (!c || clipEnd(c) < t - 0.5) { sources.delete(id); sp.then((s) => s.close()).catch(() => {}); }
       }
+      // klíčový snímek na každém střihu (jiný klip nebo velká změna obrazu = střih kamery uvnitř klipu): bez něj kodér
+      // dal po střihu P-snímek a rozpad obrazu na 0,4–0,5 s (kolo 7, kontrolor výstupu: kostičky a fleky po rychlém sledu střihů)
+      const vcNow = cr ? null : topVideo(seq, t);
+      const clipKey = cr ? 'x' : vcNow ? vcNow.id : '-';
+      const sc = sceneChange(); // vždy (aktualizuje minulý snímek)
+      const cut = i > 0 && (clipKey !== prevClipKey || sc);
+      prevClipKey = clipKey;
+      if (squeeze) { ctx.globalCompositeOperation = 'copy'; ctx.filter = 'contrast(0.8588)'; ctx.drawImage(canvas, 0, 0); ctx.filter = 'none'; ctx.globalCompositeOperation = 'source-over'; }
       const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / fps), duration: Math.round(1e6 / fps) });
-      venc.encode(vf, { keyFrame: i % Math.round(fps * 2) === 0 });
+      const key = i === 0 || (cut && i - lastKey >= 2) || i - lastKey >= Math.round(fps * 2);
+      if (key) lastKey = i;
+      venc.encode(vf, { keyFrame: key });
       vf.close();
       while (venc.encodeQueueSize > 8) await new Promise((r) => setTimeout(r, 5));
       // zvuk po sekundách, souběžně s obrazem (proložený zápis)

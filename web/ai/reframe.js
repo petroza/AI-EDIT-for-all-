@@ -145,21 +145,25 @@ async function shotTarget(src, t0, t1, ah) {
 
 /* ---------- střihy kamery ---------- */
 /** Časy střihů kamery ve zdroji v [a, b) – porovnání snímků po 0,5 s, upřesnění půlením na snímek. */
-async function cameraCuts(src, a, b, fps, ah) {
+async function cameraCuts(src, a, b, fps, ah, stepS = 0.5) {
   const cv = canvas(AW, ah), SW = 64, SH = Math.round(64 * ah / AW);
   const thumb = async (t) => grayOf(await grab(src, t, cv), SW, SH);
-  const step = 0.5, cuts = [];
+  const step = stepS, cuts = [];
   let pt = a + 0.04, pg = await thumb(pt);
   for (let t = a + step; t < b - 0.04; t += step) {
     const g = await thumb(t);
     if (meanDiff(pg, g) > 16) {
       // půlení mezi pt a t na přesnost jednoho snímku
       let lo = pt, hi = t, glo = pg;
-      while (hi - lo > 1.5 / fps) {
+      while (hi - lo > 0.9 / fps) { // < 1 snímek: mezi lo a hi je jediná hranice snímků
         const mid = (lo + hi) / 2, gm = await thumb(mid);
         if (meanDiff(glo, gm) > 16) hi = mid; else { lo = mid; glo = gm; }
       }
-      cuts.push(hi);
+      // začátek snímku, který v čase hi je vidět (hi leží uvnitř prvního snímku nového záběru): bez zaokrouhlení dolů se řez
+      // posunul na další hranici snímku a první snímek nového záběru dostal výřez starého (kolo 7: 6 z 9 střihů o snímek pozdě)
+      let f0 = hi;
+      try { const f = await src.frameAt(hi); f0 = f.timestamp / 1e6; f.close(); } catch (e) { f0 = Math.floor((hi + 1e-4) * fps) / fps; }
+      cuts.push(f0 > lo + 1e-4 && f0 <= hi + 1e-4 ? f0 : hi);
     }
     pt = t; pg = g;
   }
@@ -236,6 +240,8 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}) {
           const right = E.splitClip(seq, track, cur, at);
           if (!right) return;
           right.linkId = null; // rozříznutý jen obraz – zvuk zůstává v celku
+          // ani levý kus nesmí zůstat propojený se zvukem celého klipu: Delete na něm smazal zvuk celé sekvence (kolo 7)
+          cur.linkId = null;
           splits++;
           cur = right;
         }
@@ -246,7 +252,7 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}) {
   return { clips: vclips.length, splits, faced, merged, shots: plan.reduce((a, x) => a + x.shots.length, 0) };
 }
 
-const MIN_SHOT = 0.3; // kratší záběr na kraji klipu = probliknutí
+const MIN_SHOT = 0.5; // kratší záběr na kraji klipu = probliknutí (kolo 7: zbytky 0,36–0,40 s divák vidí jako blik)
 
 /**
  * Najde zbytky záběru kratší než MIN_SHOT na začátku (lead) / konci (tail) klipu a ověří, že je převezme sousední
@@ -327,4 +333,44 @@ class FsFile {
   }
 }
 
-module.exports = { reframeSequence, reframeCopy, FsFile, facesIn, detector, shotTarget };
+/**
+ * Zbytky jiného záběru na krajích klipů i bez převodu formátu (16:9 sestřih): pár snímků před/za střihem kamery
+ * na začátku/konci klipu převezme sousední klip na stopě (stejně jako reframeSequence). Hledá jen v okně MIN_SHOT u krajů,
+ * In/Out zvuku se nemění. Kolo 7 (kontrolor výstupu): 16:9 export ukázal 2 snímky moderátorky na začátku klipu.
+ */
+async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
+  const p = app.project;
+  const plan = [];
+  const srcs = new Map();
+  try {
+    for (const track of seq.tracks.video) {
+      for (const clip of track.clips) {
+        const m = p.mediaById(clip.mediaId);
+        if (!m || !m.hasVideo || !m.width || clip.out - clip.in < 2 * MIN_SHOT + 0.2) continue;
+        let src = srcs.get(m.id);
+        if (!src) { src = await VideoSource.open(fileOf(m)); srcs.set(m.id, src); }
+        const ah = Math.round(AW * m.height / m.width / 2) * 2, fps = m.fps || 25;
+        const head = await cameraCuts(src, clip.in, clip.in + MIN_SHOT + 0.1, fps, ah, 0.1);
+        const tail = await cameraCuts(src, clip.out - MIN_SHOT - 0.1, clip.out, fps, ah, 0.1);
+        const bounds = [clip.in, ...head.slice(-1), ...tail.slice(0, 1), clip.out];
+        const shots = [];
+        for (let i = 0; i < bounds.length - 1; i++) shots.push({ in: bounds[i], out: bounds[i + 1], x: null });
+        plan.push({ track, clip, shots, src, ah, m });
+      }
+    }
+    progress('', 0.5);
+    await edgeFragments(plan, seq);
+  } finally { for (const s of srcs.values()) s.close(); }
+  progress('', 1);
+  const todo = plan.filter((e) => e.lead || e.tail);
+  if (!todo.length) return { merged: 0 };
+  p.edit('Clean up camera-cut leftovers', () => {
+    for (const e of todo) {
+      if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
+      if (e.tail) { const { next, d } = e.tail; next.clip.in -= d; next.clip.start -= d; next.clip.linkId = null; e.clip.out -= d; e.clip.linkId = null; }
+    }
+  });
+  return { merged: todo.length };
+}
+
+module.exports = { reframeSequence, reframeCopy, fixEdgeShots, FsFile, facesIn, detector, shotTarget };

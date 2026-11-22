@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "pz-ai-cut",
   "display_name": "PZ AI Cut",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Edit video in PZ AI Cut (web editor in Chrome) with Claude. Media stays on your computer.",
   "long_description": "Connects Claude Desktop to the PZ AI Cut web editor open in Google Chrome on the same computer (https://pz-ai-cut.pages.dev). Claude can transcribe speech locally in the browser, read the transcript, build edits as new sequences and add captions. Video files and projects never leave your computer – Claude only receives text.",
   "author": {

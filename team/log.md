@@ -590,3 +590,11 @@ Adresa 127.0.0.1:8791, verze mwrfdyty; notebook = standardní přepis + přesné
   Změřeno krokováním po 16 ms (Chrome za oknem škrtí rAF): PŘED (uživatelova karta, mwqudnjz) střih 1,72 s → plátno až po 0,13 s, do té doby jiný záběr; PO → správný snímek od prvního kroku za střihem (1,72 s i 4,72 s).
 - **Výsledek (i export):** Reframe nechal na začátku klipu 4snímkový zbytek záběru (994,88–995,04 před střihem kamery) → blik ve videu. `reframe.js edgeFragments`: zbytek < 0,3 s na kraji klipu převezme sousední klip na stopě (obraz se prodlouží o pár snímků, zvuk beze změny; jen když v prodloužení není další střih kamery). Ověřeno na stejném zdroji: `merged: 1`, předchozí klip 922,6–932,28, další od 995,04, jediný střih.
 - Testy 37/37, b1 9/9. Uživatelova existující sekvence „Codex – upoutávka Reels 20s (výřez opraven)“ zůstává beze změny (zbytek 16,60–16,76 s v ní dál je).
+
+## Kolo 7 – tým v2 (2026-11-22, mws3s0a1, bez commitu)
+Nový tým (team/v2/TEAM.md): Redaktorka, Kontrolor výstupu, Vzhled a jazyk, AI tok + vývojář. Reporty a tabulka oprav: `team/v2/r7/`.
+Opraveno: klíčové snímky na střizích (rozpad obrazu), „Myslím“ v titulcích (mezera v pauze mimo okno), zbytky záběrů v 16:9 (`fixEdgeShots`),
+řez 9:16 na snímek přesně, MIN_SHOT 0,5 s, Delete kousku obrazu nesmaže zvuk, přepnutí jazyka, Text v obraze bez posuvníku, méně chyb konzole.
+Odloženo: kraje slov (cutBounds), rozsah jasu exportu, nadpis/titulky v 9:16 vs. obličej a zóny, Opus na Windows N.
+Kolo 7b (mws42y85, konektor 1.4.0): relace AI přichycená ke kartě (dřív úkoly šly kartě s fokusem – i cizí), rozsah jasu exportu
+(hardwarový kodér plný rozsah → zkouška + stlačení), set_captions hlásí neplatné indexy, 9:16 užší titulky a menší nadpis.

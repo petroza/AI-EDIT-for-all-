@@ -584,7 +584,7 @@ function applyVideoTransition(type) {
 function transitionDurationDialog() {
   const fps = (app.seq() || {}).fps || 25;
   openModal(`<h2>Default Transition Duration</h2>
-    <div class="row"><label>Video transitions</label><input type="number" id="tdS" step="0.1" min="0.1" value="${app.transDur}" style="width:90px"> seconds (${Math.round(app.transDur * fps)} frames)</div>
+    <div class="row"><label>Video transitions</label><input type="number" id="tdS" step="0.1" min="0.1" value="${app.transDur}" style="width:90px"> ${TN.lang === 'cs' ? `sekund (${Math.round(app.transDur * fps)} snímků)` : `seconds (${Math.round(app.transDur * fps)} frames)`}</div>
     <div class="btns"><button id="tdNo">Cancel</button><button class="primary" id="tdOk">OK</button></div>`, (b) => {
     b.querySelector('#tdNo').onclick = closeModal;
     b.querySelector('#tdOk').onclick = () => { app.transDur = Math.max(0.1, Number(b.querySelector('#tdS').value) || 1); settings.transDur = app.transDur; saveSettings(); closeModal(); };
@@ -1132,10 +1132,10 @@ function helpDialog() {
     'Marks and Editing': ['I O|Mark In / Mark Out', 'Shift+I / O|Go to In / Out', 'X|Mark Clip', '/|Mark Selection', 'Ctrl+Shift+X|Clear In and Out', ',|Insert', '.|Overwrite', ';|Lift', "'|Extract", 'M|Add Marker', 'Ctrl+Alt+M|Clear Marker (Shift = all)', 'F|Match Frame', 'Shift+R|Reverse Match Frame'],
     'Timeline': ['Ctrl+K|Add Edit (targeted tracks)', 'Ctrl+Shift+K|Add Edit to All Tracks', 'Q / W|Ripple Trim Previous / Next Edit to Playhead', 'Shift+Q / Shift+W|Extend Previous / Next Edit to Playhead', 'E|Extend Selected Edit to Playhead', 'Delete|Clear (gap = close it)', 'Shift+Delete, Alt+Backspace|Ripple Delete', 'D|Select Clip at Playhead', 'Ctrl+↑ ↓|Select Previous / Next Clip', 'Alt+← →|Nudge 1 frame (Shift = 5)', 'Alt+↑ ↓|Nudge to track above / below', 'Ctrl+Alt+← →|Slip 1 frame (Shift = 5)', 'Ctrl+X / C / V|Cut / Copy / Paste', 'Ctrl+Shift+V|Paste Insert', 'Ctrl+L|Link / Unlink', 'Shift+E|Enable', 'G|Audio Gain', '[ ]|Clip volume −/+ 1 dB (Shift = 6 dB)', 'Ctrl+D|Cross Dissolve', 'Ctrl+Shift+D|Audio Crossfade', 'Shift+D|Default Transitions', 'Ctrl+0 / Ctrl+9|Toggle all video / audio track targets', 'S|Snap'],
     'Tools': ['V|Selection', 'A / Shift+A|Track Select Forward / Backward', 'B|Ripple Edit', 'N|Rolling Edit', 'C|Razor (Shift+click = all tracks)', 'Y|Slip', 'H|Hand', 'Z|Zoom (Alt = out)', 'Ctrl+drag edge|Ripple Edit with Selection Tool', 'Alt+click|Video or audio only'],
-    'View and File': ['= / −|Zoom In / Out', '\|Zoom to Sequence', 'Ctrl+= / Ctrl+−|Video track height', 'Alt+= / Alt+−|Audio track height', 'Shift+= / Shift+−|Expand / Minimize all tracks', '`|Maximize panel', 'Ctrl+Shift+0 / 1|Program: Fit / 100 %', 'Ctrl+Z / Ctrl+Shift+Z|Undo / Redo', 'Ctrl+S|Save', 'Ctrl+Alt+S|Save a Copy', 'Ctrl+I|Import', 'Ctrl+N|New Sequence', 'Ctrl+F|Search the transcript', 'F2|Fix the caption at the playhead', 'Ctrl+W|Close Sequence', 'Ctrl+M|Export Media', 'Ctrl+Shift+E|Export Frame', 'F4|AI Panel'],
+    'View and File': ['= / −|Zoom In / Out', '\\|Zoom to Sequence', 'Ctrl+= / Ctrl+−|Video track height', 'Alt+= / Alt+−|Audio track height', 'Shift+= / Shift+−|Expand / Minimize all tracks', '`|Maximize panel', 'Ctrl+Shift+0 / 1|Program: Fit / 100 %', 'Ctrl+Z / Ctrl+Shift+Z|Undo / Redo', 'Ctrl+S|Save', 'Ctrl+Alt+S|Save a Copy', 'Ctrl+I|Import', 'Ctrl+N|New Sequence', 'Ctrl+F|Search the transcript', 'F2|Fix the caption at the playhead', 'Ctrl+W|Close Sequence', 'Ctrl+M|Export Media', 'Ctrl+Shift+E|Export Frame', 'F4|AI Panel'],
   };
   openModal(`<h2>Keyboard Shortcuts (Premiere Pro defaults)</h2><div class="keys">${Object.entries(groups).map(([g, l]) =>
-    `<h3>${g}</h3>` + l.map((x) => { const [k, d] = x.split('|'); return `<div><span>${d}</span><kbd>${k}</kbd></div>`; }).join('')).join('')}</div>
+    `<h3>${g}</h3>` + l.map((x) => { const i = x.lastIndexOf('|'); const d = x.slice(i + 1); let k = x.slice(0, i); if (TN.lang === 'cs') k = k.replace(/Space/g, 'Mezerník').replace(/drag edge/g, 'tažení okraje').replace(/drag/g, 'tažení').replace(/click/g, 'klik'); return `<div><span>${d}</span><kbd>${k}</kbd></div>`; }).join('')).join('')}</div>
     <div class="btns"><button class="primary" id="hOk">Close</button></div>`, (b) => { b.querySelector('#hOk').onclick = closeModal; });
 }
 
@@ -1426,7 +1426,7 @@ function setLanguage(l, initial) {
   i18n.setLang(l);
   renderLangSwitch();
   if (app.program && app.program.ui) app.program.ui(); // úvodní obrazovka v monitoru je v jazyce rozhraní
-  if (changed && !initial) { reloadAiPanel(); app.projectPanel.render(); app.timeline.render(); app.updatePlayButtons && app.updatePlayButtons(); }
+  if (changed && !initial) { reloadAiPanel(); app.projectPanel.render(); app.timeline.render(); app.updatePlayButtons && app.updatePlayButtons(); if (app.transcript && app.transcript.relang) app.transcript.relang(); if (app.captionList && app.captionList.visible) app.captionList.render(); require('./ui/captionstyle').relangCaptionStyle(app); repaintAiRail(); }
 }
 commands.setLang = (l) => setLanguage(l);
 // ovládání AI panelu (layout.js) se překládá jen v češtině – v angličtině běží uvnitř panelu jeho vlastní překlad
@@ -1448,6 +1448,8 @@ function setAiPanel(open, user) {
   sp.classList.toggle('hidden', !open);
   $('btnAi').classList.toggle('on', open);
   if (user) { settings.aiPanel = open ? 'open' : 'collapsed'; delete settings.aiHidden; saveSettings(); }
+  // otevření panelu AI = uživatel čeká připojení: hledat konektor hned, ne až po řídkém intervalu
+  if (open && user && window.__pzAI && window.__pzAI.state && window.__pzAI.state.state !== 'connected') window.__pzAI.retry();
   setTimeout(() => { app.program.layout(); app.source.layout(); app.timeline.render(); }, 30);
 }
 function toggleAi(force) {
@@ -1456,20 +1458,23 @@ function toggleAi(force) {
 }
 $('aiRailBtn').onclick = () => toggleAi(true);
 // stav AI v pruhu (tečka) a automatické otevření při připojení, když si uživatel nic nevybral
+let lastAiState = null, repaintAiRail = () => {};
 (function watchAi() {
   const AI = window.__pzAI;
   if (!AI) { if ((watchAi.n = (watchAi.n || 0) + 1) < 20) setTimeout(watchAi, 500); return; }
   let was = null;
-  AI.on((S) => {
+  AI.on((S) => { lastAiState = S; paintAiRail(S); });
+  function paintAiRail(S) {
     const on = S.state === 'connected';
     const busy = on && S.lastCall && Date.now() - S.lastCall < 4000;
     const dot = $('aiRailDot');
     dot.className = 'ai-dot' + (busy ? ' busy' : on ? ' on' : '');
     const who = (S.clients || []).join(' + ');
     const cs = TN.lang === 'cs';
-    $('aiRailBtn').title = cs ? 'Otevřít panel AI (F4) – ' + (busy ? 'AI pracuje na zadání' : on ? who + ' připojen' : 'AI není připojená') : 'Open the AI panel (F4) – ' + (busy ? 'AI is working on a task' : on ? who + ' connected' : 'AI not connected');
+    $('aiRailBtn').title = cs ? 'Otevřít panel AI (F4) – ' + (busy ? 'AI pracuje na zadání' : on ? who + ' připojen' : 'AI není připojena') : 'Open the AI panel (F4) – ' + (busy ? 'AI is working on a task' : on ? who + ' connected' : 'AI not connected');
     if (on !== was) { if (!settings.aiPanel) setAiPanel(on, false); was = on; }
-  });
+  }
+  repaintAiRail = () => { if (lastAiState) paintAiRail(lastAiState); };
 })();
 
 function pingBridge() {
@@ -1572,6 +1577,11 @@ setProjView(settings.projView || 'icons');
 
 /** Záběr na šířku vložený do prázdné sekvence na výšku: výřez podle obličeje hned (jinak výřez na střed = často stůl). */
 function autoFace(s, m) {
+  if (s && m && m.hasVideo && !(s.height > s.width) && window.__pzEdgeShots) {
+    // na šířku: jen úklid zbytků jiného záběru na krajích klipu (kolo 7)
+    window.__pzEdgeShots(s).then((r) => { if (r && r.merged) app.program.refresh(); }).catch(() => {});
+    return;
+  }
   if (!s || !m || !m.hasVideo || !(s.height > s.width) || !(m.width > m.height) || !window.__pzReframeHere) return;
   app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
   window.__pzReframeHere(s).then(() => { app.status(''); app.program.refresh(); }).catch(() => app.status(''));

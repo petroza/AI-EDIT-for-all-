@@ -79,6 +79,7 @@ function addTask(text) {
   addLog('task', t.text);
   const w = taskWaiters.shift();
   if (w) { clearTimeout(w.timer); w.res(t); } else S.tasks.push(t);
+  claimTab();
   emit();
   return t;
 }
@@ -142,7 +143,7 @@ async function pollPort(port, info) {
   for (;;) {
     try {
       touch();
-      const r = await fetch(`http://127.0.0.1:${port}/next?tab=${TAB}&act=${lastAct}`, { cache: 'no-store' });
+      const r = await fetch(`http://127.0.0.1:${port}/next?tab=${TAB}&act=${lastAct}${S.tasks.length || Date.now() < claimUntil ? '&task=1' : ''}`, { cache: 'no-store' });
       const job = await r.json();
       if (job && job.tool) run(job, port).catch((e) => addLog('err', e.message));
     } catch (e) {
@@ -155,21 +156,28 @@ async function pollPort(port, info) {
   }
 }
 let misses = 0;
+let claimUntil = 0; // „AI pracuj v téhle kartě“ (zadání z panelu, nebo __pzAI.claim()) – konektor se přichytí sem
+/** Konektoru hned říct, že AI má pracovat v téhle kartě (zadání z panelu) – jinak by se to dozvěděl až s dalším /next. */
+function claimTab() { for (const p of conns.keys()) fetch(`http://127.0.0.1:${p}/claim?tab=${TAB}`, { cache: 'no-store' }).catch(() => {}); }
 let kick = null;
 async function loop() {
   for (;;) {
     let blocked = false;
-    for (const p of PORTS) {
+    // bez připojení stačí většinou první port (konektor bere první volný od 7895), ostatní jen každé 4. kolo
+    const scan = conns.size || misses % 4 === 0 ? PORTS : PORTS.slice(0, 1);
+    for (const p of scan) {
       if (conns.has(p)) continue;
       try { const j = await hello(p); if (j) { misses = 0; pollPort(p, j); } } catch (e) { if (e && e.name === 'TypeError' && /permission|denied|blocked/i.test(e.message)) blocked = true; }
     }
     if (!conns.size) { misses++; S.state = blocked ? 'blocked' : 'searching'; emit(); }
-    // hledat dál (další AI se může připojit kdykoli), bez připojení čím dál řidčeji (3 s … 15 s), ať se nezahlcuje konzole
-    const wait = conns.size ? 10000 : Math.min(15000, 3000 + misses * 1000);
+    // hledat dál (další AI se může připojit kdykoli), bez připojení čím dál řidčeji (3 s … 15 s, po 5 min 60 s; skrytá karta 60 s),
+    // ať se nezahlcuje konzole (každý nedostupný port = červená chyba sítě v DevTools); návrat do karty / panel AI hledá hned
+    const wait = conns.size ? 10000 : document.hidden || misses > 25 ? 60000 : Math.min(15000, 3000 + misses * 1000);
     await new Promise((r) => { kick = r; setTimeout(r, wait); });
   }
 }
 
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !conns.size && kick) { misses = Math.min(misses, 12); kick(); } });
 window.__pzAI = {
   get state() { return S; },
   on(f) { listeners.add(f); f(S); return () => listeners.delete(f); },
@@ -178,6 +186,7 @@ window.__pzAI = {
   engine: () => T.device().then((d) => d.dev), // 'wasm' (procesor) | 'webgpu' (grafika) – na čem běží přepis
   setQuality(q) { if (q === 'accurate' && weakPc()) q = 'standard'; S.quality = q; try { localStorage.setItem('pzAsrQuality2', q); } catch (e) { /* bez úložiště */ } emit(); asrEmit(null); },
   retry() { misses = 0; if (kick) kick(); },
+  claim() { claimUntil = Date.now() + 30000; claimTab(); },
   setAuto(v) { S.auto = !!v; try { localStorage.setItem('pzAutoAsr2', v ? '1' : '0'); } catch (e) { /* bez úložiště */ } emit(); asrEmit(null); try { window.TN.app.program.refresh(); } catch (e) { /* úvodní karta podle volby */ } if (v) autoScan(); },
 };
 /* Přepis řeči pro rozhraní – funguje i bez AI (panel Přepis, stav u klipu, titulky z přepisu).

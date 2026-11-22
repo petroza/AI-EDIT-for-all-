@@ -719,6 +719,8 @@ function createTranscriptPanel(app) {
 
   return {
     render, show, onSourceOpen,
+    /** po přepnutí jazyka: seznam vět i patička se postaví znovu (jinak zůstaly texty v původním jazyce) */
+    relang() { listKey = ''; render(); },
     get active() { return active; },
     /** Přepis konkrétního klipu (karta Začni tady): Zdroj → jediný → vybraný → naposledy importovaný. */
     showFor() {

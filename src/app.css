@@ -407,7 +407,7 @@ ol.guide li span { color: #c9c9d2; }
 .tab-x:hover { color: #fff; background: rgba(255,255,255,.06); }
 #sourcePanel.show-txt .monitor, #sourcePanel.show-txt .mon-bar, #sourcePanel.show-txt .scrub, #sourcePanel.show-txt .transport { display: none !important; }
 #sourcePanel:not(.show-txt) .capstyle.docked { display: none; }
-.capstyle.docked { position: static; z-index: auto; width: auto; flex: 1; min-height: 0; overflow-y: auto; border: 0; border-radius: 0; box-shadow: none; padding: 0 12px 10px; }
+.capstyle.docked { position: static; z-index: auto; width: auto; flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; border: 0; border-radius: 0; box-shadow: none; padding: 0 12px 10px; }
 .capstyle.docked .cs-head { cursor: default; padding: 6px 0; }
 .capstyle.docked .cs-head b, .capstyle.docked .cs-x { display: none; }
 .capstyle.docked .cs-seq::before { content: attr(data-l); }

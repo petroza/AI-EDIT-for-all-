@@ -325,7 +325,7 @@ function createApi(project, hooks = {}) {
             for (const cut of r.cuts.sort((x, y) => x - y)) {
               const at = E.snapT(seq, cur.start + (cut - cur.in));
               const right = E.splitClip(seq, t, cur, at, lm);
-              if (right) { right.linkId = null; splits++; cur = right; }
+              if (right) { right.linkId = null; cur.linkId = null; splits++; cur = right; } // obraz rozříznutý, zvuk v celku – kusy obrazu bez vazby (Delete nesmí smazat celý zvuk)
             }
           } catch (e) { /* bez detekce střihů – celý klip jedním posunem */ }
         }

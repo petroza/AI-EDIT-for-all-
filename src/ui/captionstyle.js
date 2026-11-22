@@ -32,9 +32,10 @@ function openCaptionStyle(app, focusTitle) {
     <div class="cs-row"><span>${L('Text size', 'Velikost písma')}</span><input type="range" data-k="size" min="0.6" max="1.8" step="0.05"><em data-o="size"></em></div>
     <div class="cs-row"><span>${L('Height', 'Výška')}</span><input type="range" data-k="pos" min="2" max="60" step="1"><em data-o="pos"></em></div>
     <div class="cs-warn"></div>
-    <div class="cs-row"><span>${L('Colour', 'Barva')}</span><div class="cs-seg cs-col" data-k="color">
+    <div class="cs-row"><span>${L('Color', 'Barva')}</span><div class="cs-seg cs-col" data-k="color">
       <button data-v="#ffffff" style="--c:#ffffff" title="${L('White', 'Bílá')}"></button><button data-v="#ffd60a" style="--c:#ffd60a" title="${L('Yellow', 'Žlutá')}"></button><button data-v="#7dd3fc" style="--c:#7dd3fc" title="${L('Light blue', 'Světle modrá')}"></button></div>
-      <label class="cs-box"><input type="checkbox" data-k="box"> ${L('Background', 'Podklad')}</label></div>
+</div>
+    <label class="cs-hl cs-box"><input type="checkbox" data-k="box"> ${L('Background box behind captions', 'Podklad pod titulky')}</label>
     <label class="cs-hl"><input type="checkbox" data-k="highlight"> ${L('Highlight the spoken word', 'Zvýraznit vyslovované slovo')}</label>
     <div class="cs-foot"><button class="cs-reset">${L('Default', 'Výchozí')}</button><span>${L('Fix caption text on the Captions tab (next to Transcript) or by clicking a caption in the picture.', 'Text titulků opravíš v záložce Titulky (vedle Přepisu) nebo kliknutím na titulek v obraze.')}</span></div>`;
   // ukotveno jako záložka v rámu Zdroje (design-2 §2.2): monitory ani dialog exportu nikdy nepřekryje
@@ -186,4 +187,13 @@ function close() { if (box) { try { box._commit(); } catch (e) { /* sekvence mez
 function discard() { if (box) { box.remove(); box = null; } showTab(false); }
 /** Zdroj dostal klip (dvojklik, věta v Přepisu): přepnout na záložku Zdroj, Text v obraze zůstane v hlavičce. */
 function toSource() { if (box) { try { box._commit(); } catch (e) { /* bez sekvence */ } } showTab(false); }
-module.exports = { syncTab, openCaptionStyle, closeCaptionStyle: close, discardCaptionStyle: discard, captionStyleToSource: toSource, commitCaptionStyle: () => { if (box) { try { box._commit(); } catch (e) { /* bez sekvence */ } } } };
+/** Po přepnutí jazyka: otevřený panel postavit znovu v novém jazyce (rozepsané změny se nejdřív uloží), záložka zůstane. */
+function relang(app) {
+  if (!box) return;
+  const sp = document.getElementById('sourcePanel');
+  const wasActive = !!(sp && sp.classList.contains('show-txt'));
+  try { box._commit(); } catch (e) { /* bez sekvence */ }
+  openCaptionStyle(app);
+  if (!wasActive) showTab(false);
+}
+module.exports = { relangCaptionStyle: relang, syncTab, openCaptionStyle, closeCaptionStyle: close, discardCaptionStyle: discard, captionStyleToSource: toSource, commitCaptionStyle: () => { if (box) { try { box._commit(); } catch (e) { /* bez sekvence */ } } } };
