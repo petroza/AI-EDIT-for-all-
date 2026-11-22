@@ -1,0 +1,9 @@
+{
+  "name": "pz-ai-cut",
+  "version": "1.3.0",
+  "description": "Edit video in PZ AI Cut (web editor in Chrome, https://pz-ai-cut.pages.dev) with Claude. Media stays on your computer – Claude only receives the transcript text.",
+  "author": { "name": "PZ" },
+  "homepage": "https://pz-ai-cut.pages.dev",
+  "keywords": ["video", "editing", "transcript", "captions"],
+  "mcpServers": "./pz-ai-cut.mcpb"
+}

@@ -1,0 +1,106 @@
+{
+  "manifest_version": "0.3",
+  "name": "pz-ai-cut",
+  "display_name": "PZ AI Cut",
+  "version": "1.3.0",
+  "description": "Edit video in PZ AI Cut (web editor in Chrome) with Claude. Media stays on your computer.",
+  "long_description": "Connects Claude Desktop to the PZ AI Cut web editor open in Google Chrome on the same computer (https://pz-ai-cut.pages.dev). Claude can transcribe speech locally in the browser, read the transcript, build edits as new sequences and add captions. Video files and projects never leave your computer – Claude only receives text.",
+  "author": {
+    "name": "PZ"
+  },
+  "homepage": "https://pz-ai-cut.pages.dev",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {}
+    }
+  },
+  "tools": [
+    {
+      "name": "editor_status",
+      "description": "Project, media and sequences in the open editor"
+    },
+    {
+      "name": "transcribe_media",
+      "description": "Local speech transcription in the browser"
+    },
+    {
+      "name": "get_transcript",
+      "description": "Read transcript sentences"
+    },
+    {
+      "name": "search_transcript",
+      "description": "Find sentences"
+    },
+    {
+      "name": "build_sequence_from_transcript",
+      "description": "New sequence from chosen sentences"
+    },
+    {
+      "name": "build_sequence",
+      "description": "New sequence from source ranges"
+    },
+    {
+      "name": "get_sequence",
+      "description": "Clips of a sequence"
+    },
+    {
+      "name": "sequence_text",
+      "description": "What is said in a sequence"
+    },
+    {
+      "name": "open_sequence",
+      "description": "Show a sequence"
+    },
+    {
+      "name": "add_captions",
+      "description": "Captions from the transcript"
+    },
+    {
+      "name": "get_captions",
+      "description": "Read captions"
+    },
+    {
+      "name": "set_captions",
+      "description": "Fix caption texts"
+    },
+    {
+      "name": "reframe_sequence",
+      "description": "Social versions 9:16 / 4:5 / 1:1 that follow the face"
+    },
+    {
+      "name": "set_title",
+      "description": "Headline at the top of the picture"
+    },
+    {
+      "name": "add_markers",
+      "description": "Add markers"
+    },
+    {
+      "name": "undo",
+      "description": "Undo the last edit"
+    },
+    {
+      "name": "wait_task",
+      "description": "Wait for a task from the AI panel"
+    },
+    {
+      "name": "report_task",
+      "description": "Report progress to the AI panel"
+    }
+  ],
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32"
+    ],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}

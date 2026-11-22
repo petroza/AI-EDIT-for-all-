@@ -1,0 +1,168 @@
+/* Vzhled timeline, nástrojů a záložek jako v Premiere Pro (načítá se po app.css a přebíjí ho). */
+:root { --tl-bg: #1d1d1d; --tl-head: #232323; --clip: #2f6e88; --clip-dark: #23586e; --clip-hi: #5c9dbb; --clip-text: #f2f6f8;
+  --patch: #2d6ae0; --ph-blue: #2d8ceb; --heads-w: 200px; }
+
+/* záložky sekvencí */
+.tl-toolbar { height: 30px; background: #1b1b1b; border-bottom: 1px solid #111; padding: 0 0 0 6px; }
+.seq-tabs { gap: 0; align-self: stretch; }
+.seq-tab { background: transparent; border-radius: 0; padding: 0 14px 0 10px; height: 100%; color: #9a9a9a; font-size: 12px; gap: 7px; border-bottom: 2px solid transparent; }
+.seq-tab::before { content: ''; width: 10px; height: 10px; background: #4b5a22; border: 1px solid #6b7d33; flex: none; }
+.seq-tab.on { color: #e8e8e8; border-bottom-color: #d6d6d6; }
+.seq-tab .x { order: -1; opacity: .7; font-weight: normal; }
+.tab-menu { color: #9a9a9a; padding: 0 10px; font-size: 14px; cursor: default; }
+
+/* panel nástrojů */
+.tools-panel { width: 46px; min-width: 46px; flex: none; background: #1d1d1d; }
+.tools-head { height: 22px; justify-content: flex-end; color: #8a8a8a; font-size: 13px; padding: 0 8px; }
+.tool-list { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 0; }
+.ptool { width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; border-radius: 4px; color: #c8c8c8; position: relative; }
+.ptool::after { content: ''; position: absolute; right: 3px; bottom: 3px; border: 3px solid transparent; border-right-color: #8a8a8a; border-bottom-color: #8a8a8a; }
+.ptool:hover { background: #2e2e2e; }
+.ptool.on { background: var(--patch); color: #fff; }
+.ptool.on::after { border-right-color: #cfe0ff; border-bottom-color: #cfe0ff; }
+.ptool.dis { opacity: .35; }
+
+/* hlavička timeline: velký timecode + ikony */
+.tl-heads { width: var(--heads-w); background: var(--tl-head); }
+.tl-heads .ruler-spacer { height: 64px; display: block; padding: 4px 0 0 12px; background: var(--tl-bg); border-bottom: 1px solid #111; }
+.tl-tc { font: 400 18px "Segoe UI", sans-serif; color: var(--ph-blue); letter-spacing: .3px; height: 26px; line-height: 26px; }
+.tl-hicons { display: flex; gap: 4px; margin-top: 4px; }
+.hi { width: 26px; height: 24px; padding: 0; display: flex; align-items: center; justify-content: center; background: #2b2b2b; border: 1px solid #3a3a3a; border-radius: 4px; color: #a8a8a8; }
+.hi svg { width: 15px; height: 15px; }
+.hi.on { background: #3a3a3a; color: #fff; border-color: #555; }
+.hi:hover { color: #fff; }
+
+/* hlavičky stop */
+.th { display: flex; align-items: center; gap: 4px; padding: 0 6px 0 4px; border-bottom: 1px solid #191919; background: var(--tl-head); }
+.th.audio { background: var(--tl-head); }
+.th.vspace { background: var(--tl-head); border: 0; }
+.th.sep { height: 7px; background: #0f0f0f; padding: 0; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+.th .patch { width: 26px; height: 30px; flex: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; color: #fff; cursor: pointer; }
+.th .patch:not(.on):hover { background: #2c2c2c; }
+.th .patch.on { background: var(--patch); }
+.th .tt { width: 26px; height: 30px; flex: none; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; color: #9a9a9a; border: 1px solid #3a3a3a; cursor: pointer; }
+.th .tt.on { background: var(--patch); border-color: var(--patch); color: #fff; }
+.th .ti { width: 22px; height: 22px; padding: 0; background: transparent; border: 0; color: #9a9a9a; display: flex; align-items: center; justify-content: center; }
+.th .ti svg { width: 15px; height: 15px; }
+.th .ti:hover { color: #fff; background: transparent; }
+.th .ti.off { color: #555; }
+.th .ti.lock { color: #e0a040; }
+.th .ti.dis { opacity: .35; pointer-events: none; }
+.th .tl { width: 20px; height: 20px; padding: 0; font-size: 11px; background: transparent; border: 0; color: #a8a8a8; }
+.th .tl.mute { background: #2b8a4e; color: #fff; border-radius: 3px; }
+.th .tl.solo { background: #c9a227; color: #111; border-radius: 3px; }
+.th.addtracks { background: transparent; border: 0; height: 28px; gap: 6px; padding-left: 10px; }
+.th.addtracks .tl { width: auto; padding: 0 6px; border: 1px solid #3a3a3a; border-radius: 3px; }
+.th.captions { background: #24222b; padding-left: 10px; }
+
+/* stopy */
+.lane { background: var(--tl-bg); border-bottom: 1px solid #191919; }
+.lane.audio { background: var(--tl-bg); }
+.lane.vspace { background: var(--tl-bg); border: 0; }
+.lane.sep { height: 7px; background: #0f0f0f; border-top: 1px solid #000; border-bottom: 1px solid #000; }
+.lane.drop { background: #22303d; }
+.tl-ruler { background: var(--tl-bg); height: 64px !important; border-bottom: 0; }
+.tl-snapline { top: 64px; }
+.tl-empty { inset: 30px 0 0 0; }
+.tl-area { background: var(--tl-bg); }
+
+/* klipy */
+.clip { top: 1px; bottom: 1px; border-radius: 2px; border: 1px solid var(--clip-dark); background: var(--clip) !important; }
+.clip.video, .clip.audio { background: var(--clip) !important; }
+.clip .cl { top: 0; left: 4px; height: 15px; line-height: 15px; font-size: 11px; color: var(--clip-text); text-shadow: none; }
+.clip.video::before, .clip.audio::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 15px; background: rgba(255,255,255,.08); pointer-events: none; }
+.clip .fx { position: absolute; top: 1px; right: 4px; font: italic 600 10px Georgia, serif; color: #9fb4c0; background: rgba(0,0,0,.18); border-radius: 2px; padding: 0 3px; line-height: 12px; z-index: 2; }
+.clip .fx.on { color: #ffe066; }
+.clip .thumbs { top: 15px; bottom: 0; opacity: 1; border-right: 1px solid rgba(0,0,0,.4); }
+.clip.sel { outline: none; border: 1px solid #fff; background: var(--clip-hi) !important; z-index: 2; }
+.clip.ghost { opacity: .75; outline: 1px dashed #fff; }
+.clip .fade.in { background: linear-gradient(to bottom right, rgba(0,0,0,.35) 50%, transparent 50%); }
+.clip .fade.out { background: linear-gradient(to bottom left, rgba(0,0,0,.35) 50%, transparent 50%); }
+.lane .marker { background: rgba(220,140,200,.6); }
+.tl-playhead { background: var(--ph-blue); width: 1px; }
+
+/* kurzory nástrojů */
+.tl-lanes.tool-select .clip.edge-l, .tl-lanes.tool-select .clip.edge-r { cursor: ew-resize; }
+.tl-lanes.tool-ripple .clip.edge-l { cursor: w-resize; }
+.tl-lanes.tool-ripple .clip.edge-r { cursor: e-resize; }
+.tl-lanes.tool-rolling .clip.edge-l, .tl-lanes.tool-rolling .clip.edge-r { cursor: col-resize; }
+.tl-lanes.tool-slip, .tl-lanes.tool-slip .clip { cursor: ew-resize; }
+.tl-lanes.tool-hand, .tl-lanes.tool-hand .clip { cursor: grab; }
+.tl-lanes.tool-hand.grabbing, .tl-lanes.tool-hand.grabbing .clip { cursor: grabbing; }
+.tl-lanes.tool-zoom, .tl-lanes.tool-zoom .clip { cursor: zoom-in; }
+.tl-lanes.tool-trackfwd, .tl-lanes.tool-trackfwd .clip { cursor: e-resize; }
+.tl-lanes.tool-trackback, .tl-lanes.tool-trackback .clip { cursor: w-resize; }
+
+.brand { display: inline-flex; align-items: center; gap: 6px; }
+.brand-ico { width: 22px; height: 22px; }
+
+/* záložky panelů (Source: …, Program: …, Project: …) */
+.panel-head.ptab { height: 28px; background: #1b1b1b; border-bottom: 1px solid #111; gap: 6px; }
+.panel-head.ptab .ptitle { font-weight: 400; color: #e6e6e6; }
+.panel-head.ptab .psub { color: #e6e6e6; }
+.panel-head.ptab .tab-menu { padding: 0 2px; }
+.panel { background: #1d1d1d; }
+
+/* monitory */
+.monitor { background: #111; }
+.mon-bar { height: 30px; display: flex; align-items: center; gap: 10px; padding: 0 12px; flex: none; }
+.mon-bar .tc { font: 400 16px "Segoe UI", sans-serif; color: var(--ph-blue); min-width: 110px; }
+.mon-bar .tc.dim { color: #cfcfcf; text-align: right; }
+.mon-bar .fit { background: #262626; border: 1px solid #3a3a3a; border-radius: 4px; padding: 2px 6px; color: #ddd; height: 24px; }
+.scrub { height: 16px; background: transparent; border-top: 0; margin: 0 12px; }
+.scrub::before { content: ''; position: absolute; left: 0; right: 0; top: 9px; height: 1px; background: #4a4a4a; }
+.scrub .ph { background: var(--ph-blue); width: 1px; }
+.scrub .ph::before { left: -5px; border-width: 5px; border-top-color: var(--ph-blue); }
+.scrub .inout { background: rgba(255,255,255,.12); top: 5px; bottom: 3px; }
+.transport { height: 40px; justify-content: center; }
+.transport .tbtns { gap: 2px; }
+.mb { width: 32px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; color: #c8c8c8; border-radius: 4px; }
+.mb svg { width: 18px; height: 18px; }
+.mb:hover { background: #2e2e2e; color: #fff; }
+.mb.play { color: #fff; }
+
+/* projekt */
+.proj-path { height: 26px; display: flex; align-items: center; padding: 0 12px; color: #cfcfcf; flex: none; }
+.proj-path::before { content: '↑'; color: #777; margin-right: 10px; }
+.proj-search { display: flex; align-items: center; gap: 8px; padding: 2px 10px 8px; flex: none; }
+.proj-search .si { color: #aaa; display: flex; }
+.proj-search .si svg { width: 15px; height: 15px; }
+.proj-search input { flex: 1; background: #161616; border: 1px solid #333; border-radius: 12px; padding: 3px 10px; min-width: 60px; }
+.proj-search .psub { white-space: nowrap; font-size: 11px; }
+.proj-list.icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--thumb, 120px), 1fr)); gap: 12px 10px; align-content: start; padding: 4px 10px; }
+.pi.tile { display: block; padding: 0; background: transparent; border-radius: 3px; }
+.pi.tile:hover { background: transparent; }
+.pi.tile .tthumb { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #0c0c0c center/cover no-repeat; border: 2px solid transparent; border-radius: 3px; }
+.pi.tile.sel .tthumb { border-color: #e8e8e8; }
+.pi.tile.active .tthumb { box-shadow: 0 0 0 1px var(--ph-blue); }
+.pi.tile .tbadge { position: absolute; left: 4px; bottom: 3px; color: #fff; display: flex; filter: drop-shadow(0 0 2px #000); }
+.pi.tile .tbadge svg { width: 15px; height: 15px; }
+.pi.tile .tdur { position: absolute; right: 4px; bottom: 3px; font-size: 10px; color: #fff; background: rgba(0,0,0,.55); padding: 0 4px; border-radius: 2px; }
+.pi.tile .tname { display: flex; align-items: center; gap: 5px; padding: 4px 2px 0; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ddd; }
+.pi.tile .lbl { width: 9px; height: 9px; flex: none; }
+.pi.tile .lbl.media { background: #2f6e88; }
+.pi.tile .lbl.seq { background: #4b6b22; }
+.pi.tile.sel .tname { color: #fff; }
+.proj-foot { gap: 4px; align-items: center; background: #1b1b1b; }
+.pf { width: 28px; height: 26px; padding: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; color: #aaa; border-radius: 4px; }
+.pf svg { width: 17px; height: 17px; }
+.pf:hover { color: #fff; background: #2e2e2e; }
+.pf.on { color: #fff; background: #3a3a3a; }
+#thumbSize { width: 90px; }
+
+/* obrys klipu při přetahování (jako v Premiere) */
+.drop-ghost { position: absolute; z-index: 9; background: rgba(47,110,136,.55); border: 1px solid #fff; border-radius: 2px; color: #fff;
+  font-size: 11px; padding: 1px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; box-sizing: border-box; }
+.drop-ghost.unknown { border-style: dashed; }
+/* přechody na timeline */
+.trans { position: absolute; top: 2px; bottom: 2px; z-index: 3; border: 1px solid rgba(255,255,255,.8); border-radius: 2px; pointer-events: auto; cursor: pointer;
+  font-size: 9px; color: #fff; overflow: hidden; white-space: nowrap; padding: 15px 2px 0; box-sizing: border-box; }
+.trans.cross { background: linear-gradient(to top right, rgba(110,150,255,.55) 49%, rgba(255,255,255,.75) 50%, rgba(110,150,255,.55) 51%); }
+.trans.dipBlack { background: linear-gradient(to top right, rgba(0,0,0,.65) 49%, rgba(255,255,255,.7) 50%, rgba(0,0,0,.65) 51%); }
+.trans.dipWhite { background: linear-gradient(to top right, rgba(255,255,255,.55) 49%, rgba(0,0,0,.6) 50%, rgba(255,255,255,.55) 51%); color: #111; }
+
+/* zoom lišta pod hlavičkami stop */
+.zoombar { padding-left: var(--heads-w); }
+
+/* ` Maximize Frame – panel přes celé okno */
+.panel.maxed { position: fixed !important; left: 0; right: 0; top: 32px; bottom: 22px; width: auto !important; height: auto !important; z-index: 40; }

@@ -1,0 +1,204 @@
+'use strict';
+/* Jazyk rozhraní: angličtina (výchozí, texty jsou přímo v kódu) nebo čeština (překlad přes tento slovník).
+ * Používá ho hlavní proces (menu, dialogy) i okno (DOM přes src/i18n-app.js). Klíč = anglický text v kódu. */
+
+const CS = {
+  // ---------- menu
+  'File': 'Soubor', 'New Project': 'Nový projekt', 'Open Project…': 'Otevřít projekt…', 'Save': 'Uložit', 'Save As…': 'Uložit jako…',
+  'Import…': 'Importovat…', 'New Sequence…': 'Nová sekvence…', 'Export Media…': 'Exportovat média…', 'Exit': 'Konec',
+  'Edit': 'Úpravy', 'Undo': 'Zpět', 'Redo': 'Znovu', 'Cut': 'Vyjmout', 'Copy': 'Kopírovat', 'Paste': 'Vložit',
+  'Paste Insert': 'Vložit s posunem', 'Select All': 'Vybrat vše', 'Deselect All': 'Zrušit výběr', 'Clear': 'Smazat',
+  'Ripple Delete': 'Smazat a posunout', 'Keyboard Shortcuts': 'Klávesové zkratky', 'Clip': 'Klip', 'Link / Unlink': 'Propojit / rozpojit',
+  'Enable': 'Zapnout / vypnout', 'Audio Gain…': 'Zesílení zvuku…', 'Set to Fill / Scale to Frame Size': 'Vyplnit snímek / přizpůsobit velikosti',
+  'Match Frame': 'Najít snímek ve zdroji', 'Sequence': 'Sekvence', 'Add Edit': 'Přidat střih', 'Add Edit to All Tracks': 'Přidat střih na všechny stopy',
+  'Lift': 'Vyzvednout', 'Extract': 'Vyjmout s posunem', 'Ripple Trim Previous Edit to Playhead': 'Zkrátit začátek k přehrávací hlavě',
+  'Ripple Trim Next Edit to Playhead': 'Zkrátit konec k přehrávací hlavě', 'Apply Video Transition (Cross Dissolve)': 'Použít prolínačku (Cross Dissolve)',
+  'Apply Audio Transition': 'Použít zvukový přechod', 'Apply Default Transitions to Selection': 'Použít výchozí přechody na výběr',
+  'Apply Dip to Black': 'Použít zatmívačku do černé', 'Apply Dip to White': 'Použít zatmívačku do bílé', 'Clear Transitions': 'Odstranit přechody',
+  'Fade In / Fade Out Sequence': 'Roztmívačka / zatmívačka sekvence', 'Default Transition Duration…': 'Výchozí délka přechodu…',
+  'Go to Next Gap': 'Na další mezeru', 'Reverse Match Frame': 'Najít snímek v sekvenci', 'Snap in Timeline': 'Přichytávání na časové ose',
+  'Zoom to Sequence': 'Zobrazit celou sekvenci', 'Sequence Settings…': 'Nastavení sekvence…', 'Auto Reframe Sequence (9:16)': 'Auto Reframe sekvence (9:16)',
+  'Delete Captions': 'Smazat všechny titulky', 'Auto Reframe Sequence': 'Auto Reframe sekvence', '9:16 – Reels, TikTok, Shorts': '9:16 – Reels, TikTok, Shorts', '4:5 – Instagram / Facebook post': '4:5 – příspěvek Instagram / Facebook', '1:1 – Square': '1:1 – čtverec', 'Safe zones': 'Bezpečné zóny', 'Transcript': 'Přepis', 'Delete Caption': 'Smazat titulek', 'Text on video': 'Text v obraze', 'Close Text on video': 'Zavřít Text v obraze', 'Open the AI panel (F4)': 'Otevřít panel AI (F4)', 'Captions': 'Titulky', 'Fix the caption at the playhead': 'Opravit titulek pod přehrávací hlavou', 'Transcribe More Accurately…': 'Přepsat přesněji…', 'Waiting tasks cleared (new project)': 'Čekající zadání smazána (nový projekt)', 'Set to Fill': 'Vyplnit obraz', 'Show Transcript': 'Zobrazit přepis', 'Transcribe Speech': 'Přepsat řeč', 'Stop Transcription': 'Zastavit přepis', 'Resume Transcription': 'Pokračovat v přepisu', 'Transcribe Again…': 'Přepsat znovu…', 'Transcribe Speech (the clip has no sound)': 'Přepsat řeč (klip nemá zvuk)', 'Create Captions from Transcript…': 'Vytvořit titulky z přepisu…', 'Captions from Transcript': 'Titulky z přepisu', 'Search the transcript': 'Hledat v přepisu', 'Place the selected clip in it': 'Vložit do ní vybraný klip', 'Reels / TikTok / Shorts UI': 'Rozhraní Reels / TikTok / Shorts', 'custom': 'vlastní', '1080×1920 (vertical 9:16 – Reels, TikTok, Shorts)': '1080×1920 (na výšku 9:16 – Reels, TikTok, Shorts)', '1080×1080 (square 1:1)': '1080×1080 (čtverec 1:1)', '1080×1350 (4:5 Instagram)': '1080×1350 (4:5 Instagram)', 'How to Make a Social Video': 'Jak na video pro sítě', 'Export Social Versions…': 'Exportovat verze pro sítě…', 'Folder for the social versions': 'Složka pro verze pro sítě', 'Highlight the spoken word': 'Zvýraznit vyslovované slovo', 'PZ AI Cut is open in another tab. Changes made here are not saved – work in one tab.': 'PZ AI Cut je otevřený v jiné kartě. Úpravy tady se neukládají – pracuj v jedné kartě.', 'Work here': 'Pracovat tady', 'All Social Formats (9:16, 4:5, 1:1)': 'Všechny formáty pro sítě (9:16, 4:5, 1:1)', 'Setting the headline': 'Nastavuji nadpis', 'Reframing for social media': 'Převádím na formáty pro sítě', 'Headline at the Top…': 'Nadpis nahoře…', 'Headline': 'Nadpis', 'AI: Headline': 'AI: Nadpis', 'Show where Reels / TikTok / Shorts cover the picture': 'Ukáže, kam na Reels / TikToku / Shorts sahá rozhraní aplikace', 'Captions': 'Titulky', 'Caption Style…': 'Styl titulků…', 'Edit Caption at Playhead': 'Upravit titulek pod přehrávací hlavou', 'Caption style': 'Styl titulků', 'No caption at the playhead': 'Pod přehrávací hlavou není titulek', 'Edit Caption': 'Úprava titulku', 'Caption Style': 'Styl titulků', 'AI: Caption style': 'AI: Styl titulků', 'Markers': 'Značky', 'Mark In': 'Označit In', 'Mark Out': 'Označit Out', 'Go to In': 'Na In', 'Go to Out': 'Na Out',
+  'Clear In and Out': 'Smazat In a Out', 'Mark Clip': 'Označit klip', 'Mark Selection': 'Označit výběr', 'Add Marker': 'Přidat značku',
+  'Go to Next Marker': 'Na další značku', 'Clear Selected Marker': 'Smazat značku', 'Clear All Markers': 'Smazat všechny značky',
+  'Window': 'Okno', 'AI Panel': 'AI panel', 'AI panel': 'AI panel', 'Maximize Frame': 'Maximalizovat panel', 'Full Screen': 'Celá obrazovka',
+  'Reload': 'Načíst znovu', 'Developer Tools': 'Vývojářské nástroje', 'Help': 'Nápověda', 'Open Application Folder': 'Otevřít složku aplikace',
+  'Language': 'Jazyk',
+  // ---------- horní lišta, monitory, projekt
+  'Bridge for the AI panel (MCP server)': 'Most pro AI panel (MCP server)', 'Export Media (Ctrl+M)': 'Exportovat média (Ctrl+M)',
+  '⇪ Export': '⇪ Export', 'AI Panel (F4)': 'AI panel (F4)', 'Source:': 'Zdroj:', 'Program:': 'Program:', 'Project:': 'Projekt:',
+  '(no clip)': '(žádný klip)', '(no sequence)': '(žádná sekvence)', 'Untitled': 'Bez názvu', 'Ready': 'Připraveno',
+  'Double-click a clip in the Project panel': 'Dvojklikem otevři klip v panelu Projekt', 'Open or create a sequence': 'Otevři nebo vytvoř sekvenci',
+  'Select Zoom Level': 'Velikost zobrazení', 'Fit': 'Přizpůsobit', 'Step Back 1 Frame (Left)': 'O snímek zpět (←)', 'Step Forward 1 Frame (Right)': 'O snímek vpřed (→)',
+  'Play-Stop Toggle (Space)': 'Přehrát / zastavit (mezerník)', 'Insert (,)': 'Vložit s posunem (,)', 'Overwrite (.)': 'Přepsat (.)',
+  'Export Frame (Ctrl+Shift+E)': 'Exportovat snímek (Ctrl+Shift+E)', 'Go to Previous Edit Point (Up)': 'Na předchozí střih (↑)',
+  'Go to Next Edit Point (Down)': 'Na další střih (↓)', "Extract (')": "Vyjmout s posunem (')", 'Lift (;)': 'Vyzvednout (;)',
+  'Search': 'Hledat', 'List View': 'Seznam', 'Icon View': 'Ikony', 'Adjust the size of icons and thumbnails': 'Velikost ikon a náhledů',
+  'Import (Ctrl+I) – or drag files here': 'Importovat (Ctrl+I) – nebo sem přetáhni soubory', 'New Item: Sequence (Ctrl+N)': 'Nová položka: sekvence (Ctrl+N)',
+  'Clear (remove the selected item)': 'Smazat (odebrat vybranou položku)', 'Tools': 'Nástroje', 'Panel menu': 'Menu panelu',
+  'Drag to scroll · drag the end handles to zoom · double-click = Zoom to Sequence': 'Táhni = posun · táhni okraje = zoom · dvojklik = celá sekvence',
+  'No sequence open – drag a clip here from the Project panel, or describe the edit in the AI panel.': 'Není otevřená žádná sekvence – přetáhni sem klip z panelu Projekt, nebo popiš střih v AI panelu.',
+  'Creating a playback proxy': 'Vytváří se náhledový proxy soubor', '· creating proxy…': '· vytváří se proxy…', '· media offline': '· médium chybí',
+  // ---------- nástroje
+  'Selection Tool': 'Výběr', 'Track Select Forward Tool': 'Výběr stopy dopředu', 'Track Select Backward Tool': 'Výběr stopy dozadu',
+  'Ripple Edit Tool': 'Střih s posunem (ripple)', 'Rolling Edit Tool': 'Posun střihu (rolling)', 'Razor Tool': 'Žiletka', 'Slip Tool': 'Posun obsahu (slip)',
+  'Hand Tool': 'Ruka', 'Zoom Tool (Z) – Alt+click zooms out': 'Lupa (Z) – Alt+klik oddálí', 'Type Tool (T) – not available yet': 'Text (T) – zatím není',
+  // ---------- časová osa
+  'Insert or overwrite sequences as nests or individual clips (not available)': 'Vkládat sekvence jako vnořené nebo jednotlivé klipy (zatím není)',
+  'Snap in Timeline (S)': 'Přichytávání (S)', 'Linked Selection': 'Propojený výběr', 'Add Marker (M)': 'Přidat značku (M)',
+  'Timeline Display Settings': 'Nastavení zobrazení časové osy', 'Toggle Track Lock': 'Zamknout / odemknout stopu',
+  'Toggle Track Targeting (Add Edit, Lift, edit points)': 'Cílová stopa (přidat střih, vyzvednout, body střihu)', 'Toggle Sync Lock': 'Synchronizační zámek',
+  'Toggle Track Output': 'Zobrazit / skrýt stopu', 'Mute Track': 'Ztlumit stopu', 'Solo Track': 'Sólo stopa', 'Voice-over Record (not available)': 'Nahrát komentář (zatím není)',
+  'Add Video Track': 'Přidat video stopu', 'Add Audio Track': 'Přidat zvukovou stopu', 'C1 · Captions': 'C1 · Titulky', 'unlinked': 'rozpojeno',
+  'Effects applied': 'Použité efekty', 'Effects': 'Efekty', 'fade in': 'roztmívání', 'fade out': 'zatmívání', 'Mark In (I)': 'Označit In (I)', 'Mark Out (O)': 'Označit Out (O)',
+  'Go to In (Shift+I)': 'Na In (Shift+I)', 'Go to Out (Shift+O)': 'Na Out (Shift+O)', 'Cross Dissolve': 'Prolínačka', 'Dip to Black': 'Zatmívačka do černé',
+  'Dip to White': 'Zatmívačka do bílé', 'Linked Selection on': 'Propojený výběr zapnut', 'Linked Selection off': 'Propojený výběr vypnut',
+  'Snap on': 'Přichytávání zapnuto', 'Snap off': 'Přichytávání vypnuto', 'Ripple Edit': 'Střih s posunem', 'Trim': 'Zkrácení', 'Rolling Edit': 'Posun střihu', 'Slip': 'Posun obsahu',
+  // ---------- kontextové menu
+  'Unlink': 'Rozpojit', 'Link': 'Propojit', 'Apply Cross Dissolve': 'Použít prolínačku', 'Open in Source Monitor': 'Otevřít ve zdrojovém monitoru',
+  'Show Video Thumbnails': 'Zobrazit náhledy videa', 'Show Audio Waveform': 'Zobrazit průběh zvuku', 'New Sequence From Clip': 'Nová sekvence z klipu',
+  'Append to Active Sequence': 'Přidat na konec aktivní sekvence', 'Reveal in Explorer': 'Zobrazit v Průzkumníku', 'Remove From Project': 'Odebrat z projektu',
+  'Open in Timeline': 'Otevřít na časové ose', 'Rename…': 'Přejmenovat…', 'Duplicate': 'Duplikovat', 'Delete Sequence': 'Smazat sekvenci',
+  'double-click': 'dvojklik', 'Ripple Delete Gap': 'Zavřít mezeru', 'Clear Transition': 'Odstranit přechod', 'Fade In/Out': 'Roztmívačka / zatmívačka',
+  // ---------- dialogy
+  'Cancel': 'Zrušit', 'OK': 'OK', 'Close': 'Zavřít', 'Export': 'Exportovat', 'Import': 'Import', 'Audio Gain': 'Zesílení zvuku', 'Adjust Gain by (dB)': 'Změnit zesílení o (dB)',
+  'Sequence Settings': 'Nastavení sekvence', 'New Sequence': 'Nová sekvence', 'Sequence Name': 'Název sekvence', 'Preset': 'Předvolba', 'Frame Size': 'Velikost snímku',
+  'Timebase (fps)': 'Snímková frekvence (fps)', 'Rename Sequence': 'Přejmenovat sekvenci', 'Default Transition Duration': 'Výchozí délka přechodu',
+  'Video transitions': 'Video přechody', 'Keyboard Shortcuts (Premiere Pro defaults)': 'Klávesové zkratky (výchozí v Premiere Pro)',
+  'Output Name': 'Výstupní soubor', 'Format': 'Formát', 'Encoder': 'Kodér', 'Software (best quality)': 'Software (nejlepší kvalita)', 'NVIDIA GPU (NVENC, fast)': 'Grafika NVIDIA (NVENC, rychlé)',
+  'Loudness': 'Hlasitost', 'Off (keep levels)': 'Vypnuto (ponechat úrovně)', 'Normalize to −14 LUFS (social media)': 'Normalizovat na −14 LUFS (sociální sítě)',
+  'Normalize to −23 LUFS (TV, EBU R128)': 'Normalizovat na −23 LUFS (TV, EBU R128)', 'Source Range': 'Rozsah', 'Sequence In/Out': 'In/Out sekvence',
+  'Captions': 'Titulky', 'burn into video': 'vypálit do obrazu', 'create sidecar .srt': 'vytvořit samostatné .srt', 'reveal in Explorer': 'zobrazit v Průzkumníku',
+  'Video and audio': 'Video a zvuk', 'All files': 'Všechny soubory', 'Videos': 'Videa', 'Pictures': 'Obrázky', 'Documents': 'Dokumenty', 'Project': 'Projekt',
+  'Save Project': 'Uložit projekt', 'Open Project': 'Otevřít projekt', "Don't Save": 'Neukládat', 'Save changes to the project?': 'Uložit změny v projektu?',
+  'Export Frame': 'Exportovat snímek', 'Files': 'Soubory', 'Insert': 'Vložit s posunem', 'Overwrite': 'Přepsat', 'Insert Sequence': 'Vložit sekvenci s posunem',
+  'Overwrite Sequence': 'Přepsat sekvencí', 'seconds': 'sekund',
+  // nápověda – skupiny a popisy
+  'Playback': 'Přehrávání', 'Marks and Editing': 'Značky a střih', 'Timeline': 'Časová osa', 'View and File': 'Zobrazení a soubor',
+  'Play-Stop Toggle': 'Přehrát / zastavit', 'Shuttle Left / Stop / Right (again = faster)': 'Přehrávat vzad / stop / vpřed (znovu = rychleji)',
+  'Step 1 frame (Shift = 5 frames)': 'O 1 snímek (Shift = 5 snímků)', 'Previous / Next Edit Point (targeted tracks)': 'Předchozí / další střih (cílové stopy)',
+  'Previous / Next Edit Point on Any Track': 'Předchozí / další střih na libovolné stopě', 'Go to Start / End': 'Na začátek / konec',
+  'Next / Previous Marker': 'Další / předchozí značka', 'Next / Previous Gap': 'Další / předchozí mezera', 'Previous / Next screen': 'Předchozí / další obrazovka',
+  'Mark In / Mark Out': 'Označit In / Out', 'Go to In / Out': 'Na In / Out', 'Clear Marker (Shift = all)': 'Smazat značku (Shift = všechny)',
+  'Add Edit (targeted tracks)': 'Přidat střih (cílové stopy)', 'Ripple Trim Previous / Next Edit to Playhead': 'Zkrátit začátek / konec k přehrávací hlavě',
+  'Extend Previous / Next Edit to Playhead': 'Protáhnout předchozí / další střih k hlavě', 'Extend Selected Edit to Playhead': 'Protáhnout vybraný střih k hlavě',
+  'Clear (gap = close it)': 'Smazat (mezera = zavřít)', 'Select Clip at Playhead': 'Vybrat klip pod hlavou', 'Select Previous / Next Clip': 'Vybrat předchozí / další klip',
+  'Nudge 1 frame (Shift = 5)': 'Posunout o 1 snímek (Shift = 5)', 'Nudge to track above / below': 'Posunout na stopu výš / níž', 'Slip 1 frame (Shift = 5)': 'Posun obsahu o 1 snímek (Shift = 5)',
+  'Cut / Copy / Paste': 'Vyjmout / kopírovat / vložit', 'Clip volume −/+ 1 dB (Shift = 6 dB)': 'Hlasitost klipu −/+ 1 dB (Shift = 6 dB)', 'Audio Crossfade': 'Zvukové prolnutí',
+  'Default Transitions': 'Výchozí přechody', 'Toggle all video / audio track targets': 'Všechny video / zvukové stopy cílové', 'Snap': 'Přichytávání',
+  'Selection': 'Výběr', 'Track Select Forward / Backward': 'Výběr stopy dopředu / dozadu', 'Razor (Shift+click = all tracks)': 'Žiletka (Shift+klik = všechny stopy)',
+  'Hand': 'Ruka', 'Zoom (Alt = out)': 'Lupa (Alt = oddálit)', 'Ripple Edit with Selection Tool': 'Střih s posunem nástrojem Výběr', 'Video or audio only': 'Jen video nebo jen zvuk',
+  'Zoom In / Out': 'Přiblížit / oddálit', 'Video track height': 'Výška video stop', 'Audio track height': 'Výška zvukových stop', 'Expand / Minimize all tracks': 'Zvětšit / zmenšit všechny stopy',
+  'Maximize panel': 'Maximalizovat panel', 'Program: Fit / 100 %': 'Program: přizpůsobit / 100 %', 'Undo / Redo': 'Zpět / znovu', 'Save a Copy': 'Uložit kopii',
+  'Close Sequence': 'Zavřít sekvenci', 'Export Media': 'Exportovat média',
+  // ---------- hlášky
+  'Nothing to undo': 'Není co vrátit', 'Nothing to redo': 'Není co zopakovat', 'No edit point': 'Žádný střih', 'No gap': 'Žádná mezera', 'Auto-saved': 'Automaticky uloženo',
+  'Select a clip first': 'Nejdřív vyber klip', 'Select clips first': 'Nejdřív vyber klipy', 'Select audio clips': 'Vyber zvukové klipy',
+  'Select audio clips or park the playhead on an edit point': 'Vyber zvukové klipy nebo dej přehrávací hlavu na střih',
+  'No clip under the playhead on targeted tracks': 'Pod přehrávací hlavou na cílových stopách není klip',
+  'The source frame is not in the sequence': 'Zdrojový snímek v sekvenci není', 'The track is locked': 'Stopa je zamčená',
+  'A sequence cannot be placed into itself.': 'Sekvenci nejde vložit do sebe samé.', 'No sequence is open.': 'Není otevřená žádná sekvence.',
+  'No video at the playhead.': 'Pod přehrávací hlavou není video.', 'Open a clip in the Source monitor first (double-click it in the Project panel).': 'Nejdřív otevři klip ve zdrojovém monitoru (dvojklikem v panelu Projekt).',
+  'Recovered an unsaved project from the auto-save.': 'Obnoven neuložený projekt z automatické zálohy.',
+  'Set an In point (I) and an Out point (O) in the sequence.': 'Nastav v sekvenci bod In (I) a Out (O).',
+  'Insufficient media: Cross Dissolve needs extra frames beyond the clip ends (handles).': 'Málo materiálu: prolínačka potřebuje snímky navíc za koncem klipů.',
+  'The gap cannot be closed – another track has media in it.': 'Mezeru nejde zavřít – na jiné stopě v ní je materiál.',
+  'Auto Reframe to 9:16 (camera cuts and faces)…': 'Auto Reframe na 9:16 (střihy kamery a obličeje)…', 'bridge off': 'most vypnut',
+  'bridge not running (AI panel)': 'most neběží (AI panel)', 'Nudge': 'Posun', 'Nudge Clip Selection': 'Posun výběru', 'Up': 'Nahoru', 'Down': 'Dolů',
+  'Extend Edit': 'Protáhnout střih', 'Trim In to Playhead': 'Zkrátit začátek k hlavě', 'Trim Out to Playhead': 'Zkrátit konec k hlavě',
+  'Increase Clip Volume': 'Zesílit klip', 'Decrease Clip Volume': 'Zeslabit klip', 'Add Track': 'Přidat stopu', 'Razor': 'Žiletka', 'Rename': 'Přejmenovat',
+  'Move Clips': 'Přesun klipů', 'Duplicate Sequence': 'Duplikovat sekvenci', 'Auto Reframe Sequence': 'Auto Reframe sekvence', 'Set to Fill': 'Vyplnit snímek',
+  'Ripple trim (Q)': 'Zkrácení začátku (Q)', 'Ripple trim (W)': 'Zkrácení konce (W)',
+  // ---------- AI panel (ovládání z layout.js; obsah panelu je česky už v originále)
+  'Settings': 'Nastavení', 'Assistant': 'Asistent', 'Media': 'Média', 'Soundbite': 'Výrok', 'Teaser': 'Upoutávka', 'Short version': 'Zkrácená verze',
+  'Remove pauses': 'Bez pauz', 'Task': 'Zadání', 'Dictate the task (local Whisper) – click, speak, click again': 'Nadiktovat zadání (lokální Whisper) – klikni, mluv, klikni znovu',
+  'Continue conversation': 'Pokračovat v konverzaci', 'Stop': 'Zastavit', 'Add': 'Přidat', 'Characters per line': 'Znaků na řádek', 'Lines': 'Řádky',
+  'Generate captions from the transcript of the active sequence – run it when the edit is finished.': 'Vytvoří titulky z přepisu aktivní sekvence – spusť až po dokončeném střihu.',
+  'Czech translation': 'Český překlad', 'Transcript language': 'Jazyk přepisu', 'System idle': 'Systém nečinný', 'System ready': 'Systém připraven',
+  'MKV, MXF, MOV and other formats work directly – the editor creates playback proxies automatically. Files are added to the Project panel.':
+    'MKV, MXF, MOV a další formáty fungují přímo – program si sám vytvoří náhledové proxy. Soubory se přidají do panelu Projekt.',
+  'What shall we edit today?': 'Co dnes budeme stříhat?', 'Enter a task or choose a quick action.': 'Napiš zadání nebo vyber rychlou akci.',
+  'Active sequence': 'Aktivní sekvence', 'Length': 'Délka', 'Reframe sequence': 'Převést formát sekvence', 'AI settings': 'Nastavení AI', 'Run task': 'Spustit',
+  'Queue': 'Fronta', 'Add to queue': 'Přidat do fronty', 'Import video': 'Importovat video', 'or drag and drop a file': 'nebo sem přetáhni soubor',
+  'Click to import, or drop files here': 'Klikni pro import, nebo sem přetáhni soubory',
+  'The sequence the edit will use (active in the editor)': 'Sekvence, ze které se bude stříhat (aktivní v editoru)',
+  'The AI panel switches language when the task finishes.': 'AI panel přepne jazyk, až doběhne úloha.', 'Opus 160 kb/s – no AAC encoder on this computer (Windows N: install the Media Feature Pack)': 'Opus 160 kb/s – počítač nemá kodér AAC (Windows N: nainstaluj Media Feature Pack)',
+  'Media files are available again.': 'Média jsou znovu dostupná.', 'The file is in the folder you chose when saving.': 'Soubor je ve složce, kterou jsi vybral při ukládání.',
+  'Allow access to media': 'Povolit přístup k médiím', 'Claude Desktop not connected': 'Claude Desktop není připojen',
+  'Captions for the active sequence': 'Titulky aktivní sekvence',
+  // ---------- AI panel webové verze (Claude Desktop)
+  'Claude Desktop connected': 'Claude Desktop připojen', 'Connect your Claude Desktop': 'Připoj svůj Claude Desktop',
+  'Install': 'Instalovat', 'and sign in.': 'a přihlas se.', 'Download the PZ AI Cut connector': 'Stáhni konektor PZ AI Cut',
+  ', open the file and click': ', otevři soubor a klikni na', 'in Claude Desktop.': 'v Claude Desktop.',
+  'Keep this tab open. If Chrome asks to access devices on your local network, click': 'Nech tuhle kartu otevřenou. Když se Chrome zeptá na přístup k zařízením v místní síti, klikni na',
+  'Allow': 'Povolit', 'Waiting for Claude Desktop…': 'Čekám na Claude Desktop…', 'Send to Claude': 'Poslat Claudovi',
+  'Claude Desktop picks up tasks from this panel after you write to it once:': 'Claude Desktop si začne brát úkoly z tohoto panelu, když mu jednou napíšeš:',
+  'Or just write your request directly in Claude Desktop.': 'Nebo napiš zadání rovnou do Claude Desktop.',
+  'Activity': 'Průběh', 'Transcribe new videos automatically': 'Automaticky přepisovat nová videa', 'Nothing yet.': 'Zatím nic.', 'Speech recognition': 'Rozpoznávání řeči', 'Fast (smaller model)': 'Rychlé (menší model)',
+  'Standard': 'Standardní', 'Accurate (needs a good GPU)': 'Přesné (potřebuje dobrou grafiku)',
+  'Your video, audio and projects stay on this computer. Speech is recognised in this browser; Claude only receives the text of the transcript.':
+    'Video, zvuk i projekty zůstávají na tomto počítači. Řeč se rozpoznává v prohlížeči; Claude dostane jen text přepisu.',
+  'Chrome blocked the connection to Claude Desktop. Click the icon left of the address bar → Site settings → allow "Local network access", then reload.':
+    'Chrome zablokoval spojení s Claude Desktop. Klikni na ikonu vlevo od adresy → Nastavení webu → povol „Přístup k místní síti“ a načti stránku znovu.',
+  'Claude Desktop disconnected': 'Claude Desktop odpojen', 'Reading the project': 'Čtu projekt', 'Transcribing speech': 'Přepisuji řeč',
+  'Reading the transcript': 'Čtu přepis', 'Searching the transcript': 'Hledám v přepisu', 'Building a new sequence': 'Stavím novou sekvenci',
+  'Reading the sequence': 'Čtu sekvenci', 'Checking the edit': 'Kontroluji střih', 'Opening a sequence': 'Otevírám sekvenci',
+  'Adding captions': 'Přidávám titulky', 'Reading captions': 'Čtu titulky', 'Correcting captions': 'Opravuji titulky', 'Adding markers': 'Přidávám značky', 'loading the speech model': 'načítám model řeči', 'Language of the interface': 'Jazyk rozhraní',
+};
+
+// dynamické texty: [vzor, náhrada | funkce]
+const RULES = [
+  [/^Place the selected clip in it \(In–Out, (.+)\)$/, 'Vložit do ní vybraný klip (úsek In–Out, $1)'], [/^Place the selected clip in it \(whole clip, (.+)\)$/, 'Vložit do ní vybraný klip (celý klip, $1)'],
+  [/^About (.+)$/, 'O aplikaci $1'], [/^About$/, 'O aplikaci'], [/^Untitled( \*)$/, 'Bez názvu$1'],
+  [/^Cannot write the file: (.*)$/, 'Soubor nejde zapsat: $1'],
+  [/^(\d\d:\d\d  )(▶ |✔ |✖ )?(.+)$/, (m, a, b, c) => a + (b || '') + tr(c)],
+  [/^Transcribing (.+) – (\d+ %)$/, 'Přepisuji $1 – $2'], [/^Transcript ready: (.+)$/, 'Přepis hotový: $1'],
+  [/^Transcribing (.+) – downloading the speech model (.*)\(once\)$/, 'Přepisuji $1 – stahuji model řeči $2(jen poprvé)'],
+  [/^Transcribing (.+) – loading the speech model$/, 'Přepisuji $1 – načítám model řeči'],
+  [/^(\d+×\d+ · [\d.]+ fps · )(.+)$/, (m, a, b) => a + tr(b)],
+  [/^The project uses (\d+) media file\(s\) from your computer\. Chrome needs your permission to read them again\.$/, 'Projekt používá médií z tvého počítače: $1. Chrome potřebuje tvoje svolení, aby je znovu načetl.'],
+  [/^(\d+) media file\(s\) were not found – import them again \(File → Import\)\.$/, 'Nenalezená média: $1 – naimportuj je znovu (Soubor → Importovat).'],
+  [/^Version (\S+)\n/, 'Verze $1\n'],
+  [/^Undo: (.+)$/, (m, a) => 'Zpět: ' + tr(a)], [/^Redo: (.+)$/, (m, a) => 'Znovu: ' + tr(a)], [/^AI: (.+)$/, (m, a) => 'AI: ' + tr(a)],
+  [/^(\d+) items?$/, (m, n) => n + ' ' + plural(+n, 'položka', 'položky', 'položek')],
+  [/^Importing: (.*)$/, 'Importuji: $1'], [/^Imported: (\d+)$/, 'Importováno: $1'], [/^Saved: (.*)$/, 'Uloženo: $1'], [/^Saved a copy: (.*)$/, 'Uložena kopie: $1'],
+  [/^Frame exported: (.*)$/, 'Snímek exportován: $1'], [/^Cannot open the project: (.*)$/, 'Projekt nejde otevřít: $1'],
+  [/^Cannot open the last project: (.*)$/, 'Poslední projekt nejde otevřít: $1'], [/^Copied (\d+) clip\(s\)$/, 'Zkopírováno klipů: $1'],
+  [/^Placed “(.+)” \((.+)\)$/, 'Vloženo „$1“ ($2)'], [/^Clip volume (.+) dB$/, 'Hlasitost klipu $1 dB'],
+  [/^(Cross Dissolve|Dip to Black|Dip to White) applied at (.+)$/, (m, a, b) => tr(a) + ' použita v ' + b],
+  [/^(Cross Dissolve|Dip to Black|Dip to White) shortened to the available media handles$/, (m, a) => tr(a) + ' zkrácena podle dostupného materiálu'],
+  [/^Created sequence “(.+)” \((\d+×\d+)\) · (\d+) shots, face found in (.+)$/, 'Vytvořena sekvence „$1“ ($2) · záběrů: $3, obličej nalezen v $4'],
+  [/^Auto Reframe to (\d+:\d+) \(camera cuts and faces\)…$/, 'Auto Reframe na $1 (střihy kamery a obličeje)…'],
+  [/^Created: (.+)$/, 'Vytvořeno: $1'], [/^Exported: (.+)$/, 'Exportováno: $1'], [/^Export (\d+)\/(\d+) – (.+) (\d+) %$/, 'Export $1/$2 – $3 $4 %'],
+  [/^Reframing: finding faces \((\d+)\/(\d+)\)$/, 'Výřez podle obličeje: hledám obličeje ($1/$2)'],
+  [/^Export (\d+) %(.*)$/, 'Export $1 %$2'], [/^✔ Done in (\d+) s · (.+)$/, '✔ Hotovo za $1 s · $2'],
+  [/^Ready · ffmpeg: from PATH$/, 'Připraveno · ffmpeg: z PATH'], [/^Ready · ffmpeg: (.+)$/, 'Připraveno · ffmpeg: $1'],
+  [/^Entire Sequence \((.+)\)$/, 'Celá sekvence ($1)'], [/^Export – (.+)$/, 'Export – $1'],
+  [/^Matches clip (.+)\. The clip is placed in the new sequence\.$/, 'Podle klipu $1. Klip se vloží do nové sekvence.'],
+  [/^port (\d+) is used by another program$/, 'port $1 používá jiný program'],
+  [/^AI folder not found \((.+)\) – editing works, the AI panel does not\.$/, 'Složka AI nenalezena ($1) – střih funguje, AI panel ne.'],
+  [/^Source patching: where Insert \/ Overwrite place the (video|audio) \(click\)$/, (m, k) => 'Zdrojové stopy: kam vkládá Vložit / Přepsat ' + (k === 'video' ? 'video' : 'zvuk') + ' (klik)'],
+  [/^(video|audio) · (.+) s$/, (m, k, d) => (k === 'video' ? 'video' : 'zvuk') + ' · ' + d + ' s'],
+  [/^(\d+) chars · (\d+) lines? · (.+)$/, (m, c, l, x) => c + ' znaků · ' + l + ' ' + plural(+l, 'řádek', 'řádky', 'řádků') + ' · ' + tr(x)],
+  [/^(\d+) chars$/, '$1 znaků'],
+  [/^(.+) \(([^()]*)\)$/, (m, a, k) => (has(a) ? CS[a] + ' (' + k + ')' : m)],
+  [/^([✓⇥⇪✦↶▶⬇]?\s+)(.+)$/, (m, p, a) => (has(a) ? p + CS[a] : m)],
+];
+
+function has(s) { return Object.prototype.hasOwnProperty.call(CS, s); }
+function plural(n, one, few, many) { return n === 1 ? one : n >= 2 && n <= 4 ? few : many; }
+
+/** Přeloží anglický text do češtiny; neznámý text vrátí beze změny. Zachová okrajové mezery. */
+function tr(s) {
+  if (!s || typeof s !== 'string') return s;
+  const m = s.match(/^(\s*)([\s\S]*?)(\s*)$/);
+  const core = m[2];
+  if (!core || !/[A-Za-z]/.test(core)) return s;
+  if (has(core)) return m[1] + CS[core] + m[3];
+  for (const [re, rep] of RULES) {
+    if (re.test(core)) { const out = core.replace(re, rep); if (out !== core) return m[1] + out + m[3]; }
+  }
+  return s;
+}
+
+module.exports = { CS, RULES, tr, LANGS: ['en', 'cs'] };

@@ -1,0 +1,159 @@
+/* PZ AI panel – vzhled podle návrhu (tmavý, fialové akcenty, karty) */
+body.pz-layout {
+  --pz-bg: #17161d; --pz-card: #1f1e27; --pz-card2: #24232e; --pz-line: #34323f; --pz-text: #ecebf3; --pz-dim: #9a98a8;
+  --pz-accent: #8b5cf6; --pz-accent2: #a78bfa; --pz-ok: #22c55e;
+  margin: 0; padding: 0; background: var(--pz-bg); color: var(--pz-text); font: 13px/1.4 "Segoe UI", system-ui, sans-serif;
+  display: block; overflow: hidden; height: 100vh;
+}
+.pz-stash { display: none !important; }
+.pz-ui { height: 100vh; display: flex; flex-direction: column; position: relative; }
+.pz-grow { flex: 1; }
+.pz-dim { color: var(--pz-dim); }
+.pz-sep { width: 1px; height: 14px; background: var(--pz-line); flex: none; }
+
+/* hlavička */
+.pz-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px 6px; flex: none; }
+.pz-logo { display: flex; }
+.pz-title { font-size: 19px; font-weight: 700; letter-spacing: .2px; }
+.pz-conn { border: 1.5px solid #2f6f45 !important; background: rgba(34,197,94,.1) !important; color: #4ade80 !important; border-radius: 3px !important;
+  padding: 3px 12px !important; font-size: 12px !important; font-weight: 600; height: 26px; display: inline-flex !important; align-items: center; gap: 6px; }
+.pz-conn:not(.on) { border-color: var(--pz-line) !important; background: transparent !important; color: var(--pz-dim) !important; }
+.pz-icon-btn { width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 0; color: #cfcde0; border-radius: 3px; cursor: pointer; }
+.pz-icon-btn:hover { background: var(--pz-card2); color: #fff; }
+
+/* nastavení */
+.pz-settings { position: absolute; right: 12px; top: 48px; width: 290px; background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px;
+  padding: 12px; z-index: 30; display: none; flex-direction: column; gap: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.55); }
+.pz-settings.open { display: flex; }
+.pz-settings-title { font-weight: 700; }
+.pz-srow { display: flex; align-items: center; gap: 8px; color: var(--pz-dim); font-size: 12px; }
+.pz-settings details { color: var(--pz-dim); font-size: 11px; }
+.pz-danger { background: #3a1d24 !important; border: 1px solid #6b2a36 !important; color: #fca5a5 !important; border-radius: 3px !important; height: 30px; margin: 0 !important; }
+
+/* záložky */
+.pz-tabs { display: flex; padding: 0 12px; border-bottom: 1px solid var(--pz-line); flex: none; gap: 4px; }
+.pz-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 40px; background: transparent; border: 0; color: var(--pz-dim);
+  font-size: 14px; cursor: pointer; border-radius: 3px 3px 0 0; position: relative; }
+.pz-tab:hover { color: #fff; }
+.pz-tab.on { color: #fff; background: linear-gradient(#2c2547, #241f38); border: 1px solid #4b3d80; border-bottom: 0; }
+.pz-tab.on::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 3px; border-radius: 2px; background: var(--pz-accent); }
+.pz-tab svg { width: 18px; height: 18px; }
+
+/* obsah záložek */
+.pz-pane { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.pz-pane::-webkit-scrollbar { width: 8px; } .pz-pane::-webkit-scrollbar-thumb { background: #34323f; border-radius: 4px; }
+.pz-seqbar { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px; color: var(--pz-dim); }
+.pz-seqbar svg { width: 18px; height: 18px; flex: none; }
+.pz-seqname { color: #fff !important; font-weight: 700 !important; letter-spacing: .3px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pz-hero { text-align: center; padding: 6px 0 2px; }
+.pz-hero-ico svg { width: 34px; height: 34px; }
+.pz-hero h2 { margin: 4px 0 2px; font-size: 20px; font-weight: 700; }
+.pz-hero p { margin: 0; color: var(--pz-dim); }
+.pz-out { flex: none !important; max-height: 220px; min-height: 90px; background: #121117 !important; border: 1px solid var(--pz-line) !important; border-radius: 3px !important; padding: 8px 10px !important; overflow: auto; font-size: 12px; }
+
+/* karty rychlých akcí */
+.pz-quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pz-qcard { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px;
+  color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; }
+.pz-qcard svg { color: var(--pz-accent2); flex: none; }
+.pz-qcard:hover { border-color: #5b4b99; background: #262338; }
+.pz-label { font-weight: 600; font-size: 13px; color: #e2e0ec; }
+
+/* zadání */
+.pz-task { position: relative; }
+.pz-task textarea { width: 100%; min-height: 84px; resize: vertical; background: var(--pz-card) !important; border: 1px solid var(--pz-line) !important; border-radius: 3px !important;
+  padding: 10px 12px 30px !important; color: var(--pz-text) !important; font: inherit; font-size: 13px; box-sizing: border-box; }
+.pz-task textarea:focus { outline: none; border-color: var(--pz-accent) !important; }
+.pz-mic { position: absolute; left: 8px; bottom: 8px; width: 28px; height: 26px; padding: 0; display: inline-flex; align-items: center; justify-content: center; background: transparent !important;
+  border: 0 !important; color: var(--pz-dim); cursor: pointer; border-radius: 2px; }
+.pz-mic:hover { color: #fff; background: var(--pz-card2) !important; }
+.pz-mic.recording { color: #fff; background: #b91c1c !important; }
+.pz-mic svg { width: 18px; height: 18px; }
+
+/* délka a formát */
+.pz-lf { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pz-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pz-seg { display: flex; background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px; padding: 2px; height: 34px; }
+.pz-seg .chip { flex: 1; border: 0 !important; background: transparent !important; color: #d6d4e3 !important; border-radius: 2px !important; font-size: 13px; padding: 0 !important; height: auto !important; cursor: pointer; }
+.pz-seg .chip.on { background: var(--pz-accent) !important; color: #fff !important; }
+.pz-select, select.pz-select { height: 34px !important; background: var(--pz-card) !important; border: 1px solid var(--pz-line) !important; border-radius: 3px !important;
+  color: #fff !important; padding: 0 10px !important; font: inherit; font-size: 13px; width: 100%; box-sizing: border-box; }
+.pz-link { display: inline-flex; align-items: center; gap: 8px; background: transparent !important; border: 0 !important; color: var(--pz-accent2) !important; cursor: pointer; padding: 2px 4px !important; font-size: 13px; align-self: flex-start; height: auto !important; }
+.pz-link:hover { color: #c4b5fd !important; }
+.pz-link:disabled { opacity: .45; cursor: default; }
+.pz-link svg { width: 18px; height: 18px; }
+
+/* AI settings */
+.pz-ais { background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px; }
+.pz-ais-head { width: 100%; display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 12px; background: transparent; border: 0; color: #fff; cursor: pointer; font: inherit; }
+.pz-ais-t { font-weight: 700; font-size: 14px; }
+.pz-ais-sum { color: var(--pz-dim); padding-left: 10px; border-left: 1px solid var(--pz-line); }
+.pz-ais-head svg:last-child { transition: transform .15s; }
+.pz-ais.open .pz-ais-head svg:last-child { transform: rotate(180deg); }
+.pz-ais-body { display: none; gap: 8px; padding: 0 12px 12px; }
+.pz-ais.open .pz-ais-body { display: grid; grid-template-columns: 1fr 1fr; }
+.pz-check { display: flex !important; align-items: center; gap: 10px; color: #e2e0ec; cursor: pointer; }
+.pz-check input { width: 18px; height: 18px; accent-color: var(--pz-accent); }
+
+/* Run task */
+.pz-runrow { display: flex; gap: 10px; }
+.pz-run { flex: 1; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--pz-accent) !important;
+  border: 0 !important; border-radius: 3px !important; color: #fff !important; font-size: 16px; font-weight: 700; cursor: pointer; }
+.pz-run:hover { background: #7c4ef0 !important; }
+.pz-run:disabled { opacity: .5; }
+.pz-run-sm { height: 40px; font-size: 14px; flex: none; }
+.pz-stop { width: 46px; height: 46px; padding: 0; display: inline-flex; align-items: center; justify-content: center; background: #3a1d24 !important; border: 1px solid #6b2a36 !important; color: #fca5a5; border-radius: 3px !important; cursor: pointer; }
+.pz-stop:disabled { display: none; }
+.pz-enq { width: 46px !important; height: 46px !important; border: 1px solid var(--pz-line) !important; border-radius: 3px !important; background: var(--pz-card) !important; }
+.pz-subrow { display: flex; align-items: center; gap: 8px; }
+.pz-subrow .pz-link { color: #d6d4e3 !important; }
+.pz-qinfo { display: inline-flex; align-items: center; gap: 6px; }
+.pz-qinfo svg { width: 17px; height: 17px; }
+.pz-qinfo b { color: #fff; font-weight: 600; }
+
+/* karty */
+.pz-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--pz-card); border: 1px solid var(--pz-line); border-radius: 3px; }
+.pz-card-ico { color: var(--pz-accent2); display: flex; }
+.pz-card-ico svg { width: 28px; height: 28px; }
+.pz-card-txt { display: flex; flex-direction: column; flex: 1; min-width: 0; cursor: pointer; }
+.pz-card-txt b { font-size: 15px; }
+.pz-outline { height: 32px; padding: 0 18px; background: transparent; border: 1px solid #6d6a80; border-radius: 3px; color: #fff; font-weight: 600; cursor: pointer; }
+.pz-outline:hover { border-color: var(--pz-accent2); }
+.pz-hint { color: var(--pz-dim); font-size: 12px; }
+.pz-fields { display: flex; flex-direction: column; gap: 10px; }
+.pz-field { display: flex; flex-direction: column; gap: 6px; }
+
+/* Media */
+.pz-drop { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 26px 14px; border: 1.5px dashed #6d6a80; border-radius: 3px; cursor: pointer; }
+.pz-drop div { display: flex; flex-direction: column; }
+.pz-drop b { font-size: 15px; }
+.pz-drop svg { width: 26px; height: 26px; }
+.pz-drop.over, .pz-drop:hover { border-color: var(--pz-accent2); background: rgba(139,92,246,.08); }
+
+/* patička */
+.pz-foot { flex: none; border-top: 1px solid var(--pz-line); background: #15141a; }
+.pz-foot-head { width: 100%; display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 14px; background: transparent; border: 0; color: #fff; cursor: pointer; font: inherit; }
+.pz-foot-head svg { transition: transform .15s; }
+.pz-foot.open .pz-foot-head svg { transform: rotate(180deg); }
+.pz-sys { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; }
+.pz-dotok { width: 10px; height: 10px; border-radius: 50%; background: var(--pz-ok); flex: none; }
+.pz-dotok.busy { background: var(--pz-accent2); animation: pzpulse 1s ease-in-out infinite; }
+@keyframes pzpulse { 50% { opacity: .35; } }
+.pz-foot-body { display: none; padding: 0 14px 10px; flex-direction: column; gap: 6px; font-size: 11px; }
+.pz-foot.open .pz-foot-body { display: flex; }
+.pz-foot #workerBar { margin: 0; border-radius: 0; }
+
+/* výběr s vlajkou */
+.fsel { position: relative; display: block; }
+.fsel-btn { display: flex !important; align-items: center; gap: 8px; text-align: left; cursor: pointer; }
+.fsel-btn .caret { margin-left: auto; font-style: normal; color: var(--pz-dim); }
+.fsel-menu { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: var(--pz-card2); border: 1px solid var(--pz-line); border-radius: 3px; padding: 4px; display: none; z-index: 20; box-shadow: 0 10px 24px rgba(0,0,0,.5); }
+.fsel-menu.open { display: block; }
+.fsel-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; cursor: pointer; white-space: nowrap; border-radius: 2px; }
+.fsel-item:hover, .fsel-item.on { background: var(--pz-accent); color: #fff; }
+.flag { flex: none; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
+
+/* hranatý vzhled jako zbytek aplikace (2–3 px), bez žlutého focus rámečku na záložkách */
+.pz-tab:focus, .pz-tab:focus-visible { outline: none; }
+.pz-tab.on::after { left: 0; right: 0; border-radius: 0; }
+.pz-seqbar > * { white-space: nowrap; } .pz-seqbar #srcName { overflow: hidden; text-overflow: ellipsis; min-width: 0; }

@@ -1,0 +1,15 @@
+{
+  "name": "tn-strihatko",
+  "productName": "TN Střihátko",
+  "version": "0.1.0",
+  "description": "Samostatný střih videa ve stylu Premiere s AI panelem (MY Premiere MCP: přepis, Hermes, Claude)",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/run-tests.js"
+  },
+  "devDependencies": {
+    "electron": "41.3.0"
+  }
+}
