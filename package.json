@@ -7,7 +7,11 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "test": "node test/run-tests.js"
+    "test": "node test/run-tests.js",
+    "pack": "node tools/pack-portable.js",
+    "pack:zip": "node tools/pack-portable.js --zip",
+    "web:build": "node web/build.js",
+    "web:serve": "node web/build.js && node web/serve.js 8791"
   },
   "devDependencies": {
     "electron": "41.3.0"
