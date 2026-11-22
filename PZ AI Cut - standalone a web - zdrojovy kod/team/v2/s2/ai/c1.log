@@ -1,0 +1,46 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S2 prazdna"}
+
+=== build_sequence_from_transcript (0.0 s) ERROR
+Segment #9999 v přepisu neexistuje
+
+=== build_sequence_from_transcript (0.0 s) ERROR
+Segment #229: neplatný rozsah slov 50–2
+
+=== get_transcript (0.0 s)
+
+
+=== search_transcript (0.0 s)
+(přesný tvar nenalezen, hledáno podle kmene slova)
+#233 00:22:43.74–00:22:51.72 [Barbora Šimková] Protože samozřejmě ono, když se to stane, tak ten šok je jako velkej a ty si to podobně jako často nedokáže uvědomit, protože ty řešíš další věci.
+#234 00:22:51.80–00:23:03.60 [Barbora Šimková] Ty musíš najednou řešit jako pohřeb prostě, ty řešíš věci, které se týkají té pozůstalosti, ty řešíš jako strašně moc vlastně věci, který vůbec nechceš řešit, protože ti strašně jako ničejí.
+#235 00:23:03.62–00:23:11.42 [Barbora Šimková] Jsou to administrativní věci, které ti vlastně jako ničejí ten k tomu všemu ještě tohle.
+
+=== add_captions (0.0 s) ERROR
+Sekvence nemá žádné klipy se zvukem/řečí.
+
+=== reframe_sequence (0.0 s) ERROR
+Premiere (reframeSequence): “AI-S2 prazdna” is 1080×1920 – reframe to 9:16 only from a wider sequence; open the original landscape (16:9) one
+
+=== export_sequence (0.0 s) ERROR
+Premiere (exportSequence): The sequence is empty – nothing to export.
+
+=== transcribe_sequence (0.0 s)
+Sekvence „AI-S2 prazdna“ 00:00:00.00 · zdroje: 
+
+
+=== export_sequence (0.0 s) ERROR
+Premiere (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead.
+
+=== add_captions (0.0 s) ERROR
+Sekvence „AI-S2 vyrok v2“ už titulky jednou dostala (2026-11-22T20:52:23.597Z). Premiera bohužel umí zobrazit jen úplně PRVNÍ vytvořenou titulkovou stopu – další přidaná by zůstala v projektu, ale neviditelná. Smaž nejdřív v Premiere starou "CC" stopu (v Timeline panelu pravým tlačítkem na její hlavičku vlevo → Delete Track), pak spusť znovu. Pokud víš, co děláš, můžeš to obejít parametrem force: true (výsledek ale nebude v Premiere vidět, dokud staré stopy nesmažeš).
+
+=== reframe_sequence (0.4 s) ERROR
+Premiere (reframeSequence): “AI-S2 vyrok v2 9x16” is 1080×1920 – reframe to 9:16 only from a wider sequence; open the original landscape (16:9) one
+
+=== get_sequence (0.0 s) ERROR
+Premiere (getSequence): Sequence not found: neexistujici sekvence
+
+=== transcribe_media (0.0 s) ERROR
+Soubor neexistuje: C:/neni/soubor.mp4

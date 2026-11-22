@@ -72,8 +72,8 @@ function createProjectPanel(app) {
   }
   function emptyHtml() {
     const cs = window.TN && window.TN.lang === 'cs';
-    return cs ? '<div class="dim" style="padding:14px;line-height:1.6">Projekt je prázdný.<br>Přetáhni sem video z Průzkumníka nebo klikni na <b>Importovat</b>.</div>'
-      : '<div class="dim" style="padding:14px;line-height:1.6">The project is empty.<br>Drag video files here from Explorer or click <b>Import</b>.</div>';
+    return cs ? '<div class="dim proj-empty" style="padding:14px;line-height:1.6">Projekt je prázdný.<br>Přetáhni sem video z Průzkumníka nebo klikni na <b>Importovat</b>.</div>'
+      : '<div class="dim proj-empty" style="padding:14px;line-height:1.6">The project is empty.<br>Drag video files here from Explorer or click <b>Import</b>.</div>';
   }
   /** Stav přepisu u klipů (štítek na dlaždici, text v seznamu, průběh) – jen přepsat texty, bez nového vykreslení. */
   function paintAsr() {

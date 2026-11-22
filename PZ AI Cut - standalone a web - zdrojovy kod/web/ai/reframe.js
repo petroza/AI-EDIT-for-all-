@@ -317,7 +317,7 @@ async function edgeFragments(plan, seq) {
       const prev = plan.find((q) => q !== e && q.track === e.track && Math.abs(clipEnd(q.clip) - e.clip.start) < tol);
       // obraz předchozího záběru by běžel pod začátkem nové repliky – jen když tam není řeč, nebo jde o ≤ 3 snímky
       // (kolo 8, kontrolor: 0,27 s řeči „Takže“ pod cizími rty)
-      const lipsOk = (d) => d <= 3.5 / fps || !e.file ? true : quietHead(e.file, e.clip.in, d);
+      const lipsOk = (d) => d <= 5.5 / fps || !e.file ? true : quietHead(e.file, e.clip.in, d); // ≤ 5 snímků: bleskající záběr je horší než obraz o zlomek s napřed (AI tok S2: 4 snímky celku)
       if (prev && !prev.tail && prev.clip.out + d0 <= (prev.m.duration || 0) - 0.05 &&
           await same(prev, prev.clip.out - 0.04, prev.clip.out + d0 - 0.02) && await lipsOk(d0)) e.lead = { prev, d: d0 };
       // úplný začátek sekvence (není soused, který by zbytek převzal): zbytek se odstřihne i se zvukem a sekvence se posune,
@@ -329,7 +329,7 @@ async function edgeFragments(plan, seq) {
     if (d1 > 0 && d1 < MIN_SHOT && !((e.lead || e.head) && sh.length < 3)) {
       const end = clipEnd(e.clip);
       const next = plan.find((q) => q !== e && q.track === e.track && Math.abs(q.clip.start - end) < tol);
-      const lipsT = d1 <= 3.5 / fps || !e.file ? true : await quietHead(e.file, e.clip.out - d1 - 0.03, d1);
+      const lipsT = d1 <= 5.5 / fps || !e.file ? true : await quietHead(e.file, e.clip.out - d1 - 0.03, d1);
       if (next && !next.lead && next.clip.in - d1 >= 0 &&
           await same(next, next.clip.in - d1 + 0.02, next.clip.in + 0.04) && lipsT) e.tail = { next, d: d1 };
       // úplný konec sekvence (nic za klipem): zbytek odstřihnout i se zvukem, když v něm není řeč (kolo 8: d 10 snímků celku na konci)

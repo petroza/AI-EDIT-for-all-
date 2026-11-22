@@ -1,0 +1,29 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""}}
+
+=== transcribe_media (1.0 s)
+Přepis: C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+Délka 00:28:06.98 · jazyk cs · 295 vět · 5041 slov · large-v3/cuda · z cache
+Mluvčí: Barbora Šimková, Moderátorka Kristýna
+Soubor: O:\ADOBEPREMIERESTRIH\cache\transcripts\tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4.0bd02ba430c1.json
+#1 00:00:06.29–00:00:09.33 [Moderátorka Kristýna] Přeji vám krásný den a jsem velmi ráda, že sledujete pořád Talk.
+#2 00:00:09.71–00:00:14.77 [Moderátorka Kristýna] Pozvání dnes totiž přijala má kolegyně, kterou nejen diváci televize Nova velmi dobře znají.
+#3 00:00:14.79–00:00:16.71 [Moderátorka Kristýna] Je velmi šikovná, je velmi krásná.
+#4 00:00:16.79–00:00:20.37 [Moderátorka Kristýna] Velmi často ji v poslední době vidíte vlastně tady ve studiu TN Live.
+#5 00:00:21.37–00:00:23.49 [Moderátorka Kristýna] se dívává na tom místě, kde jsem teď já.
+#6 00:00:23.57–00:00:24.83 [Moderátorka Kristýna] Je to Bára Šimková. Ahoj, Bára.
+#7 00:00:25.21–00:00:28.67 [Barbora Šimková] Krásný den, Kristýnku, tak moc děkuji za tenhle krásný úvod.
+#8 00:00:28.91–00:00:31.63 [Moderátorka Kristýna] No já se těším, co všechno se dneska diváci doví.
+#9 00:00:31.73–00:00:36.77 [Moderátorka Kristýna] Vlastně musím říct, že je to zajímavý výst vlastně rozhovor s kolegyní, protože člověk začne být jako nervózní, to si říš profík.
+#10 00:00:36.95–00:00:46.39 [Barbora Šimková] No ale já právě jsem sem jela a říkala jsem si, že je to pro mě hrozně jako neobvyklý a nezvyklý a že vlastně mám trošku jako trému vlastně, že nejsem zvyklá být na tomhle míst
+#11 00:00:51.58–00:01:03.26 [Moderátorka Kristýna] My jsme spolu měli tolok před pár týdny, že ty jsi vysturovaná herečka, protože na televizi Nová tě prostě známe už přes deset let, k tomu se dostaneme, ale že máš ze sobou tří díly Babov Řesek, máš ze sobou seriál Cyril a metoděj fotograf.
+#12 00:01:03.78–00:01:07.64 [Moderátorka Kristýna] Vůbec nevím, kde se vzala tato herecká tvoje dráha a kudy šla?
+#13 00:01:07.80–00:01:10.58 [Barbora Šimková] Tak ta moje herecká dráha se vlastně vzala.
+#14 00:01:10.55–00:01:12.91 [Barbora Šimková] úplně jako od dětství, podle mě třeba od 6 let.
+#15 00:01:13.01–00:01:19.99 [Barbora Šimková] Já jsem chodila do dramatického kroužku v Národním divadle a tam se to vlastně jako všechno nějak stvořilo.
+#16 00:01:20.09–00:01:27.35 [Barbora Šimková] A já jsem si vlastně myslela hodně, hodně dlouhou dobu, že moje jako jediná cesta bude herectví a že se to určitě nezmění.
+#17 00:01:27.49–00:01:33.83 [Barbora Šimková] Takže vlastně veškeré moje kroky po celou základku pak vlastně jako směřovaly k tomu, abych se dostala na konzervatoř.
+#18 00:01:34.05–00:01:37.07 [Moderátorka Kristýna] Takže ty jsi šla od malička za svým snem a víš, kde se to jako zlomilo?
+… (zkráceno, zbývá 277 řádků – použij fromId/from)
+Další čtení: get_outline (osnova kapitol), search_transcript (hledání), get_transcript fromId/toId format "compact".

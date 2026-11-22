@@ -292,11 +292,16 @@ function createApi(project, hooks = {}) {
     const seq = getSeq(a.sequence);
     const output = String(a.output);
     if (hooks.beforeExport) hooks.beforeExport(seq, output);
+    // výchozí jako dialog Export (AI tok S2: přes MCP vyšlo 9:16 bez titulků a −30 LUFS): titulky vypálit, když jsou;
+    // hlasitost na výšku/čtverec pro sítě −14, MXF pro TV −23, jinak beze změny
+    const hasCaps = (seq.captions || []).length > 0;
+    const mxf = /\.mxf$/i.test(output) || ['xdcam', 'dnxhr'].includes(a.format);
+    const loud = a.loudness || (mxf ? 'tv' : seq.width / seq.height < 1.06 ? 'social' : 'off');
     const r = await exporter.exportSequence(project, seq, {
-      output, range: a.range === 'inout' || a.range === 'workarea' ? 'inout' : 'all',
-      burnCaptions: !!a.burnCaptions, onProgress: hooks.exportProgress,
+      output, range: a.range === 'inout' || a.range === 'workarea' ? 'inout' : 'all', format: a.format,
+      burnCaptions: a.burnCaptions !== undefined ? !!a.burnCaptions : hasCaps, srtSidecar: !!a.srt, loudness: loud, onProgress: hooks.exportProgress,
     });
-    return { result: 'No Error', output: r.output, sizeMB: r.sizeMB };
+    return { result: 'No Error', output: r.output, format: r.format, sizeMB: r.sizeMB, duration: r.duration, captionsBurned: a.burnCaptions !== undefined ? !!a.burnCaptions && hasCaps : hasCaps, loudness: loud };
   };
 
   api.saveProject = async () => {

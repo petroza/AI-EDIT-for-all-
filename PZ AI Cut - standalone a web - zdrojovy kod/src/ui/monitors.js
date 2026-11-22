@@ -79,9 +79,9 @@ function createProgram(app) {
     if (!hasMedia) step(L('Import a video – or drop it anywhere in the window.', 'Importuj video – nebo ho přetáhni kamkoli do okna.'), L('Import video…', 'Importovat video…'), () => app.cmd('import'));
     else step(L('Double-click a clip in the Project panel to cut it by hand.', 'Dvojklikem na klip v panelu Projekt ho otevřeš a stříháš ručně.'));
     // „přepíše se sama“ jen když je automatický přepis zapnutý (redaktor-4: tvrdilo to i s vypnutou volbou)
-    if (window.__pzASR) step(window.__pzASR.auto ? L('Speech is transcribed automatically. Find the quote on the Transcript tab: click a sentence and insert it into the sequence.', 'Řeč se přepíše sama. Výrok najdeš v záložce Přepis: klikni na větu a vlož ji do sekvence.')
+    if (window.__pzASR) step(window.__pzASR.auto ? L('Speech is transcribed automatically – on the Transcript tab click a sentence and insert it.', 'Řeč se přepíše sama – v záložce Přepis klikni na větu a vlož ji.')
       : L('Start the transcript: right-click the clip → Transcribe Speech. Then find the quote on the Transcript tab and insert it into the sequence.', 'Přepis spustíš: pravý klik na klip → Přepsat řeč. Výrok pak najdeš v záložce Přepis a vložíš ho do sekvence.'), hasMedia ? L('Transcript', 'Přepis') : '', () => { if (app.transcript) app.transcript.showFor(); });
-    step(L('Or let the AI cut: connect Claude or Codex in the AI panel and write a task, e.g. “20 s teaser for Reels with captions”.', 'Nebo nech stříhat AI: v panelu AI připoj Claude nebo Codex a napiš zadání, třeba „20s upoutávka pro Reels s titulky“.'), L('AI panel', 'Panel AI'), () => app.cmd('toggleAi', true));
+    step(L('Or let the AI cut: write a task in the AI panel, e.g. “20 s teaser for Reels”.', 'Nebo nech stříhat AI: napiš zadání v panelu AI, třeba „20s upoutávka pro Reels“.'), L('AI panel', 'Panel AI'), () => app.cmd('toggleAi', true));
     empty.appendChild(ol);
   }
   function ui() {

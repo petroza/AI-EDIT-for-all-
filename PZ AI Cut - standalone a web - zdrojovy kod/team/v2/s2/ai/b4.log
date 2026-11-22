@@ -1,0 +1,6 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S2 upoutavka 20s"}
+
+=== build_sequence_from_transcript (6.5 s)
+{"sequenceID":"63db0eed-dc3b-4929-8cd0-e35d98d5c8b3","name":"AI-S2 upoutavka v2","duration":15.52,"segments":3,"warnings":[],"audioFades":6,"summary":"Vytvořena sekvence „AI-S2 upoutavka v2“ (00:00:15.52) z 3 úseků.","ranges":["00:18:46.36–00:18:51.11 věty 196","00:19:59.16–00:20:03.69 věty 207","00:21:05.04–00:21:11.22 věty 220"],"sceneCuts":["⚠ 00:19:59.16: střih obrazu 1.10 s po začátku klipu, uvnitř řeči – obraz jen bleskne","⚠ 00:21:11.22: střih obrazu 0.88 s před koncem klipu, uvnitř řeči – obraz jen bleskne"],"edges":["⚠ 00:21:05.04 začátek: zvuk na hranici -15.4 dB proti řeči – možná useknuté slovo „pryč.“ (zkus sousední větu nebo fromWord/toWord)","⚠ 00:21:11.22 konec: zvuk na hranici -2.4 dB proti řeči (zkus sousední větu nebo fromWord/toWord)"]}

@@ -1,0 +1,6 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S2 vyrok prace utociste"}
+
+=== build_sequence_from_transcript (5.7 s)
+{"sequenceID":"1effa400-a1ad-4db1-848e-b9a30f2ad0db","name":"AI-S2 vyrok v2","duration":22.48,"segments":1,"warnings":[],"audioFades":0,"summary":"Vytvořena sekvence „AI-S2 vyrok v2“ (00:00:22.48) z 1 úseků.","ranges":["00:22:17.46–00:22:39.92 věty 228,229,230,231"],"sceneCuts":["⚠ 00:22:17.46: střih obrazu 1.26 s po začátku klipu, uvnitř řeči – obraz jen bleskne"]}

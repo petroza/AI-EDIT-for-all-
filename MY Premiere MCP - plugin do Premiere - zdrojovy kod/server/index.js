@@ -36,7 +36,7 @@ const CACHE_DIR = path.resolve(ROOT, CONFIG.cacheDir);
 const INDEX_FILE = path.join(CACHE_DIR, 'index.json');
 const TOKEN_FILE = path.join(process.env.APPDATA || ROOT, 'MYpremiereMCP', 'token.txt');
 const NOT_RUNNING =
-  'Panel MY Premiere MCP neodpovídá. Otevři Premiere Pro a panel Okno > Rozšíření > MY Premiere MCP.';
+  'Střihový program neodpovídá. Otevři Premiere Pro s panelem MY Premiere MCP (Okno > Rozšíření > MY Premiere MCP), nebo aplikaci PZ AI Cut.';
 
 /* ------------------------------------------------------------------ most do Premiere */
 
@@ -181,6 +181,16 @@ function runPython(args, extra) {
 }
 
 /* ------------------------------------------------------------------ lokální Worker */
+
+/** Most patří aplikaci PZ AI Cut (ne Premiere) – ping vrací app „TNSTRIH“. */
+async function standaloneHost() {
+  try {
+    const p = await premiere('ping');
+    return !!p && p.app === 'TNSTRIH';
+  } catch {
+    return false;
+  }
+}
 
 const WORKER_URL = `http://127.0.0.1:${CONFIG.worker?.port || 7881}`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -1380,7 +1390,8 @@ tool(
     const fingerprint = contentFingerprint(seq);
     const capIdx = loadCaptionsIndex();
     const prev = capIdx[seq.sequenceID];
-    if (prev && prev.fingerprint === fingerprint && !a.force) {
+    // PZ AI Cut (standalone) titulky sekvence nahradí – omezení Premiery na první titulkovou stopu tam neplatí (AI tok S2)
+    if (prev && prev.fingerprint === fingerprint && !a.force && !(await standaloneHost())) {
       throw new Error(
         `Sekvence „${seq.name}“ už titulky jednou dostala (${prev.when}). Premiera bohužel umí zobrazit jen úplně PRVNÍ ` +
           'vytvořenou titulkovou stopu – další přidaná by zůstala v projektu, ale neviditelná. Smaž nejdřív v Premiere ' +
@@ -1695,13 +1706,18 @@ tool('set_playhead', 'Posune přehrávací hlavu na čas timeline.', { sequence:
 
 tool(
   'export_sequence',
-  'Exportuje sekvenci do souboru (přímo z Premiere, nebo zařadí do Media Encoderu).',
+  'Exportuje sekvenci do souboru. Premiere: přímo, nebo přes Media Encoder (preset .epr). PZ AI Cut (standalone): ffmpeg – ' +
+    'titulky sekvence se vypálí do obrazu a hlasitost se srovná (na výšku/čtverec −14 LUFS pro sítě), formát podle přípony nebo `format`.',
   {
     sequence: seqArg,
     output: z.string().describe('Výstupní soubor, např. O:/export/strih.mp4'),
-    preset: z.string().optional().describe('Cesta k .epr (výchozí H.264 Match Source High bitrate)'),
+    preset: z.string().optional().describe('Premiere: cesta k .epr (výchozí H.264 Match Source High bitrate)'),
     range: z.enum(['entire', 'inout', 'workarea']).optional(),
-    useAME: z.boolean().optional().describe('Zařadit do Adobe Media Encoder místo přímého exportu'),
+    useAME: z.boolean().optional().describe('Premiere: zařadit do Adobe Media Encoder místo přímého exportu'),
+    burnCaptions: z.boolean().optional().describe('PZ AI Cut: vypálit titulky do obrazu (výchozí ano, když sekvence titulky má)'),
+    srt: z.boolean().optional().describe('PZ AI Cut: uložit i titulky .srt vedle videa'),
+    loudness: z.enum(['social', 'tv', 'off']).optional().describe('PZ AI Cut: hlasitost −14 LUFS (social), −23 LUFS (tv), beze změny (off); výchozí podle tvaru sekvence'),
+    format: z.enum(['h264', 'h265', 'prores_hq', 'prores', 'mov_h264', 'xdcam', 'dnxhr']).optional().describe('PZ AI Cut: kodek/kontejner (výchozí podle přípony: .mp4 H.264, .mov ProRes HQ, .mxf XDCAM)'),
   },
   (a) => premiere('exportSequence', { ...a, preset: a.preset || CONFIG.defaultExportPreset }, 3600000),
 );

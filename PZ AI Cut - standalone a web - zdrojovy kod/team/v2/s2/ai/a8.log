@@ -1,0 +1,9 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S2 vyrok v2"}
+
+=== add_captions (1.9 s)
+{"cues":9,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\AI-S2_vyrok_v2.1effa400.srt","sequence":"AI-S2 vyrok v2","sample":["Jako musím říct, že v tomhle období mě taky hodně tady v práci vycházeli","vstříc, vlastně mi mi hodně říkali, nemusíš chodit,","my to nějak zvládneme, dej si volno, dej si čas."]}
+
+=== get_sequence (0.0 s)
+{"name":"AI-S2 vyrok v2","sequenceID":"1effa400-a1ad-4db1-848e-b9a30f2ad0db","fps":25,"width":1280,"height":720,"duration":22.48,"playhead":0,"videoTracks":3,"audioTracks":3,"inPoint":null,"outPoint":null,"clips":[{"kind":"video","track":0,"index":0,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":0,"end":22.48,"inPoint":1337.44,"outPoint":1359.92,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsba8qao2xls1","disabled":false,"speed":1,"selected":false},{"kind":"audio","track":0,"index":0,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":0,"end":22.48,"inPoint":1337.44,"outPoint":1359.92,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsba8qao2xls1","disabled":false,"speed":1,"selected":false}],"captions":9}

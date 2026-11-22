@@ -1534,7 +1534,10 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
     if len(top) - len(bad) >= 2:
         top = [c for n, c in enumerate(top, 1) if n not in bad]
     ctx.progress(0.8, "LLM skládá upoutávku")
-    lines = "\n".join(f"U{n + 1} [{c['units'][0].get('spk') or '?'}] ({c['dur']:.0f} s): {text(c)}"
+    # čas v rozhovoru u každého úderu: model vidí, co zaznělo dřív a co později (AI tok S2: „…a proto jsem se dostala
+    # na Novu“ z 2. minuty stálo hned za smrtí mámy z 21. minuty a vyznělo jako její důsledek)
+    mmss = lambda x: f"{int(x // 60)}:{int(x % 60):02d}"  # noqa: E731
+    lines = "\n".join(f"U{n + 1} [{c['units'][0].get('spk') or '?'}] ({c['dur']:.0f} s, v rozhovoru {mmss(c['units'][0]['s'])}): {text(c)}"
                       for n, c in enumerate(top))
     speakers = {c["units"][0].get("spk") for c in top if c["units"][0].get("spk")}
     r = _chat_json(
@@ -1544,7 +1547,9 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         "První úder je hák (nejsilnější emoce nebo otázka), poslední nechá diváka v napětí a neprozradí rozuzlení. "
         + ("Mluví víc lidí: ukaž střet názorů – postav proti sobě údery různých mluvčích. " if len(speakers) > 1 else "") +
         "Údery se nesmí opakovat ani říkat totéž; dohromady mají naznačit příběh. Nesmí zkreslit, co mluvčí myslí: "
-        "žádné citace cizích slov, ironie ani věty, které mluvčí odmítá (vytržené by znamenaly opak). "
+        "žádné citace cizích slov, ironie ani věty, které mluvčí odmítá (vytržené by znamenaly opak). Pořadí nesmí "
+        "vytvořit souvislost, která v rozhovoru není: úder, který zazněl dřív a týká se jiného období nebo tématu, "
+        "nedávej hned za pozdější tak, aby vyzněl jako jeho důsledek (např. „…a proto…“ po větě o úmrtí). "
         'Nejdřív v poli uvaha krátce zdůvodni, pak dej pořadí čísel úderů. JSON {"uvaha": "…", "poradi": [čísla]}.',
         400, schema={"type": "object", "properties": {"uvaha": {"type": "string", "maxLength": 600},
                                                       "poradi": {"type": "array", "minItems": 1, "maxItems": 5,
@@ -1562,11 +1567,17 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         order.remove(max(order[1:-1], key=lambda c: c["dur"]))
     # Pozn.: výměna delšího úderu za kratší „podle skóre“ (kvůli délce) rozbila děj – doprostřed upoutávky o smrti
     # mámy vložila větu o práci reportérky. Raději o pár sekund delší upoutávka než nesouvislá (2026-11-20).
+    # doplnění délky: jen tam, kam úder časově patří (mezi dva údery, které zazněly před ním a po něm) – jinak by
+    # vznikla souvislost, která v rozhovoru není (AI tok S2, viz výš)
+    st0 = lambda c: c["units"][0]["s"]  # noqa: E731
     for c in top:
         if sum(x["dur"] for x in order) >= 0.85 * target:
             break
-        if c not in order and sum(x["dur"] for x in order) + c["dur"] <= 1.15 * target:
-            order.insert(max(1, len(order) - 1), c)
+        if c in order or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
+            continue
+        slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
+        if slot is not None:
+            order.insert(slot, c)
     total = sum(c["dur"] for c in order)
     return {
         "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total, 1),

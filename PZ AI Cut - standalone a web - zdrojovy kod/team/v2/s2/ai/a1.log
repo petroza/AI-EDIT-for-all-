@@ -1,0 +1,9 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""}}
+
+=== import_media (0.1 s)
+[{"path":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsba8qao2xls1"}]
+
+=== list_project_items (0.0 s)
+[{"type":"item","name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsba8qao2xls1","bin":"","mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","isSequence":false,"modified":"2026-11-20T11:59:55.582Z"}]

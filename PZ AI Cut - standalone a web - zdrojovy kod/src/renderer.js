@@ -848,6 +848,8 @@ const keyIndex = new Map(KEYMAP.map(([k, c, a]) => [k, [c, a]]));
  *  zkratky Premiere tak fungují pořád, ať je fokus kdekoli (jako v Premiere). */
 function handleKey(ev) {
   const tag = (ev.target && ev.target.tagName || '').toLowerCase();
+  // Esc zavře dialog i s kurzorem v textovém poli (vzhled S2: Export a Nová sekvence se Esc nezavřely)
+  if (ev.key === 'Escape' && tag === 'input' && $('modal').classList.contains('show') && !$('modal').dataset.busy && !(Date.now() - (+$('modal').dataset.pickEnd || 0) < 1500)) { closeModal(); return true; }
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return false;
   // Esc ze systémového okna uložení (zrušení) nesmí zavřít i dialog Export (redaktor-4) – chvíli po zrušení se ignoruje
   if ($('modal').classList.contains('show')) { if (ev.key === 'Escape' && !$('modal').dataset.busy && !(Date.now() - (+$('modal').dataset.pickEnd || 0) < 1500)) closeModal(); return false; }
@@ -945,7 +947,8 @@ function openModal(html, onReady) {
   $('modalBox').style.width = wEl ? Math.min(window.innerWidth - 40, +wEl.dataset.w) + 'px' : '';
   $('modal').classList.add('show');
   const first = $('modalBox').querySelector('input,select,button');
-  if (first) setTimeout(() => first.focus(), 10);
+  // fokus bez odrolování (vzhled S1/S2: Klávesové zkratky F1 se otevřely na konci – první tlačítko je dole)
+  if (first) setTimeout(() => { first.focus({ preventScroll: true }); $('modalBox').scrollTop = 0; }, 10);
   if (onReady) onReady($('modalBox'));
 }
 function closeModal() { $('modal').classList.remove('show'); $('modalBox').innerHTML = ''; }
