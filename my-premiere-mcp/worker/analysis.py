@@ -635,7 +635,8 @@ def _snap_units_to_pauses(units: list[dict], segs: dict[int, dict], exclude: set
 
 
 def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dict], chosen: list[int],
-                        exclude: set, pause_map: dict[int, bool] | None = None) -> list[dict]:
+                        exclude: set, pause_map: dict[int, bool] | None = None,
+                        avoid: set | None = None, edge_map: dict[int, tuple[bool, bool]] | None = None) -> list[dict]:
     """Souvislé pasáže jednoho mluvčího kolem cílové délky, které začínají i končí ve skutečné pauze
     (mezi větami bez nádechu zní každý střih useknutě, i když neprotne slovo)."""
     ids = sorted(segs)
@@ -667,6 +668,8 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
             return False  # pokračování předchozí věty
         if n == 0:
             return True
+        if edge_map is not None and i in edge_map:
+            return not edge_map[i][0]  # rozhoduje stejné měření jako kontrola po stavbě
         prev = segs[ids[n - 1]]
         if pause_map is not None and ids[n - 1] in pause_map:
             return pause_map[ids[n - 1]]
@@ -682,15 +685,26 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
         if n == len(ids) - 1:
             return True
         nxt = segs[ids[n + 1]]
+        # souvětí pokračuje malým písmenem u stejného mluvčího bez delší pauzy („…mohla moderovat na TN Live.“ +
+        # 0,7 s + „mě posunul jako neuvěřitelně.“ – Talk IG 30 s 2026-11-21 skončil uprostřed myšlenky)
+        if (nxt.get("speaker") == segs[j].get("speaker") and nxt["text"].strip()[:1].islower()
+                and first_s(ids[n + 1]) - last_e(j) < 0.8):
+            return False
+        if edge_map is not None and j in edge_map:
+            return not edge_map[j][1]
         if pause_map is not None and j in pause_map:
             return pause_map[j]
         gap = first_s(ids[n + 1]) - last_e(j)
         return gap >= PAUSE
 
     lo, hi = 0.6 * target, 1.25 * target
+    avoid = avoid or set()
     cands = []
     for i in ids:
-        if not clean_start(i):
+        # věta se slyšitelnou hranicí (avoid) nesmí být krajem pasáže, uvnitř smí. Musí se to hlídat už tady:
+        # z každého začátku zůstává jen konec nejblíž cíli, takže po dodatečném vyřazení #266–271 (vadný konec #271)
+        # zmizel i dobrý začátek #266 a varianta #266–270 vůbec nevznikla (Talk IG 45 s -> pasáž mimo téma)
+        if i in avoid or not clean_start(i):
             continue
         spk = segs[i].get("speaker")
         best = None
@@ -700,7 +714,7 @@ def _passage_candidates(target: float, segs: dict[int, dict], chapters: list[dic
             dur = last_e(j) - first_s(i)
             if dur > hi:
                 break
-            if dur >= lo and clean_end(j):
+            if dur >= lo and j not in avoid and clean_end(j):
                 if best is None or abs(dur - target) < abs(best["dur"] - target):
                     best = {"ids": ids[pos[i]: pos[j] + 1], "dur": round(dur, 1)}
         if best:
@@ -718,8 +732,22 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
                   scores: dict[int, int], exclude: set, backend: str, ctx,
                   pause_map: dict[int, bool] | None = None, avoid: set | None = None,
                   path: str | None = None) -> dict | None:
-    cands = [c for c in _passage_candidates(target, segs, chapters, chosen, exclude, pause_map)
-             if not (avoid and set(c["ids"]) & avoid)]
+    # avoid = věty na slyšitelné hranici (server: první věta úseku u začátku, poslední u konce). U pasáže vadí jen
+    # na krajích – dřív se vyřadila každá pasáž, která ji obsahovala, a opakovaný plán sáhl po pasáži mimo téma
+    # (Talk IG 30 s: správně #40–45 skóre 18,5 → po hranici #111–115 otázka moderátorky skóre 3,5)
+    # Úzké téma: kraje pasáží podle stejného měření jako kontrola po stavbě (_edge_map), ne podle pauzy z přepisu –
+    # dřív vznikl z každého začátku jen konec nejbližší cíli (#266–271, konec −10 dB) a čistá #265–267 vůbec ne;
+    # opakování kvůli hranici pak sáhlo po pasáži mimo téma (IG 45 s: #189–196 „Ty se zabiješ?“). Obecné
+    # „nejsilnější výrok“ beze změny.
+    emap = _edge_map(path, segs) if path and not _GENERIC_RE.search(instruction) else None
+    cands = _passage_candidates(target, segs, chapters, chosen, exclude, pause_map, avoid, emap)
+    # Pasáž, kterou celou mluví moderátor (otázka, rekapitulace), není výrok ani reel – bez „bez moderátora“
+    # v zadání se dřív vybral 33s monolog moderátorky „…jak vypadá tvůj pracovní den“ (Talk IG 30 s 2026-11-21).
+    # Ponechá se jen, když zadání moderátora jmenuje, nebo jiná pasáž není.
+    mods = _moderator_speakers(segs)
+    if mods and not re.search(r"moder", instruction, re.I):
+        guest = [c for c in cands if segs[c["ids"][0]].get("speaker") not in mods]
+        cands = guest or cands
     if path and target <= 15:
         # Výrok do 15 s: celé „věty“ přepisu bývají dlouhé (Whisper slepí 2–3 věty), na 10 s pak nic nesedí
         # (Talk B 10 s: jediná slabá věta 7 s). Navíc jemné jednotky = věty uvnitř segmentu (fromWord/toWord).
@@ -762,15 +790,82 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
             backend=backend)
         for n, k4 in enumerate((r.get("k") or [])[: len(part)]):
             if isinstance(k4, list) and len(k4) == 4 and all(isinstance(x, int) for x in k4):
+                part[n]["fit"] = k4[3]
                 rated.append((2 * k4[0] + 2 * k4[1] + 1.5 * k4[2] + 2 * k4[3], part[n]))
     if not rated:
         return None
+    # zadání jako brána, ne jen váha: silná pasáž mimo téma („Ty se zabiješ?“ o vyrovnání se smrtí) jinak přebila
+    # přesnou odpověď na úzké zadání („co neříkat pozůstalým“), když ta vypadla kvůli hranici (Talk IG 45 s)
+    if any(c.get("fit", 0) >= 2 for _, c in rated):
+        rated = [(sc, c) for sc, c in rated if c.get("fit", 0) >= 2]
 
     def dependent(c: dict) -> bool:
         """Začátek navazuje na něco, co v klipu není („A najednou byl pryč.“, „Takže to bylo v tom životopise…“,
         „Absolutně.“). „Ale už jsem měla takový pocit…“ obstojí i samo – „ale“ a „pak“ se nepočítají."""
         first = (c["units"][0]["text"] if c.get("units") else segs[c["ids"][0]]["text"]).strip().lower()
+        # předchozí věta téhož mluvčího skončila nedořečená („…hlavně to teda přišlo...“) a hned navazuje
+        # („V nejhorším období v mém životě…“) – velké písmeno, ale je to druhá půlka souvětí (Talk IG 30 s)
+        i0 = c["units"][0]["id"] if c.get("units") else c["ids"][0]
+        prev = segs.get(i0 - 1)
+        if (not c.get("units") and prev and prev.get("speaker") == segs[i0].get("speaker")
+                and re.search(r"(\.\.\.|…)\W*$", prev["text"].strip())
+                and segs[i0]["start"] - prev["end"] < 0.8):
+            return True
         return bool(re.match(r"(a|takže|tak|proto|protože|no|jo|taky|to|tohle|tím|že)\b", first)) or len(first.split()) <= 2
+
+    # Žádná samostatná pasáž neodpovídá zadání přesně (fit 3): úzké téma je v plynulé řeči rozdělené do víc míst ->
+    # krátký klip složený z vět jádrových kapitol (_plan_focus). Talk IG 30 s „ze Snídaně do zpravodajství“: jediná
+    # pasáž s fit 3 začínala „Jo, je to tak, takže…“ a po hranici spadla na Suchoně a běh (#61–64). Obecné skládání
+    # vět (plan_edit) bylo na krátké délce horší (otázka moderátorky, útržky „Takže... Z minimum času.“).
+    # Brána podle jádrových kapitol (skóre 3), ne podle fit 3 – fit u stejné pasáže kolísá mezi 2 a 3 a „focus“ pak
+    # bral i obecná zadání (talk A „nejsilnější výrok o cestě k televizi“: 11 s výčtu z životopisu místo #21–25).
+    core = [k for k in chosen if scores.get(k, 0) >= 3] or list(chosen)
+    ch_of = {i: k for k, c in enumerate(chapters, 1) for i in range(c["from"], c["to"] + 1)}
+    # Jen u úzkého tématu. Obecné „nejsilnější výrok (o …)“ hledá nejlepší místo celého materiálu – tam brána
+    # i u kapitol se skóre 3 vedla do „focus“ (talk A: 4 útržky životopisu místo ucelené pasáže #21–25).
+    generic = bool(_GENERIC_RE.search(instruction))
+
+    def in_core(c: dict, ks: list[int] | None = None) -> bool:
+        # podle většiny vět, ne jen první: #265–267 začíná poslední větou K30 (odpověď na otázku), zbytek je K31
+        return 2 * sum(ch_of.get(i) in (ks or core) for i in c["ids"]) >= len(c["ids"])
+
+    # jádro + sousední kapitoly téhož příběhu (skóre ≥ 2): K20 přeřazení -> K21 „Kamile, proč mi to děláš“
+    near = sorted(set(core) | {k for k0 in core for k in (k0 - 1, k0 + 1) if scores.get(k, 0) >= 2})
+
+    good = [(sc, c) for sc, c in rated if c.get("fit", 0) >= 2 and not dependent(c)
+            and (generic or in_core(c))]
+    if generic:
+        good = good or rated  # beze změny proti dřívějšku: žádný focus
+    elif good:
+        # samostatná pasáž v jádru existuje -> ostatní (vedlejší kapitoly, navazující začátky) jen jako záloha finále
+        rated = good + [x for x in rated if x not in good and in_core(x[1])]
+    if path and not good:
+        res = _plan_focus(instruction, target, segs, chapters, core, exclude, backend, ctx, path, avoid)
+        if not res:
+            # Jádro nemá čisté výroky, nebo je vyčerpalo opakování kvůli hranici (K20: začátek #169 −17 dB, konec #172
+            # −11 dB, jinak jen #164–168 za 46 s) -> příběh pokračuje v sousední kapitole se skóre ≥ 2 (K21 Houska)
+            if near != sorted(core):
+                res = _plan_focus(instruction, target, segs, chapters, near, exclude, backend, ctx, path, avoid)
+        if res:
+            res["ranked"] = [[round(sc, 1), f"{c['ids'][0]}–{c['ids'][-1]}", c["dur"], c.get("fit")]
+                             for sc, c in sorted(rated, key=lambda x: -x[0])[:8]]
+            return res
+        if not generic:
+            # bez samostatné pasáže v jádru: záloha jen z jádra a sousedních kapitol – jinak vyhrála pasáž jiného
+            # tématu bez srážky za navazující začátek (IG 30 s: #228–231 „práce jako útočiště“ po smrti mámy místo
+            # #166–168 „v nejhorším období… obrovská pozitivní zkušenost“)
+            rated = [x for x in rated if in_core(x[1], near)] or rated
+        if avoid and not any(c.get("fit", 0) >= 2 for _, c in rated):
+            # Při opakování nikdy pasáž mimo téma: Talk IG 30 s „ze Snídaně do zpravodajství“ po vyřazení #169/#172
+            # spadl na běh se Suchoněm (#59–64, fit 1). Prázdný plán = server nechá předchozí verzi i s varováním.
+            log(f"passage: po hranici {sorted(avoid)} nic k zadání (fit ≥ 2) – ponechá se předchozí plán")
+            return {"note": "Po vyřazení vět se slyšitelnou hranicí nezbyla žádná pasáž k zadání.", "picks": [],
+                    "estimatedSec": 0, "alternates": [], "dropped": [], "mode": "passage", "passages": len(cands),
+                    "ranked": [[round(sc, 1), f"{c['ids'][0]}–{c['ids'][-1]}", c["dur"], c.get("fit")]
+                               for sc, c in sorted(rated, key=lambda x: -x[0])[:8]],
+                    "editorial": [], "thesis": None, "keyChapters": core, "offTopic": [], "topics": [],
+                    "balanceTopics": False, "general": False, "topicSec": {}, "addedForQuestionAnswer": [],
+                    "fixedFragments": []}
 
     def adjusted(sc: float, c: dict) -> float:
         # model začátky odkazující dozadu podle promptu nestrhává
@@ -814,7 +909,7 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
         "alternates": alts, "dropped": [],
         "mode": "passage", "passages": len(cands),
         # žebříček pro ladění: [skóre po srážkách, první–poslední věta, délka]
-        "ranked": [[round(sc, 1), f"{c['ids'][0]}–{c['ids'][-1]}", c["dur"]] for sc, c in rated[:8]],
+        "ranked": [[round(sc, 1), f"{c['ids'][0]}–{c['ids'][-1]}", c["dur"], c.get("fit")] for sc, c in rated[:8]],
         "reason": reason,
         "editorial": [], "thesis": None, "keyChapters": [],
         "offTopic": [], "topics": [], "balanceTopics": False, "general": False, "topicSec": {},
@@ -822,12 +917,18 @@ def _plan_passage(instruction: str, target: float, segs: dict[int, dict], chapte
     }
 
 
+# obecné zadání „nejsilnější/nejlepší výrok (o …)“ = nejlepší místo celého materiálu, ne úzké téma
+_GENERIC_RE = re.compile(r"nejsiln|nejzajímav|nejzajimav|nejlepší|nejlepsi|nejvtipn|nejemotivn|nejpůsobiv|"
+                         r"nejpusobiv|nejvýrazn|nejvyrazn", re.I)
+# příběh v kostce přes víc etap („cesta od herečky přes stáž až k moderátorce“) – jedna pasáž ho nepokryje
+_STORY_RE = re.compile(r"v kostce|ve zkratce|celý příběh|celou cestu|\bod\s[^.;:]{2,60}?\s(přes|až)\s", re.I)
 _ANSWER_WORDS = re.compile(r"^(absolutně|jo|ano|ne|jasně|určitě|přesně|no|dobře|tak)\W*$", re.I)
 _TEASER_SCORES: dict[tuple, float] = {}  # (zdroj, zadání, text úderu) -> skóre; platí po dobu běhu Workeru
 
 
 def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: set | None = None,
-                       lo: float = 1.2, hi1: float = 8.0, hi2: float = 9.0, max_units: int = 2) -> list[dict]:
+                       lo: float = 1.2, hi1: float = 8.0, hi2: float = 9.0, max_units: int = 2,
+                       loose_start: bool = False, closed_before: bool = False) -> list[dict]:
     """Krátké samostatné výroky pro upoutávku. Jednotka = věta podle interpunkce slov, i uvnitř segmentu přepisu
     (Whisper slepí „Za tři týdny. Takže to přišlo…“ do jednoho – úder „Za tři týdny.“ by jinak neexistoval).
     Kandidát = 1–2 navazující věty jednoho mluvčího, 1,2–8 s, začátek i konec ve skutečné pauze (mezera ≥ 0,12 s
@@ -862,6 +963,12 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
             return False
         if n and not pause_after[n - 1]:
             return False
+        # skládaný příběh: předchozí věta téhož mluvčího musí být dořečená („…ten jeho sen je ve finále potom
+        # jako...“ + „Moderovat nějaký pořad…“ jako hák reelu navazoval na nevyřčené – Talk IG 60 s)
+        if closed_before and n and units[n - 1]["spk"] == u["spk"] and not units[n - 1]["closed"]:
+            return False
+        if loose_start:  # skládaný klip (focus): navazovat smí, samostatnost prvního výroku hodnotí model
+            return True
         # „To byl prostě můj nejbližší člověk.“ je v upoutávce úder (zvědavost) – „to/tohle“ se nevyřazuje, zkreslení
         # hlídá kontrola kontextu; spojky navazující na předchozí myšlenku ano
         # výčet („Za třetí je to…“, „Navíc…“) bez předchozího bodu nedává smysl (debata 2026-11-20)
@@ -906,6 +1013,451 @@ def _teaser_picks(c: dict) -> list:
         else:
             out.append(u["id"] if u["full"] else {"id": u["id"], "fromWord": u["w0"], "toWord": u["w1"]})
     return out
+
+
+def _plan_focus(instruction: str, target: float, segs: dict[int, dict], chapters: list[dict], core: list[int],
+                exclude: set, backend: str, ctx, path: str, avoid: set | None = None) -> dict | None:
+    """Krátký klip na úzké téma, které v plynulé řeči neleží v jedné pasáži s pauzou na krajích (Talk IG 30 s
+    „ze Snídaně do zpravodajství“: šok #164 → škola #169 → zpětně pozitivní #172). Věty z jádrových kapitol se
+    ohodnotí podle zadání a 2–4 se složí v pořadí, jak zazněly (logika děje, žádné přeskládání)."""
+    ch_of = {i: k for k, c in enumerate(chapters, 1) for i in range(c["from"], c["to"] + 1)}
+    mods = _moderator_speakers(segs) if not re.search(r"moder", instruction, re.I) else set()
+    cands = [c for c in _teaser_candidates(path, segs, exclude | mods, avoid, lo=2.0, hi1=0.7 * target,
+                                           hi2=0.7 * target, max_units=4, loose_start=True,
+                                           closed_before=True)
+             if all(ch_of.get(u["id"]) in core for u in c["units"])]
+    if len(cands) < 2:
+        return None
+    # výroky s předvídatelně slyšitelnou hranicí pryč (K20: začátek #169 −17 dB, konec #172 −11 dB) – bez čistých
+    # výroků v jádru zkusí volající i sousední kapitolu příběhu
+    chk = _edge_check(path, segs, [_cand_span(c, segs) for c in cands])
+    if chk:
+        n0 = len(cands)
+        cands = [c for c, (b0, b1) in zip(cands, chk) if not (b0 or b1)]
+        log(f"focus: kapitoly {core}, čisté hranice {len(cands)}/{n0} výroků")
+        if len(cands) < 2:
+            return None
+    # stejný začátek: nech nejdelší variantu do 0,7× cíle (méně kandidátů = rychlejší a stabilnější hodnocení)
+    by_start: dict[tuple, dict] = {}
+    for c in cands:
+        k = (c["units"][0]["id"], c["units"][0]["w0"])
+        if k not in by_start or c["dur"] > by_start[k]["dur"]:
+            by_start[k] = c
+    cands = sorted(by_start.values(), key=lambda c: (c["units"][0]["s"]))[:40]
+    text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
+    gpu.STAT_PHASE = "focus"
+    rated: list[tuple[float, dict]] = []
+    B = 12
+    for b0 in range(0, len(cands), B):
+        ctx.check()
+        part = cands[b0: b0 + B]
+        ctx.progress(0.4 + 0.35 * b0 / len(cands), f"LLM hodnotí věty k zadání {b0 + 1}–{b0 + len(part)} z {len(cands)}")
+        lines = "\n".join(f"V{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(part))
+        r = _chat_json(
+            f"Jsi střihač. Zadání krátkého klipu: {instruction}\n\nVýroky z rozhovoru:\n{lines}\n\n"
+            "Každý výrok ohodnoť dvěma čísly 0–3: 1) zadání – jak přímo říká to, o čem má klip být (0 = jiné téma, "
+            "3 = přesně jádro); 2) srozumitelnost – rozumí mu divák bez předchozího kontextu, bez vaty a odboček.\n"
+            f'Vrať JSON {{"k":[[z,s], …]}} – {len(part)} dvojic ve stejném pořadí.',
+            30 + 8 * len(part),
+            schema={"type": "object", "properties": {"k": {"type": "array", "minItems": len(part), "maxItems": len(part),
+                    "items": {"type": "array", "minItems": 2, "maxItems": 2,
+                              "items": {"type": "integer", "minimum": 0, "maximum": 3}}}}, "required": ["k"]},
+            backend=backend)
+        for n, k2 in enumerate((r.get("k") or [])[: len(part)]):
+            if isinstance(k2, list) and len(k2) == 2 and all(isinstance(x, int) for x in k2) and k2[0] >= 2:
+                rated.append((3 * k2[0] + 2 * k2[1], part[n]))
+    if len(rated) < 2:
+        return None
+    key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731
+    rated.sort(key=lambda x: -x[0])
+    top: list[dict] = []
+    for _, c in rated:
+        if not any(key(c) & key(t) for t in top):
+            top.append(c)
+        if len(top) >= 10:
+            break
+    top.sort(key=lambda c: c["units"][0]["s"])  # v pořadí, jak zazněly
+    ctx.progress(0.8, "LLM skládá klip")
+    lines = "\n".join(f"V{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(top))
+    r = _chat_json(
+        f"Jsi střihač sociálních sítí. Zadání: {instruction}. Cílová délka {target:.0f} s.\n\n"
+        f"Výroky v pořadí, jak v rozhovoru zazněly:\n{lines}\n\n"
+        f"Vyber 2–4 výroky, které dohromady srozumitelně vypoví to, co chce zadání (začátek → vývoj → pointa), "
+        f"součet délek co nejblíž {target:.0f} s. Výroky se nesmí opakovat ani říkat totéž. První musí být srozumitelný "
+        'bez kontextu. Nejdřív v poli uvaha krátce zdůvodni, pak čísla. JSON {"uvaha": "…", "vyber": [čísla]}.',
+        350, schema={"type": "object", "properties": {"uvaha": {"type": "string", "maxLength": 600},
+                                                      "vyber": {"type": "array", "minItems": 1, "maxItems": 4,
+                                                                "items": {"type": "integer", "minimum": 1, "maximum": len(top)}}},
+                     "required": ["uvaha", "vyber"]}, backend=backend)
+    order = sorted({n for n in (r.get("vyber") or []) if isinstance(n, int) and 1 <= n <= len(top)})
+    chosen = [top[n - 1] for n in order] or top[:2]
+    # délka: přidej další nejlépe hodnocený (v časovém pořadí), který se vejde; nad 1,25× ubírej nejslabší vnitřní
+    by_score = [c for _, c in rated if c in top]
+    for c in by_score:
+        if sum(x["dur"] for x in chosen) >= 0.85 * target:
+            break
+        if c not in chosen and sum(x["dur"] for x in chosen) + c["dur"] <= 1.15 * target:
+            chosen.append(c)
+    chosen.sort(key=lambda c: c["units"][0]["s"])
+    while len(chosen) > 2 and sum(c["dur"] for c in chosen) > 1.25 * target:
+        chosen.remove(max(chosen[1:-1] or chosen[1:], key=by_score.index))  # nejhůř hodnocený vnitřní
+    total = sum(c["dur"] for c in chosen)
+    return {
+        "note": None, "picks": [p for c in chosen for p in _teaser_picks(c)], "estimatedSec": round(total, 1),
+        "alternates": [u["id"] for c in top if c not in chosen for u in c["units"]], "dropped": [],
+        "mode": "focus", "passages": len(cands), "reason": r.get("uvaha"),
+        "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
+                   for c in top if c not in chosen][:6],
+        "editorial": [], "thesis": None, "keyChapters": core,
+        "offTopic": [], "topics": [], "balanceTopics": False, "general": False, "topicSec": {},
+        "addedForQuestionAnswer": [], "fixedFragments": [],
+    }
+
+
+def _edge_check(path: str, segs: dict[int, dict], spans: list[tuple[float, float]]) -> list[tuple[bool, bool]] | None:
+    """Předpověď kontroly hranic po stavbě (server: cutBounds -> refineOutPoints -> edgeWarnings) pro úseky
+    (začátek prvního slova, konec posledního): [(vadný začátek, vadný konec)]; vadná = nad -12 dB proti řeči, nebo nad -20 dB
+    uvnitř slova. Výběr podle pauzy ≥ 70 ms jinak pouštěl hranice, které stavba pak hlásila – u skládaného reelu
+    (5 úseků = 10 hranic) vadných 5 z 10 a dvě opakování plánu nestačila (Talk IG 60 s, #169/#172 u IG 30 s)."""
+    words = sorted((w for s in segs.values() for w in (s.get("words") or [])), key=lambda w: w["s"])
+    if not words or not spans:
+        return None
+    import bisect
+    starts = [w["s"] for w in words]
+    ends_sorted = sorted(w["e"] for w in words)
+    G = 0.02
+    pts, meta = [], []
+    for a, b in spans:
+        k = bisect.bisect_right(ends_sorted, a + 1e-3)
+        prev_end = ends_sorted[k - 1] if k else None
+        k2 = bisect.bisect_left(starts, b - 1e-3)
+        next_start = starts[k2] if k2 < len(starts) else None
+        lo = a - 0.08 if prev_end is None else max(a - 0.08, prev_end + G)
+        t_in = max(0.0, min(lo, a))
+        min_in = 0.0 if prev_end is None else min(prev_end + G, a)
+        ceil = float("inf") if next_start is None else next_start - G
+        t_out = max(min(b + 0.15, ceil), b)
+        max_out = max(ceil, b)
+        pts.append({"at": t_out, "direction": "end",
+                    "maxExtend": max(0.0, min(0.4, max_out - t_out - 0.02)) if max_out != float("inf") else 0.4})
+        pts.append({"at": t_in, "direction": "start", "maxExtend": max(0.0, min(0.3, t_in - min_in + 0.1)),
+                    "fallbackExtend": max(0.0, min(0.3, t_in - min_in - 0.02))})
+    try:
+        ref = audiosync.refine_edges({"path": path, "points": pts}, None)["points"]
+        edges = []
+        for n in range(len(spans)):
+            edges += [{"t": ref[2 * n + 1]["time"], "kind": "in"}, {"t": ref[2 * n]["time"], "kind": "out"}]
+        lev = audiosync.edge_levels({"path": path, "edges": edges}, None)["edges"]
+    except Exception as e:  # noqa: BLE001 – bez zvuku se nepředpovídá
+        log(f"edge_check: {e}")
+        return None
+
+    def bad(e: dict) -> bool:
+        t = e["t"]
+        k = bisect.bisect_right(starts, t - 0.01)
+        inside = any(w["s"] < t - 0.01 and w["e"] > t + 0.01 for w in words[max(0, k - 3): k])
+        return e["rel"] > -12 or (inside and e["rel"] > -20)
+
+    if len(lev) != 2 * len(spans):
+        return None
+    return [(bad(lev[2 * n]), bad(lev[2 * n + 1])) for n in range(len(spans))]
+
+
+_EDGE_MAPS: dict[tuple, dict[int, tuple[bool, bool]]] = {}
+
+
+def _edge_map(path: str, segs: dict[int, dict]) -> dict[int, tuple[bool, bool]] | None:
+    """Věta -> (vadný začátek, vadný konec), když se stříhá na její kraj (celá věta, časy segmentu jako ve stavbě)."""
+    try:
+        key = (os.path.abspath(path), os.path.getmtime(path), len(segs), max(segs))
+    except OSError:
+        return None
+    if key not in _EDGE_MAPS:
+        ids = sorted(segs)
+        chk = _edge_check(path, segs, [(segs[i]["start"], segs[i]["end"]) for i in ids])
+        if chk is None:
+            return None
+        _EDGE_MAPS.clear()
+        _EDGE_MAPS[key] = dict(zip(ids, chk))
+    return _EDGE_MAPS[key]
+
+
+def _cand_span(c: dict, segs: dict[int, dict]) -> tuple[float, float]:
+    """Časy úseku tak, jak je postaví server: celá věta = časy segmentu, část věty = časy slov."""
+    if c.get("units"):
+        u0, u1 = c["units"][0], c["units"][-1]
+        return (segs[u0["id"]]["start"] if u0.get("full") else u0["s"],
+                segs[u1["id"]]["end"] if u1.get("full") else u1["e"])
+    return segs[c["ids"][0]]["start"], segs[c["ids"][-1]]["end"]
+
+
+def _chapter_text(c: dict, segs: dict[int, dict], skip_speakers: set, limit: int = 700) -> str:
+    """Co v kapitole skutečně zaznělo (bez moderátora), zkrácené: začátek + konec (pointa bývá na konci)."""
+    t = " ".join(segs[i]["text"].strip() for i in range(c["from"], c["to"] + 1)
+                 if i in segs and segs[i].get("speaker") not in skip_speakers)
+    t = re.sub(r"\s+", " ", t)
+    return t if len(t) <= limit else t[: int(limit * 0.65)] + " … " + t[-int(limit * 0.35):]
+
+
+def _verify_core(instruction: str, chapters: list[dict], scores: dict[int, int], segs: dict[int, dict],
+                 exclude: set, backend: str) -> dict[int, int]:
+    """Druhé hodnocení kapitol se skóre ≥ 2 podle jejich TEXTU, všechny v jednom dotazu (srovnání vedle sebe).
+    Hodnocení podle názvu a shrnutí osnovy kolísá: K8 „Reakce rodiny a první reportáž“ dostala pro „ze Snídaně do
+    zpravodajství – šok a slzy“ jednou 2, jindy 3 a pasáž o běhu se Suchoněm (#61–64) pak přebila K20 (Talk IG 30 s)."""
+    cand = sorted((k for k in scores if scores[k] >= 2), key=lambda k: (-scores[k], k))[:8]
+    if not cand:
+        return {}
+    cand.sort()
+    skip = exclude | _moderator_speakers(segs)
+    lines = "\n".join(f"{n + 1}) {chapters[k - 1]['title']}: „{_chapter_text(chapters[k - 1], segs, skip)}“"
+                      for n, k in enumerate(cand))
+    gpu.STAT_PHASE = "verify"
+    r = _chat_json(
+        f"Jsi střihač. Zadání krátkého klipu: {instruction}\n\nKapitoly rozhovoru (název a co v nich host skutečně "
+        f"říká):\n{lines}\n\n"
+        "U každé kapitoly urči 0–3, jak přímo její TEXT vypráví to, o čem má klip být: 3 = přesně téma zadání (klip "
+        "se dá postavit z ní), 2 = souvisí, téma zazní jen částečně, 1 = jen společné slovo, osoba nebo období, "
+        "0 = jiné téma. Rozhoduje, o čem kapitola opravdu je, ne shoda jednoho slova. "
+        f'Vrať JSON {{"s":[…]}} – {len(cand)} čísel ve stejném pořadí jako kapitoly.',
+        60, schema={"type": "object", "properties": {"s": {"type": "array", "items": {"type": "integer",
+                    "enum": [0, 1, 2, 3]}, "minItems": len(cand), "maxItems": len(cand)}}, "required": ["s"]},
+        backend=backend)
+    ver = {k: v for k, v in zip(cand, r.get("s") or []) if isinstance(v, int)}
+    if len(ver) != len(cand) or max(ver.values()) < 2:
+        return {}  # model shodil všechno (zadání formulované jinak než kapitoly) -> nevěřit mu
+    # Jen potvrzení nebo shození jádra (skóre 3), nikdy povýšení: druhé hodnocení povýšilo K21 (Houska, „proč mě
+    # odtrháváš“) na 3 a focus pak vzal #173–175 místo K20 se šokem a školou. Vedlejší kapitoly (2) jsou v dotazu
+    # jen pro srovnání vedle sebe.
+    core = [k for k in cand if scores[k] >= 3]
+    # Shodit jde jen kapitolu, kde host opravdu mluví: K30 (otázka moderátorky + „Často rozhodně nezahojí.“) vyšla
+    # z textu na 2 a pasáž #265–267, která v ní začíná, pak vypadla z jádra (Talk IG 45 s)
+    talk = {k: len(_chapter_text(chapters[k - 1], segs, skip, 10 ** 6)) for k in core}
+    out = {k: min(scores[k], ver[k]) for k in core if ver[k] < scores[k] and talk[k] >= 200}
+    if core and all(k in out for k in core):
+        keep = max(core, key=lambda k: (ver[k], -k))  # aspoň jedna jádrová zůstane – ta, kterou text potvrdil nejvíc
+        out.pop(keep)
+    return out
+
+
+def _plan_story(instruction: str, target: float, segs: dict[int, dict], chapters: list[dict], scores: dict[int, int],
+                exclude: set, backend: str, ctx, path: str, avoid: set | None = None) -> dict | None:
+    """Krátký reel, který v kostce vypráví příběh přes víc etap („cesta od herečky přes neplacenou stáž až
+    k moderátorce“). Zadání -> 2–4 etapy v časovém pořadí, kapitoly -> etapy, v každé etapě samostatné uzavřené
+    výroky hosta (jednotky z _teaser_candidates: začátek i konec v pauze, souvětí nepokračuje), model ohodnotí
+    etapu, samostatnost a hák. Pořadí: hák, pak etapy chronologicky; moderátorka jen při „otázka/odpověď“.
+    Obecné skládání vět tu dávalo otázku moderátorky na začátek a utnuté souvětí na konec (Talk IG 60 s)."""
+    gpu.STAT_PHASE = "story"
+    ctx.progress(0.12, "LLM dělí zadání na etapy")
+    r = _chat_json(
+        f"Zadání krátkého klipu: {instruction}\n\nRozděl příběh, který má klip vyprávět, na 2–4 etapy v časovém pořadí "
+        '(každá krátce, 2–6 slov, podle zadání). JSON {"etapy": ["…", …]}.',
+        120, schema={"type": "object", "properties": {"etapy": {"type": "array", "minItems": 2, "maxItems": 4,
+                     "items": {"type": "string", "maxLength": 60}}}, "required": ["etapy"]}, backend=backend)
+    stages = [str(x).strip() for x in (r.get("etapy") or []) if str(x).strip()][:4]
+    if len(stages) < 2:
+        return None
+    st_list = "\n".join(f"{n}) {s}" for n, s in enumerate(stages, 1))
+    ks = [k for k in range(1, len(chapters) + 1) if scores.get(k, 0) >= 1] or list(range(1, len(chapters) + 1))
+    # kapitola -> etapy. Pro každou etapu zvlášť čísla kapitol (celá osnova najednou, rozhovor jde chronologicky):
+    # pole „etapa ke každé kapitole“ po dávkách 12 bylo nespolehlivé – etapa „moderátorka“ nedostala nic
+    # a „Kariérní cesta a moderování“ skončila v etapě „herečka“ (Talk IG 60 s)
+    outline = "\n".join(f"K{k}: {chapters[k - 1]['title']} – {chapters[k - 1]['summary']}" for k in ks)
+    stage_of: dict[int, set[int]] = {}
+    for e, st in enumerate(stages, 1):
+        ctx.check()
+        r = _chat_json(
+            f"Zadání klipu: {instruction}\nEtapy příběhu (v časovém pořadí):\n{st_list}\n\n"
+            f"Osnova rozhovoru (kapitoly jdou za sebou, jak zazněly):\n{outline}\n\n"
+            f"Ve kterých kapitolách host vypráví etapu {e}) {st}? Jen kapitoly, ze kterých jde tuhle etapu "
+            'odvyprávět jeho slovy (ne kapitoly, kde je jen zmíněná). JSON {"k": [čísla kapitol]}.',
+            80, schema={"type": "object", "properties": {"k": {"type": "array", "maxItems": 8, "items": {
+                "type": "integer", "enum": ks}}}, "required": ["k"]}, backend=backend)
+        for k in r.get("k") or []:
+            if isinstance(k, int) and k in ks:
+                stage_of.setdefault(k, set()).add(e)
+    if len({e for v in stage_of.values() for e in v}) < 2:
+        log(f"story: etapy {stages}, kapitoly {stage_of} – málo etap")
+        return None
+    ch_of = {i: k for k, c in enumerate(chapters, 1) for i in range(c["from"], c["to"] + 1)}
+    # moderátorka jen u otázky a odpovědi – „k moderátorce“ v zadání je etapa příběhu, ne mluvčí
+    mods = set() if re.search(r"otázk|otazk", instruction, re.I) else _moderator_speakers(segs)
+    n_st = len(stages)
+    ideal = target / (n_st + 0.5)
+    # až 6 vět a 0,45× cíle: v plynulé řeči má čisté hranice jen asi čtvrtina výroků (IG 60 s: 9 z 35)
+    raw = _teaser_candidates(path, segs, exclude | mods, avoid, lo=2.5, hi1=min(0.45 * target, 27.0),
+                             hi2=min(0.45 * target, 27.0), max_units=6, closed_before=True)
+    best_ids = {i for c in chapters for i in (c.get("best") or [])}
+    # etapy kandidáta = sjednocení etap kapitol jeho vět: výrok přes hranici kapitol („A potom mě vlastně dali do
+    # Snídaně s Novou…“ #127 v K15 + „A tam se začala formovat moje moderátorská zkušenost.“ #128 v K16) by průnik zahodil
+    per_stage: dict[int, list[dict]] = {}
+    for c in raw:
+        # pozdrav a poděkování za úvod („Krásný den, Kristýnku, děkuji…“) model hodnotil jako etapu i hák
+        # „Jsi byla malička.“ = vstup moderátorky, který Whisper přilepil k větě hostky (oslovení na začátku výroku)
+        if re.match(r"(krásný|dobrý) (den|večer)|ahoj|děkuj|díky|dobré ráno|(ty )?(jsi|seš|jseš) ",
+                    c["units"][0]["text"].strip(), re.I):
+            continue
+        c["stages"] = set().union(*(stage_of.get(ch_of.get(u["id"]), set()) for u in c["units"]))
+        for e in c["stages"]:
+            per_stage.setdefault(e, []).append(c)
+    # Výroky s předvídatelně slyšitelnou hranicí pryč ještě před hodnocením (první plán IG 60 s měl po stavbě vadných
+    # 5 z 10 hranic, opakování pak skládalo z čím dál horších zbytků). Etapa bez čistého výroku si nechá původní.
+    staged = [c for c in raw if c.get("stages")]
+    chk = _edge_check(path, segs, [_cand_span(c, segs) for c in staged])
+    if chk:
+        ok = {id(c) for c, (b0, b1) in zip(staged, chk) if not (b0 or b1)}
+        # Jen čisté. Zkoušeno: etapa s < 3 čistými výroky si nechá i vadné se srážkou ve skóre – hák a závěr pak
+        # vyšly z vadných („…pamatuju.|Jsi byla“ −2 dB, „debat.|Já jsem“ −7 dB) a opakování plánu to nespravilo.
+        # Etapa bez čistého výroku radši vypadne (reel je kratší, ale bez useknutého slova).
+        for e in list(per_stage):
+            per_stage[e] = [c for c in per_stage[e] if id(c) in ok]
+            if not per_stage[e]:
+                del per_stage[e]
+        log(f"story: čisté hranice {len(ok)}/{len(staged)} výroků")
+    pool: list[dict] = []
+    for e, lst in per_stage.items():
+        # ze stejného začátku nejkratší (hák) a nejbližší ideální délce etapy
+        by_start: dict[tuple, list[dict]] = {}
+        for c in lst:
+            by_start.setdefault((c["units"][0]["id"], c["units"][0]["w0"]), []).append(c)
+        keep = []
+        for vs in by_start.values():
+            keep.append(min(vs, key=lambda c: c["dur"]))
+            near = min(vs, key=lambda c: abs(c["dur"] - ideal))
+            if near is not keep[-1]:
+                keep.append(near)
+        # nejvýš 20 na etapu: přednost výrokům s nejlepšími větami kapitol (osnova), pak časové pořadí
+        keep.sort(key=lambda c: (-len({u["id"] for u in c["units"]} & best_ids), c["units"][0]["s"]))
+        pool += [c for c in keep[:20] if not any(c is x for x in pool)]
+    pool.sort(key=lambda c: (c["units"][0]["s"], c["dur"]))
+    log(f"story: etapy {stages}, kapitoly {dict(sorted((k, sorted(v)) for k, v in stage_of.items()))}, "
+        f"kandidáti {dict(sorted((e, len(v)) for e, v in per_stage.items()))}, hodnotí se {len(pool)}")
+    if len(per_stage) < 2:
+        return None
+    text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
+    key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731
+    # Hodnocení jedním průchodem se všemi etapami: model řekne, KTEROU etapu výrok vypráví. Hodnocení po etapách
+    # zvlášť bylo mírné – „nikomu jsem to neřekla a poslala životopis“ dostalo 3 i pro etapu „herečka“.
+    rated: list[tuple[float, dict]] = []
+    B = 12
+    for b0 in range(0, len(pool), B):
+        ctx.check()
+        part = pool[b0: b0 + B]
+        ctx.progress(0.3 + 0.45 * b0 / max(1, len(pool)), f"LLM hodnotí výroky {b0 + 1}–{b0 + len(part)} z {len(pool)}")
+        lines = "\n".join(f"V{n + 1} ({c['dur']:.0f} s): {text(c)}" for n, c in enumerate(part))
+        r = _chat_json(
+            f"Jsi střihač sociálních sítí. Zadání: {instruction}\nEtapy příběhu:\n{st_list}\n\n"
+            f"Výroky hosta:\n{lines}\n\n"
+            "Každý výrok ohodnoť čtyřmi čísly: 1) etapa – číslo etapy, kterou výrok vypráví (0 = žádnou, jiné téma "
+            "nebo jen zmínka); 2) síla 0–3 – jak přímo a výstižně tu etapu vypráví; 3) samostatnost 0–3 – rozumí mu "
+            "divák bez předchozího kontextu, nezačíná ani nekončí uprostřed myšlenky, bez vaty a odboček; "
+            "4) hák 0–3 – vzbudí emoci nebo zvědavost hned na začátku klipu. "
+            f'Vrať JSON {{"k":[[etapa,sila,samostatnost,hak], …]}} – {len(part)} čtveřic ve stejném pořadí.',
+            30 + 13 * len(part),
+            schema={"type": "object", "properties": {"k": {"type": "array", "minItems": len(part),
+                    "maxItems": len(part), "items": {"type": "array", "minItems": 4, "maxItems": 4,
+                                                     "items": {"type": "integer", "minimum": 0, "maximum": 3}}}},
+                    "required": ["k"]}, backend=backend)
+        for n, k4 in enumerate((r.get("k") or [])[: len(part)]):
+            if not (isinstance(k4, list) and len(k4) == 4 and all(isinstance(x, int) for x in k4)):
+                continue
+            e, sila, samo, hak = k4
+            c = part[n]
+            # etapa musí sedět i s kapitolou (model občas přiřadí etapu podle jednoho slova)
+            if e in c["stages"] and sila >= 2 and samo >= 2:
+                c["stage"], c["hook"] = e, hak
+                rated.append((3 * sila + 2 * samo + hak, c))
+    if len({c["stage"] for _, c in rated}) < 2:
+        log(f"story: ohodnoceno {len(rated)} výroků v etapách {sorted({c['stage'] for _, c in rated})} – málo")
+        return None
+    rated.sort(key=lambda x: -x[0])
+    score = {id(c): sc for sc, c in rated}
+    top: list[dict] = []  # nejvýš 4 nepřekrývající se na etapu
+    for _, c in rated:
+        if sum(1 for t in top if t["stage"] == c["stage"]) < 4 and not any(key(c) & key(t) for t in top):
+            top.append(c)
+    top.sort(key=lambda c: c["units"][0]["s"])
+    ctx.progress(0.8, "LLM skládá příběh")
+    # hák = krátký úder; 22s výklad o konzervatoři jako „hák“ (Talk IG 60 s) diváka v prvních vteřinách nechytí
+    hook_max = max(8.0, 0.2 * target)
+    # kandidáti na hák: krátké výroky s hodnocením háku ≥ 2 (i mimo nejlepší čtyři své etapy)
+    hooks = [c for _, c in rated if c["dur"] <= hook_max and c.get("hook", 0) >= 2]
+    for c in sorted(hooks, key=lambda c: (-c["hook"], -score[id(c)]))[:3]:
+        if c not in top and not any(key(c) & key(t) for t in top):
+            top.append(c)
+    top.sort(key=lambda c: c["units"][0]["s"])
+    can_hook = lambda c: (c in hooks) if hooks else c["dur"] <= hook_max  # noqa: E731
+    lines = "\n".join(f"V{n + 1} [etapa {c['stage']}] ({c['dur']:.0f} s{', může být hák' if can_hook(c) else ''})"
+                      f": {text(c)}" for n, c in enumerate(top))
+    r = _chat_json(
+        f"Jsi střihač sociálních sítí. Zadání: {instruction}. Cílová délka {target:.0f} s.\nEtapy:\n{st_list}\n\n"
+        f"Výroky v pořadí, jak v rozhovoru zazněly:\n{lines}\n\n"
+        "Sestav reel: první výrok je hák (jen výrok označený „může být hák“ – silná emoce nebo "
+        "zvědavost, chytí diváka v prvních vteřinách), pak z každé etapy 1, nejvýš 2 výroky v časovém pořadí, které "
+        "ji srozumitelně vypoví. Poslední výrok je pointa: cíl, ke kterému cesta vede, už dosažený – ne jen přání "
+        f"nebo plán. Výroky se nesmí opakovat ani říkat totéž, součet délek co nejblíž {target:.0f} s. "
+        'Nejdřív v poli uvaha krátce zdůvodni, pak číslo háku a čísla ostatních výroků. '
+        'JSON {"uvaha": "…", "hak": číslo, "vyber": [čísla]}.',
+        400, schema={"type": "object", "properties": {
+            "uvaha": {"type": "string", "maxLength": 600},
+            "hak": {"type": "integer", "minimum": 1, "maximum": len(top)},
+            "vyber": {"type": "array", "minItems": 1, "maxItems": 2 * n_st,
+                      "items": {"type": "integer", "minimum": 1, "maximum": len(top)}}},
+            "required": ["uvaha", "hak", "vyber"]}, backend=backend)
+    hk = r.get("hak")
+    picked = [hk] + list(r.get("vyber") or [])
+    hook = top[hk - 1] if isinstance(hk, int) and 1 <= hk <= len(top) else None
+    if hook is None or not can_hook(hook):
+        # dlouhý nebo slabý „hák“ zůstane ve výběru jako výrok etapy, hákem bude nejsilnější krátký
+        short = [c for c in top if can_hook(c)]
+        hook = max(short or top, key=lambda c: (c.get("hook", 0), score[id(c)], -c["dur"]))
+    body: list[dict] = []
+    for n in picked:
+        if isinstance(n, int) and 1 <= n <= len(top):
+            c = top[n - 1]
+            if c is not hook and c not in body and not any(key(c) & key(x) for x in body + [hook]):
+                body.append(c)
+    # hák z pozdější etapy jde dopředu (flash-forward) – svou etapu v chronologii nezastoupí
+    hook_covers = hook["stage"] == min(c["stage"] for c in top)
+    covered = lambda: ({hook["stage"]} if hook_covers else set()) | {c["stage"] for c in body}  # noqa: E731
+    # každá etapa aspoň jedním výrokem (model občas etapu vynechá – pak to není „cesta od … přes … až“)
+    for e in sorted({c["stage"] for c in top} - covered()):
+        alt = [c for c in top if c["stage"] == e and not any(key(c) & key(x) for x in body + [hook])]
+        if alt:
+            body.append(max(alt, key=lambda c: score[id(c)]))
+    total = lambda: hook["dur"] + sum(c["dur"] for c in body)  # noqa: E731
+    # délka: nad 1,2× ubírej nejslabší výrok etapy, která má víc výroků; pod 0,85× přidej nejlepší, který se vejde,
+    # do etapy s nejmenším zastoupením
+    while total() > 1.2 * target:
+        extra = [c for c in body if sum(1 for x in body if x["stage"] == c["stage"])
+                 + (hook_covers and hook["stage"] == c["stage"]) > 1]
+        if not extra:
+            break
+        body.remove(min(extra, key=lambda c: score[id(c)]))
+    # pořád nad 1,25× (každá etapa má jen jeden, ale dlouhý výrok): uber nejslabší, i za cenu etapy – 60s reel
+    # nesmí mít 80 s
+    while total() > 1.25 * target and len(body) > 1:
+        body.remove(min(body, key=lambda c: score[id(c)]))
+    while total() < 0.85 * target:
+        secs = {e: sum(c["dur"] for c in body + [hook] if c["stage"] == e) for e in {c["stage"] for c in top}}
+        add = [c for c in top if c is not hook and c not in body and not any(key(c) & key(x) for x in body + [hook])
+               and total() + c["dur"] <= 1.15 * target]
+        if not add:
+            break
+        body.append(min(add, key=lambda c: (secs.get(c["stage"], 0), -score[id(c)])))
+    body.sort(key=lambda c: c["units"][0]["s"])
+    order = [hook] + body
+    return {
+        "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total(), 1),
+        "alternates": [u["id"] for c in top if c not in order for u in c["units"]], "dropped": [],
+        "mode": "story", "passages": len(raw), "reason": r.get("uvaha"), "stages": stages,
+        "stageChapters": {e: sorted(k for k, s in stage_of.items() if e in s) for e in range(1, n_st + 1)},
+        "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
+                   for c in top if c not in order][:6],
+        "ranked": [[round(sc, 1), c["stage"], text(c)[:60], c["dur"]] for sc, c in rated[:10]],
+        "editorial": [], "thesis": None, "keyChapters": sorted(stage_of),
+        "offTopic": [], "topics": [], "balanceTopics": False, "general": False, "topicSec": {},
+        "addedForQuestionAnswer": [], "fixedFragments": [],
+    }
 
 
 def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude: set, backend: str, ctx,
@@ -1117,10 +1669,43 @@ def plan_edit(params: dict, ctx) -> dict:
     # Krátký výrok / highlight (do 60 s): jedna souvislá pasáž místo skládání vět z celého materiálu.
     # Skládání vybralo „…napadlo mě úplně z ničeho nic.“ a pak skočilo jinam – to, co ji napadlo, vypadlo
     # (Talk 2026-11-20, 20 s); Claude bral jednu ucelenou pasáž s pointou. Upoutávka má vlastní dramaturgii.
-    if (target and target <= 60 and not params.get("noPassage")
-            # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
-            and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|všech",
-                              instruction, re.I)):
+    short = bool(target and target <= 60 and not params.get("noPassage")
+                 # „sestřih“ ne – česky tak zní skoro každé zadání („třicetisekundový sestřih: nejsilnější výrok…“)
+                 and not re.search(r"upoutáv|upoutav|trailer|teaser|promo|přehled|prehled|shrnut|víc témat|vic temat|"
+                                   r"všech", instruction, re.I))
+    # příběh v kostce přes víc etap („cesta od herečky přes stáž až k moderátorce“) jedna pasáž nepokryje –
+    # Hermes vzal 50 s o kolezích ze Snídaně; obecné skládání vět pak dalo otázku moderátorky na začátek a utnuté
+    # souvětí na konec (#166–167 bez #168, Talk IG 60 s 2026-11-21) -> vlastní dramaturgie etap (_plan_story)
+    story = bool(_STORY_RE.search(instruction))
+    if short and story:
+        res = _plan_story(instruction, target, segs, chapters, scores, exclude, backend, ctx, path, avoid)
+        if res:
+            res.update({"chapters": chosen, "why": "; ".join(reasons), "backend": backend,
+                        "removedModerator": sorted(i for i in segs if segs[i].get("speaker") in exclude),
+                        "elapsedSec": round(time.time() - t_start, 1), "llmStats": gpu.stats_summary(gpu.CALL_STATS)})
+            return res
+        if avoid:
+            # opakování kvůli hranici nesložilo příběh -> server nechá předchozí verzi (obecné skládání vět tu dávalo
+            # otázku moderátorky na začátek a utnuté souvětí #166–167 bez #168)
+            log("story: opakování nesložilo příběh – ponechá se předchozí plán")
+            return {"note": "Po vyřazení vět se slyšitelnou hranicí nezbyl příběh.", "picks": [], "estimatedSec": 0,
+                    "mode": "story", "alternates": [], "dropped": [], "chapters": chosen, "why": "; ".join(reasons),
+                    "backend": backend, "editorial": [], "thesis": None, "keyChapters": [], "offTopic": [],
+                    "topics": [], "balanceTopics": False, "general": False, "topicSec": {},
+                    "addedForQuestionAnswer": [], "fixedFragments": []}
+        # příběh nejde složit (málo etap / čistých výroků) -> radši jedna pasáž než obecné skládání vět
+        story = False
+    if short and not story and not _GENERIC_RE.search(instruction):
+        # Úzké téma: hodnocení kapitol jen podle názvu a shrnutí mezi běhy kolísá (K8 „rodina, první reportáž“
+        # dostala pro „ze Snídaně do zpravodajství“ jednou 2, jindy 3 a vybrala se pasáž o běhu se Suchoněm) –
+        # kandidáty se skóre ≥ 2 posoudí model ještě jednou podle skutečného textu kapitol, všechny naráz.
+        ver = _verify_core(instruction, chapters, scores, segs, exclude, backend)
+        if ver:
+            reasons.append("ověřeno textem: " + ", ".join(f"K{k}={v}" for k, v in sorted(ver.items())))
+            scores.update(ver)
+            chosen = ([k for k in range(1, n_ch + 1) if scores.get(k, 0) >= 2]
+                      or [k for k in range(1, n_ch + 1) if scores.get(k, 0) >= 1] or list(range(1, n_ch + 1)))
+    if short and not story:
         res = _plan_passage(instruction, target, segs, chapters, chosen, scores, exclude, backend, ctx, pause_map, avoid,
                             path)
         if res:

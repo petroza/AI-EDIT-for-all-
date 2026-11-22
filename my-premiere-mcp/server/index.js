@@ -20,6 +20,9 @@ import { intervalsFromTranscript, intervalsFromTurns, multicamClips, planRuns, s
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'config.json'), 'utf8'));
+// Jiný střihový program se stejným mostem (TN Střihátko, O:\TN_strihatoko) si spouští server s vlastním portem,
+// aby mohl běžet vedle Premiere – panel v Premiere zůstává na config.port.
+if (Number(process.env.PMCP_PORT) > 0) CONFIG.port = Number(process.env.PMCP_PORT);
 const W = CONFIG.whisper;
 // Python aplikace: .venv z instalátoru, jinak přibalený přenosný Python (tools/python311 – přenesená
 // složka na PC, kde nejde nic instalovat). Relativní cesta se bere od složky aplikace.
@@ -968,6 +971,10 @@ function continuityWarnings(tr, picks) {
   const byId = new Map(tr.segments.map((s) => [s.id, s]));
   const ids = new Set(picks.map((p) => (typeof p === 'number' ? p : p.id)));
   const low = (s) => /^\p{Ll}/u.test((s?.text || '').trim());
+  // věta uzavřená tečkou/otazníkem (ne „…“) a za ní pauza ≥ 0,8 s = samostatná myšlenka, i když další úryvek
+  // začíná malým písmenem (Talk #45 „…psala sem články na web.“ + 1,1 s + „cesta na novou“ hlásilo utnuté souvětí)
+  const closed = (a, b) => /[.!?]$/.test((a?.text || '').trim()) && !/(\.\.\.|…)$/.test((a?.text || '').trim()) &&
+    Number(b?.start) - Number(a?.end) >= 0.8;
   const out = [];
   for (const p of picks) {
     if (typeof p !== 'number' && (p.fromWord !== undefined || p.toWord !== undefined)) continue; // záměrné zkrácení
@@ -976,10 +983,10 @@ function continuityWarnings(tr, picks) {
     const next = byId.get(id + 1);
     const prev = byId.get(id - 1);
     if (!s) continue;
-    if (next && low(next) && next.speaker === s.speaker && !ids.has(id + 1)) {
+    if (next && low(next) && next.speaker === s.speaker && !ids.has(id + 1) && !closed(s, next)) {
       out.push(`#${id} pokračuje větou #${id + 1} („${next.text.trim().slice(0, 40)}…“), která ve střihu chybí – souvětí skončí uprostřed`);
     }
-    if (low(s) && prev && prev.speaker === s.speaker && !ids.has(id - 1)) {
+    if (low(s) && prev && prev.speaker === s.speaker && !ids.has(id - 1) && !closed(prev, s)) {
       out.push(`#${id} začíná uprostřed souvětí – chybí #${id - 1}`);
     }
   }
@@ -2224,7 +2231,7 @@ tool(
       await refineOutPoints(a.path, ranges, extra);
       const edges = await edgeWarnings(a.path, tr, ranges, extra);
       // krátké režimy až 2×, skládání vět (delší střihy, plán ~1 min) 1×
-      const retry = edges?.badIds?.length && attempt < (['passage', 'teaser'].includes(plan.mode) ? 2 : 1);
+      const retry = edges?.badIds?.length && attempt < (['passage', 'teaser', 'focus', 'story'].includes(plan.mode) ? 2 : 1);
       if (retry) {
         avoid.push(...edges.badIds);
         const again = await runJob('plan_edit', { path: a.path, instruction: a.instruction, targetSec: a.targetSec,
