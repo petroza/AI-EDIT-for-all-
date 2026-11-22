@@ -230,7 +230,7 @@ class Faces:
         import cv2
 
         if not YUNET.exists():
-            raise ConfigError(f"Chybí model YuNet: {YUNET} (install.ps1 ho stáhne, nebo zkopíruj face_detection_yunet_2023mar.onnx)")
+            raise ConfigError(f"Chybí model YuNet: {YUNET} (INSTALL\\Instalace.cmd ho stáhne, nebo zkopíruj face_detection_yunet_2023mar.onnx)")
         self.src = src
         self.det = cv2.FaceDetectorYN.create(str(YUNET), "", (960, 540), 0.6, 0.3, 5000)
         self.cache_file = cache_file

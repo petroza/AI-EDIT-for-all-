@@ -2,7 +2,7 @@
 # Spousti se pres Instalace.cmd (nebo: powershell -NoProfile -ExecutionPolicy Bypass -File INSTALL\install.ps1)
 #
 # Prepinace:
-#   -CheckOnly    jen kontroly, nic nemeni (stejne jako Kontrola.cmd)
+#   -CheckOnly    jen kontroly, nic nemeni (Instalace.cmd -CheckOnly)
 #   -NoLocalLLM   preskoci gemma3 12B + vision model + llama.cpp (~9 GB) - AI strih pres Claude/GPT funguje dal
 #   -SkipModels   preskoci vsechny modely vcetne Whisperu (jen panel + MCP; prepis pak nepojede)
 #   -Hermes       stahne z internetu i Hermes (Qwen3.6-35B-A3B + llama.cpp, ~23 GB) - silnejsi lokalni strih

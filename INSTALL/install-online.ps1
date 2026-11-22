@@ -1,9 +1,11 @@
-# MY Premiere MCP - mala online instalace.
-# Vse se stahuje z internetu: kod aplikace z GitHubu, Node.js a Python pres winget (kdyz chybi),
-# balicky (npm, pip) a modely (Whisper, diarizace, lokalni LLM). Pak se spusti hlavni instalator
-# INSTALL\install.ps1 ze stazeneho kodu (kontroly, panel do Premiere, registrace MCP, overeni).
+# MY Premiere MCP - instalace (spousti se pres INSTALL\Instalace.cmd).
+# Lezi-li skript ve slozce aplikace (git clone / zkopirovana slozka), instaluje primo do ni. Jinak (jen tyhle
+# 2 soubory na jinem PC) stahne kod z GitHubu. Node.js a Python doinstaluje pres winget, kdyz chybi, pak spusti
+# hlavni instalator INSTALL\install.ps1 (kontroly, balicky, modely, panel do Premiere, registrace MCP, overeni).
+# Je-li vedle slozka INSTALL\offline, modely a balicky se berou z ni (bez internetu).
 #
-# Spousti se pres Instalace.cmd. Prepinace (predaji se hlavnimu instalatoru):
+# Prepinace (predaji se hlavnimu instalatoru):
+#   -CheckOnly        jen kontrola prostredi, nic nemeni
 #   -Target <slozka>  kam instalovat (jinak se zepta; vychozi %USERPROFILE%\MYpremiereMCP)
 #   -Hermes           stahnout i Hermes (~23 GB, silnejsi lokalni strih) - jinak se zepta
 #   -NoLocalLLM       bez lokalniho LLM (usetri ~9 GB)
@@ -19,7 +21,8 @@ param(
     [switch]$NoLocalLLM,
     [switch]$SkipModels,
     [string]$Branch = 'main',
-    [string]$Source
+    [string]$Source,
+    [switch]$CheckOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -72,6 +75,11 @@ if ($Source) {
 
 # ------------------------------------------------------------------ 1. kam
 Head '1/4 Slozka aplikace'
+if ($CheckOnly) {
+    # jen kontrola: bez dotazu a bez zmen, primo ve slozce aplikace
+    if (-not $Source) { Die 'Kontrola (-CheckOnly) jde jen ze slozky aplikace' 'Spust INSTALL\Instalace.cmd -CheckOnly ve slozce MY Premiere MCP.' }
+    $Target = $Source
+}
 if (-not $Target) {
     # z naklonovaneho repozitare se instaluje rovnou do nej (modely, cache a .venv jsou v .gitignore)
     $def = if ($Source) { $Source } else { Join-Path $env:USERPROFILE 'MYpremiereMCP' }
@@ -84,13 +92,20 @@ New-Item -ItemType Directory -Force $Target | Out-Null
 if ($update) { Ok "Aktualizace existujici instalace: $Target (modely, cache a config.json zustanou)" }
 else { Ok "Nova instalace: $Target" }
 
-if (-not $SkipModels -and -not $NoLocalLLM -and -not $Hermes -and -not (Test-Path (Join-Path $Target 'models\hermes'))) {
+if (-not $CheckOnly -and -not $SkipModels -and -not $NoLocalLLM -and -not $Hermes -and -not (Test-Path (Join-Path $Target 'models\hermes'))) {
     $a = Read-Host '  Stahnout i Hermes - silnejsi lokalni strih bez kreditu (~23 GB, potreba GPU 12 GB+)? [a/N]'
     if ($a -match '^(a|ano|y|yes)$') { $Hermes = $true }
 }
 
 # ------------------------------------------------------------------ 2. predpoklady
 Head '2/4 Node.js a Python'
+if ($CheckOnly) {
+    # jen kontrola: nic se neinstaluje (podrobnou kontrolu udela hlavni instalator)
+    if (Have 'node') { Ok "Node.js $(& node -v)" } else { Info 'Node.js chybi - Instalace.cmd ho doinstaluje pres winget' }
+    if (Py311) { Ok 'Python 3.11' } else { Info 'Python 3.11 chybi - Instalace.cmd ho doinstaluje pres winget' }
+    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Target 'INSTALL\install.ps1') -CheckOnly
+    exit $LASTEXITCODE
+}
 foreach ($t in @('curl.exe', 'tar.exe')) { if (-not (Have $t)) { Die "$t nenalezen" 'Potreba Windows 10 1803 nebo novejsi.' } }
 $nodeOk = $false
 if (Have 'node') { $nodeOk = ([int](((& node -v) -replace '^v', '') -split '\.')[0]) -ge 18 }
@@ -145,5 +160,6 @@ $pass = @()
 if ($Hermes) { $pass += '-Hermes' }
 if ($NoLocalLLM) { $pass += '-NoLocalLLM' }
 if ($SkipModels) { $pass += '-SkipModels' }
+if ($CheckOnly) { $pass += '-CheckOnly' }
 & powershell -NoProfile -ExecutionPolicy Bypass -File $main @pass
 exit $LASTEXITCODE

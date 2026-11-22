@@ -262,7 +262,7 @@ async function ensureWorker() {
   }
   workerStarting ??= (async () => {
     const py = appPython(CONFIG.worker?.python);
-    if (!fs.existsSync(py)) throw new Error(`Python Workeru nenalezen: ${py} – spusť install.ps1`);
+    if (!fs.existsSync(py)) throw new Error(`Python Workeru nenalezen: ${py} – spusť INSTALL\\Instalace.cmd`);
     const child = spawn(py, [path.join(ROOT, 'worker', 'server.py')], { cwd: ROOT, detached: true, stdio: 'ignore', windowsHide: true });
     child.unref();
     for (let i = 0; i < 90; i++) {
