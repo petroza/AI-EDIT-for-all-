@@ -499,8 +499,21 @@ def chat_json(prompt: str, max_tokens: int = 1500, schema: dict | None = None, b
     req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
     t0 = time.time()
     try:
-        with urllib.request.urlopen(req, timeout=900) as r:
-            resp = json.loads(r.read())
+        try:
+            with urllib.request.urlopen(req, timeout=900) as r:
+                resp = json.loads(r.read())
+        except (ConnectionError, urllib.error.URLError) as e0:
+            # Hermes spadl („CUDA error“ na čerstvém serveru u některých dotazů, 2026-11-22): znovu spustit (hermes.ps1
+            # ho po startu zahřeje krátkým dotazem) a zkusit ještě jednou
+            if backend != "hermes":
+                raise
+            log(f"GPU: Hermes během dotazu spadl ({e0}) – spouštím znovu a opakuji dotaz")
+            time.sleep(2)
+            if not ensure_hermes():
+                raise
+            req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=900) as r:
+                resp = json.loads(r.read())
     except (ConnectionError, urllib.error.URLError) as e:
         # model během dotazu spadl (llama-server: „CUDA error“) – dotaz uložit k ladění a ohlásit srozumitelně
         try:
