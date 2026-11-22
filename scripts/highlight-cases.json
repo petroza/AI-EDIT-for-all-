@@ -71,8 +71,11 @@
         222,
         223,
         224
-      ]
-    ]
+      ],
+      [265, 266, 267],
+      [266, 267]
+    ],
+    "note": "266–267 (rada pozůstalým, co neříkat) je rovnocenný samostatný výrok – Hermes ho bere střídavě s 222–224 (Claude 2026-11-21)"
   },
   {
     "name": "talk-upoutavka-10s",
@@ -109,5 +112,50 @@
     "reference": [],
     "acceptable": [],
     "note": "debata (2 hosté + moderátor), 6 min z _dev-data/test/fresh/debata-nova.mp4 od 600 s; kontrola zobecnění mimo Talk"
+  },
+  {
+    "name": "ig-staz-30s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 30,
+    "instruction": "Udělej 30s reel na Instagram: jak Bára bez vědomí rodiny poslala životopis do Novy a začala jako neplacená stážistka. Silný začátek, ať to diváka chytne hned v prvních vteřinách.",
+    "reference": [37, 38, 39, 45, 55],
+    "acceptable": [[40, 41, 42, 43, 44, 45], [38, 39, 40, 41, 45]],
+    "note": "IG reel na úzké téma v 28min rozhovoru (K6–K8); reference Claude 2026-11-21"
+  },
+  {
+    "name": "ig-beh-20s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 20,
+    "instruction": "Reel na Instagram, 20 sekund: proč Bára při natáčení reportáží běhá se svými hosty a na co se jich přitom ptá.",
+    "reference": [69, 70],
+    "acceptable": [[69, 70, 71, 72], [70, 71, 72, 73]],
+    "note": "IG reel (K9); reference Claude 2026-11-21"
+  },
+  {
+    "name": "ig-zpravy-30s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 30,
+    "instruction": "Instagram reel 30 s: jak Bára nesla přeřazení ze Snídaně s Novou do zpravodajství – nejdřív šok a slzy, nakonec největší škola.",
+    "reference": [164, 169, 172],
+    "acceptable": [[164, 169], [164, 165, 166, 167, 168], [169, 172]],
+    "note": "IG reel (K20); reference Claude 2026-11-21. #164 končí v plynulé řeči bez pauzy (Claude verze má na „šok.“ slyšitelnou hranici) – čistě jde jen 169+172"
+  },
+  {
+    "name": "ig-smutek-45s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 45,
+    "instruction": "Reel na Instagram, 45 s: Bářina rada, co říkat a co naopak neříkat člověku, který přišel o někoho blízkého. Bez moderátorky.",
+    "reference": [266, 267, 268, 273, 274, 275, 276],
+    "acceptable": [[266, 267, 268, 276, 277], [266, 267, 268, 276]],
+    "note": "IG reel (K31–K32); reference Claude 2026-11-21"
+  },
+  {
+    "name": "ig-pribeh-60s",
+    "sequence": "tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845",
+    "target": 60,
+    "instruction": "Minutový reel na Instagram: Bářina cesta od herečky přes neplacenou stáž až k moderátorce, v kostce. Hák hned na začátku.",
+    "reference": [],
+    "acceptable": [],
+    "note": "IG reel přes víc kapitol (K2–K14); hodnotí se ručně (návaznost, hák, chronologie)"
   }
 ]

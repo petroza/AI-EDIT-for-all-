@@ -48,7 +48,8 @@ function targetSeconds(text) {
 }
 
 const c = new Client({ name: 'local-edit', version: '0' });
-await c.connect(new StdioClientTransport({ command: 'node', args: [path.join(ROOT, 'server', 'index.js')] }));
+// env: SDK jinak předá serveru jen pár systémových proměnných – PMCP_PORT (TN Střihátko vedle Premiere) by se ztratil
+await c.connect(new StdioClientTransport({ command: 'node', args: [path.join(ROOT, 'server', 'index.js')], env: { ...process.env } }));
 const call = async (name, args, onprogress) => {
   const r = await c.callTool({ name, arguments: args }, undefined, { timeout: 7200000, resetTimeoutOnProgress: true, onprogress });
   if (r.isError) throw new Error(`${name}: ${r.content[0].text}`);
@@ -165,6 +166,8 @@ try {
   if (plan.addedSpares?.length) say(`ℹ místo něj náhradní úder: #${plan.addedSpares.join(', #')}`);
   if (plan.mode === 'passage') {
     say(`ℹ souvislá pasáž (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
+  } else if (plan.mode === 'focus') {
+    say(`ℹ krátký klip složený z vět k tématu (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
   } else if (plan.mode === 'teaser') {
     say(`ℹ upoutávka z úderů (${plan.passages} kandidátů)${plan.reason ? ` – ${plan.reason}` : ''}`);
     if (plan.distorted?.length) say(`ℹ vyřazeno – vytržené by zkreslilo význam: ${plan.distorted.map((t) => `„${t}“`).join(', ')}`);

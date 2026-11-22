@@ -5,7 +5,84 @@
 > **Claude CLI na domácím PC 2026-11-20 NEBYLO přihlášené** (`claude auth status` → loggedIn false) – panel nabídne
 > „🔑 Přihlásit Claude Code“ nebo předání do aplikace Claude. Přihlásit musí Petr sám.
 
-## 2026-11-20 – přesun, panel, Hermes na krátké střihy (ZAČNI TADY)
+## 2026-11-22 – předpověď hranic v plánu, ověření jádra, režim `story` (ZAČNI TADY)
+- **Hlavní zjištění:** výběr kandidátů podle pauzy (≥ 70 ms / 0,12 s z přepisu) pouštěl hranice, které kontrola po stavbě
+  (`edge_levels`: nad −12 dB, nebo nad −20 dB uvnitř slova) hlásí. `ig-zpravy`: #169 začátek −17 dB, #172 konec −11 dB
+  (focus #169+#172 tedy **čistý není**, i když to tak vypadalo); první plán `ig-pribeh` měl vadných 5 z 10 hranic.
+  Smyčka opakování pak sahala po čím dál horších zbytcích (zprávy → #59–64 Suchoň, smutek → #189–196 „Ty se zabiješ?“).
+- **`analysis._edge_check`** replikuje serverovou cestu (cutBounds → refine_edges → edge_levels) a předpoví vadný
+  začátek/konec úseku; na 17 naměřených hranicích sedělo 17/17. `_edge_map` = totéž po větách (cache na zdroj).
+  Použití: `_passage_candidates(edge_map=…)` u úzkých zadání (kraje pasáže podle měření, ne podle pauzy – teprve tak
+  vznikne #265–267), `_plan_focus` (jen čisté výroky), `_plan_story` (jen čisté výroky). Obecné „nejsilnější výrok“
+  záměrně beze změny (talk-A/B, debata – řeší je dál smyčka hranic jako dřív; rozšíření na ně nezkoušeno).
+- **`_verify_core`** (úzké zadání do 60 s, ne „nejsilnější“): kapitoly se skóre ≥ 2 posoudí model ještě jednou podle
+  skutečného textu hosta (všechny v jednom dotazu), **jen shazuje** jádro (3 → méně), nikdy nepovyšuje, a jen kapitolu
+  s ≥ 200 znaky řeči hosta (K30 = jen „Často rozhodně nezahojí.“). Aspoň jedna jádrová zůstane.
+- `_plan_passage`: jádro pasáže podle většiny vět (`in_core`), záloha bez samostatné pasáže jen z jádra + sousedních
+  kapitol se skóre ≥ 2 (`near`, K20 → K21), focus zkusí i `near`; při opakování (`avoid`) bez pasáže s fit ≥ 2 vrátí
+  prázdný plán → server nechá předchozí verzi (nikdy téma mimo).
+- **Nový režim `story`** (`_plan_story`, zadání podle `_STORY_RE`: „v kostce“, „od … přes … až“, „celý příběh“):
+  model rozdělí zadání na 2–4 etapy, pro každou etapu vybere čísla kapitol (celá osnova najednou – pole „etapa ke
+  každé kapitole“ po dávkách bylo nespolehlivé), výroky hosta = `_teaser_candidates(closed_before=True, max_units=6)`
+  bez moderátorky (jen při „otázka“), bez pozdravů a oslovení („Jsi byla malička“ = vstup moderátorky přilepený
+  Whisperem), jen čisté hranice. Hodnocení jedním průchodem [etapa, síla, samostatnost, hák], skládání: hák (krátký,
+  hák ≥ 2) + etapy chronologicky, poslední = dosažený cíl, každá etapa aspoň jednou, délka 0,85–1,2×. Server: `story`
+  má 2 opakování jako pasáž (`server/index.js`).
+- **Regrese 2026-11-22 (celá sada, 13 případů):** vzniklo 13/13, **čisté hranice 13/13**, QA bez ✖ 9/13. Staré případy
+  stejné věty jako 2026-11-21 (talk-A 100 %, talk-B 17–18 / 18–21, talk-cely #266–267, upoutávky, debata).
+  IG: stáž #41–45 (83 %), běh #70–73 (100 %), smutek #265–267 (40 %, 29,7 s), **zprávy #173–175** (K21 Houska:
+  „byla jsem nešťastná… bylo to nejlepší, co jsi pro mě mohl udělat“, 34,7 s, čisté; shoda 0 %, K20 na 30 s čistou
+  variantu nemá – zvaž přidat [173,174,175] do `acceptable`, rozhodne Petr), **příběh** #21–22 → #41–44 → #52–53
+  (34,7 s z 60, chronologie, bez moderátorky, uzavřené věty, čisté hranice; **chybí etapa „moderátorka“** – má jen
+  1–2 čisté výroky a ty model hodnotí slabě).
+- Zkoušeno a zavrženo: hodnocení výroků po etapách zvlášť (mírné – výrok o stáži 3 i pro „herečku“); etapa s < 3
+  čistými výroky si nechá i vadné se srážkou (hák i závěr pak vyšly z vadných, −2 dB / −7 dB); vyhazování vadného úseku
+  serverem i u `story` (jeden výrok bývá po `mergeGap 0,4` víc úseků – vyhodila by se půlka); `_verify_core` s
+  povyšováním (K21 → 3 a focus vzal Housku i v prvním plánu); post-filtr pasáží až po generování (čistá #265–267 vůbec
+  nevznikla, z každého začátku jen konec nejblíž cíli).
+- **Otevřené:** `ig-pribeh` – poslední etapa: dovolit u ní delší pasáž s navazujícím začátkem (#166–168 „V nejhorším
+  období… obrovská pozitivní zkušenost… rok a půl moderovat na TN Live“, 29 s, čistá) nebo `hi` až 0,55× cíle;
+  hák bývá slabý (#22). QA hlásí u #21–22 start 121,32 s uvnitř „tak.“ (refine posune začátek do tichého dozvuku).
+  Jeden běh trval 19 min (třetí plán smutku, Hermes vytížený i jiným klientem – GPU 100 %); s předpovědí hranic se
+  opakování skoro nedějí (celá sada 13 případů ~9 min).
+- Po QA review (relace „Kontrolor technických drobností“, `qa-nalezy.md` v poznámkách relace local_2dbffedc…):
+  `story` → None už nepadá do obecného skládání (první plán → pasáž, opakování → prázdný plán = předchozí verze),
+  `story` nad 1,25× cíle ubírá i za cenu etapy, `focus` nezačíná po nedořečené větě (`closed_before`). `ig-` znovu
+  5/5 čisté, stejné věty. Neřešeno (mimo úkol): `_moderator_speakers` u 2 mluvčích bez „moder…“ ve jménu vrací
+  prázdnou množinu; server `continuityWarnings` přeskakuje picky s fromWord/toWord a regex `/[.!?]$/` nebere `.“`.
+- Ladění bez Premiere: plán přes MCP `plan_edit_local` bez `build`; `_plan_story`/`_verify_core` přímo v Pythonu
+  (`.venv`, import `worker.analysis`, `_chat_json` jde na Hermes).
+
+## 2026-11-21 – Hermes na IG reely s úzkým tématem
+- Nové případy v `scripts/highlight-cases.json`: `ig-staz-30s`, `ig-beh-20s`, `ig-zpravy-30s`, `ig-smutek-45s`,
+  `ig-pribeh-60s` (celý 28min Talk, úzké téma, reference = výběr Clauda). `node scripts/test-highlight.mjs ig-`.
+- **Hlavní chyba:** plán byl správně (stáž #40–45 skóre 18,5; smutek #266–271 22,5), ale uzavřená smyčka hranic
+  (`avoid`) vyřadila každou pasáž, která vadnou větu obsahovala, a generátor nechával z každého začátku jen jeden
+  konec → opakovaný plán vzal pasáž mimo téma (#111–115 otázka moderátorky, #189–196). Teď `avoid` platí jen pro
+  kraje pasáže a hlídá se už v `_passage_candidates`.
+- `_plan_passage`: brána zadání (pasáže s fit ≥ 2, když existují), vyřazení pasáží celých od moderátora (když ho
+  zadání nejmenuje), `clean_end` nekončí před pokračováním malým písmenem (< 0,8 s), `dependent()` zná i začátek
+  po nedořečené větě („…přišlo...“ → „V nejhorším období…“).
+- **Nový režim `focus`** (`_plan_focus`, jen úzká zadání – ne „nejsilnější/nejlepší výrok“): když v jádrových
+  kapitolách (skóre 3) není samostatná pasáž s fit ≥ 2, složí 2–4 výroky z jádra v pořadí, jak zazněly (jednotky
+  z `_teaser_candidates` s `loose_start`). Server ho opakuje při vadné hranici jako pasáž. Zkoušeno a zavrženo: bez
+  pasáže fit 3 přejít na obecné skládání vět (útržky, otázka moderátorky) a brána fit 3 (fit kolísá 2↔3).
+- „Cesta od … přes … až k …“, „v kostce“, „celý příběh“ → ne pasáž, ale skládání víc kapitol.
+- `server continuityWarnings`: věta ukončená . ! ? + pauza ≥ 0,8 s už nehlásí utnuté souvětí (falešné #45 → #46
+  „cesta na novou“); skutečné #166 → #167 hlásí dál (ověřeno stavbou).
+- Výsledek plné regrese (13 případů): vše vzniklo, **čisté hranice 13/13**, staré případy jako 2026-11-20 (talk-A
+  100 %, upoutávky, debata). IG: stáž #42–45, běh #70–73, smutek #265–267 k tématu. Claude verze (sekvence
+  „IG … CLAUDE …“) obsahově lepší (hák, kontext), ale slyšitelné hranice ve 3 z 5 (stáž 2/6, zprávy 2/6, příběh 5/12).
+- **Otevřené:** `ig-zpravy` – Hermes dává kapitole K8 (rodina, první reportáž) skóre 3 i pro „ze Snídaně do
+  zpravodajství“ a bere #61–64; `focus` přímo dá #169+#172 (#164 „šok.“ nemá pauzu). `ig-pribeh` (skládání vět,
+  60 s): otázka moderátorky na začátku, konec #167 utnutý (chybí #168) – skládání krátkých střihů z víc kapitol
+  potřebuje vlastní dramaturgii (hák, chronologie, uzavřená souvětí). Hodnocení kapitol mezi běhy kolísá.
+- Pozor: relace Claude Code drží MCP server od svého startu – po změně `server/index.js` testuj přes skripty
+  (`test-highlight`, `local-edit`), které spouští čerstvý server (stará relace neměla zvuková prolnutí, audioFades 0).
+- V projektu `wdwada.prproj` přibyly testovací sekvence `IG TEST1 …`, `IG … CLAUDE …`, `IG DBG …`, `TEST fades dbg`
+  a ze zkoušek `STRIH HERMES …` – smazat jen se svolením Petra.
+
+## 2026-11-20 – přesun, panel, Hermes na krátké střihy
 - Projekt přesunut z `O:\MYpremiereMCP` do **`O:\ADOBEPREMIERESTRIH`** (čistá složka i pro IT Novy). Osobní věci,
   stará cache a testovací data zůstaly v `O:\MYpremiereMCP` (`_dev-data\cache`, `_dev-data\test`). Krátké testovací
   úseky: `O:\MYpremiereMCP\_dev-data\test\kratke\talk_A_kariera_5min.mp4`, `talk_B_mama_5min.mp4` (5 min z Talku

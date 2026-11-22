@@ -29,18 +29,21 @@ for (const c of cases) {
   const dur = Number((txt.match(/\(([\d.]+) s\)/) || [])[1] || 0);
   const chk = spawnSync('node', [path.join(ROOT, 'scripts', 'check-cuts.mjs'), name], { encoding: 'utf8', cwd: ROOT });
   const clean = chk.status === 0;
+  // další technické drobnosti (utnutá věta, začátek na nevyřčené, moderátor, délka ±25 %, mezery, odpad přepisu) – scripts/qa-sequence.mjs
+  const qa = spawnSync('node', [path.join(ROOT, 'scripts', 'qa-sequence.mjs'), name, String(c.target), '--no-cuts'], { encoding: 'utf8', cwd: ROOT });
+  const qaFails = qa.status === 0 ? [] : (qa.stdout.match(/^✖ .+$/gm) || ['✖ qa-sequence selhal']).filter((l) => !/^✖ \d+ z \d+ kontrol/.test(l));
   // shoda = nejlepší překryv s referencí nebo s jednou z rovnocenných alternativ (dobrých výroků bývá víc)
   const ov = (set) => Math.round((100 * ids.filter((i) => set.includes(i)).length) / new Set([...ids, ...set]).size);
   // upoutávky reference nemají (dobrých kombinací úderů je mnoho) – shoda se nepočítá
   const overlap = c.reference.length ? Math.max(ov(c.reference), ...(c.acceptable || []).map(ov)) : null;
-  const row = { case: c.name, target: c.target, dur, ids: ids.join(','), ref: c.reference.join(','), overlap, clean, sec: Math.round(sec) };
+  const row = { case: c.name, target: c.target, dur, ids: ids.join(','), ref: c.reference.join(','), overlap, clean, qa: qaFails.length ? qaFails.map((l) => l.slice(2)).join('; ') : 'ok', sec: Math.round(sec) };
   rows.push(row);
   console.log(`${clean ? '✔' : '✖'} ${c.name}: ${dur} s (cíl ${c.target}) · věty ${row.ids} · reference ${row.ref} · shoda ${overlap} % · ` +
-    `hranice ${clean ? 'čisté' : 'PODEZŘELÉ'} · ${row.sec} s\n${txt.split('\n').filter((l) => l.startsWith('  [')).join('\n')}`);
+    `hranice ${clean ? 'čisté' : 'PODEZŘELÉ'} · QA ${row.qa} · ${row.sec} s\n${txt.split('\n').filter((l) => l.startsWith('  [')).join('\n')}`);
   if (!clean) console.log(chk.stdout.split('\n').filter((l) => l.startsWith('✖')).join('\n'));
 }
 const ok = rows.filter((r) => !r.error);
-console.log(`\nShrnutí: ${ok.length}/${rows.length} vzniklo · čisté hranice ${ok.filter((r) => r.clean).length}/${ok.length} · ` +
+console.log(`\nShrnutí: ${ok.length}/${rows.length} vzniklo · čisté hranice ${ok.filter((r) => r.clean).length}/${ok.length} · QA bez ✖ ${ok.filter((r) => r.qa === 'ok').length}/${ok.length} · ` +
   `průměrná shoda s referencí ${Math.round(ok.filter((r) => r.overlap !== null).reduce((a, r) => a + r.overlap, 0) / Math.max(1, ok.filter((r) => r.overlap !== null).length))} % · ` +
   `průměrná odchylka délky ${Math.round(ok.reduce((a, r) => a + Math.abs(r.dur - r.target) / r.target, 0) / Math.max(1, ok.length) * 100)} %`);
 fs.mkdirSync(path.join(ROOT, 'cache', 'test-highlight'), { recursive: true });
