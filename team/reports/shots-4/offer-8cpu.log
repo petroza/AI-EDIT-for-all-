@@ -1,0 +1,14 @@
+std {"t":0.1,"state":"none","p":0,"model":null,"status":null}
+std {"t":2.1,"state":"running","p":0,"msg":"downloading the speech model 6 / 240 MB (once)","eta":null,"model":null,"status":"Stahuji rozpoznávání řeči… 5 z 240 MB · jen jednou Zastavit"}
+std {"t":34.2,"state":"running","p":0.001,"msg":"0 %","eta":null,"model":null,"status":"Přepisuji řeč… 0 % · odhaduji čas… Zastavit"}
+std {"t":71.5,"state":"running","p":0.32,"msg":"32 %","eta":75.36398236721679,"model":null,"status":"Přepisuji řeč… 31 % · zbývá asi 2 min Zastavit"}
+std {"t":96,"state":"running","p":0.559,"msg":"56 %","eta":48.19709787725344,"model":null,"status":"Přepisuji řeč… 55 % · zbývá méně než minuta Zastavit"}
+std {"t":141.2,"state":"done","p":1,"model":"onnx-community/whisper-small_timestamped","status":"Přepsat přesněji · asi 5 min o polovinu méně chyb ×"}
+nabídka {"label":"Přepsat přesněji · asi 5 min","title":"Přesný přepis má asi o polovinu méně chyb. Běží na pozadí – můžeš dál pracovat, do té doby platí dosavadní přepis."}
+dialog Přepsat přesněji? Přesný přepis dělá méně chyb, ale trvá déle – u tohoto klipu asi 5 min. Dosavadní přepis platí, dokud nebude nový – dál v něm můžeš hledat. Titulky v sekvencích se nezmění. Tvoje opravy z titulků se přenesou. Poprvé se stáhne asi 1 GB – jen jednou. Zrušit Přepsat přesněji
+acc {"t":146.8,"state":"running","p":0,"msg":"downloading the speech model 13 / 1037 MB (once)","eta":null,"model":"onnx-community/whisper-small_timestamped","status":"Stahuji rozpoznávání řeči… 13 z 1037 MB · jen jednou Zastavit"}
+acc {"t":271.4,"state":"running","p":0.001,"msg":"0 %","eta":null,"model":"onnx-community/whisper-small_timestamped","status":"Přepisuji přesněji… 0 % · odhaduji čas… · zatím platí dosavadní přepis Zastavit"}
+acc {"t":319.8,"state":"running","p":0.24,"msg":"24 %","eta":154.12066642331484,"model":"onnx-community/whisper-small_timestamped","status":"Přepisuji přesněji… 23 % · zbývá asi 3 min · zatím platí dosavadní přepis Zastavit"}
+acc {"t":437,"state":"running","p":0.866,"msg":"87 %","eta":25.795235749618104,"model":"onnx-community/whisper-small_timestamped","status":"Přepisuji přesněji… 86 % · zbývá méně než minuta · zatím platí dosavadní přepis Zastavit"}
+acc {"t":466,"state":"done","p":1,"model":"onnx-community/whisper-large-v3-turbo_timestamped","status":null}
+HOTOVO std 141.2 s; přesný 324.8 s; celkem 466

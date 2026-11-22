@@ -1,0 +1,19 @@
+02-pripravuji: řádky 0/0 | Stahuji rozpoznávání řeči… 3 z 240 MB · jen jednou Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+01-stahovani: řádky 0/0 | Stahuji rozpoznávání řeči… 23 z 240 MB · jen jednou Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+03b-stahuji-presne: řádky 0/0 | Přepisuji řeč… 0 % · odhaduji čas… Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+03-prepis: řádky 0/0 | Přepisuji řeč… 23 % · zbývá asi 2 min Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+přepis 151 s, onnx-community/whisper-small_timestamped, 66 vět → web/test-out/vyrez-5min-standard.json
+04-hotovo: řádky 6/8 ✘ pod 8 | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+05-hledani: řádky 6/8 ✘ pod 8 | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+06-vyber-varovani: řádky 5/7 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+07-sekvence: řádky 4/6 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+08-dialog-titulky: řádky 4/6 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+09-titulky: řádky 5/7 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+10-oprava: řádky 5/7 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+11-smazani: řádky 6/6 ✘ pod 8 | Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…
+export {"output":"/disk/mwrekc1o3/regress-4-8cpu.mp4","sizeMB":9.3,"audioCodec":"opus","secs":1.3,"bytes":9721046,"saved":"O:\\TN_strihatoko\\web\\test-out\\regress-4-8cpu.mp4"}
+12-po-exportu: řádky 4/6 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ V nové sekvenci
+12b-druhy-vyrok: řádky 5/8 ✘ pod 8 | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16
+12c-dva-vyroky-titulky: řádky 6/8 ✘ pod 8 | Smazán titulek „že přece ta máma by nechtěla,“ Vrátit Vzhled…
+13-slaby-pc: řádky 5/7 ✘ pod 8 | Na tomto počítači jde jen standardní přepis – přesný by tu trval příliš dlouho. | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Na konci · 0:16
+hotovo → O:\TN_strihatoko\team\reports\shots-5\rr-nb8

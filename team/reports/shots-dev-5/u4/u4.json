@@ -1,0 +1,43 @@
+{
+ "gaps": [
+  "0:00 0:00–0:08 nepřepsáno (hudba / možná řeč) ▶",
+  "28:01 28:01–28:06 nepřepsáno (hudba / možná řeč) ▶"
+ ],
+ "gapPlay": {
+  "playing": true,
+  "t": 1683.0570950000258
+ },
+ "capBtn": {
+  "lbl": "Titulky z přepisu…",
+  "byArrow": false,
+  "byBtn": true
+ },
+ "capsBefore": 7,
+ "del": {
+  "hint": "Enter uloží a další · Esc zruší · Ctrl+A, Delete smaže titulek",
+  "after": 6,
+  "foot": "Smazán titulek „možnost se na to připravit.“ Vrátit Vzhled…"
+ },
+ "undo": {
+  "n": 7,
+  "hist": [
+   "New Sequence",
+   "Captions from Transcript",
+   "AI: Reframe for 1080×1920",
+   "Delete Caption"
+  ],
+  "status": "Zpět: Smazat titulek"
+ },
+ "exportEsc": {
+  "open": true,
+  "msg": "Ukládání zrušeno – klikni na Exportovat a vyber, kam uložit."
+ },
+ "autoOff": {
+  "prog": "Začni tady\nImportuj video – nebo ho přetáhni kamkoli do okna.\nImportovat video…\nPřepis spustíš: pravý klik na klip → Přepsat řeč. Výrok pak najdeš v záložce Přepis a vložíš ho do sekvence.\nNebo nech stříhat AI: v panelu AI připoj Claude nebo Codex a napiš zadání, třeba „20s upoutávka pro Reels s titulky“.\nPanel AI",
+  "tr": "Tady uvidíš, co se ve videu říká\nImportuj video – přepis pak spustíš pravým klikem na klip → Přepsat řeč (v tomto počítači, bez AI).\nImportovat video…\nAutomaticky přepisovat nová videa"
+ },
+ "autoOn": {
+  "prog": "Začni tady\nImportuj video – nebo ho přetáhni kamkoli do okna.\nImportovat video…\nŘeč se přepíše sama. Výrok najdeš v záložce Přepis: klikni na větu a vlož ji do sekvence.\nNebo nech stříhat AI: v panelu AI připoj Claude nebo Codex a napiš zadání, třeba „20s upoutávka pro Reels s titulky“.\nPanel AI",
+  "key": "1"
+ }
+}

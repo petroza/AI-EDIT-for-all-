@@ -1,0 +1,15 @@
+01-stahovani: řádky 0/0 | Stahuji rozpoznávání řeči… 3 z 3 MB · jen jednou Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+03-prepis: řádky 0/0 | Přepisuji řeč… 23 % · odhaduji čas… Zastavit | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+přepis 137 s, onnx-community/whisper-small_timestamped, 66 vět → web/test-out/vyrez-5min-standard.json
+04-hotovo: řádky 5/7 ✘ pod 8 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+05-hledani: řádky 6/7 ✘ pod 8 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | Klikni na větu = začátek a konec úseku. Shift+klik přidá další věty.
+06-vyber-varovani: řádky 4/7 ✘ pod 8 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+07-sekvence: řádky 4/7 ✘ pod 8 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+08-dialog-titulky: řádky 4/7 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+09-titulky: řádky 5/7 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+10-oprava: řádky 5/7 ✘ pod 8 | Klikni do titulku a oprav ho. Enter uloží a další, Esc zruší, Delete smaže titulek. Vzhled
+11-smazani: řádky 6/6 ✘ pod 8 | Smazán titulek „to, že“ Vrátit Vzhled…
+export {"output":"/disk/mwr84ir23/regress-4-8cpu.mp4","sizeMB":9.1,"audioCodec":"opus","secs":1.4,"bytes":9499082,"saved":"O:\\TN_strihatoko\\web\\test-out\\regress-4-8cpu.mp4"}
+12-po-exportu: řádky 4/7 ✘ pod 8 | Přepsat přesněji · asi 5 min o polovinu méně chyb × | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+13-slaby-pc: řádky 4/7 ✘ pod 8 | Na tomto počítači jde jen standardní přepis – přesný by tu trval příliš dlouho. | ⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 3 věty · 0:16 ▶ P
+hotovo → O:\TN_strihatoko\team\reports\shots-dev-4

@@ -1,0 +1,2112 @@
+{
+ "steps": [
+  {
+   "name": "v5-nova-sekvence",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 16.32,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [],
+   "foot": "✓ V nové sekvenci · 0:00–0:16 ▶ Přehrát Titulky z přepisu… ▾",
+   "ins": null,
+   "status": "Výřez podle obličeje: hledám obličeje (1/1)"
+  },
+  {
+   "name": "v5-titulky",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 16.32,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    }
+   ],
+   "foot": "✓ V nové sekvenci · 0:00–0:16▶ PřehrátDoplnit titulky…▾",
+   "ins": null,
+   "status": "Připraveno"
+  },
+  {
+   "name": "r-na-konec",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 33.64,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    }
+   ],
+   "foot": "✓ Na konci · 0:16–0:33 ▶ Přehrát Doplnit titulky… ▾",
+   "ins": null,
+   "status": "Přidáno na konec sekvence"
+  },
+  {
+   "name": "r-doplneno",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 33.64,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.6,
+     "e": 18.291,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 18.291,
+     "e": 19.6,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 19.6,
+     "e": 21.995,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 21.995,
+     "e": 24.335,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 24.335,
+     "e": 26.418,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 27.145,
+     "e": 28.217,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 28.795,
+     "e": 30.703,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 30.703,
+     "e": 32.493,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 32.493,
+     "e": 33.64,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "✓ Na konci · 0:16–0:33▶ PřehrátDoplnit titulky…▾",
+   "ins": null,
+   "status": "Přidáno na konec sekvence"
+  },
+  {
+   "name": "v2-na-hlavu",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "✓ Vloženo na 0:16 · 0:16–0:36 ▶ Přehrát Doplnit titulky… ▾",
+   "ins": null,
+   "status": "Vloženo na místo hlavy"
+  },
+  {
+   "name": "v2-doplneno",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.32,
+     "e": 18.607,
+     "t": "tak neříkat tyhle fádní věci,"
+    },
+    {
+     "s": 18.607,
+     "e": 20.968,
+     "t": "často zahojí, jí je teď líp,"
+    },
+    {
+     "s": 20.968,
+     "e": 24.062,
+     "t": "tak to mělo být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 24.062,
+     "e": 25.876,
+     "t": "Prostě my ani nepotřebujeme nic"
+    },
+    {
+     "s": 25.876,
+     "e": 28.314,
+     "t": "slyšet, my potřebujeme jenom toho člověka,"
+    },
+    {
+     "s": 28.314,
+     "e": 30.377,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 30.377,
+     "e": 32.461,
+     "t": "dlouho neozýváme, aby zavolal a řekl:"
+    },
+    {
+     "s": 32.461,
+     "e": 34.491,
+     "t": "„Já jedu za tebou, já ti vezu jídlo,"
+    },
+    {
+     "s": 34.491,
+     "e": 36.2,
+     "t": "nebo pojď, kouknem se na film.“"
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "✓ Vloženo na 0:16 · 0:16–0:36▶ PřehrátDoplnit titulky…▾",
+   "ins": null,
+   "status": "Vloženo na místo hlavy"
+  },
+  {
+   "name": "ctrlz-1",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "✓ Vloženo na 0:16 · 0:16–0:36▶ PřehrátDoplnit titulky…▾",
+   "ins": null,
+   "status": "Zpět: Add Captions from Transcript"
+  },
+  {
+   "name": "ctrlz-2",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 16.32,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.6,
+     "e": 18.291,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 18.291,
+     "e": 19.6,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 19.6,
+     "e": 21.995,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 21.995,
+     "e": 24.335,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 24.335,
+     "e": 26.418,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 27.145,
+     "e": 28.217,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 28.795,
+     "e": 30.703,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 30.703,
+     "e": 32.493,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 32.493,
+     "e": 33.64,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "4 věty · 0:20▶ PřehrátVložit na hlavu · 0:16▾",
+   "ins": "Vložit na hlavu · 0:16",
+   "status": "Zpět: Vložit s posunem"
+  },
+  {
+   "name": "ctrly-1",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "4 věty · 0:20▶ PřehrátVložit na hlavu · 0:36▾",
+   "ins": "Vložit na hlavu · 0:36",
+   "status": "Znovu: Vložit s posunem"
+  },
+  {
+   "name": "ctrly-2",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.32,
+     "e": 18.607,
+     "t": "tak neříkat tyhle fádní věci,"
+    },
+    {
+     "s": 18.607,
+     "e": 20.968,
+     "t": "často zahojí, jí je teď líp,"
+    },
+    {
+     "s": 20.968,
+     "e": 24.062,
+     "t": "tak to mělo být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 24.062,
+     "e": 25.876,
+     "t": "Prostě my ani nepotřebujeme nic"
+    },
+    {
+     "s": 25.876,
+     "e": 28.314,
+     "t": "slyšet, my potřebujeme jenom toho člověka,"
+    },
+    {
+     "s": 28.314,
+     "e": 30.377,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 30.377,
+     "e": 32.461,
+     "t": "dlouho neozýváme, aby zavolal a řekl:"
+    },
+    {
+     "s": 32.461,
+     "e": 34.491,
+     "t": "„Já jedu za tebou, já ti vezu jídlo,"
+    },
+    {
+     "s": 34.491,
+     "e": 36.2,
+     "t": "nebo pojď, kouknem se na film.“"
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "4 věty · 0:20▶ PřehrátVložit na hlavu · 0:36▾",
+   "ins": "Vložit na hlavu · 0:36",
+   "status": "Znovu: Add Captions from Transcript"
+  },
+  {
+   "name": "na-zacatek",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 5.24,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 738.67,
+      "out": 743.91,
+      "dur": 5.24
+     },
+     {
+      "start": 5.24,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 5.84,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 21.56,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 41.44,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 738.67,
+      "out": 743.91,
+      "dur": 5.24
+     },
+     {
+      "start": 5.24,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 21.56,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 41.44,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 5.39,
+     "e": 7.083,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 7.083,
+     "e": 9.339,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 9.339,
+     "e": 12.301,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 12.301,
+     "e": 14.467,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 14.467,
+     "e": 17.238,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 17.238,
+     "e": 19.246,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 19.246,
+     "e": 21.56,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 21.56,
+     "e": 23.847,
+     "t": "tak neříkat tyhle fádní věci,"
+    },
+    {
+     "s": 23.847,
+     "e": 26.208,
+     "t": "často zahojí, jí je teď líp,"
+    },
+    {
+     "s": 26.208,
+     "e": 29.302,
+     "t": "tak to mělo být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 29.302,
+     "e": 31.116,
+     "t": "Prostě my ani nepotřebujeme nic"
+    },
+    {
+     "s": 31.116,
+     "e": 33.554,
+     "t": "slyšet, my potřebujeme jenom toho člověka,"
+    },
+    {
+     "s": 33.554,
+     "e": 35.617,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 35.617,
+     "e": 37.701,
+     "t": "dlouho neozýváme, aby zavolal a řekl:"
+    },
+    {
+     "s": 37.701,
+     "e": 39.731,
+     "t": "„Já jedu za tebou, já ti vezu jídlo,"
+    },
+    {
+     "s": 39.731,
+     "e": 41.44,
+     "t": "nebo pojď, kouknem se na film.“"
+    },
+    {
+     "s": 41.72,
+     "e": 43.411,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 43.411,
+     "e": 44.72,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 44.72,
+     "e": 47.115,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 47.115,
+     "e": 49.455,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 49.455,
+     "e": 51.538,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 52.265,
+     "e": 53.337,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 53.915,
+     "e": 55.823,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 55.823,
+     "e": 57.613,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 57.613,
+     "e": 58.76,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. ✓ Vloženo na 0:00 · 0:00–0:05 ▶ Přehrát Doplnit titulky… ▾",
+   "ins": null,
+   "status": "Vloženo na místo hlavy"
+  },
+  {
+   "name": "na-zacatek-zpet",
+   "seq": "rozhovor",
+   "nseq": 1,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     },
+     {
+      "start": 36.2,
+      "in": 1399.76,
+      "out": 1417.08,
+      "dur": 17.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.32,
+     "e": 18.607,
+     "t": "tak neříkat tyhle fádní věci,"
+    },
+    {
+     "s": 18.607,
+     "e": 20.968,
+     "t": "často zahojí, jí je teď líp,"
+    },
+    {
+     "s": 20.968,
+     "e": 24.062,
+     "t": "tak to mělo být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 24.062,
+     "e": 25.876,
+     "t": "Prostě my ani nepotřebujeme nic"
+    },
+    {
+     "s": 25.876,
+     "e": 28.314,
+     "t": "slyšet, my potřebujeme jenom toho člověka,"
+    },
+    {
+     "s": 28.314,
+     "e": 30.377,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 30.377,
+     "e": 32.461,
+     "t": "dlouho neozýváme, aby zavolal a řekl:"
+    },
+    {
+     "s": 32.461,
+     "e": 34.491,
+     "t": "„Já jedu za tebou, já ti vezu jídlo,"
+    },
+    {
+     "s": 34.491,
+     "e": 36.2,
+     "t": "nebo pojď, kouknem se na film.“"
+    },
+    {
+     "s": 36.48,
+     "e": 38.171,
+     "t": "Ale jako to uvědomění nekončí,"
+    },
+    {
+     "s": 38.171,
+     "e": 39.48,
+     "t": "to přichází každej den."
+    },
+    {
+     "s": 39.48,
+     "e": 41.875,
+     "t": "Zrovna včera jsem třeba jela celou dlouhou"
+    },
+    {
+     "s": 41.875,
+     "e": 44.215,
+     "t": "cestu autem, přemýšlím nad spoustu věcma."
+    },
+    {
+     "s": 44.215,
+     "e": 46.298,
+     "t": "A najednou si uvědomím:"
+    },
+    {
+     "s": 47.025,
+     "e": 48.097,
+     "t": "„Máma tady není."
+    },
+    {
+     "s": 48.675,
+     "e": 50.583,
+     "t": "Já ji nemůžu zavolat.“ A najednou"
+    },
+    {
+     "s": 50.583,
+     "e": 52.373,
+     "t": "přijde srážka s tou realitou."
+    },
+    {
+     "s": 52.373,
+     "e": 53.52,
+     "t": "A to se děje furt. Furt."
+    }
+   ],
+   "foot": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 2 věty · 0:05 ▶ Přehrát Vložit na hlavu · 0:36 ▾",
+   "ins": "Vložit na hlavu · 0:36",
+   "status": "Zpět: Vložit s posunem"
+  },
+  {
+   "name": "nova-sekvence-sipkou",
+   "seq": "rozhovor 2",
+   "nseq": 2,
+   "playhead": 16.32,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [],
+   "foot": "✓ V nové sekvenci · 0:00–0:16 ▶ Přehrát Titulky z přepisu… ▾",
+   "ins": null,
+   "status": "Připraveno"
+  },
+  {
+   "name": "v2-na-konec",
+   "seq": "rozhovor 2",
+   "nseq": 2,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    }
+   ],
+   "foot": "✓ Na konci · 0:16–0:36 ▶ Přehrát Doplnit titulky… ▾",
+   "ins": null,
+   "status": "Přidáno na konec sekvence"
+  },
+  {
+   "name": "v2-konec-doplneno",
+   "seq": "rozhovor 2",
+   "nseq": 2,
+   "playhead": 36.2,
+   "v": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1200.305,
+      "dur": 0.6
+     },
+     {
+      "start": 0.6,
+      "in": 1200.305,
+      "out": 1216.025,
+      "dur": 15.72
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     }
+    ],
+    [],
+    []
+   ],
+   "a": [
+    [
+     {
+      "start": 0,
+      "in": 1199.705,
+      "out": 1216.025,
+      "dur": 16.32
+     },
+     {
+      "start": 16.32,
+      "in": 1550.925,
+      "out": 1570.805,
+      "dur": 19.88
+     }
+    ],
+    [],
+    []
+   ],
+   "caps": [
+    {
+     "s": 0.15,
+     "e": 1.843,
+     "t": "My jsme vůbec neměli"
+    },
+    {
+     "s": 1.843,
+     "e": 4.099,
+     "t": "možnost se na to připravit."
+    },
+    {
+     "s": 4.099,
+     "e": 7.061,
+     "t": "Absolutně, my jsme nechápali, co se stalo."
+    },
+    {
+     "s": 7.061,
+     "e": 9.227,
+     "t": "Takže to byl takový šok,"
+    },
+    {
+     "s": 9.227,
+     "e": 11.998,
+     "t": "že nebyla možnost se připravit."
+    },
+    {
+     "s": 11.998,
+     "e": 14.006,
+     "t": "A jediné, co nám zbylo,"
+    },
+    {
+     "s": 14.006,
+     "e": 16.32,
+     "t": "tak se s tím poprat, zvládnout to."
+    },
+    {
+     "s": 16.32,
+     "e": 18.607,
+     "t": "tak neříkat tyhle fádní věci,"
+    },
+    {
+     "s": 18.607,
+     "e": 20.968,
+     "t": "často zahojí, jí je teď líp,"
+    },
+    {
+     "s": 20.968,
+     "e": 24.062,
+     "t": "tak to mělo být, tohle fakt nepomáhá."
+    },
+    {
+     "s": 24.062,
+     "e": 25.876,
+     "t": "Prostě my ani nepotřebujeme nic"
+    },
+    {
+     "s": 25.876,
+     "e": 28.314,
+     "t": "slyšet, my potřebujeme jenom toho člověka,"
+    },
+    {
+     "s": 28.314,
+     "e": 30.377,
+     "t": "aby s náma byl, aby když se třeba"
+    },
+    {
+     "s": 30.377,
+     "e": 32.461,
+     "t": "dlouho neozýváme, aby zavolal a řekl:"
+    },
+    {
+     "s": 32.461,
+     "e": 34.491,
+     "t": "„Já jedu za tebou, já ti vezu jídlo,"
+    },
+    {
+     "s": 34.491,
+     "e": 36.2,
+     "t": "nebo pojď, kouknem se na film.“"
+    }
+   ],
+   "foot": "✓ Na konci · 0:16–0:36▶ PřehrátDoplnit titulky…▾",
+   "ins": null,
+   "status": "Přidáno na konec sekvence"
+  }
+ ],
+ "notes": [],
+ "sentences": 450,
+ "foot1": "4 věty · 0:16 ▶ Přehrát Vložit do nové sekvence ▾",
+ "newSeqDlg1": "Nová sekvence\nNázev sekvence\nPředvolba\nvlastní\n1080×1920 (na výšku 9:16 – Reels, TikTok, Shorts)\n1080×1350 (4:5 Instagram)\n1080×1080 (čtverec 1:1)\n1920×1080 (Full HD 16:9)\n1280×720 (HD 16:9)\n3840×2160 (4K)\nVelikost snímku\n×\nSnímková frekvence (fps)\n23.976\n24\n25\n29.97\n30\n50\n59.94\n60\nVložit do ní vybraný klip (úsek In–Out, 0:16)\nZrušit\nOK",
+ "titulky1": {
+  "via": "patička: Titulky z přepisu… #trCapNext",
+  "dlg": "Titulky z přepisu\nrozhovor · 0:16 · na výšku 9:16\nTitulky vzniknou jen ze slov, která v sekvenci zazní (1 úsek z klipu rozhovor.mp4).\nZvýrazňovat vyslovované slovo\nVzhled podle formátu: 2 řádky, 30 % od spodu. Změníš ho v okně Text v obraze.\nZrušit\nVytvořit titulky",
+  "ph0": 16.319999999999936,
+  "ph1": 16.319999999999936
+ },
+ "foot2": "7 vět · 0:17 ▶ Přehrát Přidat na konec sekvence ▾",
+ "label2": "Přidat na konec sekvence",
+ "menu2": null,
+ "titulky2": {
+  "via": "patička: Doplnit titulky… #trCapNext",
+  "dlg": "Titulky z přepisu\nrozhovor · 0:34 · na výšku 9:16\nTitulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu rozhovor.mp4).\nZvýrazňovat vyslovované slovo\nVzhled podle formátu: 2 řádky, 30 % od spodu. Změníš ho v okně Text v obraze.\nSekvence už má titulky (7). Doplní se jen úseku bez titulků (1) – hotové titulky i tvoje opravy zůstanou, jak jsou. Vrátíš to Ctrl+Z.\nZrušit\nDoplnit titulky",
+  "ph0": 33.63999999999994,
+  "ph1": 33.63999999999994
+ },
+ "arrow": {
+  "before": 33.63999999999994,
+  "afterUp": 16.32
+ },
+ "foot3": "4 věty · 0:20 ▶ Přehrát Vložit na hlavu · 0:16 ▾",
+ "label3": "Vložit na hlavu · 0:16",
+ "menu3": null,
+ "titulky3": {
+  "via": "patička: Doplnit titulky… #trCapNext",
+  "dlg": "Titulky z přepisu\nrozhovor · 0:54 · na výšku 9:16\nTitulky vzniknou jen ze slov, která v sekvenci zazní (3 úseky z klipu rozhovor.mp4).\nZvýrazňovat vyslovované slovo\nVzhled podle formátu: 2 řádky, 30 % od spodu. Změníš ho v okně Text v obraze.\nSekvence už má titulky (16). Doplní se jen úseku bez titulků (1) – hotové titulky i tvoje opravy zůstanou, jak jsou. Vrátíš to Ctrl+Z.\nZrušit\nDoplnit titulky",
+  "ph0": 36.2,
+  "ph1": 36.2
+ },
+ "export3": {
+  "output": "/disk/mwrddrzi3/t5-b1-3vyroky.mp4",
+  "sizeMB": 37,
+  "audioCodec": "opus",
+  "secs": 4.2,
+  "bytes": 38790695,
+  "saved": "O:\\TN_strihatoko\\web\\test-out\\t5-b1-3vyroky.mp4"
+ },
+ "midPh": 36.2,
+ "foot4": "⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo. 2 věty · 0:05 ▶ Přehrát Vložit na hlavu · 0:36 ▾",
+ "label4": "Vložit na hlavu · 0:36",
+ "menu4": null,
+ "capsShift4": [
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24,
+  5.24
+ ],
+ "foot5": "4 věty · 0:16 ▶ Přehrát Vložit na hlavu · 0:36 ▾",
+ "menu5": null,
+ "newSeqDlg5": "Nová sekvence\nNázev sekvence\nPředvolba\nvlastní\n1080×1920 (na výšku 9:16 – Reels, TikTok, Shorts)\n1080×1350 (4:5 Instagram)\n1080×1080 (čtverec 1:1)\n1920×1080 (Full HD 16:9)\n1280×720 (HD 16:9)\n3840×2160 (4K)\nVelikost snímku\n×\nSnímková frekvence (fps)\n23.976\n24\n25\n29.97\n30\n50\n59.94\n60\nVložit do ní vybraný klip (úsek In–Out, 0:16)\nZrušit\nOK",
+ "titulky5": {
+  "via": "patička: Titulky z přepisu… #trCapNext",
+  "dlg": "Titulky z přepisu\nrozhovor 2 · 0:16 · na výšku 9:16\nTitulky vzniknou jen ze slov, která v sekvenci zazní (1 úsek z klipu rozhovor.mp4).\nZvýrazňovat vyslovované slovo\nVzhled podle formátu: 2 řádky, 30 % od spodu. Změníš ho v okně Text v obraze.\nZrušit\nVytvořit titulky",
+  "ph0": 16.319999999999936,
+  "ph1": 16.319999999999936
+ },
+ "foot6": "4 věty · 0:20 ▶ Přehrát Přidat na konec sekvence ▾",
+ "label6": "Přidat na konec sekvence",
+ "titulky6": {
+  "via": "patička: Doplnit titulky… #trCapNext",
+  "dlg": "Titulky z přepisu\nrozhovor 2 · 0:36 · na výšku 9:16\nTitulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu rozhovor.mp4).\nZvýrazňovat vyslovované slovo\nVzhled podle formátu: 2 řádky, 30 % od spodu. Změníš ho v okně Text v obraze.\nSekvence už má titulky (7). Doplní se jen úseku bez titulků (1) – hotové titulky i tvoje opravy zůstanou, jak jsou. Vrátíš to Ctrl+Z.\nZrušit\nDoplnit titulky",
+  "ph0": 36.2,
+  "ph1": 36.2
+ },
+ "export2": {
+  "output": "/disk/mwrderjp4/t5-b1-2vyroky.mp4",
+  "sizeMB": 24.8,
+  "audioCodec": "opus",
+  "secs": 3,
+  "bytes": 26052479,
+  "saved": "O:\\TN_strihatoko\\web\\test-out\\t5-b1-2vyroky.mp4"
+ },
+ "seqs": [
+  {
+   "name": "rozhovor",
+   "clips": 3,
+   "caps": 25
+  },
+  {
+   "name": "rozhovor 2",
+   "clips": 2,
+   "caps": 16
+  }
+ ],
+ "dupIds": [],
+ "checks": {
+  "r_on_end": true,
+  "v5caps_after_R": true,
+  "v2_at_boundary": true,
+  "v5caps_after_V2": true,
+  "rcaps_shift_exact": true,
+  "no_cap_over_V2_before_fill": true,
+  "v2_filled": true,
+  "fill_kept_others": true,
+  "caps_cross_clip": [
+   [],
+   [],
+   [],
+   [],
+   [],
+   []
+  ],
+  "short_clips": [
+   [],
+   [
+    0.6
+   ],
+   [
+    0.6
+   ],
+   [
+    0.6
+   ],
+   [
+    0.6
+   ]
+  ],
+  "undo1_caps": true,
+  "undo2_insert": true,
+  "redo1": true,
+  "redo2": true,
+  "start_shift": [
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24,
+   5.24
+  ],
+  "start_undo": true,
+  "newseq_one_click": true,
+  "end2": false
+ }
+}

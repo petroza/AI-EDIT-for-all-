@@ -1,0 +1,36 @@
+[
+ {
+  "name": "B2b-std-My-28",
+  "a": 28,
+  "z": 28,
+  "ta": "My jsme vlastně vůbec neměli možnost se na tři pravid.",
+  "tz": "My jsme vlastně vůbec neměli možnost se na tři pravid.",
+  "sa": 119.47000000000483,
+  "ez": 123.42345454545938,
+  "foot": "1 věta · 0:04 ▶ Přehrát Vložit do nové sekvence ▾",
+  "in": 119.705,
+  "out": 123.385,
+  "cap0": "My jsme vlastně vůbec neměli",
+  "capN": "možnost se na to připravit.",
+  "ncaps": 2,
+  "capSec": 114.7,
+  "dlg": "Titulky z přepisu rozhovor · 0:04 · na výšku 9:16 Titulky se přepíšou přesně – asi 2 min. Nejdřív se dostáhne 67 / 1 035 MB (asi 2 min, jen poprvé), pak přepis úseků asi 10 s. Zvýrazňovat vyslovované "
+ },
+ {
+  "name": "B3b-std-20",
+  "a": 20,
+  "z": 20,
+  "ta": "věc, o který já jsem doposávat, jako nikdy nezlyšela, nikdo jsme nevědět, co to je, od kůj to přišlo, proč to přišlo,",
+  "tz": "věc, o který já jsem doposávat, jako nikdy nezlyšela, nikdo jsme nevědět, co to je, od kůj to přišlo, proč to přišlo,",
+  "sa": 81.77252000000377,
+  "ez": 88.2695696000037,
+  "foot": "1 věta · 0:07 ▶ Přehrát Přidat na konec sekvence ▾",
+  "in": 81.543,
+  "out": 88.183,
+  "cap0": "Což je prostě věc, o který já jsem do Posavať",
+  "capN": "co to je, odkud to přišlo, proč to přišlo.",
+  "ncaps": 3,
+  "capSec": 11.9,
+  "dlg": "Titulky z přepisu rozhovor 2 · 0:07 · na výšku 9:16 Titulky se přepíšou přesně – asi 10 s. Přesně se přepíše jen 0:07 použitých úseků (1 úsek z klipu rozhovor.mp4). Přepis v záložce Přepis zůstane sta"
+ }
+]
