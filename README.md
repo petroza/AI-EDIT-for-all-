@@ -26,6 +26,18 @@ Zdrojové projekty a vývoj zůstávají jinde (`O:\TN_strihatko`, `O:\ADOBEPREM
   postup v `INSTALACE_NA_NOVEM_PC.md`.
 - Firemní PC, kde se nepodepsaný panel neukáže: viz „Firemní PC: podepsaný panel (.zxp)“ v `INSTALACE_NA_NOVEM_PC.md`.
 
+## Repozitář (GitHub)
+| Složka | Obsah |
+|---|---|
+| `pz-ai-cut\` | zdrojový kód PZ AI Cut (aplikace, web, plugin) – spuštění ze zdrojů: `npm install`, `START.bat` |
+| `my-premiere-mcp\` | zdrojový kód MY Premiere MCP (panel, MCP server, Worker) – i samostatně na github.com/petroza/MY-Premiere-MCP |
+| kořen | tenhle rozcestník, online instalátor a pluginy |
+
+Hotová přenosná aplikace **PZ AI Cut** (složka `PZ AI Cut\`, ~345 MB) není v gitu – stáhni ji z **Releases**
+(`PZ-AI-Cut-portable.zip`), rozbal vedle `START.bat` a spusť.
+
 ## Aktualizace
-Složka je snímek ze dne 22. 11. 2026. Novou verzi PZ AI Cut vytvoří znovu sestavení z `O:\TN_strihatko`.
-Web https://pz-ai-cut.pages.dev a online instalace MY Premiere MCP jsou vždy aktuální samy.
+- `Aktualizovat PZ AI Cut.bat` – znovu sestaví přenosnou aplikaci z `O:\TN_strihatko`.
+- `Aktualizovat GitHub.bat` – převezme poslední commity z `O:\TN_strihatko` a `O:\ADOBEPREMIERESTRIH` a nahraje je sem
+  (necommitnuté rozdělané změny se nenahrají).
+- Web https://pz-ai-cut.pages.dev a online instalace MY Premiere MCP jsou vždy aktuální samy.
