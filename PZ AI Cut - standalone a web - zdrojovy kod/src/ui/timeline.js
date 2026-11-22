@@ -495,6 +495,7 @@ function createTimeline(app) {
           const linkMap = new Map();
           for (const c of grp) { const ff = E.findClip(s, c.id); E.splitClip(s, ff.trackObj, c, tc, linkMap); }
         });
+        if (app.warnMidWord) app.warnMidWord(s, tc);
         return;
       }
       const r = clipEl.getBoundingClientRect();

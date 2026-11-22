@@ -438,8 +438,22 @@ const commands = {
       E.eachTrack(s, (t, kind, ti) => { if (t.trackTarget !== false) tracks.push({ kind, track: ti }); });
       app.edit('Add Edit', () => E.razor(s, s.playhead, tracks));
     }
+    app.warnMidWord(s, s.playhead);
   },
-  addEditAll() { const s = app.seq(); if (s) app.edit('Add Edit to All Tracks', () => E.razor(s, s.playhead)); },
+  /** Střih (žiletka) uprostřed slova podle přepisu → upozornit, ať se posune do pauzy (jako varování In/Out ve Zdroji). */
+  warnMidWord(s, t) {
+    const a = window.__pzASR;
+    if (!a || !s) return;
+    for (const tr of s.tracks.audio) {
+      if (tr.muted) continue;
+      const c = tr.clips.find((x) => !x.disabled && Math.abs(x.start + (x.out - x.in) - t) < 0.02);
+      const m = c && project.mediaById(c.mediaId);
+      const tx = m && a.get(m);
+      const w = tx && tx.words && tx.words.find((x) => x.s + 0.04 < c.out && x.e - 0.04 > c.out);
+      if (w) { app.toast(`The cut is in the middle of the word “${String(w.w).replace(/[.,!?…]+$/, '')}” – move it into a pause (Q / W, or drag the edit).`, true); return; }
+    }
+  },
+  addEditAll() { const s = app.seq(); if (s) { app.edit('Add Edit to All Tracks', () => E.razor(s, s.playhead)); app.warnMidWord(s, s.playhead); } },
   delete() {
     const s = app.seq(); if (!s) return;
     if (app.transSel) {
@@ -653,6 +667,7 @@ function updateTools() {
   renderToolList();
   app.timeline.render();
 }
+app.warnMidWord = (s, t) => commands.warnMidWord(s, t); // i pro žiletku na časové ose
 commands.setTool = (id) => { app.tool = id; updateTools(); const t = TOOLS.find((x) => x[0] === id) || (id === 'trackback' && ['trackback', 'Track Select Backward Tool (Shift+A)']); if (t) app.status(t[1]); };
 
 /* ======================================================= další příkazy podle výchozích zkratek Premiere (.kys) */
@@ -1253,6 +1268,11 @@ function exportDialog() {
       // skrýt, ale nechat místo – jinak se dialog zmenší a tlačítko Exportovat uskočí pod kurzorem (redaktorka S1)
       b.querySelector('#exEncRow').style.visibility = ['h264', 'h265', 'mov_h264'].includes(k) && !media.WEB ? '' : 'hidden';
     };
+    {
+      const offl = new Set();
+      for (const k of ['video', 'audio']) for (const t of s.tracks[k]) for (const c of t.clips) { const m = project.mediaById(c.mediaId); if (m && m.missing) offl.add(m.name); }
+      if (offl.size) { const el = b.querySelector('#exMsg'); el.textContent = `Media offline: ${[...offl].join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`; el.style.color = 'var(--danger, #e5484d)'; }
+    }
     b.querySelector('#exFmt').onchange = () => {
       fmtInfo();
       // jiný formát = jiný export: starý „✔ Hotovo“ pryč; MXF je pro TV → hlasitost −23 LUFS, když byla vypnutá
@@ -1272,6 +1292,11 @@ function exportDialog() {
       b.querySelector('#exMsg').style.color = '';
       const out = b.querySelector('#exOut').value.trim();
       if (!out) return;
+      // existující soubor nepřepsat bez dotazu (redaktorka S4)
+      if (!media.WEB && fs.existsSync(out)) {
+        const q = await ipcRenderer.invoke('dialog', 'message', { type: 'question', buttons: ['Replace', 'Cancel'], defaultId: 1, cancelId: 1, message: `The file ${path.basename(out)} already exists.`, detail: 'Do you want to replace it?' });
+        if (q.response !== 0) return;
+      }
       settings.lastExportDir = path.dirname(out); settings.encoder = b.querySelector('#exEnc').value;
       settings.exportFormat = b.querySelector('#exFmt').value; if (s.width / s.height < 1.06) settings.loudnessSocial = b.querySelector('#exLoud').value; else settings.loudness = b.querySelector('#exLoud').value; saveSettings();
       signal = {};
@@ -1378,6 +1403,8 @@ function loadProjectFile(p, asUntitled, data0) {
   app.projectPanel.render();
   renderTabs();
   updateTitle();
+  const miss = project.media.filter((m) => m.missing);
+  if (miss.length && !media.WEB) setTimeout(() => { app.toast(`Media offline: ${miss.map((m) => m.name).join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`, true); if (app.program && app.program.ui) app.program.ui(); }, 400);
 }
 async function openProjectDialog() {
   if (!(await confirmDiscard())) return;
