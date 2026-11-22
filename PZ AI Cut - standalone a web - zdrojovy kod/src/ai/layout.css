@@ -168,3 +168,10 @@ body.pz-layout {
 }
 /* úzký panel (340 px na notebooku): v patičce přednost stavu před vytížením GPU (vzhled S3: „Systém při…“) */
 @media (max-width: 360px) { .pz-foot .pz-gpu { display: none; } }
+
+/* 1280×720 (panel ~600 px, vzhled S4): Spustit pořád pod okrajem – menší mezery, karty a pole zadání */
+@media (max-height: 640px) {
+  .pz-pane { gap: 6px !important; padding-top: 8px !important; }
+  .pz-qcard { height: 36px !important; }
+  #prompt { min-height: 48px !important; height: 56px !important; }
+}

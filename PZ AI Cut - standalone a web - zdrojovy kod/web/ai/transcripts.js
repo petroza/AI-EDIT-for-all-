@@ -297,9 +297,11 @@ async function cached(file, lang) {
 const running = new Map();
 let chain = Promise.resolve();
 function transcribe(file, opts = {}, onProgress) {
+  const wasStopped = cancelled.has(sigOf(file));
   cancelled.delete(sigOf(file)); // nové spuštění ruší dřívější Zastavit
   const k = keyOf(file, opts.language || 'cs') + (opts.maxSeconds ? '|' + opts.maxSeconds : '');
-  if (!opts.force && running.has(k)) {
+  // po Zastavit může zrušený běh ještě doznívat (Worker zrušení pozná do 1 s) – nový běh se k němu nesmí připojit
+  if (!opts.force && !wasStopped && running.has(k)) {
     const r = running.get(k);
     if (onProgress) r.listeners.add(onProgress);
     return r.job;
@@ -309,7 +311,7 @@ function transcribe(file, opts = {}, onProgress) {
   const job = chain.then(() => { if (cancelled.has(sigOf(file))) throw abortErr(); current = sigOf(file); return transcribeNow(file, opts, fan); }).finally(() => { if (current === sigOf(file)) current = null; });
   chain = job.catch(() => {});
   running.set(k, { job, listeners });
-  job.finally(() => running.delete(k)).catch(() => {});
+  job.finally(() => { if (running.get(k) && running.get(k).job === job) running.delete(k); }).catch(() => {});
   return job;
 }
 async function transcribeNow(file, opts = {}, onProgress) {

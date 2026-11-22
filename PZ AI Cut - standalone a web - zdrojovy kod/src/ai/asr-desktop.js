@@ -145,15 +145,22 @@ function install({ app, aiRoot, ffmpeg, LL }) {
       if (opts.onProgress) { try { opts.onProgress(p, msg); } catch (e) { /* volající */ } }
       emitA(m.id);
     });
-    job.then(() => { if (jobs.get(m.id) === j) jobs.delete(m.id); transcribed.add(m.id); app.status(LL('Transcript ready: ', 'Přepis hotový: ') + m.name); },
-      (e) => { if (e && e.name === 'AbortError') j.state = 'stopped'; else { j.state = 'error'; j.msg = e.message; app.status(m.name + ': ' + e.message, true); } })
+    // zrušený běh, který uživatel nezastavil (Spustit znovu hned po Zastavit: Worker zrušení pozná až na konci dávky a „zruší“
+    // i navazující běh – vzhled S4), se spustí znovu, jednou
+    const out = job.then(() => { if (jobs.get(m.id) === j) jobs.delete(m.id); transcribed.add(m.id); app.status(LL('Transcript ready: ', 'Přepis hotový: ') + m.name); },
+      (e) => {
+        if (e && e.name === 'AbortError' && !j.userStopped && !opts.retried && jobs.get(m.id) === j) return start(m, Object.assign({}, opts, { retried: true, force: true }));
+        if (e && e.name === 'AbortError') j.state = 'stopped'; else { j.state = 'error'; j.msg = e.message; app.status(m.name + ': ' + e.message, true); }
+        throw e;
+      })
       .finally(() => emitA(m.id));
-    return job;
+    out.catch(() => {});
+    return out;
   }
   function stop(m) {
     const f = m && fileOf(m.path), j = m && jobs.get(m.id);
     if (f) T.stop(f);
-    if (j) { j.state = 'stopped'; j.eta = null; }
+    if (j) { j.state = 'stopped'; j.eta = null; j.userStopped = true; }
     app.status('');
     emitA(m && m.id);
   }

@@ -53,7 +53,7 @@ const app = {
     el.textContent = msg;
     el.className = 'toast show' + (err ? ' err' : '');
     clearTimeout(app._toastT);
-    app._toastT = setTimeout(() => { el.className = 'toast'; }, err ? 6000 : 2600);
+    app._toastT = setTimeout(() => { el.className = 'toast'; }, err ? 6000 : /Recovered|Obnoven/.test(msg) ? 9000 : 2600);
   },
 
   /** Úprava s krokem Zpět; chyby jako hláška. */
@@ -129,6 +129,22 @@ const app = {
       }
     }
     if (bad.length) app.toast(`Cannot import: ${bad.join(', ')}`, true);
+    // nově importovaný soubor se stejnou délkou a rozměry jako chybějící médium = ten samý záznam na novém místě:
+    // klipy sekvencí (a opravy přepisu) se převedou na něj, chybějící položka zmizí
+    const relinked = [];
+    for (const nm of out) {
+      if (!nm || nm.error || nm.missing) continue;
+      const old = project.media.find((x) => x !== nm && x.missing && Math.abs((x.duration || 0) - (nm.duration || 0)) < 0.06
+        && (x.width || 0) === (nm.width || 0) && (x.height || 0) === (nm.height || 0) && !!x.hasAudio === !!nm.hasAudio);
+      if (!old) continue;
+      app.edit('Relink Media', () => {
+        for (const s of project.sequences) for (const k of ['video', 'audio']) for (const tr of s.tracks[k]) for (const c of tr.clips) if (c.mediaId === old.id) c.mediaId = nm.id;
+        if (project.asrFixes && project.asrFixes[old.id]) { project.asrFixes[nm.id] = project.asrFixes[old.id]; delete project.asrFixes[old.id]; }
+        project.media = project.media.filter((x) => x !== old);
+      });
+      relinked.push(nm.name);
+    }
+    if (relinked.length) { app.toast(`Media relinked: ${relinked.join(', ')}`); app.timeline.render(); app.program.refresh(); }
     app.status(`Imported: ${out.filter((x) => !x.error).length}`);
     app.projectPanel.render();
     return out;
@@ -969,7 +985,7 @@ function gainDialog() {
   openModal(`<h2>Audio Gain</h2>
     <label class="row" style="gap:8px;cursor:pointer"><input type="radio" name="gMode" id="gSetR" value="set"> <span style="width:150px">Set Gain to (dB)</span><input type="number" id="gSet" step="0.5" value="${same ? clips[0].gainDb || 0 : ''}" style="width:90px"></label>
     <label class="row" style="gap:8px;cursor:pointer"><input type="radio" name="gMode" id="gAdjR" value="adj" checked> <span style="width:150px">Adjust Gain by (dB)</span><input type="number" id="gAdj" step="0.5" value="0" style="width:90px"></label>
-    <div class="dim">${TN.lang === 'cs' ? `Pro vybrané zvukové klipy: ${clips.length}. 0 dB = původní hlasitost, −60 = ticho.` : `Applies to ${clips.length} selected audio clip(s). 0 dB = original level, −60 = silent.`}</div>
+    <div class="dim">${TN.lang === 'cs' ? `Vybrané zvukové klipy: ${clips.length} · 0 dB = původní hlasitost, −60 dB = ticho.` : `Selected audio clips: ${clips.length} · 0 dB = original level, −60 dB = silent.`}</div>
     <div class="btns"><button id="gNo">Cancel</button><button class="primary" id="gOk">OK</button></div>`, (b) => {
     b.querySelector('#gNo').onclick = closeModal;
     const pick = (m) => () => { b.querySelector(m === 'set' ? '#gSetR' : '#gAdjR').checked = true; };
@@ -1253,6 +1269,7 @@ function exportDialog() {
     let signal = null;
     b.querySelector('#exNo').onclick = () => { if (signal) { signal.cancelled = true; if (signal.kill) signal.kill(); } else closeModal(); };
     b.querySelector('#exGo').onclick = async () => {
+      b.querySelector('#exMsg').style.color = '';
       const out = b.querySelector('#exOut').value.trim();
       if (!out) return;
       settings.lastExportDir = path.dirname(out); settings.encoder = b.querySelector('#exEnc').value;
@@ -1273,7 +1290,7 @@ function exportDialog() {
       } catch (e) {
         // zrušené systémové okno uložení: dialog zůstane, stačí zkusit znovu
         if (e && e.name === 'AbortError') { $('modal').dataset.pickEnd = String(Date.now()); b.querySelector('#exMsg').textContent = LL('Saving cancelled – click Export to choose where to save.', 'Ukládání zrušeno – klikni na Exportovat a vyber, kam uložit.'); b.querySelector('#exBar').style.width = '0%'; }
-        else b.querySelector('#exMsg').textContent = '✖ ' + e.message;
+        else { b.querySelector('#exMsg').textContent = '✖ ' + e.message; b.querySelector('#exMsg').style.color = 'var(--danger, #e5484d)'; }
       } finally {
         delete $('modal').dataset.busy;
         signal = null;

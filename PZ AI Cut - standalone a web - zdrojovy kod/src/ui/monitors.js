@@ -192,6 +192,9 @@ function createSource(app) {
   const tc = $('srcTc'), dur = $('srcDur'), scrub = $('srcScrub'), title = $('srcTitle'), empty = $('srcEmpty');
 
   function layout() { fitScreen(mon, screen, media && media.hasVideo ? media.width : 16, media && media.hasVideo ? media.height : 9, $('srcFit')); }
+  const offl = document.createElement('div');
+  offl.className = 'mon-offline';
+  screen.appendChild(offl);
   new ResizeObserver(layout).observe(mon);
 
   function ui() {
@@ -199,6 +202,8 @@ function createSource(app) {
     screen.style.visibility = media ? 'visible' : 'hidden';
     if (!media) { title.textContent = '(no clip)'; tc.textContent = dur.textContent = '00:00:00:00'; drawScrub(scrub, 0, 0, null, null); if (app.onSourceUi) app.onSourceUi(null, 0); return; }
     const fps = media.fps || 25;
+    offl.classList.toggle('show', !!media.missing);
+    if (media.missing) offl.textContent = (window.TN && window.TN.lang === 'cs' ? 'Médium offline: ' : 'Media Offline: ') + media.name;
     title.textContent = media.name + (media.proxy && !media.playable ? ' · proxy' : '') + (!media.playable && !media.proxy ? ' · creating proxy…' : '');
     if (!tc.querySelector('input')) tc.textContent = timecode(player.time, fps);
     const a = media.srcIn ?? null, b = media.srcOut ?? null;
