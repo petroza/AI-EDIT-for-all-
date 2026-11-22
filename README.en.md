@@ -109,6 +109,9 @@ live in `%APPDATA%\TN_strihatoko`. Requires Node.js 18+ and ffmpeg (bundled with
 (you don't need Premiere for that). The app finds it automatically: `MY Premiere MCP - plugin do Premiere - zdrojovy kod\` next to it in this repository,
 `%APPDATA%\MYpremiereMCP\root.txt`, the `MYPREMIEREMCP_ROOT` variable, or `PZ AI Cut - standalone a web - zdrojovy kod\config.json` → `aiRoot`.
 Without it, editing works but the AI panel does not.
+With it you also get **transcription without AI**: the Transcript tab next to Project (search, click a sentence = a part,
+insert it into a sequence), right-click a clip → Transcribe Speech, Sequence → Captions → Create Captions from Transcript.
+The local Worker transcribes (Whisper large-v3 on the GPU).
 
 <img src="Obrazky%20a%20schemata%20pro%20navod/img/schema-standalone-en.svg" alt="How the standalone app is wired" width="100%">
 

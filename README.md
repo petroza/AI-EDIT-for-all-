@@ -103,6 +103,8 @@ jsou v `%APPDATA%\TN_strihatoko`. Potřeba Node.js 18+ a ffmpeg (přibalený v M
 **AI ve standalone:** AI panel používá MY Premiere MCP (přepis, Hermes, Claude) – spusť nejdřív bod 1 (Premiere k tomu
 mít nemusíš). Složku najde sám: `MY Premiere MCP - plugin do Premiere - zdrojovy kod\` vedle v repozitáři, `%APPDATA%\MYpremiereMCP\root.txt`,
 proměnná `MYPREMIEREMCP_ROOT`, nebo `PZ AI Cut - standalone a web - zdrojovy kod\config.json` → `aiRoot`. Bez ní funguje střih, AI panel ne.
+S ní funguje i **přepis bez AI**: záložka Přepis vedle Projektu (hledání, klik na větu = úsek, vložení do sekvence),
+pravý klik na klip → Přepsat řeč, Sekvence → Titulky → Vytvořit titulky z přepisu. Přepis dělá lokální Worker (Whisper large-v3 na GPU).
 
 <img src="Obrazky%20a%20schemata%20pro%20navod/img/schema-standalone-cs.svg" alt="Jak je zapojený Standalone" width="100%">
 
