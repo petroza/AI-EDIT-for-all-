@@ -147,5 +147,6 @@ MY Premiere MCP ručně: `powershell -ExecutionPolicy Bypass -File "MY Premiere 
 (přepínače `-Hermes`, `-NoLocalLLM`, `-SkipModels`, `-Target <složka>`).
 
 ## Pro správce repozitáře
-`Aktualizovat GitHub.bat` převezme poslední commity z vývojových složek (`O:\TN_strihatko`, `O:\ADOBEPREMIERESTRIH`)
-do `PZ AI Cut - standalone a web - zdrojovy kod\` a `MY Premiere MCP - plugin do Premiere - zdrojovy kod\` a nahraje je sem. Necommitnuté změny se nenahrají.
+Vývoj probíhá přímo v těchto složkách. `Aktualizovat GitHub.bat` commitne změny, nahraje je sem a složku MY Premiere MCP
+zkopíruje i do samostatného repozitáře [petroza/MY-Premiere-MCP](https://github.com/petroza/MY-Premiere-MCP), odkud si kód bere
+online instalace (`MY Premiere MCP - plugin do Premiere - zdrojovy kod\scripts\sync-standalone-repo.mjs`).

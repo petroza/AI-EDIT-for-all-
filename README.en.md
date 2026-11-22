@@ -154,6 +154,6 @@ MY Premiere MCP manually: `powershell -ExecutionPolicy Bypass -File "MY Premiere
 (options `-Hermes`, `-NoLocalLLM`, `-SkipModels`, `-Target <folder>`).
 
 ## For the maintainer
-`Aktualizovat GitHub.bat` pulls the latest commits from the development folders (`O:\TN_strihatko`,
-`O:\ADOBEPREMIERESTRIH`) into `PZ AI Cut - standalone a web - zdrojovy kod\` and `MY Premiere MCP - plugin do Premiere - zdrojovy kod\` and pushes them here. Uncommitted changes are not
-included.
+Development happens directly in these folders. `Aktualizovat GitHub.bat` commits changes, pushes them here and also copies the
+MY Premiere MCP folder into the standalone repository [petroza/MY-Premiere-MCP](https://github.com/petroza/MY-Premiere-MCP), which the
+online installer downloads from (`MY Premiere MCP - plugin do Premiere - zdrojovy kod\scripts\sync-standalone-repo.mjs`).
