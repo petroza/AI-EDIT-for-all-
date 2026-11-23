@@ -41,6 +41,13 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
   - Jednořádkové titulky 9:16: rozdělení věty počítá skutečnou dobu zobrazení (nejkratší 0,12 → 0,22 s; v rychlé řeči
     zůstává ~9 % titulků pod 0,7 s – na řádek se vejdou 2–3 slova, u titulků na sítě běžný rychlý styl).
   - Široký záběr přetažený do sekvence na výšku dostane výřez podle obličeje; vložení i výřez vrátí jedno Ctrl+Z.
+  - Nezávislá revize nočních změn (2 vážné nálezy: začátek úseku mohl uříznout „s“, sloučení kroků Zpět mohlo smazat
+    kroky uživatele) – opraveno (8d60c9c).
+- **Kolo S9 (Redaktorka + Kontrolor výstupu, ~4:00)**: 19 exportů bitově shodných s S8, hlasitost i synchronizace beze změny.
+  Nálezy opravené (32dd765): regrese z 70047c0 (b-roll na V2 v 9:16 bez úklidu cizího záběru), **obraz a zvuk se po výřezu /
+  úklidu krajů rozpojovaly** (žiletka, Shift+Delete i ořez působily jen na obraz – teď se zvuk rozřízne spolu s obrazem a
+  zůstane propojený, export čte navazující kusy vcelku, ověřeno vzorek po vzorku), 4 snímky celku s výřezem na stůl na konci
+  prvního vložení do 9:16, předvybrané MXF s −14 LUFS, text toastu u selhaného přepisu.
 
 ## Otevřené
 - Upoutávka/úlomek „k“ – opraveno po 3:00 (výše); v Premiere znovu ověřit `scripts/test-highlight.mjs` (Premiere zavřené).
