@@ -190,6 +190,7 @@ function install({ app, aiRoot, ffmpeg, LL }) {
     fixesKey: (m) => { const p = app.project; return m && p.asrFixes && p.asrFixes[m.id] ? JSON.stringify(p.asrFixes[m.id]).length + ':' + p.asrFixes[m.id].length : ''; },
     on(f) { L.add(f); return () => L.delete(f); },
     cutBounds: (m, t, a, b) => T.cutBounds(fileOf(m.path), t, a, b),
+    pauseAfter: (m, t0) => T.pauseAfter(fileOf(m.path), t0),
     /** Slova sekvence v čase timeline – jen to, co v sestřihu zazní (kraje podle zvuku klipu). pending = média bez přepisu. */
     async seqWords(s) {
       const p = app.project;

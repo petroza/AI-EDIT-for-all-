@@ -448,6 +448,22 @@ async function transcribeNow(file, opts = {}, onProgress) {
  * nejtišší 20ms místo v ±0,2 s od odhadu (~50 % střihů do 40 ms od hranice slov). Proto výsledek nese
  * příznak approx a Claude dostane upozornění, ať uživatel střihy poslechne.
  */
+/** První skutečná pauza (≥ 60 ms ticha, 15 dB pod řečí) do `ahead` s za časem t0 → čas těsně před dalším nástupem řeči,
+ *  nebo null. Pro „Začátek na další pauzu“ v Přepisu: časy slov bývají posunuté a začátek pak padne do konce cizí věty
+ *  (redaktorka S11: „…zlomilo?“ moderátorky na začátku výroku; přepis dal „Jo,“ o 0,4 s dřív). */
+async function pauseAfter(file, t0, ahead = 1.0) {
+  const thr = (await speechLevel(file, t0, t0 + 8)) * Math.pow(10, -15 / 20);
+  const x = await audio16k(file, t0, t0 + ahead + 0.1);
+  let start = null;
+  for (let u = t0; u < t0 + ahead; u += 0.005) {
+    const v = rmsWin(x, t0, u, 0.03);
+    if (v !== null && v <= thr) { if (start === null) start = u; } else {
+      if (start !== null && u - start >= 0.06) return Math.max(start, u - 0.03);
+      start = null;
+    }
+  }
+  return null;
+}
 async function cutBounds(file, t, a, b) {
   const W = t.words, first = W[a], last = W[b];
   let tin = Math.max(0, first.s), tout = Math.min(t.duration, last.e);
@@ -493,6 +509,10 @@ async function edgeIn(file, t, a) {
     const v = rmsWin(x, i0, q, 0.03), soft = thr * Math.pow(10, (15 - EW.gapDb) / 20);
     // jen když je tam opravdu ticho (mezera mezi slovy) – jinak by střih padl do slova (časy přepisu bývají posunuté, R 23:20)
     if (deepAt(x, i0, q, thr) || (v !== null && v <= soft)) pi = { t: q, ok: v !== null && v <= thr };
+    // předchozí slovo patří JINÉMU mluvčímu (otázka moderátorky hned přechází v odpověď bez pauzy): klip nesmí začít jejím
+    // slovem – střih na hranici slov v nejtišším místě, i když tam ticho není (varování zůstane; redaktorka S11: výrok začínal
+    // „…zlomilo?“ moderátorky, „zlomilo?|Jo,“ bez mezery ve zvuku)
+    else if (prv.spk && first.spk && prv.spk !== first.spk) pi = { t: Math.min(Math.max(prv.e, q), Math.max(prv.e, first.s - 0.02)), ok: false };
   }
   let tin = pi.t, ok = pi.ok;
   // hák pro sítě: z pauzy jen krátký nádech (0,15 s) před nástupem řeči (tester kolo 2: 0,9 s ticha na začátku)
@@ -531,6 +551,8 @@ async function edgeOut(file, t, b) {
     const q = quietest20(y, o0, last.e - 0.08, Math.min(t.duration, nxt.s + 0.1));
     const v = rmsWin(y, o0, q, 0.03), soft = thr * Math.pow(10, (15 - EW.gapDb) / 20);
     if (deepAt(y, o0, q, thr) || (v !== null && v <= soft)) po = { t: q, ok: v !== null && v <= thr };
+    // další slovo patří JINÉMU mluvčímu: klip nesmí skončit jeho slovem – střih na hranici slov (redaktorka S11, viz edgeIn)
+    else if (nxt.spk && last.spk && nxt.spk !== last.spk) po = { t: Math.max(Math.min(nxt.s, q), Math.min(nxt.s, last.e + 0.02)), ok: false };
   }
   let tout = po.t;
   // konec: doznění ~0,2 s po posledním slově, ale nikdy do dalšího slova (tester: konec jen 70 ms po slově)
@@ -1030,4 +1052,4 @@ function edgeWord(W, x, x0, thr, u, isIn) {
   return -1;
 }
 
-module.exports = { setDesktop, prefetch, prefetchState, onPrefetch, modelStored, transcribeRange, hallucinated, dropHallucinations, edgeIn, edgeOut, clipCaptionWords, findHoles, levelOf, dropEdgeFragments, matchSpan, applyFixes, clipWords, pauseNear, tightenIn, tightenOut, speechAlign, speechLevel, rmsWin, partialForMedia, savedPartial, stop, isStopped, contentId, transcribe, cutBounds, forMedia, loadForMedia, textOf, sentences, MODELS, LANGS, audio16k, device };
+module.exports = { pauseAfter, setDesktop, prefetch, prefetchState, onPrefetch, modelStored, transcribeRange, hallucinated, dropHallucinations, edgeIn, edgeOut, clipCaptionWords, findHoles, levelOf, dropEdgeFragments, matchSpan, applyFixes, clipWords, pauseNear, tightenIn, tightenOut, speechAlign, speechLevel, rmsWin, partialForMedia, savedPartial, stop, isStopped, contentId, transcribe, cutBounds, forMedia, loadForMedia, textOf, sentences, MODELS, LANGS, audio16k, device };

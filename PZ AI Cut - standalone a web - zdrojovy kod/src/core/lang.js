@@ -196,7 +196,7 @@ const RULES = [
   [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)')],
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],
   [/^Delete sequence “(.+)”\?$/, 'Smazat sekvenci „$1“?'], [/^✖ (.+)$/, (m, a) => '✖ ' + tr(a)],
-  [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/29,97/50 fps nebo 1280×720 50/59,94 fps – použij MXF DNxHR HQ nebo H.264.'],
+  [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead, or change the sequence to 1920×1080 25 fps \(Sequence → Sequence Settings\)\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/29,97/50 fps nebo 1280×720 50/59,94 fps – použij MXF DNxHR HQ nebo H.264, nebo změň sekvenci na 1920×1080 25 fps (Sekvence → Nastavení sekvence).'],
   [/^Undo: (.+)$/, (m, a) => 'Zpět: ' + tr(a)], [/^Redo: (.+)$/, (m, a) => 'Znovu: ' + tr(a)], [/^AI: (.+)$/, (m, a) => 'AI: ' + tr(a)],
   [/^(\d+) items?$/, (m, n) => n + ' ' + plural(+n, 'položka', 'položky', 'položek')],
   [/^Importing: (.*)$/, 'Importuji: $1'], [/^Imported: (\d+)$/, 'Importováno: $1'], [/^Saved: (.*)$/, 'Uloženo: $1'], [/^Saved a copy: (.*)$/, 'Uložena kopie: $1'],

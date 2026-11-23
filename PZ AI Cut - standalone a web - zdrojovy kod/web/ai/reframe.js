@@ -244,11 +244,11 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}, only = nul
         merged++;
       }
     }
-    for (const { track, clip, k, iw, shots } of plan) {
+    for (const { track, clip, k, iw, shots, m: pm } of plan) {
       let cur = clip;
       shots.forEach((s, i) => {
         if (i > 0) {
-          const at = Math.round((clip.start + (s.in - clip.in)) * (seq.fps || 25)) / (seq.fps || 25);
+          const at = E.cutOnTimeline(seq, clip, s.in, pm && pm.fps);
           const right = E.splitClip(seq, track, cur, at);
           if (!right) return;
           right.linkId = null; // rozříznutý jen obraz – zvuk zůstává v celku

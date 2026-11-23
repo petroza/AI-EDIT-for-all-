@@ -529,7 +529,9 @@ function createTranscriptPanel(app) {
         : !sel.inOk ? L('⚠ The start is in continuous speech – listen whether the first word is cut.', '⚠ Začátek v souvislé řeči – poslechni, jestli není useknuté první slovo.') : '';
       // po vložení je patička v jednom řádku (report-5: varování + „✓ V nové sekvenci“ = 2 řádky → stav 07 o větu méně): varování jako ⚠ s bublinou
       const done = insDone();
-      html = (flow ? (done ? '' : `<div class="tr-flow">${esc(flow)}</div>`) : '') + (done ? (flow ? `<span class="tr-flow-i" title="${esc(flow)}">⚠</span>` : '') + doneSpan() + '<span class="spacer"></span>' : `<span class="cnt">${n} ${L(n === 1 ? 'sentence' : 'sentences', n === 1 ? 'věta' : n < 5 ? 'věty' : 'vět')} · ${durTxt(d)}</span><span class="spacer"></span>`)
+      // začátek v souvislé řeči: nabídnout posun na další pauzu (redaktorka S11 – jako „Přichytit“ ve Zdroji)
+      const fix = !sel.inOk && asr() && asr().pauseAfter ? ` <button id="trInFix" class="tr-fix">${esc(L('Start at the next pause', 'Začátek na další pauzu'))}</button>` : '';
+      html = (flow ? (done ? '' : `<div class="tr-flow">${esc(flow)}${fix}</div>`) : '') + (done ? (flow ? `<span class="tr-flow-i" title="${esc(flow)}">⚠</span>` : '') + doneSpan() + '<span class="spacer"></span>' : `<span class="cnt">${n} ${L(n === 1 ? 'sentence' : 'sentences', n === 1 ? 'věta' : n < 5 ? 'věty' : 'vět')} · ${durTxt(d)}</span><span class="spacer"></span>`)
         + `<button id="trPlay" title="${esc(L('Play the selection (Space)', 'Přehrát výběr (mezerník)'))}">▶<span class="lbl"> ${esc(L('Play', 'Přehrát'))}</span></button>`
         + insButtons(noSeq);
     }
@@ -537,6 +539,18 @@ function createTranscriptPanel(app) {
     f.dataset.h = html;
     f.innerHTML = html;
     const pb = $('trPlay'); if (pb) pb.onclick = playSel;
+    const fx = $('trInFix');
+    if (fx) fx.onclick = async () => {
+      const m2 = media();
+      if (!m2 || !selValid(m2)) return;
+      fx.disabled = true;
+      const t1 = await asr().pauseAfter(m2, sel.inT).catch(() => null);
+      if (t1 == null || t1 >= sel.outT - 0.3) { fx.disabled = false; app.toast(L('No pause found right after the start – set the In point by ear (I).', 'Hned za začátkem jsme pauzu nenašli – nastav začátek poslechem (I).'), true); return; }
+      m2.srcIn = sel.inT = t1; sel.inOk = true;
+      app.source.seek(t1); app.source.ui();
+      paintSel(); paintFoot(); paintWarn();
+      playSel();
+    };
     const ib = $('trIns');
     if (ib) ib.onclick = () => doInsert();
     const mb = $('trInsMore');

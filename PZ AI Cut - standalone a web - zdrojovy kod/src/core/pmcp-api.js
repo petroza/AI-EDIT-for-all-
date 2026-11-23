@@ -344,7 +344,7 @@ function createApi(project, hooks = {}) {
             const lm = new Map();
             let cur = c;
             for (const cut of r.cuts.sort((x, y) => x - y)) {
-              const at = E.snapT(seq, cur.start + (cut - cur.in));
+              const at = E.cutOnTimeline(seq, cur, cut, m.fps); // přesně na snímek, kde export ukáže nový záběr
               const right = E.splitClip(seq, t, cur, at, lm);
               if (right) { right.linkId = null; cur.linkId = null; splits++; cur = right; } // obraz rozříznutý, zvuk v celku – kusy obrazu bez vazby (Delete nesmí smazat celý zvuk)
             }

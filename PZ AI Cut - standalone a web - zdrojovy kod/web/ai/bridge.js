@@ -292,6 +292,7 @@ window.__pzASR = {
   fixesKey: (m) => { const p = window.TN.app.project; return m && p.asrFixes && p.asrFixes[m.id] ? JSON.stringify(p.asrFixes[m.id]).length + ':' + p.asrFixes[m.id].length : ''; },
   on(f) { asrL.add(f); return () => asrL.delete(f); },
   cutBounds: (m, t, a, b) => T.cutBounds(vfs.getFile(m.path), t, a, b),
+  pauseAfter: (m, t0) => T.pauseAfter(vfs.getFile(m.path), t0),
   /** Slova sekvence v čase timeline – jen to, co v sestřihu opravdu zazní (střed slova uvnitř klipu).
    *  pending = média klipů, kterým přepis ještě chybí (titulky počkají). */
   async seqWords(s, opts = {}) {

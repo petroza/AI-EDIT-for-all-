@@ -47,7 +47,7 @@ function videoCodec(fmt, seq, encoder) {
     };
     case 'xdcam': {
       if (!xdcamOk(seq)) {
-        throw new Error(`XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead.`);
+        throw new Error(`XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings).`);
       }
       return {
         pix: 'yuv422p', seg: 'ts',

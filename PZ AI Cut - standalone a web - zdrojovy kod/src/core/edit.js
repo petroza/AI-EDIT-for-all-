@@ -85,6 +85,17 @@ function relinkAV(seq) {
   return n;
 }
 
+/** Čas na ose, od kterého je v klipu vidět snímek zdroje v čase ≥ srcT (střih kamery). Export ukazuje pro snímek osy první
+ *  snímek zdroje v čase ≥ (in + t − start), tj. nový záběr už tam, kde je to víc než srcT − 1 snímek zdroje. Dřív se dělilo
+ *  zaokrouhlením na nejbližší snímek osy – u klipu se začátkem mimo mřížku snímků (vložení z Přepisu, In 96,69 s) pak 1 snímek
+ *  nového záběru dostal výřez předchozího (redaktorka S11: bliknutí na každém střihu kamery po Auto Reframe). */
+function cutOnTimeline(seq, clip, srcT, srcFps) {
+  const fps = seq.fps || 25, sf = srcFps || fps;
+  const x = (clip.start + (srcT - 1 / sf - clip.in)) * fps;
+  const k = (Math.abs(x - Math.round(x)) < 1e-4 ? Math.round(x) : Math.floor(x)) + 1;
+  return k / fps;
+}
+
 /** Prolnutí zvuku na střihu (Ctrl+Shift+D, jako Constant Power v Premiere): pravý klip má xIn = délka prolnutí; platí jen se
  *  sousedem na stopě, který končí přesně na jeho začátku. Oba klipy znějí přes střih: levý d/2 za svůj konec, pravý d/2 před
  *  svůj začátek (rezerva zdroje), hlasitost cos / sin – bez propadu (střihač z Premiere S11: dřív zeslabení obou konců = −20 dB). */
@@ -703,7 +714,7 @@ function uncaptionedRanges(seq) {
     .filter((r) => !caps.some((k) => Math.min(k.end, r.end) - Math.max(k.start, r.start) > 0.1));
 }
 
-module.exports = { xfIn, xfOut, audioSpan, audioGainAt, relinkAV, audioRuns, rippleCaptions, topBelow, crossRegionsOf,
+module.exports = { cutOnTimeline, xfIn, xfOut, audioSpan, audioGainAt, relinkAV, audioRuns, rippleCaptions, topBelow, crossRegionsOf,
   fd, snapT, findClip, linked, splitClip, razor, clearRange, placeClip, shiftAfter, insertSpace, extractRange,
   liftRange, removeClips, rippleDeleteGap, editFromSource, moveClips, trimEdge, editPoints, prevEdit, nextEdit,
   rippleTrimToPlayhead, setLinked, addAudioFades, eachTrack, rollEdit, slipClip, clipsFrom,
