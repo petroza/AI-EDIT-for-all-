@@ -1533,6 +1533,7 @@ function exportDialog() {
         });
         b.querySelector('#exMsg').innerHTML = `✔ Done in ${Math.round((Date.now() - t0) / 1000)} s · ${r.sizeMB >= 10 ? Math.round(r.sizeMB) : r.sizeMB.toLocaleString(TN.lang === 'cs' ? 'cs-CZ' : 'en-US', { maximumFractionDigits: 1 })} MB · <a href="#" id="exShow" style="color:var(--accent2)">reveal in Explorer</a>`;
         b.querySelector('#exShow').onclick = (e) => { e.preventDefault(); ipcRenderer.invoke('reveal', r.output); };
+        if (r.note) app.toast(r.note, true); // cíl otevřený v jiném programu – uloženo pod jiným jménem (revize S14)
       } catch (e) {
         // zrušené systémové okno uložení: dialog zůstane, stačí zkusit znovu
         if (e && e.name === 'AbortError') { $('modal').dataset.pickEnd = String(Date.now()); b.querySelector('#exMsg').textContent = LL('Saving cancelled – click Export to choose where to save.', 'Ukládání zrušeno – klikni na Exportovat a vyber, kam uložit.'); b.querySelector('#exBar').style.width = '0%'; }
@@ -1618,34 +1619,45 @@ function writeProject(p) {
     throw new Error(`Cannot save the project to ${p} – the file is read-only or the folder is not writable. Save it elsewhere (File → Save As).`);
   }
 }
+/** Síťový server z cesty, null = místní soubor. Všechny zápisy, kterými Windows sahá na síť: \\server\, //server/,
+ *  /\server\, \\?\UNC\server\, \\.\UNC\, \??\UNC\, \\?\GLOBALROOT\Device\Mup\server\ (revize S14: obejití uncHost).
+ *  '\\' = jiné zařízení / neznámý zápis – nikdy nepřipojovat. */
+function netHost(q) {
+  const s = String(q || '').replace(/\//g, '\\');
+  if (!/^\\\\|^\\\?\?\\/.test(s)) return null; // C:\…, \cesta na aktuálním disku, relativní
+  if (/^\\\\[?.]\\[a-z]:(\\|$)/i.test(s)) return null; // \\?\C:\ dlouhá místní cesta
+  let m = /^\\(?:\\[?.]|\?\?)\\unc\\([^\\]+)/i.exec(s);
+  if (!m) m = /\\device\\(?:mup|lanmanredirector|webdavredirector)\\(?:;[^\\]*\\)?([^\\]+)/i.exec(s);
+  if (!m) m = /^\\\\([^\\?.][^\\]*)/.exec(s);
+  return m ? m[1].toLowerCase() : '\\';
+}
 function loadProjectFile(p, asUntitled, data0) {
   let data = data0;
   if (!data) {
     try { data = JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { throw new Error(`${U.baseName(p)} is not a readable project file (damaged or unfinished).`); }
   }
   if (!data || typeof data !== 'object' || !Array.isArray(data.sequences) || !Array.isArray(data.media)) throw new Error(`${U.baseName(p)} is not a ${BRAND.SHORT_NAME} project.`);
+  // Bezpečnost S13/S14: projekt z cizí ruky může odkazovat na \\server\… – Windows by se při pouhém ověření existence
+  // souboru (náhled, průběh zvuku, <video>) připojil a poslal přihlašovací hash. Rozhoduje se PŘED project.load – načtení
+  // hned spouští náhledy (revize S14: ochrana S13 přišla až po nich). Náhledové kopie jen z vlastní cache; média na
+  // serveru, kterému uživatel ještě nedůvěřoval, zůstanou offline, dokud připojení nepotvrdí.
+  const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
+  const askHosts = new Set();
+  for (const m of data.media) {
+    if (!m || typeof m !== 'object') continue;
+    delete m.uncBlocked; // stav se neukládá – vždy znovu podle aktuální důvěry (revize S14: médium zůstalo trvale offline)
+    if (m.proxy && !(typeof m.proxy === 'string' && path.resolve(m.proxy).toLowerCase().startsWith(path.resolve(media.CACHE).toLowerCase()))) delete m.proxy;
+    const h = netHost(m.path);
+    if (h && !trusted.has(h)) {
+      m.uncBlocked = true; m.missing = true; m.playable = false;
+      if (h !== '\\') askHosts.add(h);
+    }
+  }
   require('./ui/captionstyle').discardCaptionStyle();
   app.source.close();
   app.waves.clear();
   project.load(data, asUntitled ? null : p);
   if (asUntitled) { project.dirty = true; }
-  // Bezpečnost S13: projekt z cizí ruky může odkazovat na \\server\… – Windows by se při pouhém ověření existence souboru
-  // připojil a poslal přihlašovací hash. Náhledové kopie jen z vlastní cache; média na serveru, kterému uživatel ještě
-  // nedůvěřoval, zůstanou offline, dokud připojení nepotvrdí (servery si pamatujeme – redakční disky se ptají jen jednou).
-  // \\server\… a //server/… = síť; \\?\C:\… (dlouhá místní cesta) ne, \\?\UNC\server\… ano
-  const uncHost = (q) => {
-    const mm = /^(?:\\\\|\/\/)([^\\/]+)[\\/]?([^\\/]*)[\\/]?([^\\/]*)/.exec(String(q || ''));
-    if (!mm) return null;
-    if (mm[1] === '?' || mm[1] === '.') return /^unc$/i.test(mm[2]) ? (mm[3] || '').toLowerCase() || null : (mm[1] === '.' ? '.' : null);
-    return mm[1].toLowerCase();
-  };
-  const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
-  const askHosts = new Set();
-  for (const m of project.media) {
-    if (m.proxy && !path.resolve(m.proxy).toLowerCase().startsWith(path.resolve(media.CACHE).toLowerCase())) delete m.proxy;
-    const h = uncHost(m.path);
-    if (h && !trusted.has(h)) { m.uncBlocked = true; askHosts.add(h); }
-  }
   if (askHosts.size && !media.WEB) setTimeout(() => askNetworkHosts([...askHosts]), 300);
   importer.relink(project);
   for (const m of project.media) { loadThumb(m); }

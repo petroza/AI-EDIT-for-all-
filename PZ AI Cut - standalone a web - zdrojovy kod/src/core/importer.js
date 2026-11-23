@@ -29,6 +29,7 @@ function ensureProxy(project, m) {
 
 /** Soubor, ze kterého se přehrává (originál, nebo proxy). */
 function playPath(m) {
+  if (m.uncBlocked || m.missing) return null; // offline / nepotvrzený síťový server – nic nenačítat (revize S14)
   if (m.playable) return m.path;
   if (m.proxy && fs.existsSync(m.proxy)) return m.proxy;
   return null;

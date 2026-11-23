@@ -66,8 +66,11 @@ function sanitizeProject(data) {
     if (!(s.fps > 0)) s.fps = 25;
     if (typeof s.name !== 'string') s.name = 'Sequence';
   }
-  if (!Array.isArray(d.openSequenceIds)) d.openSequenceIds = [];
-  d.openSequenceIds = d.openSequenceIds.filter((x) => typeof x === 'string' && SAFE_ID.test(x));
+  // starší projekt bez seznamu otevřených záložek: nechat chybět – model pak otevře aktivní sekvenci (revize S14: prázdné
+  // pole otevřelo projekt bez záložky)
+  if (!Array.isArray(d.openSequenceIds)) delete d.openSequenceIds;
+  else d.openSequenceIds = d.openSequenceIds.filter((x) => typeof x === 'string' && SAFE_ID.test(x));
+  for (const m of d.media) delete m.uncBlocked; // stav dotazu na síťový server se neukládá
   if (d.asrFixes && typeof d.asrFixes !== 'object') d.asrFixes = {};
   return d;
 }

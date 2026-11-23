@@ -162,6 +162,7 @@ const RULES = [
   [/^(.+) is not a (.+) project\.$/, '$1 není projekt $2.'],
   [/^The auto-save file is damaged – it was set aside, nothing was recovered\.$/, 'Automatická záloha je poškozená – odložil jsem ji stranou, nic se neobnovilo.'],
   [/^Recovered unsaved changes, but the project (.+) was not found \(moved or on a disconnected drive\) – they are open as a new project\. Save them with Ctrl\+S\.$/, 'Obnoveny neuložené změny, ale projekt $1 se nenašel (přesunutý nebo na odpojeném disku) – jsou otevřené jako nový projekt. Ulož je přes Ctrl+S.'],
+  [/^The file (.+) is open in another program – the export was saved as (.+)\.$/, 'Soubor $1 je otevřený v jiném programu – export je uložený jako $2.'],
   [/^This file is already being exported – wait until it finishes or choose another name\.$/, 'Do tohoto souboru se už exportuje – počkej na dokončení nebo zvol jiný název.'],
   [/^There is nothing to export between In and Out\.$/, 'Mezi In a Out není nic k exportu.'],
   [/^A file is open in another program or not accessible – close it and export again\.$/, 'Soubor je otevřený v jiném programu nebo k němu není přístup – zavři ho a exportuj znovu.'],

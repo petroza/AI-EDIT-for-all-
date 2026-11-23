@@ -192,26 +192,55 @@ async function pool(items, limit, fn) {
 const ACTIVE = new Set(); // výstupy právě běžících exportů
 /** Export pracuje se zmrazeným snímkem sekvence (zátěž S12: úprava z nabídky během exportu dala soubor ze dvou stavů –
  *  obraz 3590 s, zvuk 3600 s) a do jednoho souboru smí běžet jen jeden export (dva naráz = poškozené MP4 s „✔“). */
+/** Cílová cesta s příponou formátu – exportSnapshot by jinak příponu změnil až po kontrole zdroje (revize S14:
+ *  export do „…\rozhovor“ bez přípony přepsal rozhovor.mp4). */
+function outputPathFor(opts) {
+  const o = String(opts.output || '');
+  const fmt = FORMATS[opts.format] ? opts.format : (/\.mov$/i.test(o) ? 'prores_hq' : /\.mxf$/i.test(o) ? 'xdcam' : 'h264');
+  const ext = FORMATS[fmt].ext;
+  if (new RegExp('\\.' + ext + '$', 'i').test(o)) return o;
+  const b = path.basename(o);
+  return (/\.[^.]+$/.test(b) ? o.slice(0, o.length - path.extname(b).length) : o) + '.' + ext;
+}
+/** Tentýž soubor i přes krátké jméno 8.3, jiný zápis cesty nebo pevný odkaz (revize S14: ROZHOV~1.MP4 přepsal zdroj). */
+function sameFile(a, b) {
+  if (!a || !b) return false;
+  if (path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase()) return true;
+  try {
+    const x = fs.statSync(a, { bigint: true }), y = fs.statSync(b, { bigint: true });
+    return x.ino !== 0n && x.ino === y.ino && x.dev === y.dev;
+  } catch (e) { return false; }
+}
 async function exportSequence(project, seq0, opts) {
-  const key = path.resolve(String(opts.output || '')).toLowerCase();
+  const final = outputPathFor(opts);
+  const key = path.resolve(final).toLowerCase();
   if (ACTIVE.has(key)) throw new Error('This file is already being exported – wait until it finishes or choose another name.');
   // výstup nesmí přepsat zdrojové médium (bezpečnost S12)
-  const src = project.media.find((m) => m && [m.path, m.proxy, m.playPath].some((q) => q && path.resolve(q).toLowerCase() === key));
+  const src = project.media.find((m) => m && [m.path, m.proxy, m.playPath].some((q) => sameFile(q, final)));
   if (src) throw new Error(`The output would overwrite the source media ${src.name} – choose another file name.`);
   ACTIVE.add(key);
   // export do dočasného souboru, cíl až po dokončení; při chybě / zrušení / pádu nezůstane pod cílovým jménem nepřehratelný
   // soubor a pracovní složka se smaže (pád a obnova S12: rozbité MP4 + 210 MB v cache na každý pokus)
-  const final = String(opts.output);
   const ext = path.extname(final);
   const part = final.slice(0, final.length - ext.length) + '.pzpart' + ext;
   const works = [];
+  let kept = false;
   try {
     const r = await exportSnapshot(project, JSON.parse(JSON.stringify(seq0)), Object.assign({}, opts, { output: part, _onWork: (w) => works.push(w) }));
-    try { if (fs.existsSync(final)) fs.unlinkSync(final); } catch (e) { /* přepíše rename */ }
-    fs.renameSync(part, final);
-    const srtP = part.replace(/\.[^.]+$/, '.srt'), srtF = final.replace(/\.[^.]+$/, '.srt');
-    if (fs.existsSync(srtP)) { try { if (fs.existsSync(srtF)) fs.unlinkSync(srtF); } catch (e) { /* */ } fs.renameSync(srtP, srtF); }
-    return Object.assign(r, { output: final });
+    // rename na Windows starý soubor nahradí; dřív se starý export mazal předem a zamčený cíl smazal i hotový render (revize S14)
+    let out = final;
+    try { fs.renameSync(part, final); } catch (e) {
+      if (!/EPERM|EBUSY|EACCES/.test(e.code || e.message)) throw e;
+      // cíl je otevřený v jiném programu – hotový export uložit vedle, ne zahodit
+      const base = final.slice(0, final.length - ext.length);
+      let i = 1; while (fs.existsSync(`${base} (${i})${ext}`)) i++;
+      out = `${base} (${i})${ext}`;
+      fs.renameSync(part, out);
+      kept = true;
+    }
+    const srtP = part.replace(/\.[^.]+$/, '.srt'), srtF = out.replace(/\.[^.]+$/, '.srt');
+    if (fs.existsSync(srtP)) { try { fs.renameSync(srtP, srtF); } catch (e) { /* titulky zůstanou jako .pzpart.srt */ } }
+    return Object.assign(r, { output: out }, kept ? { note: `The file ${path.basename(final)} is open in another program – the export was saved as ${path.basename(out)}.` } : {});
   } catch (e) {
     for (const f of [part, part.replace(/\.[^.]+$/, '.srt')]) { try { fs.rmSync(f, { force: true }); } catch (x) { /* */ } }
     // zrušení: ffmpeg ukončený zvenku hlásí „exited with code null“ – srozumitelně
