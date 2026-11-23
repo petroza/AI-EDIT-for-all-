@@ -167,9 +167,13 @@
     var qInfo = el('span', 'pz-dim pz-qinfo', I.layers + '<span>Queue</span> <b class="pz-qn">0</b>');
     sub.appendChild(qInfo);
     A.appendChild(sub);
-    var qCount = $('qCount');
+    // #queue je v tu chvíli v podokně, které ještě není v dokumentu – getElementById by vrátil null a štítek by
+    // navždy ukazoval 0 (AI tok S12: „Fronta 0“ při „1 čeká“)
+    var qCount = $('qCount') || (queue && queue.querySelector('#qCount'));
     function qSync() { var n = ((qCount && qCount.textContent) || '').match(/\d+/); qInfo.querySelector('.pz-qn').textContent = n ? n[0] : '0'; }
     if (qCount) new MutationObserver(qSync).observe(qCount, { subtree: true, childList: true, characterData: true });
+    qInfo.style.cursor = 'pointer';
+    qInfo.onclick = function () { var q = $('queue'); if (q && q.classList.contains('on')) q.scrollIntoView({ block: 'nearest' }); };
     var oldAgentRow = agent && agent.parentElement === null ? null : document.querySelector('.actions'); if (oldAgentRow) stash.appendChild(oldAgentRow);
 
     // souhrn titulků na Assistantovi

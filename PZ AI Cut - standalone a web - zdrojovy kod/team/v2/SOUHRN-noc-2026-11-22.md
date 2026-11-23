@@ -60,6 +60,20 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
   - Výběr z Přepisu nezačne/neskončí slovem jiného mluvčího; tlačítko „Začátek na další pauzu“.
   - Kontroly: Kontrolor S11 – zvuk 41 exportů bitově shodný s S10, 0 osiřelých kusů zvuku; AI tok S11 – upoutávky
     16 / 19 / 26 s (cíl 15 / 20 / 30), všechny hranice čisté, Hermes 0× CUDA error.
+- **Odpoledne 23. 11. (kola S12, S13 – nově Bezpečnost, Zátěž, Pád a obnova, Formáty; vydání v2026.11.23.2)**:
+  - **Bezpečnost (vážné)**: projekt .pzcut z cizí ruky mohl spustit kód (HTML v názvu sekvence/média + Node v okně).
+    Teď: projekt se při otevření čistí (`src/core/sanitize.js`), okno má CSP, nesmí odejít na cizí stránku ani otevřít
+    nové okno, média na neznámém síťovém serveru (UNC) se připojí až po potvrzení (žádný únik hashe NTLM při otevření),
+    proxy jen z vlastní mezipaměti, web má vlastní CSP, servery kontrolují Host/Origin, token mostu v konstantním čase.
+    S13 ověřilo: všechny PoC zavřené, CSP nic potřebného neblokuje (MediaPipe přes `mp-loader.mjs`).
+  - **Formáty**: nečtvercové pixely (HDV, anamorf), 2× mono → stereo, obrázky PNG/JPG jako 5s klip, prokládané 1080i
+    (bwdif), VFR z mobilu, zvuk na střihu na vzorek přesně (MP3/AAC), zvuk po normalizaci dorovnán do konce.
+  - **Zátěž / pád**: export ze zmrazeného snímku sekvence do dočasného `.pzpart`, druhý export do stejného souboru odmítnut,
+    přepnutí jazyka během exportu odloženo; neúspěšné uložení srozumitelně, obnova po pádu i bez původního projektu,
+    poškozená záloha odložena stranou, jedna instance aplikace, pád okna nabídne Znovu načíst.
+  - **AI tok S12**: upoutávky bez osamělé odpovědi, poděkování/organizace pořadu, vytrženého „To je…“; délky 15–27 s
+    na cíle 15/20/30, verdikt „lze pustit“.
+- **Kolo S14 (běží)**: Nováček z GitHubu, Přístupnost a klávesnice, Webová verze, Regrese 40+ dřívějších oprav.
 
 ## Otevřené
 - Upoutávky (Hermes): moderátorka někdy až 48 % délky, odpověď bez své otázky, zdůvodnění plánu nesedí na vybrané věty,
@@ -73,3 +87,6 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
 - `buildSequence` (API mostu) neumí položit klip přes jiný (překryv na V2) – rozšíření, MCP to pro Premiere taky nemá.
 - Q/W (ripple trim k hlavě) vyjme úsek ze všech stop – b-roll přes místo střihu se rozstřihne se skokem (chování z dřívějška).
 - MXF pro Novu: 2 mono stopy, TC 00:00:00:00, bez 1080i25 – potřeba technická specifikace TV.
+- Bezpečnost – přijaté riziko: konektor webu (7895) bez párovacího tokenu (hrozba jen od lokálního procesu), prompt
+  injection z přepisu do AI, web bez SRI u CDN skriptů. Web zatím není nasazený.
+- AI panel: popisek „Fronta 0“ a stísněný seznam na 1366×768; panel po zablokované navigaci zůstane na chybové stránce.
