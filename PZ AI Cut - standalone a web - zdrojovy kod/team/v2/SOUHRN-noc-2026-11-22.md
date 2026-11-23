@@ -30,14 +30,21 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
 - **S6/S7**: Shift+Delete bezpečně (mezera se zavře jen když je prázdná na všech stopách, jinak hláška a rada Extract),
   b-roll na V2 se po vložení sám očistí od cizího záběru, výřez podle obličeje i ve standalone při vkládání do 9:16,
   náhledy klipů na časové ose ze začátku klipu, znovupřipojené médium se hned přehraje.
+- **Po 3:00 (bez agentů, ověřeno na Bárou 28 min, rozhovoru a debatě přes MCP → standalone)**:
+  - Upoutávka přes `plan_edit_local` + `build`: hranice kandidátů se ověří zvukem už při výběru (stejná poloha střihu
+    jako server). Dřív výběr našel pauzu až za dalším slovem („životopis.|Ale …“), stavba ji nezasáhla a opakování
+    plánu vyřadilo nejlepší údery – 20 s upoutávka měla 6,5 s s vadným koncem. Teď 4 zdroje/délky: 23 / 24 / 16 / 11 s,
+    **všech 26 hranic čistých** (`check-cuts`). Navíc: úder „…a proto…“ ze 2. minuty už nestojí za krizí z 21. minuty,
+    poděkování za pozvání není úder, délka se doplní i před první úder.
+  - Úlomek „…k“ na začátku úseku (#22 po „a tak.“) opravený: začátek jde do pauzy před slovem, ne do uzávěru hlásky
+    (121,32 → 121,525 s, −25,6 dB).
+  - Jednořádkové titulky 9:16: rozdělení věty počítá skutečnou dobu zobrazení (nejkratší 0,12 → 0,22 s; v rychlé řeči
+    zůstává ~9 % titulků pod 0,7 s – na řádek se vejdou 2–3 slova, u titulků na sítě běžný rychlý styl).
+  - Široký záběr přetažený do sekvence na výšku dostane výřez podle obličeje; vložení i výřez vrátí jedno Ctrl+Z.
 
 ## Otevřené
-- `plan_edit_local` s `build` (upoutávka 20 s): kontrola slyšitelných hranic po stavbě postupně vyřadí 6 nejlepších úderů
-  (#40, #95, #218, #220, #72), takže z návrhu 17 s (bez build) zbude 6,5 s. Otázka moderátorky bez své odpovědi už nevznikne
-  (dřív #12 + cizí #52). Ladit `edgeWarnings` / výběr kandidátů s Premiere + `scripts/test-highlight.mjs`.
-- Úlomek slova na začátku úseku z MCP (`refine_edges`: ticho 15 ms bere i uzávěr „k“) – ladit s Premiere + test-highlight.
+- Upoutávka/úlomek „k“ – opraveno po 3:00 (výše); v Premiere znovu ověřit `scripts/test-highlight.mjs` (Premiere zavřené).
 - Zopakované snímky na konci sekvence jsou vidět jako drobné cuknutí úst; zbytek 6–12 snímků pod řečí na konci zůstává.
-- Jednořádkové titulky 9:16 v rychlé řeči: 7 ze 46 kratších než 0,7 s (nejkratší 0,46 s).
 - Upoutávka přes MCP: drobná nejednoznačnost zájmen mezi údery (pravidlo pokrývá jen spojky na začátku úderu).
 - Export H.264 bez vypálených titulků: po jednosnímkovém úseku se zbytek posune o půl snímku (20 ms) – spojování
   segmentů TS bez překódování; neopraveno (riziko pro jádro exportu, vzácné).

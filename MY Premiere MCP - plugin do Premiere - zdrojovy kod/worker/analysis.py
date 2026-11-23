@@ -1004,6 +1004,18 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
     return out
 
 
+def _clean_reason(t):
+    """Úvaha modelu pro uživatele: schéma ji utne na maxLength uprostřed slova a model tam občas sklouzne do azbuky
+    („…otázka -> vysvětл“, AI tok S8) – slova s azbukou pryč, utnutý konec zkrátit na poslední celou větu."""
+    if not isinstance(t, str):
+        return t
+    t = " ".join(w for w in t.split() if not re.search(r"[\u0400-\u04FF]", w)).strip()
+    if t and not re.search(r"[.!?…)\]]$", t):
+        k = max(t.rfind(". "), t.rfind("! "), t.rfind("? "))
+        t = t[: k + 1] if k > len(t) // 3 else t + "…"
+    return t
+
+
 def _teaser_cut_check(path: str, segs: dict[int, dict], cands: list[dict]) -> list[dict]:
     """Vyřadí kandidáty, jejichž hranice by kontrola po stavbě (server edgeWarnings) označila za střih skrz řeč –
     stejná předpověď jako u skládaného reelu (_edge_check: poloha střihu jako server + doladění podle zvuku).
@@ -1118,7 +1130,7 @@ def _plan_focus(instruction: str, target: float, segs: dict[int, dict], chapters
     return {
         "note": None, "picks": [p for c in chosen for p in _teaser_picks(c)], "estimatedSec": round(total, 1),
         "alternates": [u["id"] for c in top if c not in chosen for u in c["units"]], "dropped": [],
-        "mode": "focus", "passages": len(cands), "reason": r.get("uvaha"),
+        "mode": "focus", "passages": len(cands), "reason": _clean_reason(r.get("uvaha")),
         "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
                    for c in top if c not in chosen][:6],
         "editorial": [], "thesis": None, "keyChapters": core,
@@ -1462,7 +1474,7 @@ def _plan_story(instruction: str, target: float, segs: dict[int, dict], chapters
     return {
         "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total(), 1),
         "alternates": [u["id"] for c in top if c not in order for u in c["units"]], "dropped": [],
-        "mode": "story", "passages": len(raw), "reason": r.get("uvaha"), "stages": stages,
+        "mode": "story", "passages": len(raw), "reason": _clean_reason(r.get("uvaha")), "stages": stages,
         "stageChapters": {e: sorted(k for k, s in stage_of.items() if e in s) for e in range(1, n_st + 1)},
         "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
                    for c in top if c not in order][:6],
@@ -1705,7 +1717,7 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
     return {
         "note": None, "picks": [p for c in order for p in _teaser_picks(c)], "estimatedSec": round(total, 1),
         "alternates": [u["id"] for c in top if c not in order for u in c["units"]], "dropped": [],
-        "mode": "teaser", "passages": len(cands), "reason": r.get("uvaha"), "distorted": distorted,
+        "mode": "teaser", "passages": len(cands), "reason": _clean_reason(r.get("uvaha")), "distorted": distorted,
         # náhradní údery (nejlépe hodnocené mimo upoutávku): server je vloží, když kvůli slyšitelné hranici vyřadí úder
         "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
                    for c in top if c not in order and not _teaser_bad_spare(c, text, _teaser_host(cands, instruction))][:6],
