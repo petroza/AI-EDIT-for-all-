@@ -265,7 +265,7 @@ function createApi(project, hooks = {}) {
         return clip.id;
       });
       const removed = E.removeClips(seq, ids, !!a.ripple);
-      return a.ripple && E.removeClips.blocked ? { removed, gapsLeftOpen: E.removeClips.blocked, note: 'Gap not closed: another clip (B-roll, music) lies across it. Use remove_timeline_ranges to cut the range from all tracks.' } : { removed };
+      return a.ripple && E.removeClips.blocked ? { removed, gapsLeftOpen: E.removeClips.blocked, note: 'Mezera nezavřena: přes ni leží jiný klip (b-roll, hudba). Úsek ze všech stop vyjme remove_timeline_ranges.' } : { removed };
     });
   };
 
