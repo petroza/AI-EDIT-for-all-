@@ -146,6 +146,16 @@ function openCaptionStyle(app, focusTitle) {
     try { localStorage.removeItem('pzCapStyle.' + CL.shapeOf(s.width, s.height)); } catch (e) { /* bez úložiště */ }
   };
   box._commit = () => { if (gesture) commit(); };
+  // po Zpět / Znovu a jiných úpravách mimo okno: načíst stav ze sekvence (přepínač Zobrazit, text, styl) – ne během úpravy
+  box._resync = () => {
+    if (gesture) return;
+    const now = app.seq();
+    if (!now) return;
+    s = now; st = CL.styleOf(s); ti = Object.assign({ text: '', size: 1 }, s.title || {});
+    box.querySelector('.cs-seq').textContent = s.name;
+    base = snap();
+    show();
+  };
   box.querySelector('.cs-x').onclick = close;
   // přesun za hlavičku
   const head = box.querySelector('.cs-head');
@@ -164,7 +174,7 @@ function openCaptionStyle(app, focusTitle) {
 }
 let boxApp = null, tabApp = null;
 /** Záložka Text v obraze podle stavu (volá renderer při změně sekvence). */
-function syncTab(app) { tabApp = app; showTab(!!box && document.getElementById('sourcePanel') && document.getElementById('sourcePanel').classList.contains('show-txt')); }
+function syncTab(app) { tabApp = app; if (box && box._resync) { try { box._resync(); } catch (e) { /* bez sekvence */ } } showTab(!!box && document.getElementById('sourcePanel') && document.getElementById('sourcePanel').classList.contains('show-txt')); }
 /** Záložky v rámu Zdroje: Zdroj | Text v obraze ×. active = true → ukázat Text v obraze. */
 function showTab(active) {
   const sp = document.getElementById('sourcePanel'), tab = document.getElementById('tabTxt'), src = document.getElementById('tabSrc');
