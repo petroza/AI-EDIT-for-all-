@@ -1,0 +1,28 @@
+
+=== transcribe_media (1.5 s)
+Přepis: C:/Users/Petr/AppData/Local/Temp/pz-s4-redaktor-media/rozhovor.mp4
+Délka 00:28:06.98 · jazyk cs · 316 vět · 5054 slov · large-v3/cuda · z cache
+Soubor: O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\cache\transcripts\rozhovor.mp4.2e571026bc57.json
+#1 00:00:06.29–00:00:09.33 Přeji vám krásný den a jsem velmi ráda, že sledujete pořád Talk.
+#2 00:00:09.67–00:00:14.77 Pozvání dnes totiž přijala má kolegyně, kterou nejen diváci televizenova velmi dobře znají.
+#3 00:00:14.79–00:00:16.71 Je velmi šikovná, je velmi krásná.
+#4 00:00:16.75–00:00:20.37 Velmi často ji v poslední době vidíte vlastně tady ve studiu TN Live.
+#5 00:00:21.37–00:00:23.51 se dívává na tom místě, kde jsem teď já.
+#6 00:00:23.57–00:00:24.83 Je to Bára Šimkova. Ahoj, Bára.
+#7 00:00:25.17–00:00:28.69 Krásný den, Kristýnku, tak moc děkuji za tenhle krásný úvod.
+#8 00:00:28.91–00:00:31.63 No já se těším, co všechno se dneska diváci doví.
+#9 00:00:31.73–00:00:36.77 Vlastně musím říct, že je to zajímavý výst vlastně rozhovor s kolegyní, protože člověk začne být jako nervózní, to si říš profík.
+#10 00:00:36.95–00:00:46.39 No ale já právě jsem sem jela a říkala jsem si, že je to pro mě hrozně jako neobvyklý a nezvyklý a že vlastně mám trošku jako trému vlastně, že nejsem zvyklá být na tomhle míst
+#11 00:00:50.70–00:01:03.28 Já jsem vůbec netušila, my jsme spolu měli talk před pár týdny, že ty jsi vysturovaná herečka, protože na televizi Nová tě prostě známe už přes deset let, k tomu se dostaneme, ale že máš ze sebou tří díly Babov Řesek, máš ze sebou seriál Cyril a metoděj fotograf.
+#12 00:01:03.82–00:01:07.66 Vůbec nevím, kde se vzala tato herecká tvoje dráha a kudy šla?
+#13 00:01:07.80–00:01:09.96 Tak ta moje herecká dráha se vlastně...
+#14 00:01:10.17–00:01:12.91 vzala úplně jako od dětství, podle mě třeba od 6 let.
+#15 00:01:13.01–00:01:27.35 Já jsem chodila do dramatického kroužku v Národním divadle a tam se to vlastně jako všechno nějak stvořilo a já jsem si vlastně myslela hodně, hodně dlouhou dobu, že moje jako jediná cesta bude herectví a že se to určitě nezmění.
+#16 00:01:27.49–00:01:33.83 Takže vlastně veškeré moje kroky po celou základku pak vlastně jako směřovaly k tomu, abych se dostala na konzervatoř.
+#17 00:01:34.05–00:01:37.07 Takže ty jsi šla od malička za svým snem a víš, kde se to jako zlomilo?
+#18 00:01:37.21–00:01:38.87 Jo, vím přesně, kde se to zlomilo.
+#19 00:01:38.97–00:01:48.65 Vlastně já jsem se dostala na konzervatoř, absolvovala jsem normálně čtyři roky maturitu, pak jsem se hlásila i na damu, protože jsem vlastně nevěděla, co jinýho.
+#20 00:01:49.12–00:01:52.46 Ale už jsem měla takový pocit, že to nebude moje cesta.
+#21 00:01:52.58–00:01:58.10 Že vlastně mě asi tolik nebaví dělat něco, co mi někdo řekne.
+… (zkráceno, zbývá 295 řádků – použij fromId/from)
+Další čtení: get_outline (osnova kapitol), search_transcript (hledání), get_transcript fromId/toId format "compact".

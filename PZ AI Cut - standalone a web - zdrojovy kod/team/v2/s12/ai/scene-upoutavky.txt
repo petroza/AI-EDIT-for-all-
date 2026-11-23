@@ -1,0 +1,14 @@
+== ai-s12-upoutavka-15-169
+pts_time:4.2 pts_time:8.88 
+== ai-s12-upoutavka-20-169
+pts_time:6.36 pts_time:11.04 pts_time:14.48 pts_time:20 
+== ai-s12-upoutavka-30-169
+pts_time:5.36 pts_time:7 pts_time:8.16 pts_time:13.32 pts_time:15.32 
+== ai-s12-panel-upoutavka-916
+pts_time:1.84 pts_time:6.52 pts_time:9.96 
+== ai-s12-panel-upoutavka-169
+pts_time:1.84 pts_time:6.52 
+== ai-s12-rozhovor-upoutavka-20-169
+pts_time:5.36 pts_time:7.2 pts_time:9.04 pts_time:12.8 
+== ai-s12-rozhovor-vyrok-30-169
+pts_time:26.52 pts_time:32.24 

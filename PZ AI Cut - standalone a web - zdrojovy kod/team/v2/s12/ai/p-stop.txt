@@ -1,0 +1,3 @@
+{"stopDis":false,"afterStop":"⚙ přepis (z cache, pokud už existuje) / ⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty) / ■ zastaveno","after30":"⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty) / ■ zastaveno","newSeqs":[],"stopNow":true}
+"running":[],"queued":0
+"jobs":[{"id":"f9665ff7b6db","type":"plan_edit","status":"done","progress":1,"message":"hotovo","error":null}

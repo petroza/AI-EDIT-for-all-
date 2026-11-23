@@ -1,0 +1,30 @@
+
+=== build_sequence_from_transcript (2.5 s)
+{"sequenceID":"bedc09ea-fa24-49af-b5d5-4df4082a43fb","name":"AI-S12 holdIn test","duration":12,"segments":1,"warnings":[],"audioFades":0,"edgeShotsFixed":1,"summary":"Vytvořena sekvence „AI-S12 holdIn test“ (00:00:12.00) z 1 úseků.","ranges":["00:18:08.93–00:18:20.91 věty 188,189,190"]}
+
+=== reframe_sequence (1.1 s)
+{"sequenceID":"1923eb5f-0b7c-4214-8f04-4c32d6248f24","name":"AI-S12 holdIn test 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":0,"shots":1,"facesFound":1,"summary":"Vytvořena sekvence „AI-S12 holdIn test 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %)."}
+AI-S12 holdIn test 1280x720
+v1:
+  0.00 12.00 1088.92 1100.92 wc1p 0.000  {"d":0.12,"in":1088.92}
+a1:
+  0.00 12.00 1088.92 1100.92 wc1p 0.000  
+caps: 0
+AI-S12 holdIn test 9x16 1080x1920
+v1:
+  0.00 12.00 1088.92 1100.92 wc1p 0.239  {"d":0.12,"in":1088.92}
+a1:
+  0.00 12.00 1088.92 1100.92 wc1p 0.000  
+caps: 0
+
+=== export_sequence (0.9 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s12-holdin-169.mp4","format":"h264","sizeMB":3.11,"duration":12,"captionsBurned":false,"srt":false,"loudness":"off"}
+
+=== export_sequence (2.0 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s12-holdin-916.mp4","format":"h264","sizeMB":9.096,"duration":12,"captionsBurned":false,"srt":false,"loudness":"social"}
+== ai-s12-holdin-169
+
+
+== ai-s12-holdin-916
+
+

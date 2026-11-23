@@ -1,0 +1,2 @@
+t=1282.28: mì[1280.58-1281.14 p0.73] mìla[1281.14-1281.32 p0.80] tahleta[1281.32-1281.70 p0.75] pozice.[1281.70-1282.14 p0.99]
+   RMS 20ms od 1282.08: [np.float32(-48.3), np.float32(-46.4), np.float32(-43.8), np.float32(-43.4), np.float32(-54.5), np.float32(-41.6), np.float32(-62.4), np.float32(-62.2), np.float32(-63.3), np.float32(-65.1), np.float32(-64.6), np.float32(-66.7), np.float32(-61.3), np.float32(-59.8), np.float32(-61.1), np.float32(-64.1), np.float32(-67.0), np.float32(-64.2), np.float32(-64.7), np.float32(-67.8)]

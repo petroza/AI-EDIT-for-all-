@@ -1,0 +1,4 @@
+#!/bin/bash
+# seq.sh "<nazev>" -> kompaktni vypis klipu (start end in out link posX hold)
+cd "/o/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod"
+CDP_PORT=9374 node test/cdp.js eval "(()=>{const s=TN.app.project.sequences.find(s=>s.name===$(node -e 'console.log(JSON.stringify(process.argv[1]))' "$1")); if(!s) return 'nenalezeno'; const f=(c)=>[c.start.toFixed(2),(c.start+c.out-c.in).toFixed(2),c.in.toFixed(2),c.out.toFixed(2),(c.linkId||'').slice(-4),(+c.posX||0).toFixed(3),c.hold?JSON.stringify(c.hold):'',c.holdIn?JSON.stringify(c.holdIn):''].join(' '); const out=[s.name+' '+s.width+'x'+s.height]; for(const k of ['video','audio']) s.tracks[k].forEach((t,i)=>{ if(t.clips.length) out.push(k[0]+(i+1)+':\n  '+t.clips.map(f).join('\n  ')); }); out.push('caps: '+(s.captions? (Array.isArray(s.captions)? s.captions.length : JSON.stringify(s.captions).slice(0,80)):0)); return out.join('\n');})()"

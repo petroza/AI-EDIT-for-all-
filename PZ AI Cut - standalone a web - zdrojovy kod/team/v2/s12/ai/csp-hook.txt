@@ -1,0 +1,2 @@
+{"cspFrame":[],"cspHook":1,"cspMain":[]}
+{"pred":0,"po":1,"posledni":{"d":"script-src-elem","u":"inline","s":"","l":1,"sample":""},"inlineSpustil":false}

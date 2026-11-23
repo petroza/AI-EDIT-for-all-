@@ -1,0 +1,56 @@
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S12 holdIn test 9x16": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí pasáže 1–10 z 16
+   61 % LLM hodnotí pasáže 11–16 z 16
+   85 % LLM vybírá nejlepší pasáž
+✔ vybráno 5 vět, odhad 30 s
+✔ hotovo: sekvence „STRIH HERMES 30s 13:03:14" (Vytvořena sekvence „STRIH HERMES 30s 13:03:14“ (00:00:30.88) z 1 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 9 s
+ℹ souvislá pasáž (16 kandidátů) – P5 je nejvhodnější, protože začíná jasným faktem, který sám o sobě funguje, a končí silnou pointou o rychlosti a bezmocnosti ztráty, což je univerzálně srozumitelné a emocionálně silné. Ostatní pasáže vyžadují kontext (P1, P3, P4) nebo jsou příliš specifické (P2).
+Jak dopadl střih „STRIH HERMES 30s 13:03:14“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 30s 13:03:14“
+✔ STRIH HERMES 30s 13:03:14 9x16 (1080×1920, střihy kamery: 4)
+› Titulky do aktivní sekvence
+   0 % ve frontě
+✔ Titulky přidány do „STRIH HERMES 30s 13:03:14 9x16“ – 16 titulků
+   „Odumírají červený krvinky“
+   „a množí se bílý krvinky“
+   „a vlastně ti jako praskají kosti“
+➕ do fronty: Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napět [Hermes, 20 s]
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S12 R vyrok 30": rozhovor.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+➕ do fronty: Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátor [Hermes, 30 s]
+   30 % LLM hodnotí údery 1–15 z 44
+   45 % LLM hodnotí údery 16–30 z 44
+   61 % LLM hodnotí údery 31–44 z 44
+   80 % LLM skládá upoutávku
+✔ vybráno 5 vět, odhad 19 s
+✔ hotovo: sekvence „STRIH HERMES 20s 13:10:20" (Vytvořena sekvence „STRIH HERMES 20s 13:10:20“ (00:00:19.84) z 3 úseků.)
+ℹ plán 20 s
+🎞 ⚠ 00:19:59.50: střih obrazu 0.78 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ upoutávka z úderů (44 kandidátů) – Údery po kontrole: „Vlastně jsem si pak uvědomila, že bych radši si ty příběhy p…“ → „My jsme vlastně vůbec neměli možnost se na to připravit.“ → „To nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma …“ (původní úvaha modelu: Cílem je vytvořit dynamický příběh o odvaze a nečekaném zvratu. Začínáme silným emocionálním hákem U1 (odvaha/štěstí), který zaujme. Následuje U3, který vysvětluje motivaci a přechod na Novu (logický sled: odvaha -> rozhodnutí psát příběhy -> práce na Nově). Jako závěr používáme U7, který klade otevřenou, napětí budící otázku o změnách, aniž by prozradil výsledek, a zároveň odpovídá na zadání 'napětí na konec'. Délka: 5+7+5 = 17s, což je blízko 20s. U2 a U4 jsou vynechány, protože U3 již pokrývá přechod na Novu a U2 je redundantní s U1.)
+ℹ vyřazeno – vytržené by zkreslilo význam: „Často rozhodně nezahojí.“, „Jí už je teď dobře.“, „To nepotřebujeme slyšet.“, „Za tři týdny. Takže to přišlo úplně, jak my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč.“, „Když přijde rodina o člověka jako je máma?“
+Jak dopadl střih „STRIH HERMES 20s 13:10:20“? 👍👎▶ Otevřít⬇ Export MP4
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S12 R vyrok 30": rozhovor.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí pasáže 1–10 z 49
+   50 % LLM hodnotí pasáže 21–30 z 49
+   71 % LLM hodnotí pasáže 41–49 z 49
+✔ vybráno 3 vět, odhad 33 s
+✔ hotovo: sekvence „STRIH HERMES 30s 13:10:49" (Vytvořena sekvence „STRIH HERMES 30s 13:10:49“ (00:00:33.28) z 1 úseků.)
+ℹ plán 33 s
+🎞 ⚠ 00:21:48.23: střih obrazu 1.04 s před koncem klipu, uvnitř řeči – obraz jen bleskne
+ℹ souvislá pasáž (49 kandidátů) – P1 a P4 jsou spíše vyprávěním faktů o kariérním startu, což je méně univerzálně poutavé než emoce. P2 a P3 řeší téma bolesti a podpory, ale P3 začíná neúplnou větou 'Často rozhodně nezahojí', která bez kontextu působí matoucně. P5 je nejsilnější, protože začíná jasným tvrzením o životní krizi, obsahuje silnou metaforu ('bombu', 'spadnout na dno') a končí pointou o trvalé změně osobnosti, což je samostatně srozumitelný a emocionálně nabité výrok.
+Jak dopadl střih „STRIH HERMES 30s 13:10:49“? 👍👎▶ Otevřít⬇ Export MP4

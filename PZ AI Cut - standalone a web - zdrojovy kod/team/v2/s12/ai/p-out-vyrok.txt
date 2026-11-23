@@ -1,0 +1,16 @@
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S12 holdIn test 9x16": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí pasáže 1–10 z 16
+   61 % LLM hodnotí pasáže 11–16 z 16
+   85 % LLM vybírá nejlepší pasáž
+✔ vybráno 5 vět, odhad 30 s
+✔ hotovo: sekvence „STRIH HERMES 30s 13:03:14" (Vytvořena sekvence „STRIH HERMES 30s 13:03:14“ (00:00:30.88) z 1 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 9 s
+ℹ souvislá pasáž (16 kandidátů) – P5 je nejvhodnější, protože začíná jasným faktem, který sám o sobě funguje, a končí silnou pointou o rychlosti a bezmocnosti ztráty, což je univerzálně srozumitelné a emocionálně silné. Ostatní pasáže vyžadují kontext (P1, P3, P4) nebo jsou příliš specifické (P2).
+Jak dopadl střih „STRIH HERMES 30s 13:03:14“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 30s 13:03:14“
+✔ STRIH HERMES 30s 13:03:14 9x16 (1080×1920, střihy kamery: 4)

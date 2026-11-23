@@ -1,0 +1,17 @@
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S12 upoutavka 30": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 24
+   58 % LLM hodnotí údery 16–24 z 24
+   80 % LLM skládá upoutávku
+✔ vybráno 3 vět, odhad 16 s
+✔ hotovo: sekvence „STRIH HERMES 20s 13:00:36" (Vytvořena sekvence „STRIH HERMES 20s 13:00:36“ (00:00:17.28) z 2 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 11 s
+ℹ upoutávka z úderů (24 kandidátů) – Údery po kontrole: „Za tři týdny. Takže to přišlo úplně, jak my jsme se rozvěděl…“ → „My jsme vlastně vůbec neměli možnost se na to připravit.“ → „Já jsem se rozcházela s přítelem tehdy po pěti letech, do to…“ (původní úvaha modelu: Cílem je vytvořit silný emocionální oblouk o rychlém a nečekaném úmrtí matky. Začínáme hákem U4, který okamžitě šokuje časovým údajem 'za tři týdny' a smrtí. Následuje U5, který vysvětluje důsledek této rychlosti – nemožnost se připravit. Jako závěr používáme U6 'A najednou byl pryč', který vztahujeme k matce (zmíněné v U4/U5) a vytváří emotivní tečku bez rozuzlení. U3 (nečekanost) je přeskočeno, aby se zachovala lineární časová osa událostí (diagnóza -> rychlý průběh -> smrt) a předešlo se logickým skokům.)
+ℹ vyřazeno – vytržené by zkreslilo význam: „Přijde a totálně jako pohltí. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci.“, „To nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.“
+Jak dopadl střih „STRIH HERMES 20s 13:00:36“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 20s 13:00:36“
+✔ STRIH HERMES 20s 13:00:36 9x16 (1080×1920, střihy kamery: 2)
