@@ -95,6 +95,21 @@ def sync(params: dict, ctx) -> dict:
 
 
 _PAUSE_CACHE: dict = {}
+_AUDIO_CACHE: dict = {}
+
+
+def _decoded(path: str):
+    """Dekódovaný zvuk (16 kHz) – poslední soubor v paměti: plan_edit_local volá refine_edges + edge_levels pro tentýž
+    zdroj opakovaně (až 3 pokusy + náhradníci) a výběr úderů upoutávky měří hranice kandidátů (noc 2026-11-23)."""
+    from faster_whisper import decode_audio
+
+    key = (os.path.abspath(path), os.path.getmtime(path))
+    a = _AUDIO_CACHE.get(key)
+    if a is None:
+        a = decode_audio(path, sampling_rate=SR)
+        _AUDIO_CACHE.clear()
+        _AUDIO_CACHE[key] = a
+    return a
 
 
 def boundary_pauses(path: str, pairs: list[tuple[float, float]], before: float = 0.15, after: float = 0.30,
@@ -142,12 +157,11 @@ def edge_levels(params: dict, ctx) -> dict:
     rel kolem -25 dB a níž = ticho/nádech, nad -12 dB = střih skrz zvuk (useknuté slovo). Stejné měření jako
     scripts/check-cuts.mjs, aby stavba sama hlásila podezřelé hranice."""
     import numpy as np
-    from faster_whisper import decode_audio
 
     path = params["path"]
     if not os.path.exists(path) or not _has_audio(path):
         return {"edges": []}
-    audio = decode_audio(path, sampling_rate=SR)
+    audio = _decoded(path)
 
     def rms(a: float, b: float) -> float:
         seg = audio[max(0, int(a * SR)): max(0, int(b * SR))]
@@ -173,7 +187,6 @@ def refine_edges(params: dict, ctx) -> dict:
     bod najde v okolí buď konec řeči (hledá dopředu od 'at', kde energie klesne pod práh ticha), nebo
     začátek (hledá zpátky). Nikdy neposune přes 'maxExtend' a nikdy 'proti' směru hledání (jen prodlužuje)."""
     import numpy as np
-    from faster_whisper import decode_audio
 
     path = params["path"]
     points = params["points"]  # [{at, direction: "end"|"start", maxExtend}]
@@ -182,7 +195,7 @@ def refine_edges(params: dict, ctx) -> dict:
     if not _has_audio(path):
         raise ValueError(f"Soubor nemá zvukovou stopu: {path}")
 
-    audio = decode_audio(path, sampling_rate=SR)
+    audio = _decoded(path)
     total = len(audio) / SR
     frame_s = HOP / SR
     min_run = 3  # ticho = aspoň 3 rámce po 5 ms pod prahem (krátký pokles uvnitř slova ticho není)
@@ -235,3 +248,21 @@ def refine_edges(params: dict, ctx) -> dict:
         refined = min(max(refined, at), at + max_extend) if direction == "end" else max(min(refined, at), at - max_extend)
         out.append({"at": at, "time": round(refined, 3), "clean": clean})
     return {"points": out}
+
+
+def cut_levels(path: str, cuts: list[dict]) -> list[tuple[float, float, float, float]] | None:
+    """Předpověď hranic tak, jak je postaví server (plan_edit_local → picksToRanges + refineOutPoints + edgeWarnings):
+    cuts = [{in, inMax, inFb, out, outMax}] → [(rel dB začátku, rel dB konce, čas začátku, čas konce)] po doladění. Výběr úderů
+    upoutávky tím vyřadí kandidáty, jejichž hranice by kontrola po stavbě označila (> −12 dB = střih skrz řeč) –
+    dřív je vyřadila až ta a opakovaný plán ze 17 s upoutávky nechal 6,5 s (noc 2026-11-23). None = zvuk nejde přečíst."""
+    try:
+        if not cuts or not os.path.exists(path) or not _has_audio(path):
+            return None
+        pts = [{"at": c["out"], "direction": "end", "maxExtend": c["outMax"]} for c in cuts] +               [{"at": c["in"], "direction": "start", "maxExtend": c["inMax"], "fallbackExtend": c["inFb"]} for c in cuts]
+        ref = refine_edges({"path": path, "points": pts}, None)["points"]
+        n = len(cuts)
+        edges = [{"t": ref[n + k]["time"], "kind": "in"} for k in range(n)] + [{"t": ref[k]["time"], "kind": "out"} for k in range(n)]
+        lv = edge_levels({"path": path, "edges": edges}, None)["edges"]
+        return [(lv[k]["rel"], lv[n + k]["rel"], lv[k]["t"], lv[n + k]["t"]) for k in range(n)]
+    except Exception:  # noqa: BLE001 – bez zvuku rozhodne až kontrola po stavbě
+        return None

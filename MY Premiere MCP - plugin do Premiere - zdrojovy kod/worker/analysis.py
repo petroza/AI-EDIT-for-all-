@@ -998,10 +998,49 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
                 out.append({"units": units[n: m + 1], "dur": round(d, 1),
                             # nejkratší ticho na krajích (ms): krátká pauza = větší riziko slyšitelné hranice
                             "edge_ms": min(edge_ms[n - 1] if n else 500.0, edge_ms[m]),
+                            # sousední slova (i jiného mluvčího) – poloha střihu jako na serveru (_teaser_cut_check)
+                            "prev_e": units[n - 1]["e"] if n else None,
+                            "next_s": units[m + 1]["s"] if m + 1 < len(units) else None,
                             # okolí pro kontrolu vytržení z kontextu
                             "before": " ".join(u["text"] for u in units[max(0, n - 2): n]),
                             "after": " ".join(u["text"] for u in units[m + 1: m + 3])})
     return out
+
+
+def _teaser_cut_check(path: str, cands: list[dict], words: list[dict] | None = None) -> list[dict]:
+    """Vyřadí kandidáty, jejichž hranice by kontrola po stavbě (server edgeWarnings, > −12 dB) označila za střih skrz
+    řeč. Poloha střihu stejně jako na serveru: cutBounds (padBefore 0,08 / padAfter 0,15, 20 ms od sousedního slova)
+    + refineOutPoints. Pauza nalezená až za dalším slovem (boundary_pauses hledá 0,3 s za ním – „životopis.|Ale“,
+    ticho až za „Ale“) se střihem nedá zasáhnout: dřív takové údery prošly, po stavbě je vyřadilo opakování plánu
+    a z upoutávky 20 s zbylo 6,5 s (noc 2026-11-23). Když by zbyly méně než 2 údery, nechá všechny (rozhodne server)."""
+    G = 0.02
+    cuts = []
+    for c in cands:
+        a, b = c["units"][0]["s"], c["units"][-1]["e"]
+        pe, ns = c.get("prev_e"), c.get("next_s")
+        ceil = (ns - G) if ns is not None else float("inf")
+        out = max(b, min(b + 0.15, ceil))
+        lo = a - 0.08 if pe is None else max(a - 0.08, pe + G)
+        t_in = max(0.0, min(lo, a))
+        min_in = 0.0 if pe is None else min(pe + G, a)
+        cuts.append({"in": t_in, "out": out,
+                     "outMax": max(0.0, min(0.4, ceil - out - 0.02)) if ns is not None else 0.4,
+                     "inMax": max(0.0, min(0.3, t_in - min_in + 0.1)), "inFb": max(0.0, min(0.3, t_in - min_in - 0.02))})
+    lv = audiosync.cut_levels(path, cuts)
+    if lv is None:
+        return cands
+    words = words or []
+
+    def bad(rel, t):
+        # stejné pravidlo jako server edgeWarnings: nad −12 dB, nebo nad −20 dB uvnitř slova podle přepisu
+        inside = any(w["s"] < t - 0.01 and w["e"] > t + 0.01 for w in words)
+        return rel > -12 or (inside and rel > -20)
+
+    for c, (ri, ro, ti, to) in zip(cands, lv):
+        c["cut_db"] = (ri, ro)
+        c["cut_bad"] = bad(ri, ti) or bad(ro, to)
+    good = [c for c in cands if not c["cut_bad"]]
+    return good if len(good) >= 2 else cands
 
 
 def _teaser_picks(c: dict) -> list:
@@ -1461,6 +1500,11 @@ def _plan_story(instruction: str, target: float, segs: dict[int, dict], chapters
 
 
 _CONJ_START = re.compile(r"(a|ale|i|aby|a pak|a najednou|a tak|a proto|takže)\b", re.I)
+# příčinná souvislost uvnitř úderu („…a proto jsem se dostala na Novu“) – za pozdějším úderem vyzní jako jeho důsledek
+_CAUSAL = re.compile(r"\b(proto|takže|díky tomu|kvůli tomu|tím pádem|a tak)\b", re.I)
+# zdvořilosti na začátku a konci rozhovoru – v upoutávce nejsou úder (noc 2026-11-23: 30s upoutávka končila
+# „Děkuji moc za pozvání, Kristýnko.“)
+_SMALLTALK = re.compile(r"\b(děkuj\w*|díky za|ahoj|dobrý den|dobrý večer|na shledanou|vítej\w*|vítám\w*|mějte se|krásný zbytek|za pozvání)\b", re.I)
 
 
 def _teaser_host(cands: list, instruction: str):
@@ -1527,6 +1571,15 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
         fixed.append(c)
     if fixed != order:
         order = sorted(fixed, key=st0)
+    # 4) úder s příčinnou spojkou, který v rozhovoru zazněl DŘÍV než úder před ním (noc 2026-11-23: krize z 21. minuty →
+    #    „…a proto jsem se dostala na Novu“ ze 2. minuty – Hermes pravidlo v zadání ignoroval): vypadne, při dvou úderech
+    #    se pořadí srovná podle času (délku pak doplní údery hosta na chronologická místa)
+    for i in range(len(order) - 1, 0, -1):
+        if i < len(order) and st0(order[i]) < st0(order[i - 1]) and _CAUSAL.search(text(order[i])):
+            if len(order) > 2:
+                order.pop(i)
+            else:
+                order = sorted(order, key=st0)
     if host is not None:
         for c in [c for c in order if c["units"][0].get("spk") == host][1:]:
             if len(order) > 2:
@@ -1540,6 +1593,8 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
         slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
         if slot is None and order and st0(c) > st0(order[-1]):
             slot = len(order)  # za poslední úder, když zazněl později (AI tok S4: upoutávka jen 10,7 s z 20)
+        if slot is None and order and st0(c) < st0(order[0]):
+            slot = 0  # před první úder (noc 2026-11-23: náhradníci zazněli dřív než otázka – 30s upoutávka měla 9 s)
         if slot is not None:
             order.insert(slot, c)
     return order
@@ -1552,6 +1607,10 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
     cands = _teaser_candidates(path, segs, exclude, avoid)
     if len(cands) < 2:
         return None
+    cands = [c for c in cands if not _SMALLTALK.search(" ".join(u["text"] for u in c["units"]))] or cands
+    n_all = len(cands)
+    cands = _teaser_cut_check(path, cands, [w for i in sorted(segs) for w in (segs[i].get("words") or [])])
+    ctx.progress(0.28, f"Hranice úderů ověřené podle zvuku: {len(cands)} z {n_all} kandidátů lze čistě střihnout")
     text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
     key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731
     gpu.STAT_PHASE = "teaser"
