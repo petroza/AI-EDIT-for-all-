@@ -1,0 +1,95 @@
+{
+ "cele": {
+  "ok": true,
+  "ms": 3814,
+  "dur": 60,
+  "mb": 2.304
+ },
+ "od5": {
+  "ok": true,
+  "ms": 1050,
+  "dur": 10,
+  "mb": 0.381
+ },
+ "od0x2": {
+  "ok": true,
+  "ms": 1433,
+  "dur": 20,
+  "mb": 0.776
+ },
+ "jedenSnimek": {
+  "clips": [
+   [
+    0,
+    0.04
+   ]
+  ],
+  "exp": {
+   "ok": true,
+   "ms": 241,
+   "dur": 0.04,
+   "mb": 0.003
+  }
+ },
+ "kratky": "bez chyby",
+ "posledniSnimek": {
+  "ok": false,
+  "err": "The sequence is empty – nothing to export."
+ },
+ "orezZaKonec": {
+  "out": 60,
+  "aOut": 60
+ },
+ "orezPredZacatek": {
+  "in": 50,
+  "start": 0
+ },
+ "jenZvuk": {
+  "clips": 1,
+  "exp": {
+   "ok": true,
+   "ms": 1783,
+   "dur": 30,
+   "mb": 0.942
+  }
+ },
+ "jenObraz": {
+  "ok": true,
+  "ms": 1124,
+  "dur": 20,
+  "mb": 0.701
+ },
+ "prazdna": {
+  "ok": false,
+  "err": "The sequence is empty – nothing to export."
+ },
+ "mezera": {
+  "ok": true,
+  "ms": 790,
+  "dur": 12,
+  "mb": 0.112
+ },
+ "jenTitulky": {
+  "seqDur": 3,
+  "exp": {
+   "ok": false,
+   "err": "The sequence is empty – nothing to export."
+  }
+ },
+ "inoutMimo": {
+  "ok": false,
+  "err": "The sequence is empty – nothing to export."
+ },
+ "inoutCast": {
+  "ok": true,
+  "ms": 633,
+  "dur": 5,
+  "mb": 0.192
+ },
+ "jenIn": {
+  "ok": true,
+  "ms": 846,
+  "dur": 10,
+  "mb": 0.387
+ }
+}

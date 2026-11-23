@@ -127,7 +127,7 @@ const app = {
       } catch (e) {
         // srozumitelně místo surové chyby ffprobe („moov atom not found“) a všechny vadné soubory v jedné zprávě (vzhled S3)
         const raw = String(e && e.message || e);
-        const why = /exited with code|moov atom|Invalid data|could not find codec|no such file/i.test(raw) ? 'damaged or unsupported file' : raw;
+        const why = /^File not found/i.test(raw) ? 'file not found' : /exited with code|moov atom|Invalid data|could not find codec|no such file/i.test(raw) ? 'damaged or unsupported file' : raw;
         bad.push(`${U.baseName(p)} (${why})`); out.push({ error: raw });
       }
     }
@@ -1662,7 +1662,15 @@ function setLanguage(l, initial) {
   if (app.program && app.program.ui) app.program.ui(); // úvodní obrazovka v monitoru je v jazyce rozhraní
   if (changed && !initial) { app.status(''); reloadAiPanel(); app.projectPanel.render(); app.timeline.render(); app.updatePlayButtons && app.updatePlayButtons(); if (app.transcript && app.transcript.relang) app.transcript.relang(); if (app.captionList && app.captionList.visible) app.captionList.render(); require('./ui/captionstyle').relangCaptionStyle(app); repaintAiRail(); }
 }
-commands.setLang = (l) => setLanguage(l);
+commands.setLang = (l) => {
+  if (exporter.exportSequence.active && exporter.exportSequence.active() > 0) {
+    app.toast('Language changes after the export finishes.');
+    clearInterval(app._langWait);
+    app._langWait = setInterval(() => { if (exporter.exportSequence.active() === 0) { clearInterval(app._langWait); setLanguage(l); } }, 500);
+    return;
+  }
+  setLanguage(l);
+};
 // ovládání AI panelu (layout.js) se překládá jen v češtině – v angličtině běží uvnitř panelu jeho vlastní překlad
 $('aiFrame').addEventListener('load', () => {
   try {

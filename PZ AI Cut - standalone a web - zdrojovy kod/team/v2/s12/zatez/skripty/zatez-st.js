@@ -1,0 +1,1 @@
+new Date().toTimeString().slice(0,8)+' msg='+(document.getElementById('exMsg')||{}).textContent+' busy='+(document.getElementById('modal').dataset.busy||'-')+' show='+document.getElementById('modal').classList.contains('show')+' ffmpeg='+process._getActiveHandles().filter(h=>h&&h.constructor&&h.constructor.name==='ChildProcess').length+' '+(window.__KRES||'')

@@ -1,0 +1,11 @@
+{
+ "ok": true,
+ "ms": 53941,
+ "r": {
+  "output": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/zatez-s12-z300.mp4",
+  "format": "h264",
+  "sizeMB": 158.156,
+  "duration": 270
+ },
+ "peakRssMB": 752
+}

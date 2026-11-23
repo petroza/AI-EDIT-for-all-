@@ -1,0 +1,27 @@
+{
+ "edits": 200,
+ "tries": 389,
+ "history": 200,
+ "labels": {
+  "Add Edit to All Tracks": 15,
+  "Insert": 65,
+  "Gain": 20,
+  "Add Marker": 65,
+  "Ripple Delete": 20,
+  "Move": 15
+ },
+ "S0": {
+  "v": 1,
+  "a": 1,
+  "markers": 0,
+  "caps": 2,
+  "dur": 60
+ },
+ "S1": {
+  "v": 73,
+  "a": 73,
+  "markers": 62,
+  "caps": 1,
+  "dur": 26.64
+ }
+}

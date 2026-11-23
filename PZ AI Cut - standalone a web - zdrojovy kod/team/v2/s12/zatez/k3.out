@@ -1,0 +1,31 @@
+{
+ "out": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/zatez-s12-k3-undo-behem-exportu.mp4",
+ "durBefore": 270,
+ "durNow": 270,
+ "exportSeqObjStillInProject": false,
+ "log": [
+  {
+   "at": 4153,
+   "cmd": "undo",
+   "msg": "7 % video",
+   "durBefore": 270,
+   "durAfter": 3600,
+   "active": "Z1H",
+   "modalH2": "Export – Z300"
+  },
+  {
+   "at": 6478,
+   "cmd": "undo",
+   "msg": "10 % video",
+   "durBefore": 3600,
+   "durAfter": 270,
+   "active": "Z300",
+   "modalH2": "Export – Z300"
+  }
+ ],
+ "msg": "✔ Hotovo za 46 s · 158 MB · zobrazit v Průzkumníku",
+ "ms": 46400,
+ "exNo": "Zavřít",
+ "modalShown": true,
+ "lang": "cs"
+}

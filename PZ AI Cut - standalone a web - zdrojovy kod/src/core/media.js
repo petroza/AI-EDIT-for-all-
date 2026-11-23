@@ -107,6 +107,7 @@ async function probe(p) {
 const PLAY_EXT = /\.(mp4|m4v|mov|webm|mp3|wav|m4a|aac|ogg|oga|flac)$/i;
 function isPlayable(info) {
   if (!PLAY_EXT.test(info.path)) return false;
+  if (info.path.length >= 250) return false; // dlouhá cesta: přehrávač ji nenačte, náhled přes proxy (zátěž S12)
   if (info.still || info.interlaced || (info.audioStreams >= 2 && info.audioChannels === 1)) return false; // náhled přes proxy
   if (info.hasVideo) {
     if (!['h264', 'vp8', 'vp9', 'av1'].includes(info.vcodec)) return false;

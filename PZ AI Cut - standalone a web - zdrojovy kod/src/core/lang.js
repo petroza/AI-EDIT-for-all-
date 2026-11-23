@@ -157,6 +157,10 @@ const CS = {
 
 // dynamické texty: [vzor, náhrada | funkce]
 const RULES = [
+  [/^This file is already being exported – wait until it finishes or choose another name\.$/, 'Do tohoto souboru se už exportuje – počkej na dokončení nebo zvol jiný název.'],
+  [/^There is nothing to export between In and Out\.$/, 'Mezi In a Out není nic k exportu.'],
+  [/^A file is open in another program or not accessible – close it and export again\.$/, 'Soubor je otevřený v jiném programu nebo k němu není přístup – zavři ho a exportuj znovu.'],
+  [/^Language changes after the export finishes\.$/, 'Jazyk se přepne po dokončení exportu.'],
   [/^The output would overwrite the source media (.+) – choose another file name\.$/, 'Výstup by přepsal zdrojové médium $1 – zvol jiný název souboru.'],
   [/^Audio transitions: (\d+)$/, 'Přechody zvuku: $1'],
   // chyby mostu pro MCP / AI (AI tok S8)
@@ -194,7 +198,7 @@ const RULES = [
   [/^The gap stays open: another clip lies across it \(B-roll, music\)\. To remove the part from all tracks use Extract \(I and O around it, then the apostrophe key\)\.$/, 'Mezera zůstala: přes ni leží jiný klip (b-roll, hudba). Úsek ze všech stop vyjmeš přes Extract (I a O kolem něj, pak klávesa apostrof).'],
   [/^The crop could not follow the face here – edit in 16:9 and use Sequence → Auto Reframe\.$/, 'Výřez podle obličeje se tu nepodařil – stříhej v 16:9 a použij Sekvence → Auto Reframe.'],
   [/^Media relinked: (.+)$/, 'Médium znovu připojeno: $1'],
-  [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)')],
+  [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)').replace(/\(file not found\)/g, '(soubor nenalezen)')],
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],
   [/^Delete sequence “(.+)”\?$/, 'Smazat sekvenci „$1“?'], [/^✖ (.+)$/, (m, a) => '✖ ' + tr(a)],
   [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead, or change the sequence to 1920×1080 25 fps \(Sequence → Sequence Settings\)\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/50 fps nebo 1280×720 50 fps – použij MXF DNxHR HQ nebo H.264, nebo změň sekvenci na 1920×1080 25 fps (Sekvence → Nastavení sekvence).'],

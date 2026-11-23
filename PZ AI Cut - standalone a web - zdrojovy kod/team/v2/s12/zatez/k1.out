@@ -1,0 +1,22 @@
+{
+ "out": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/zatez-s12-k1-ripple-behem-exportu.mp4",
+ "durBefore": 270,
+ "durNow": 270,
+ "exportSeqObjStillInProject": true,
+ "log": [
+  {
+   "at": 4472,
+   "cmd": "rippleDelete",
+   "msg": "8 % video",
+   "durBefore": 270,
+   "durAfter": 270,
+   "active": "Z300",
+   "modalH2": "Export – Z300"
+  }
+ ],
+ "msg": "✔ Hotovo za 50 s · 158 MB · zobrazit v Průzkumníku",
+ "ms": 50135,
+ "exNo": "Zavřít",
+ "modalShown": true,
+ "lang": "cs"
+}

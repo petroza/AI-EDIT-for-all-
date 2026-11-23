@@ -189,15 +189,30 @@ async function pool(items, limit, fn) {
  * @param opts {output, format, encoder, range:'all'|'inout', burnCaptions, srtSidecar, loudness:'off'|'social'|'tv',
  *              onProgress(p, msg), signal{cancelled}}
  */
-async function exportSequence(project, seq, opts) {
+const ACTIVE = new Set(); // výstupy právě běžících exportů
+/** Export pracuje se zmrazeným snímkem sekvence (zátěž S12: úprava z nabídky během exportu dala soubor ze dvou stavů –
+ *  obraz 3590 s, zvuk 3600 s) a do jednoho souboru smí běžet jen jeden export (dva naráz = poškozené MP4 s „✔“). */
+async function exportSequence(project, seq0, opts) {
+  const key = path.resolve(String(opts.output || '')).toLowerCase();
+  if (ACTIVE.has(key)) throw new Error('This file is already being exported – wait until it finishes or choose another name.');
+  ACTIVE.add(key);
+  try { return await exportSnapshot(project, JSON.parse(JSON.stringify(seq0)), opts); } finally { ACTIVE.delete(key); }
+}
+exportSequence.active = () => ACTIVE.size;
+async function exportSnapshot(project, seq, opts) {
   const fps = seq.fps || 25;
   const fmt = FORMATS[opts.format] ? opts.format : (/\.mov$/i.test(opts.output || '') ? 'prores_hq' : /\.mxf$/i.test(opts.output || '') ? 'xdcam' : 'h264');
   const F = FORMATS[fmt];
   const V = videoCodec(fmt, seq, opts.encoder || cfg.videoEncoder);
-  const end = Math.max(...['video', 'audio'].flatMap((k) => seq.tracks[k].flatMap((t) => t.clips.map(clipEnd))), 0);
+  // konec = poslední klip i titulek (sekvence jen s titulky / nadpisem jde exportovat – černá s titulky, jako Premiere)
+  const end = Math.max(...['video', 'audio'].flatMap((k) => seq.tracks[k].flatMap((t) => t.clips.filter((c) => !c.disabled).map(clipEnd))),
+    ...(seq.captions || []).map((c) => c.end || 0), 0);
   let rs = 0, re = end;
-  if (opts.range === 'inout' && seq.inPoint !== null && seq.outPoint !== null && seq.outPoint > seq.inPoint) {
-    rs = seq.inPoint; re = Math.min(end, seq.outPoint);
+  const hasIn = seq.inPoint !== null && seq.inPoint !== undefined, hasOut = seq.outPoint !== null && seq.outPoint !== undefined;
+  // In/Out: jen In = od In do konce, jen Out = od začátku do Out (zátěž S12: jen In exportovalo celou sekvenci)
+  if (opts.range === 'inout' && (hasIn || hasOut)) {
+    rs = hasIn ? seq.inPoint : 0; re = Math.min(end, hasOut ? seq.outPoint : end);
+    if (re - rs < 1 / fps) throw new Error('There is nothing to export between In and Out.');
   }
   if (re - rs < 1 / fps) throw new Error('The sequence is empty – nothing to export.');
   let output = opts.output;
@@ -210,14 +225,18 @@ async function exportSequence(project, seq, opts) {
   if (opts.signal) opts.signal.kill = () => { for (const p of procs) try { p.kill(); } catch (e) {} };
   const check = () => { if (opts.signal && opts.signal.cancelled) throw new Error('Export cancelled.'); };
   const mediaOf = (c) => project.mediaById(c.mediaId);
-  const ff = (args) => run(FFMPEG, ['-y', '-hide_banner', '-loglevel', 'error', ...args], { proc: track });
+  const ff = (args) => run(FFMPEG, ['-y', '-hide_banner', '-loglevel', 'error', ...args], { proc: track }).catch((e) => {
+    // zamčený soubor (otevřený v jiném programu) – srozumitelně (zátěž S12: surové „Permission denied“ z ffmpeg)
+    if (/Permission denied|being used by another process/i.test(String(e && e.message))) throw new Error('A file is open in another program or not accessible – close it and export again.');
+    throw e;
+  });
 
   // chybějící média předem (jinak export spadl uprostřed na chybě ffmpeg bez vysvětlení)
   const offline = new Set();
   for (const k of ['video', 'audio']) for (const t of seq.tracks[k]) for (const c of t.clips) {
     if (c.disabled || clipEnd(c) <= rs || c.start >= re || t.muted) continue;
     const m = mediaOf(c);
-    if (!m || m.missing || !fs.existsSync(m.path)) offline.add(m ? m.name : '?');
+    if (!m || m.missing || !fs.existsSync(m.path)) { offline.add(m ? m.name : '?'); if (m && !m.missing) m.missing = true; } // přejmenované za běhu (zátěž S12)
   }
   if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`);
   // výstup nesmí přepsat zdrojové médium (bezpečnost S12: export na místo zdroje ho bez varování přepsal re-enkódem)
@@ -393,7 +412,7 @@ async function exportSequence(project, seq, opts) {
           const a = Math.max(c.start, i ? starts[i] : c.start), b = i + 1 < words.length ? starts[i + 1] : c.end;
           if (b <= rs || a >= re || b - a < 0.01) continue;
           let k = 0;
-          const txt = String(c.text).replace(/[{}]/g, '').split('\n').map((line) => line.split(' ').filter(Boolean).map((w) => (k++ === i ? `{\\c${hcol}}${w}{\\c${col}}` : w)).join(' ')).join('\\N');
+          const txt = String(c.text).replace(/\{[^}]*\}/g, '').replace(/[{}]/g, '').split('\n').map((line) => line.split(' ').filter(Boolean).map((w) => (k++ === i ? `{\\c${hcol}}${w}{\\c${col}}` : w)).join(' ')).join('\\N');
           ev.push(`Dialogue: 0,${at(Math.max(0, a - rs))},${at(Math.min(re, b) - rs)},C,,0,0,0,,${txt}`);
         }
       }
@@ -435,6 +454,8 @@ async function exportSequence(project, seq, opts) {
     chain.push(`${aIn}loudnorm=${norm}${measured},aresample=${SR},apad[ln]`); aIn = '[ln]';
   }
   args.push('-map', '0:v');
+  // MXF pro TV vždy se zvukem – sekvence bez zvuku = 2 tiché mono stopy (zátěž S12: MXF bez zvukové stopy, Premiere dá ticho)
+  if (!aIn && F.audio === 'pcm_mono') { chain.push(`anullsrc=r=${SR}:cl=stereo[sil]`); aIn = '[sil]'; }
   if (aIn) {
     if (F.audio === 'pcm_mono') {
       // MXF OP1a pro TV: každý kanál jako samostatná mono stopa, 24 bit
