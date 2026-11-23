@@ -1134,10 +1134,15 @@ tool(
     bin: z.string().optional().describe('Název binu (vytvoří se)'),
     openSequence: z.boolean().optional().describe('Z každého videa vytvořit sekvenci (nastavení podle klipu) a otevřít ji na timeline'),
   },
-  async ({ paths, bin, openSequence }, extra) => {
+  async ({ paths: all, bin, openSequence }, extra) => {
+    // neexistující soubor = chyba (AI tok S8: import překlepu prošel jako úspěch s „Project item not found“)
+    const missing = all.filter((p) => !fs.existsSync(p));
+    if (missing.length === all.length) throw new Error(`Soubor neexistuje: ${missing.join(', ')}`);
+    const paths = all.filter((p) => !missing.includes(p));
     const safe = [];
     for (const p of paths) safe.push(await premiereMedia(p, extra));
-    const res = await premiere('importFiles', { paths: safe, bin, openSequence }, 300000);
+    let res = await premiere('importFiles', { paths: safe, bin, openSequence }, 300000);
+    if (missing.length) res = Array.isArray(res) ? [...res, ...missing.map((p) => ({ path: p, error: 'Soubor neexistuje' }))] : { ...res, missing };
     const conv = paths.filter((p, i) => safe[i] !== p);
     return conv.length ? { ...res, converted: paths.map((p, i) => safe[i] !== p && `${path.basename(p)} → ${safe[i]}`).filter(Boolean) } : res;
   },

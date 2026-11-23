@@ -1572,7 +1572,8 @@ async function evalScript(code) {
     }
     return JSON.stringify({ ok: true, result });
   } catch (e) {
-    return JSON.stringify({ ok: false, error: String(e && e.message || e) });
+    // MCP (AI) mluví česky – chyby přes most přeložit (AI tok S8: česká předpona, anglický text)
+    return JSON.stringify({ ok: false, error: require('./core/lang').tr(String(e && e.message || e)) });
   }
 }
 window.TN = { aiRoot: cfg.aiRoot, bridgePort: BRIDGE_PORT, evalScript, app, handleKey: (ev) => handleKey(ev), lang: settings.lang ? (settings.lang === 'cs' ? 'cs' : 'en') : (/^(cs|sk)/i.test((typeof navigator !== 'undefined' && navigator.language) || '') ? 'cs' : 'en') }; // bez volby podle jazyka prohlížeče (kolegové v TN = česky)

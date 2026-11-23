@@ -157,6 +157,20 @@ const CS = {
 
 // dynamické texty: [vzor, náhrada | funkce]
 const RULES = [
+  // chyby mostu pro MCP / AI (AI tok S8)
+  [/^Project item not found: (.+)$/, 'Položka projektu nenalezena: $1'],
+  [/^Sequence not found: (.+)$/, 'Sekvence nenalezena: $1'],
+  [/^No active sequence$/, 'Není otevřená žádná sekvence'],
+  [/^No segments$/, 'Chybí úseky ke stavbě'],
+  [/^No clips$/, 'Chybí klipy'],
+  [/^Clip not found(: .*)?$/, 'Klip nenalezen$1'],
+  [/^Saving is not available$/, 'Ukládání tu není k dispozici'],
+  [/^Missing srtPath$/, 'Chybí cesta k souboru titulků (srtPath)'],
+  [/^Missing source$/, 'Chybí zdrojový soubor (source)'],
+  [/^Unknown function: (.+)$/, 'Neznámá funkce: $1'],
+  [/^Invalid arguments$/, 'Neplatné argumenty'],
+  [/^“(.+)” is (\d+)×(\d+) – reframe to (\d+):(\d+) only from a wider sequence; open the original landscape \(16:9\) one$/,
+    '„$1“ má $2×$3 – na $4:$5 jde převést jen širší sekvence; otevři původní na šířku (16:9)'],
   [/^Place the selected clip in it \(In–Out, (.+)\)$/, 'Vložit do ní vybraný klip (úsek In–Out, $1)'], [/^Place the selected clip in it \(whole clip, (.+)\)$/, 'Vložit do ní vybraný klip (celý klip, $1)'],
   [/^About (.+)$/, 'O aplikaci $1'], [/^About$/, 'O aplikaci'], [/^Untitled( \*)$/, 'Bez názvu$1'],
   [/^Cannot write the file: (.*)$/, 'Soubor nejde zapsat: $1'],
