@@ -1,0 +1,15 @@
+const P = TN.app.project, app = TN.app; const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const { clipEnd } = require('O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/src/core/model');
+const s = P.sequences.find(x => x.name === 'S14 vyrez 60s 9x16'); app.openSequence(s.id); await sleep(300);
+const Vm = P.media.find(m => m.name === 'vyrez-5min.mp4');
+const toasts = []; const t0 = app.toast; app.toast = (m, e) => { toasts.push(m); return t0.call(app, m, e); };
+const before = JSON.stringify(s.tracks);
+app.dropMedia(Vm, 120, 123, 20, false, { video: 1, audio: 1 });
+await sleep(9000);
+app.toast = t0;
+const S2 = P.sequences.find(x => x.id === s.id);
+const v2 = S2.tracks.video[1].clips.map(c => `${c.start.toFixed(2)}-${clipEnd(c).toFixed(2)} [${c.in.toFixed(2)}] x=${(c.posX||0).toFixed(3)} L=${c.linkId ? c.linkId.slice(-4) : null}`);
+const a2 = S2.tracks.audio[1].clips.map(c => `${c.start.toFixed(2)}-${clipEnd(c).toFixed(2)} [${c.in.toFixed(2)}] L=${c.linkId ? c.linkId.slice(-4) : null}`);
+app.cmd('undo'); await sleep(300);
+const after = JSON.stringify(P.sequences.find(x => x.id === s.id).tracks);
+return { v2, a2, toasts, oneUndoRestores: before === after };

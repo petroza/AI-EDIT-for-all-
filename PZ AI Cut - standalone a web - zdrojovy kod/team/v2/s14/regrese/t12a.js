@@ -1,0 +1,13 @@
+const P = TN.app.project, api = TN.app.api, E = TN.app.editCore, app = TN.app;
+const Vm = P.media.find(m => m.name === 'vyrez-5min.mp4');
+const { clipEnd } = require('O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/src/core/model');
+const b = await api.buildSequence({ name: 'S14 ctrl-drag', segments: [{ source: Vm.path, in: 20, out: 26 }, { source: Vm.path, in: 40, out: 45 }, { source: Vm.path, in: 60, out: 70 }] });
+await new Promise(res => setTimeout(res, 3500));
+const s = P.sequences.find(x => x.id === b.sequenceID); app.openSequence(s.id); await new Promise(r => setTimeout(r, 300));
+app.timeline.zoomFit(); await new Promise(r => setTimeout(r, 300));
+const C = s.tracks.video[0].clips[2];
+const el = document.querySelector(`.clip[data-id="${C.id}"]`); const rc = el.getBoundingClientRect();
+const A = s.tracks.video[0].clips[0], Bc = s.tracks.video[0].clips[1];
+const elB = document.querySelector(`.clip[data-id="${Bc.id}"]`).getBoundingClientRect();
+window.__s14 = { id: s.id };
+return { dump: s.tracks.video[0].clips.map(c => `${c.start}-${clipEnd(c)}`), C: [rc.left, rc.top, rc.width, rc.height], Bx: elB.left, cx: Math.round(rc.left + 20), cy: Math.round(rc.top + rc.height / 2), tx: Math.round(elB.left + 20 + (C.start - Bc.start) * 0) };

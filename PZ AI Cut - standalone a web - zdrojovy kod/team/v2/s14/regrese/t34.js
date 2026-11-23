@@ -1,0 +1,10 @@
+const APP = 'O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod'; const fs = require('fs');
+const P = TN.app.project, api = TN.app.api; const r = {};
+const s9 = P.sequences.find(x => x.name === 'S14 vyrez 60s 9x16');
+s9.captions = [{ start: 1, end: 3, text: 'Testovací titulek' }];
+r.mcp916 = await api.exportSequence({ sequence: s9.id, output: APP + '/web/test-out/regrese-s14-mcp-916.mp4' }).catch(e => e.message);
+const s1080 = P.sequences.find(x => x.name === 'S14 vyrez 1080');
+s1080.captions = [{ start: 1, end: 3, text: 'Titulek do MXF' }];
+r.mcpMxf = await api.exportSequence({ sequence: s1080.id, output: APP + '/web/test-out/regrese-s14-mcp.mxf' }).catch(e => e.message);
+r.srtExists = fs.existsSync(APP + '/web/test-out/regrese-s14-mcp.srt');
+return r;

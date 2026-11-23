@@ -73,7 +73,21 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
     poškozená záloha odložena stranou, jedna instance aplikace, pád okna nabídne Znovu načíst.
   - **AI tok S12**: upoutávky bez osamělé odpovědi, poděkování/organizace pořadu, vytrženého „To je…“; délky 15–27 s
     na cíle 15/20/30, verdikt „lze pustit“.
-- **Kolo S14 (běží)**: Nováček z GitHubu, Přístupnost a klávesnice, Webová verze, Regrese 40+ dřívějších oprav.
+- **Kolo S14 (23. 11. odpoledne – Nováček z GitHubu, Přístupnost, Web, Regrese 62 oprav, nezávislá revize kódu)**:
+  - Nováček: přenosný zip na čistém PC bez ffmpeg neimportoval („spawn ffprobe ENOENT“) → dotaz **Nainstalovat ffmpeg**
+    (winget v novém okně, i Nápověda → Nainstalovat ffmpeg), nainstalovaný se najde bez restartu, česká hláška. Bez MY Premiere
+    MCP místo nefunkčních karet AI panelu vysvětlení s odkazem, Začni tady / návod / titulky bez slibů AI. README: „jen
+    střižna“ z Releases (správná cesta, ffmpeg, SmartScreen), cena (Claude/Codex placené, Hermes zdarma), opravená tabulka.
+  - Revize kódu (vážné): **export mohl přepsat zdrojové video** (výstup bez přípony, krátké jméno 8.3) – opraveno a v testech;
+    zamčený cíl už nezahodí hotový export; **síťová média se dotkla serveru ještě před dotazem** a šlo obejít rozpoznání UNC
+    (`/\server`, `\\?\GLOBALROOT\Device\Mup\…`) – rozhoduje se před načtením, všechny zápisy; web build se dvěma CSP při CRLF.
+  - Přístupnost: panel Projekt a kontextové menu klávesnicí, dialogy s pastí fokusu a návratem fokusu, Shift+1–4 panely,
+    mezerník na tlačítku, viditelný fokus, aria-live, vysoký kontrast, kontrast popisků.
+  - Web: CSP blokovala přepis v prohlížeči (opraveno), export nad ~20 min padal na „Maximum call stack“ (opraveno),
+    záloha se po obnovení stránky neobnovovala (opraveno), AI panel webu má CSP.
+  - Regrese: 59 z 62 dřívějších oprav drží, 0 regresí; 8 neověřeno kvůli tokenu Workeru – **Worker spuštěný z izolované
+    testovací instance měl token z dočasného profilu a vracel 401 všem** (i Premiere) → token vždy ze skutečného profilu.
+  - Upoutávky: zdvořilosti jen ustálené fráze („Nestihli jsme se s mámou rozloučit“ už není vyřazený úder).
 
 ## Otevřené
 - Upoutávky (Hermes): moderátorka někdy až 48 % délky, odpověď bez své otázky, zdůvodnění plánu nesedí na vybrané věty,
@@ -89,4 +103,9 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
 - MXF pro Novu: 2 mono stopy, TC 00:00:00:00, bez 1080i25 – potřeba technická specifikace TV.
 - Bezpečnost – přijaté riziko: konektor webu (7895) bez párovacího tokenu (hrozba jen od lokálního procesu), prompt
   injection z přepisu do AI, web bez SRI u CDN skriptů. Web zatím není nasazený.
-- AI panel: popisek „Fronta 0“ a stísněný seznam na 1366×768; panel po zablokované navigaci zůstane na chybové stránce.
+- (S14 opraveno: fronta v AI panelu, panel po zablokované navigaci.)
+- Přístupnost – zbývá: barvy primárních tlačítek (modrá 3,46:1, fialová 4,23:1) a rámečky polí v dialozích pod 3:1 –
+  změna vzhledu, čeká na schválení; zvětšení rozhraní (150 %) rozbije rozložení; stavy přepínačů pro čtečku (aria-pressed).
+- Zámek jedné instance: jednou ze 5 pokusů se druhé okno nad stejným profilem otevřelo (neobjasněno).
+- Web: lišta „Nenalezená média“ zůstane po znovupřipojení; `&lt;b&gt;` v názvu se zobrazí jako `<b>`.
+- Přepis (asr.py): po IndexError se může ztratit konec rozpracovaného okna; médium se během exportu čte živě (ne zmrazené).

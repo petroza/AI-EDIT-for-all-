@@ -1,0 +1,14 @@
+const P = TN.app.project, app = TN.app; const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const S = () => P.sequences.find(x => x.name === 'S14 vyrez 1080');
+const vis = [...document.querySelectorAll('input')].filter(e => e.offsetParent);
+const chk = vis.find(e => e.type === 'checkbox' && /Zobrazit/.test((e.closest('label') || e.parentElement).innerText));
+const txt = vis.find(e => e.type === 'text' && e.id !== 'projSearch');
+const st = () => { const s = S(); return JSON.stringify(s.captionStyle || {}) + '|' + JSON.stringify(s.headline || null) + '|' + JSON.stringify(Object.keys(s)); };
+const r = {};
+r.s0 = st();
+txt.value = 'Šimková: Máma byla tmel'; txt.dispatchEvent(new Event('input', { bubbles: true })); await sleep(300);
+r.s1 = st(); r.chk1 = chk.checked;
+chk.click(); await sleep(300); r.chk2 = chk.checked; r.s2 = st();
+txt.value = 'Vložený nadpis'; txt.dispatchEvent(new Event('input', { bubbles: true })); await sleep(300);
+r.chk3 = chk.checked; r.s3 = st();
+return r;

@@ -1,0 +1,11 @@
+const fs = require('fs');
+const P = TN.app.project, app = TN.app; const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const id = window.__s14.id; const S = () => P.sequences.find(x => x.id === id);
+const info = () => { const c = S().tracks.video[0].clips[0]; const m = P.mediaById(c.mediaId); return { media: m && m.name, missing: m && !!m.missing, exists: !!m && fs.existsSync(m.path) }; };
+const r = { afterRelink: info() };
+app.openSequence(id); await sleep(300); app.setPlayhead(3); await sleep(1800);
+r.videos = [...document.querySelectorAll('video')].map(v => ({ src: decodeURIComponent(v.currentSrc || v.src).split(/[\/]/).pop(), rs: v.readyState, err: v.error && v.error.code })).filter(v => v.src);
+r.offlineVisible = [...document.querySelectorAll('*')].filter(e => e.offsetParent && e.children.length === 0 && /Médium offline/.test(e.textContent)).length;
+app.setPlayhead(5); app.sel.clear(); app.cmd('addEdit'); r.afterRazor = S().tracks.video[0].clips.length;
+app.cmd('undo'); await sleep(300); r.afterUndo = Object.assign(info(), { n: S().tracks.video[0].clips.length });
+return r;

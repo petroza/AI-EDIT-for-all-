@@ -1,0 +1,1 @@
+TN.app.cmd('newSequence'); await new Promise(r=>setTimeout(r,500)); const q=(i)=>document.querySelector(i); const r = { sel: (TN.app.projectPanel.selectedMedia()||{}).name, preset: q('#sqPreset').selectedOptions[0].textContent, w: q('#sqW').value, h: q('#sqH').value, fps: q('#sqFps').value }; q('#sqNo').click(); return r;

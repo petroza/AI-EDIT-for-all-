@@ -1,0 +1,11 @@
+const fs = require('fs');
+const P = TN.app.project, app = TN.app; const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const M = 'C:/Users/Petr/AppData/Local/Temp/claude/e8748af4ca7f4462/9b93f9a2-8c9d-4cd4-96a5-b0bc52e46c70/scratchpad/s14/media/';
+const id = window.__s14.id; const has = () => !!P.sequences.find(x => x.id === id);
+const log = [['before', has(), P.sequences.length, P.media.length]];
+const toasts = []; const t0 = app.toast; app.toast = (m, e) => { toasts.push(m); return t0.call(app, m, e); };
+await app.importPaths([M + 'kopie-a.mp4']); log.push(['after import', has(), P.sequences.length, P.media.length]);
+await sleep(1500); log.push(['after 1.5s', has(), P.sequences.length, P.media.length]);
+app.toast = t0; log.push(toasts);
+log.push(P.sequences.map(s => s.name).filter(n => /offline/.test(n)));
+return log;

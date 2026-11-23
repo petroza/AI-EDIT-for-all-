@@ -1,0 +1,15 @@
+const APP = 'O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod';
+const X = require(APP + '/src/core/exporter'); const fs = require('fs');
+const P = TN.app.project, app = TN.app, api = TN.app.api; const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const M = 'C:/Users/Petr/AppData/Local/Temp/claude/e8748af4ca7f4462/9b93f9a2-8c9d-4cd4-96a5-b0bc52e46c70/scratchpad/s14/media/';
+const ma = P.media.find(m => m.name === 'kopie-a-prejmenovano.mp4');
+const log = []; const has = (id) => !!P.sequences.find(x => x.id === id);
+const b = await api.buildSequence({ name: 'S14 offline2', segments: [{ source: ma.path, in: 30, out: 40 }] }); log.push(['built', has(b.sequenceID), P.sequences.length]);
+await sleep(2500); log.push(['after edge wait', has(b.sequenceID), P.sequences.length]);
+app.openSequence(b.sequenceID); await sleep(400); log.push(['opened', has(b.sequenceID)]);
+fs.renameSync(M + 'kopie-a-prejmenovano.mp4', M + 'kopie-a.mp4'); log.push(['renamed', has(b.sequenceID)]);
+const s = P.sequences.find(x => x.id === b.sequenceID);
+const e = await X.exportSequence(P, s, { output: APP + '/web/test-out/regrese-s14-offline.mp4', range: 'all', format: 'h264', loudness: 'off' }).then(() => 'EXPORTOVAL', e => e.message); log.push(['export', e, has(b.sequenceID)]);
+app.cmd('export'); await sleep(500); const dm = document.querySelector('#exMsg').textContent; document.querySelector('#exNo').click(); await sleep(300); log.push(['dialog', dm, has(b.sequenceID)]);
+window.__s14 = { id: b.sequenceID };
+return log;

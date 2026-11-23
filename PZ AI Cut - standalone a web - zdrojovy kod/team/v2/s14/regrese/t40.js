@@ -1,0 +1,14 @@
+const fs = require('fs'); const P = TN.app.project;
+const D = 'C:/Users/Petr/AppData/Local/Temp/claude/e8748af4ca7f4462/9b93f9a2-8c9d-4cd4-96a5-b0bc52e46c70/scratchpad/s14/proj/';
+const j = P.toJSON();
+const s = JSON.parse(JSON.stringify(j.sequences.find(x => x.name === 'S14 vyrez 1080')));
+const vm = JSON.parse(JSON.stringify(j.media.find(m => m.name === 'vyrez-5min.mp4')));
+s.name = '<img src=x onerror="window.__s14evil=1">S14 zly';
+const c = s.tracks.audio[0].clips[0]; c.gainDb = '0"><img src=x onerror="window.__s14evil=2">';
+s.tracks.video[0].clips[0].id = 'c1" onmouseover="window.__s14evil=3';
+const B = String.fromCharCode(92); const unc = { id: 'munc', path: B + B + 's14-neexistuje-host' + B + 'share' + B + 'x.mp4', name: 'sitovy.mp4', duration: 10, hasVideo: true, hasAudio: true, width: 1280, height: 720, fps: 25 };
+const evil = Object.assign({}, j, { sequences: [s], media: [vm, unc], activeSequence: s.id });
+evil.__proto__polluted = 1;
+fs.writeFileSync(D + 'zly.pzcut', JSON.stringify(evil).replace('"__proto__polluted":1', '"__proto__":{"s14polluted":1}'));
+fs.writeFileSync(D + 'cizi.pzcut', JSON.stringify({ app: 'NecoJineho', version: 1, data: [1, 2, 3] }));
+return { keys: Object.keys(j), written: fs.statSync(D + 'zly.pzcut').size };

@@ -1,0 +1,10 @@
+const P = TN.app.project, app = TN.app;
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const r = {};
+const s = P.sequences.find(x => x.name === 'S14 vyrez 1080'); app.openSequence(s.id); await sleep(300);
+const a = s.tracks.audio[0].clips[0]; a.gainDb = 3; app.sel = new Set([a.id]);
+app.cmd('gain'); await sleep(400);
+const modal = document.querySelector('.modal, #modal, dialog[open]') || document.body;
+r.gainText = (document.querySelector('.modal') || {}).innerText;
+r.gainInputs = [...document.querySelectorAll('.modal input')].map(i => ({ id: i.id, type: i.type, value: i.value, checked: i.checked, name: i.name }));
+return r;
