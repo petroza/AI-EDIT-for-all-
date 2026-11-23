@@ -445,6 +445,26 @@ function seqWith(...ranges) {
     assert.deepStrictEqual(p.openSequenceIds, ['s2']);
     assert.strictEqual(require('../src/core/sanitize').esc('"<a>\'&'), '&quot;&lt;a&gt;&#39;&amp;');
   });
+  await t('starší projekt bez openSequenceIds otevře aktivní sekvenci; uncBlocked se nepřebírá (revize S14)', () => {
+    const p = new Project();
+    p.load({ name: 'x', media: [{ id: 'm1', path: 'a.mp4', uncBlocked: true }], sequences: [{ id: 's1', name: 'A', tracks: {} }], activeSequenceId: 's1' }, null);
+    assert.deepStrictEqual(p.openSequenceIds, ['s1']);
+    assert.ok(!('uncBlocked' in p.media[0]));
+  });
+  await t('export nepřepíše zdroj ani bez přípony / přes jiný zápis cesty (revize S14)', async () => {
+    const os = require('os');
+    const ex = require('../src/core/exporter');
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'pz-ow-'));
+    const src = path.join(d, 'rozhovor.mp4');
+    fs.writeFileSync(src, 'zdroj');
+    const p = new Project();
+    p.load({ name: 'x', media: [{ id: 'm1', path: src, name: 'rozhovor.mp4' }], sequences: [{ id: 's1', name: 'A', tracks: { video: [{ clips: [] }], audio: [{ clips: [] }] } }] }, null);
+    for (const out of [path.join(d, 'rozhovor'), path.join(d, 'ROZHOVOR.MP4'), path.join(d, '.', 'rozhovor.mp4')]) {
+      await assert.rejects(ex.exportSequence(p, p.sequences[0], { output: out }), /overwrite the source/);
+    }
+    assert.strictEqual(fs.readFileSync(src, 'utf8'), 'zdroj');
+    fs.rmSync(d, { recursive: true, force: true });
+  });
   console.log(`\n${ok} prošlo, ${fail} selhalo`);
   process.exit(fail ? 1 : 0);
 })();

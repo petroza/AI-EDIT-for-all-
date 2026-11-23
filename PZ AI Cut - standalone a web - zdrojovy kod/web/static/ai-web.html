@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PZ AI</title>
-<script>try { document.documentElement.lang = parent.TN && parent.TN.lang === 'cs' ? 'cs' : 'en'; } catch (e) {}</script>
+<!-- S14 Web: panel měl jako jediný bez CSP (vložený handler by dosáhl na parent.TN) – jen vlastní skript, žádné vložené -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' http://127.0.0.1:* http://localhost:*; object-src 'none'; base-uri 'none'; form-action 'none'">
 <style>
   :root { --bg: #17161c; --card: #1f1e26; --card2: #26252f; --line: #34323f; --text: #ecebf3; --dim: #a19fb3; --accent: #8b5cf6; --accent2: #a78bfa; --ok: #22c55e; --err: #f87171; --warn: #fbbf24; }
   * { box-sizing: border-box; }

@@ -107,14 +107,18 @@ class Mp4Writer {
       entry = box('mp4a', zeros(6), u16(1), zeros(8), u16(t.channels), u16(16), u16(0), u16(0), u32(t.sampleRate << 16), full('esds', 0, 0, es));
     }
     const stsd = full('stsd', 0, 0, u32(1), entry);
-    const sttsB = full('stts', 0, 0, u32(stts.length), ...stts.map(([c, d]) => cat([u32(c), u32(d)])));
+    // tabulky jako jeden blok bajtů – dřív každý vzorek samostatný argument (…map(u32)) a nad ~62 000 vzorky
+    // „Maximum call stack size exceeded“ (S14 Web: export 28 min spadl po 278 s a nechal 0B soubor)
+    const u32s = (arr) => { const b = new Uint8Array(arr.length * 4); const dv = new DataView(b.buffer); arr.forEach((n, i) => dv.setUint32(i * 4, n >>> 0)); return b; };
+    const u64s = (arr) => { const b = new Uint8Array(arr.length * 8); const dv = new DataView(b.buffer); arr.forEach((n, i) => dv.setBigUint64(i * 8, BigInt(Math.max(0, Math.round(n))))); return b; };
+    const sttsB = full('stts', 0, 0, u32(stts.length), u32s(stts.flat()));
     const stsc = full('stsc', 0, 0, u32(1), u32(1), u32(1), u32(1));
-    const stsz = full('stsz', 0, 0, u32(0), u32(t.sizes.length), ...t.sizes.map(u32));
-    const co64 = full('co64', 0, 0, u32(t.offsets.length), ...t.offsets.map(u64));
+    const stsz = full('stsz', 0, 0, u32(0), u32(t.sizes.length), u32s(t.sizes));
+    const co64 = full('co64', 0, 0, u32(t.offsets.length), u64s(t.offsets));
     const parts = [stsd, sttsB];
     if (isV) {
       const keys = []; t.keys.forEach((k, i) => { if (k) keys.push(i + 1); });
-      parts.push(full('stss', 0, 0, u32(keys.length), ...keys.map(u32)));
+      parts.push(full('stss', 0, 0, u32(keys.length), u32s(keys)));
     }
     parts.push(stsc, stsz, co64);
     const stbl = box('stbl', ...parts);

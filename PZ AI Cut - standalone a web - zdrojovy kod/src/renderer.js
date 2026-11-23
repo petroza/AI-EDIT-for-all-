@@ -2318,7 +2318,8 @@ async function captionsFromTranscript() {
     let rec = null;
     try { if (!media.WEB && settings.lastProject && fs.existsSync(AUTOSAVE)) { const j = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); if (j.autosaveOf && fs.existsSync(j.autosaveOf) && path.resolve(j.autosaveOf).toLowerCase() === path.resolve(settings.lastProject).toLowerCase() && fs.statSync(AUTOSAVE).mtimeMs > fs.statSync(j.autosaveOf).mtimeMs) rec = j; } } catch (e) { rec = null; }
     let auto = null, autoBad = false;
-    if (!media.WEB && fs.existsSync(AUTOSAVE)) { try { auto = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); } catch (e) { autoBad = true; } }
+    // i na webu (záloha v úložišti prohlížeče) – S14 Web: od S12 se po obnovení stránky projekt neobnovil
+    if (fs.existsSync(AUTOSAVE)) { try { auto = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); } catch (e) { autoBad = true; } }
     if (autoBad) {
       // poškozená záloha: odložit stranou (nepřepsat), srozumitelně
       try { fs.renameSync(AUTOSAVE, AUTOSAVE.replace(/\.tnproj$/, '.damaged-' + Date.now() + '.tnproj')); } catch (e) { /* */ }

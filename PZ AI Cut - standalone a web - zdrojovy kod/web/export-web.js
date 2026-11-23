@@ -403,6 +403,8 @@ async function exportSequence(project, seq, opts) {
     return { output, sizeMB: Math.round(size / 1048576 * 10) / 10, audioCodec: hasAudio ? aCodec : null };
   } catch (e) {
     try { await writable.abort(); } catch (e2) { /* už zavřeno */ }
+    // nový soubor po zrušeném zápisu zůstane prázdný (0 B) – smazat; přepisovaný původní má dál svá data a zůstane
+    try { if (handle.remove && (await handle.getFile()).size === 0) await handle.remove(); } catch (e2) { /* nejde – nechat */ }
     throw e;
   } finally {
     try { venc.close(); } catch (e) {}

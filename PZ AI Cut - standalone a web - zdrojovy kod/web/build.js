@@ -133,8 +133,10 @@ req(${entry});
   // i s konci řádků CRLF (revize S14: checkout s core.autocrlf=true nechal ve webu dvě CSP a přepis se nenačetl)
   html = html.replace(/<!-- Bezpečnost S12[^\r\n]*-->\r?\n/, '').replace(/<meta http-equiv="Content-Security-Policy"[^>]*>\r?\n?/g, '');
   // webová CSP (bezpečnost S13): jen vlastní skripty + knihovny pro přepis / výřez z CDN, síť jen na modely a místní konektor
-  const WEB_CSP = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; "
-    + "img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; worker-src 'self' blob:; frame-src 'self'; "
+  // worker-src s jsdelivr: modulový whisper-worker.js importuje transformers.js z CDN a Chrome ten import kontroluje proti
+  // worker-src (S14 Web: přepis v prohlížeči nikdy nezačal – blocked: csp); blob: pro wasm/worker, které knihovna skládá
+  const WEB_CSP = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net blob: 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; "
+    + "img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; worker-src 'self' blob: https://cdn.jsdelivr.net; frame-src 'self'; "
     + "connect-src 'self' data: blob: http://127.0.0.1:* http://localhost:* https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co "
     + "https://*.hf.co https://storage.googleapis.com; object-src 'none'; base-uri 'none'; form-action 'none'";
   html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="' + WEB_CSP + '">');

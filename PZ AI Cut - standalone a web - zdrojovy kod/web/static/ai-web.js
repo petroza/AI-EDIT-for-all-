@@ -1,6 +1,7 @@
 // AI panel webové verze: průvodce připojením (Claude Desktop / Codex), zadání s předvolbami stopáže a formátu,
 // průběh, vytížení počítače. Stav mostu čte z parent.__pzAI (web/ai/bridge.js). Texty jsou česky i anglicky
 // podle přepínače jazyka (při přepnutí se panel načte znovu).
+try { document.documentElement.lang = parent.TN && parent.TN.lang === 'cs' ? 'cs' : 'en'; } catch (e) { /* jiný původ */ } // dřív vložený skript v ai-web.html (CSP)
 (function () {
   'use strict';
   var AI = parent.__pzAI;
