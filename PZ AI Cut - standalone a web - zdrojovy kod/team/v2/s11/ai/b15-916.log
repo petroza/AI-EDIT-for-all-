@@ -1,0 +1,9 @@
+
+=== reframe_sequence (12.8 s)
+{"sequenceID":"7fd487cf-fcdd-461d-bee9-6546e0b20fb4","name":"AI-S11 upoutavka 15 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":3,"shots":6,"facesFound":6,"summary":"Vytvořena sekvence „AI-S11 upoutavka 15 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 3)."}
+
+=== add_captions (1.5 s)
+{"cues":15,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\AI-S11_upoutavka_15_9x16.7fd487cf.srt","sequence":"AI-S11 upoutavka 15 9x16","sample":["Vlastně jsem si pak uvědomila,","že bych radši si ty příběhy vlastně","jako psala sama a proto jsem se"]}
+
+=== export_sequence (3.5 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s11-upoutavka-15-916-tit.mp4","format":"h264","sizeMB":9.633,"duration":16.28,"captionsBurned":true,"srt":true,"loudness":"social"}

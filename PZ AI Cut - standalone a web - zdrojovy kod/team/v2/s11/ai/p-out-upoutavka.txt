@@ -1,0 +1,45 @@
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S11 vyrok 30": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 24
+   58 % LLM hodnotí údery 16–24 z 24
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 4 vět, odhad 23 s
+✔ hotovo: sekvence „STRIH HERMES 20s 11:29:51" (Vytvořena sekvence „STRIH HERMES 20s 11:29:51“ (00:00:24.36) z 3 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 15 s
+🎞 ⚠ 00:18:08.93: střih obrazu 0.10 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ upoutávka z úderů (24 kandidátů) – Cílem je vytvořit silný emocionální oblouk o rychlém a nečekaném úmrtí matky. Začínáme hákem U4, který okamžitě šokuje časovým údajem 'za tři týdny' a smrtí. Následuje U5, který vysvětluje důsledek této rychlosti – nemožnost se připravit. Jako závěr používáme U6 'A najednou byl pryč', který vztahujeme k matce (zmíněné v U4/U5) a vytváří emotivní tečku bez rozuzlení. U3 (nečekanost) je přeskočeno, aby se zachovala lineární časová osa událostí (diagnóza -> rychlý průběh -> smrt) a předešlo se logickým skokům.
+ℹ vyřazeno – vytržené by zkreslilo význam: „Přijde a totálně jako pohltí. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci.“, „To nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.“
+Jak dopadl střih „STRIH HERMES 20s 11:29:51“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 20s 11:29:51“
+✔ STRIH HERMES 20s 11:29:51 9x16 (1080×1920, střihy kamery: 3)
+Výrok
+Upoutávka
+Zkrácená verze
+Bez pauz
+Zadání
+Délka
+10 s
+20 s
+30 s
+Formát
+16:9 TV / YouTube
+9:16 Reels · TikTok · Shorts
+4:5 Instagram / FB příspěvek
+1:1 čtverec
+Převést formát sekvence
+Nastavení AI
+Hermes
+Pokračovat v konverzaci
+Spustit
+Zpět
+Fronta
+0
+Titulky
+40 znaků · 2 řádky · Jazyk přepisu
+Přidat
+Systém připraven
+VRAM 10,3/12 GB

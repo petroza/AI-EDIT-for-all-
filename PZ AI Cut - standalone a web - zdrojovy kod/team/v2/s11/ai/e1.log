@@ -1,0 +1,30 @@
+
+=== get_sequence (0.0 s) ERROR
+Střihový program (getSequence): Sekvence nenalezena: neni takova
+
+=== open_sequence (0.0 s) ERROR
+Střihový program (openSequence): Sekvence nenalezena: neni takova
+
+=== import_media (0.0 s) ERROR
+Soubor neexistuje: C:/Users/Petr/Downloads/neexistuje-s11.mp4
+
+=== import_media (0.0 s)
+[{"path":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwt45ghvscokm1"},{"path":"C:/Users/Petr/Downloads/neexistuje-s11.mp4","error":"Soubor neexistuje"}]
+
+=== transcribe_media (0.0 s) ERROR
+Soubor neexistuje: C:/Users/Petr/Downloads/neexistuje-s11.mp4
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): Do složky C:/Program Files nejde zapisovat – vyber jiné místo pro uložení.
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): XDCAM HD422 potřebuje 1920×1080 25/29,97/50 fps nebo 1280×720 50/59,94 fps – použij MXF DNxHR HQ nebo H.264, nebo změň sekvenci na 1920×1080 25 fps (Sekvence → Nastavení sekvence).
+
+=== reframe_sequence (0.6 s) ERROR
+Střihový program (reframeSequence): „AI-S11 vyrok 30 9x16“ má 1080×1920 – na 9:16 jde převést jen širší sekvence; otevři původní na šířku (16:9)
+
+=== razor (0.0 s) ERROR
+Střihový program (razor): Sekvence nenalezena: neni takova
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): Sekvence nenalezena: neni takova

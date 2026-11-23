@@ -840,6 +840,18 @@ async function timelineCues(seq, a, extra) {
     return true;
   });
   if (!clips.length) throw new Error('Sekvence nemá žádné klipy se zvukem/řečí.');
+  // navazující kusy téhož zdroje (žiletka, zvuk rozříznutý spolu s obrazem po převodu na 9:16) jako jeden úsek – jinak slovo
+  // přes neviditelný řez nedostal žádný kus a v titulcích vypadlo („Když ~přijde~ Rodina“, AI tok S11)
+  clips.sort((x, y) => (x.track || 0) - (y.track || 0) || x.start - y.start);
+  const runs = [];
+  for (const c of clips) {
+    const r = runs.at(-1), sp = c.speed || 1;
+    if (r && r.mediaPath === c.mediaPath && (r.track || 0) === (c.track || 0) && (r.speed || 1) === sp
+      && Math.abs(r.start + (r.outPoint - r.inPoint) / sp - c.start) < 0.01 && Math.abs(r.outPoint - c.inPoint) < 0.01) {
+      r.outPoint = c.outPoint;
+    } else runs.push({ ...c });
+  }
+  clips = runs;
   const sources = [...new Set(clips.map((c) => c.mediaPath))];
   const transcripts = {};
   // jen jazyk – ne celé `a`: `force` u titulků znamená „přidat další titulkovou stopu“, v přepisu by spustil nový

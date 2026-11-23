@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { run, FFMPEG, CACHE, cfg } = require('./media');
-const { clipEnd, holdOf, vSrc } = require('./model');
+const { clipEnd, holdOf, holdInOf, vSrc } = require('./model');
 const { dbToGain, uid } = require('./util');
 const E = require('./edit');
 /** XDCAM HD422 jen ve standardních variantách (kontrolor S1: 1280×720 25p prošlo, vysílání ho nezná). */
@@ -103,6 +103,7 @@ function videoSegments(seq, rs, re) {
       if (c.disabled) return;
       pts.add(c.start); pts.add(clipEnd(c));
       if (holdOf(c)) pts.add(clipEnd(c) - holdOf(c));
+      if (holdInOf(c)) pts.add(c.start + holdInOf(c));
       if (c.vIn && c.vIn.type !== 'cross') pts.add(c.start + c.vIn.dur);
       if (c.vOut) pts.add(clipEnd(c) - c.vOut.dur);
     });
@@ -123,7 +124,9 @@ function videoSegments(seq, rs, re) {
     const last = segs[segs.length - 1];
     // stejný klip navazuje – jeden úsek; ne přes začátek zopakovaného konce (hold: zdroj tam skočí zpět)
     const holdAt = top && holdOf(top) ? clipEnd(top) - holdOf(top) : null;
-    if (last && ((top && last.clip === top && !(holdAt !== null && Math.abs(a - holdAt) < 1e-4)) || (cross && last.cross === cross))) last.b = b;
+    const holdInAt = top && holdInOf(top) ? top.start + holdInOf(top) : null;
+    const jump = (x) => x !== null && Math.abs(a - x) < 1e-4;
+    if (last && ((top && last.clip === top && !jump(holdAt) && !jump(holdInAt)) || (cross && last.cross === cross))) last.b = b;
     else segs.push({ a, b, clip: top, cross });
   }
   return segs;

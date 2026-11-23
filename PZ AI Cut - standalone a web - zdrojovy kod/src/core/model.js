@@ -35,8 +35,14 @@ function clipEnd(c) { return c.start + (c.out - c.in); }
  *  předchozích d s zdroje. Vlastnost klipu, ne samostatný klip (redaktorka S10: kopie zůstávala na ose po smazání / zkrácení
  *  klipu). Platí, jen dokud se konec klipu nezměnil (hold.out) – žiletka, ořez, Q/W i posun zdroje ji tím samy zruší. */
 function holdOf(c) { return c && c.hold && Math.abs(c.hold.out - c.out) < 1e-6 ? c.hold.d : 0; }
+/** Totéž pro začátek (holdIn): prvních d s obrazu ukáže další snímky téhož záběru – zbytek cizího záběru na úplném začátku
+ *  sekvence pod řečí (AI tok S11: upoutávka začínala 3 snímky celku). Platí, jen dokud se začátek klipu nezměnil. */
+function holdInOf(c) { return c && c.holdIn && Math.abs(c.holdIn.in - c.in) < 1e-6 ? c.holdIn.d : 0; }
 /** Čas ve zdroji pro OBRAZ klipu v čase sekvence t (zvuk vždy c.in + (t − c.start)). */
-function vSrc(c, t) { const h = holdOf(c); return c.in + (t - c.start) - (h && t >= clipEnd(c) - h - 1e-6 ? h : 0); }
+function vSrc(c, t) {
+  const h = holdOf(c), hi = holdInOf(c);
+  return c.in + (t - c.start) - (h && t >= clipEnd(c) - h - 1e-6 ? h : 0) + (hi && t < c.start + hi - 1e-6 ? hi : 0);
+}
 function clipDur(c) { return c.out - c.in; }
 
 function seqDuration(seq) {
@@ -248,4 +254,4 @@ class Project {
   }
 }
 
-module.exports = { Project, newSequence, newTrack, newClip, clipEnd, holdOf, vSrc, clipDur, seqDuration, allClips, sortTrack, r3, EPS };
+module.exports = { Project, newSequence, newTrack, newClip, clipEnd, holdOf, holdInOf, vSrc, clipDur, seqDuration, allClips, sortTrack, r3, EPS };

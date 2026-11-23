@@ -4,7 +4,7 @@
 // i nad 0 dB, prolnutí). Hodiny = performance.now(), prvky se k nim jen dorovnávají.
 const CL = require('../core/captionlayout');
 const { pathToFileURL } = require('url');
-const { clipEnd, holdOf, vSrc } = require('../core/model');
+const { clipEnd, holdOf, holdInOf, vSrc } = require('../core/model');
 const { dbToGain } = require('../core/util');
 const importer = require('../core/importer');
 
@@ -207,7 +207,7 @@ class SeqPlayer {
         shown = el;
         this.layout(el, vc, seq);
         const want = Math.min(vc.out - 0.02, vSrc(vc, t));
-        const inHold = holdOf(vc) && t >= clipEnd(vc) - holdOf(vc) - 1e-6;
+        const inHold = (holdOf(vc) && t >= clipEnd(vc) - holdOf(vc) - 1e-6) || (holdInOf(vc) && t < vc.start + holdInOf(vc));
         if (this.rate > 0 && inHold) {
           // zopakovaný konec (≤ 5 snímků): přehrávání by skok o 0,1–0,2 s zpět nedorovnalo – snímky přesně, bez přehrávání
           if (!el.paused) el.pause();

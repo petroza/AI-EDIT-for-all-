@@ -8,7 +8,7 @@
  *   4) clip.posX tak, aby obličej byl uprostřed výřezu */
 const { VideoSource } = require('../engine/decode');
 const E = require('../../src/core/edit');
-const { clipEnd, holdOf } = require('../../src/core/model');
+const { clipEnd, holdOf, holdInOf } = require('../../src/core/model');
 
 const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
 const MODEL = 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
@@ -196,7 +196,8 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}, only = nul
       let src = srcs.get(m.id);
       if (!src) { src = await VideoSource.open(fileOf(m)); srcs.set(m.id, src); }
       const ah = Math.round(AW * m.height / m.width / 2) * 2;
-      const cuts = clip.out - clip.in > 1.2 ? await cameraCuts(src, clip.in, clip.out, m.fps || 25, ah) : [];
+      // zopakovaný začátek / konec (holdIn / hold) mají ve zdroji cizí záběr – střih kamery v nich nehledat
+      const cuts = clip.out - clip.in > 1.2 ? await cameraCuts(src, clip.in + holdInOf(clip), clip.out - holdOf(clip), m.fps || 25, ah) : [];
       const bounds = [clip.in, ...cuts, clip.out];
       const shots = [];
       for (let i = 0; i < bounds.length - 1; i++) {
@@ -337,6 +338,9 @@ async function edgeFragments(plan, seq) {
       // úplný začátek sekvence (není soused, který by zbytek převzal): zbytek se odstřihne i se zvukem a sekvence se posune,
       // jen když v něm není řeč (kolo 8, redaktorka: video 4:5 začínalo 2 snímky moderátorky)
       else if (!prev && e.clip.start < tol && e.file && await quietHead(e.file, e.clip.in, d0)) e.head = { d: d0 };
+      // úplný začátek pod řečí (odstřihnout nejde, soused není): prvních pár snímků = další snímky téhož záběru (holdIn) –
+      // jako zopakovaný konec; jen ≤ 5 snímků (AI tok S11: upoutávka z panelu začínala 3 snímky celku)
+      else if (!prev && e.clip.start < tol && d0 <= 5.5 / fps && !holdInOf(e.clip)) e.headRepeat = { d: d0 };
     }
     const L = sh[sh.length - 1];
     const d1 = Math.round((L.out - L.in) * fps) / fps;
@@ -475,7 +479,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
         const ah = Math.round(AW * m.height / m.width / 2) * 2, fps = m.fps || 25;
         // poslední snímky souboru dekodér někdy nevydá; zopakovaný konec (hold) má ve zdroji cizí záběr – nehledat v něm
         const vEnd = Math.min(clip.out - holdOf(clip), (m.duration || clip.out) - 2 / fps);
-        const head = await cameraCuts(src, clip.in, clip.in + MIN_SHOT + 0.1, fps, ah, 0.1);
+        const head = await cameraCuts(src, clip.in + holdInOf(clip), clip.in + MIN_SHOT + 0.1, fps, ah, 0.1);
         const tail = vEnd - (clip.out - MIN_SHOT - 0.1) > 0.2 ? await cameraCuts(src, clip.out - MIN_SHOT - 0.1, vEnd, fps, ah, 0.1) : [];
         const bounds = [clip.in, ...head.slice(-1), ...tail.slice(0, 1), clip.out];
         const shots = [];
@@ -487,7 +491,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
     await edgeFragments(plan, seq);
   } finally { for (const s of srcs.values()) s.close(); }
   progress('', 1);
-  const todo = plan.filter((e) => e.lead || e.tail || e.head || e.foot || e.footExt || e.footRepeat || e.cutHead || e.cutTail);
+  const todo = plan.filter((e) => e.lead || e.tail || e.head || e.headRepeat || e.foot || e.footExt || e.footRepeat || e.cutHead || e.cutTail);
   if (opts.signal && opts.signal.cancelled) return { merged: 0 }; // most to vzdal po limitu – sekvenci už neměnit (revize #4)
   if (!todo.length) return { merged: shortEdge.length };
   p.edit('Clean up camera-cut leftovers', () => {
@@ -498,6 +502,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
       const linkedA = (c) => (c.linkId ? seq.tracks.audio.flatMap((t) => t.clips).filter((a) => a.linkId === c.linkId && Math.abs(a.start - c.start) < 0.02 && Math.abs(a.out - c.out) < 0.02) : []);
       if (e.cutHead) { for (const x of [e.clip, ...linkedA(e.clip)]) { x.in += e.cutHead.d; x.start += e.cutHead.d; } }
       if (e.cutTail) { for (const x of [e.clip, ...linkedA(e.clip)]) x.out -= e.cutTail.d; }
+      if (e.headRepeat) e.clip.holdIn = { d: e.headRepeat.d, in: e.clip.in };
       if (e.footRepeat) {
         // posledních d s obrazu = znovu předchozích d s (vlastnost klipu „hold“, ne samostatný klip – redaktorka S10: kopie
         // zůstávala na ose po smazání / zkrácení klipu); klip zůstává jeden a propojený se svým zvukem

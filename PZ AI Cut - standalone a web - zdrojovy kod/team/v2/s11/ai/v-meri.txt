@@ -1,0 +1,6 @@
+== ai-s11-vyrok-mcp-916
+    I:         -14.0 LUFS     Peak:       -1.5 dBFS 
+
+== ai-s11-upoutavka-15-916-tit
+    I:         -14.2 LUFS     Peak:       -1.5 dBFS 
+pts_time:5.36 pts_time:7 pts_time:7.96 pts_time:10.36 pts_time:11.08 

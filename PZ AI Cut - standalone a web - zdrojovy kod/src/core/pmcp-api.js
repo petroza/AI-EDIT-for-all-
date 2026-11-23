@@ -340,7 +340,7 @@ function createApi(project, hooks = {}) {
           try {
             // zopakovaný konec (hold) má ve zdroji cizí záběr – střih kamery v něm nehledat (kontrolor S11: kus 4 snímků s výřezem celku)
             const to = c.out - require('./model').holdOf(c);
-            const r = await api.detectSceneCuts({ source: m.path, ranges: [{ from: c.in, to }], sensitivity: 'MediumSensitivity' });
+            const r = await api.detectSceneCuts({ source: m.path, ranges: [{ from: c.in + require('./model').holdInOf(c), to }], sensitivity: 'MediumSensitivity' });
             const lm = new Map();
             let cur = c;
             for (const cut of r.cuts.sort((x, y) => x - y)) {
