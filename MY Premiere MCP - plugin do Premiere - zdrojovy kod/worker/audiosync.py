@@ -227,17 +227,18 @@ def refine_edges(params: dict, ctx) -> dict:
         word = pt.get("word")
         if direction == "start" and word is not None and word > at and not quiet[at_idx]:
             w_idx = min(len(ctx_env), round((word - clo) / frame_s) + 6)  # Whisperův začátek slova bývá i uprostřed ticha
-            last_q, first_q = None, None
-            for i in range(w_idx - 1, at_idx, -1):
+            # nejdelší tichý úsek v rozsahu, a jen skutečná pauza mezi slovy (≥ 60 ms) – kratší ticho bývá uzávěr hlásky
+            # uvnitř slova („s|t“ u „St…“: Whisperův začátek slova je u neznělých souhlásek pozdě, revize noc 2026-11-23)
+            best_run, cur = None, None
+            for i in range(at_idx + 1, w_idx):
                 if quiet[i]:
-                    if last_q is None:
-                        last_q = i
-                    first_q = i
-                elif last_q is not None:
-                    if last_q - first_q + 1 > min_run:
-                        break
-                    last_q, first_q = None, None  # krátký pokles uvnitř zvuku – hledat dál
-            if last_q is not None and last_q - first_q + 1 > min_run:
+                    cur = (cur[0], i) if cur else (i, i)
+                    if best_run is None or cur[1] - cur[0] > best_run[1] - best_run[0]:
+                        best_run = cur
+                else:
+                    cur = None
+            first_q, last_q = best_run if best_run else (None, None)
+            if last_q is not None and (last_q - first_q + 1) * frame_s >= 0.06:
                 # v pauze místo, kde je nejtišší okno, které měří kontrola hranic (40 ms před střihem, 12 ms za ním) –
                 # pevná rezerva před slovem nechala v okně doznívání předchozí hlásky (−16 dB místo −22 dB);
                 # aspoň 10 ms před koncem pauzy (náběh slova)

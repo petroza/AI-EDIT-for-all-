@@ -176,14 +176,13 @@ const app = {
       app.sel = new Set(placed.map((c) => c.id));
     });
     if (s && (!s.zoom || wasEmpty)) app.timeline.zoomFit();
-    if (s && wasEmpty) autoFace(s, m);
+    if (s && wasEmpty) { if (!app._transcriptInsert) autoFace(s, m); }
     // b-roll vložený do V2+ přes jiný obraz: zbytek cizího záběru na jeho kraji odstřihnout hned (kontrolor S6), Ctrl+Z vrátí
-    else if (s && m.hasVideo && !app._transcriptInsert && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
+    else if (s && m.hasVideo && !app._transcriptInsert && s.height > s.width && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
       // širší záběr vložený do sekvence na výšku (b-roll přetažením): výřez podle obličeje jen pro vložené klipy (kontrolor S8)
       const ids = new Set([...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video'; }));
       if (ids.size) {
-        const h0 = project.history.length;
-        const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); }; // jedno Ctrl+Z vrátí vložení i výřez
+        const merge = reframeMerger(); // jedno Ctrl+Z vrátí vložení i výřez
         window.__pzReframeHere(s, ids).then(() => { merge(); app.program.refresh(); }).catch(() => merge());
       }
     } else if (s && m.hasVideo && window.__pzEdgeShots) {
@@ -215,8 +214,7 @@ const app = {
     if (added.size && m.hasVideo && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
       app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
       // výřez je součást vložení: jeho kroky Zpět sloučit s vložením (jedno Ctrl+Z vrátí obojí – B1 undoInsert)
-      const h0 = project.history.length;
-      const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); };
+      const merge = reframeMerger();
       window.__pzReframeHere(s, added).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
     }
     app.status(p.where === 'end' ? LL('Added at the end of the sequence', 'Přidáno na konec sekvence') : LL('Inserted at the playhead', 'Vloženo na místo hlavy'));
@@ -1763,6 +1761,18 @@ if (settings.thumbSize) { $('thumbSize').value = settings.thumbSize; $('projList
 setProjView(settings.projView || 'icons');
 
 /** Záběr na šířku vložený do prázdné sekvence na výšku: výřez podle obličeje hned (jinak výřez na střed = často stůl). */
+/** Kroky Zpět, které přidá výřez podle obličeje (Set to Fill, AI: Reframe…), sloučit s předchozím krokem (vložením).
+ *  Jen ty kroky, ne celý rozsah od vložení: výřez trvá sekundy a mezitím přidaný krok uživatele nebo další vložení by se
+ *  ztratil (revize noc 2026-11-23). Krok = stav PŘED úpravou, takže odebrání kroku ho jen sloučí s předchozím. */
+function reframeMerger() {
+  const before = new Set(project.history);
+  return () => {
+    for (let i = project.history.length - 1; i >= 0; i--) {
+      const h = project.history[i];
+      if (!before.has(h) && /^(Set to Fill|AI: Reframe)/.test(h.label)) project.history.splice(i, 1);
+    }
+  };
+}
 function autoFace(s, m) {
   if (s && m && m.hasVideo && !(s.height > s.width) && window.__pzEdgeShots) {
     // na šířku: jen úklid zbytků jiného záběru na krajích klipu (kolo 7)
@@ -1771,8 +1781,7 @@ function autoFace(s, m) {
   }
   if (!s || !m || !m.hasVideo || !(s.height > s.width) || !(m.width > m.height) || !window.__pzReframeHere) return;
   app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
-  const h0 = project.history.length; // jedno Ctrl+Z vrátí vložení i výřez (jako přetažení do sekvence na výšku)
-  const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); };
+  const merge = reframeMerger(); // jedno Ctrl+Z vrátí vložení i výřez (jako přetažení do sekvence na výšku)
   window.__pzReframeHere(s).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
 }
 /** Název projektu pro soubor: „Bez názvu“ v češtině místo Untitled. */

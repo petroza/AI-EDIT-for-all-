@@ -142,9 +142,9 @@ function layout(words, seq, st, limitEnd) {
             // vyrovnané délky (součet čtverců) + zlom po čárce ano, za předložkou ne
             const len = txt(S.slice(b, e)).length;
             const bc = e < n ? breakCost(S[e - 1].w) : 0;
-            // doba zobrazení = do začátku dalšího titulku (konec věty: konec slova + 0,15 s); krátký kus stupňovaně – 0,3 s je
+            // doba zobrazení = do začátku dalšího titulku, nejvýš konec slova + 0,15 s; krátký kus stupňovaně – 0,3 s je
             // horší než 0,65 s (noc 2026-11-23: jednořádkové 9:16 v rychlé řeči 157 z 1762 titulků < 0,7 s, nejkratší 0,12 s)
-            const span0 = (e < n ? S[e].s : S[e - 1].e + 0.15) - S[b].s;
+            const span0 = (e < n ? Math.min(S[e].s, S[e - 1].e + 0.15) : S[e - 1].e + 0.15) - S[b].s;
             const cost = p.cost + len * len / 20 + (bc > 0 ? bc * 9 : bc * 4) + (span0 < 0.7 ? 400 + 3000 * (0.7 - span0) : 0);
             if (!best[j][e] || cost < best[j][e].cost) best[j][e] = { cost, prev: b };
           }

@@ -1490,7 +1490,7 @@ _CONJ_START = re.compile(r"(a|ale|i|aby|a pak|a najednou|a tak|a proto|takže)\b
 _CAUSAL = re.compile(r"\b(proto|takže|díky tomu|kvůli tomu|tím pádem|a tak)\b", re.I)
 # zdvořilosti na začátku a konci rozhovoru – v upoutávce nejsou úder (noc 2026-11-23: 30s upoutávka končila
 # „Děkuji moc za pozvání, Kristýnko.“)
-_SMALLTALK = re.compile(r"\b(děkuj\w*|díky za|ahoj|dobrý den|dobrý večer|na shledanou|vítej\w*|vítám\w*|mějte se|krásný zbytek|za pozvání)\b", re.I)
+_SMALLTALK = re.compile(r"(^|[.!?]\s+)(děkuj\w*( moc| mockrát| vám| ti)* za (pozvání|rozhovor|příležitost)|ahoj\b|dobrý (den|večer)\b|na shledanou|vítej\w*\b|vítám\w*\b|mějte se|krásný zbytek)|za pozvání", re.I)
 
 
 def _teaser_host(cands: list, instruction: str):
@@ -1579,11 +1579,17 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
         slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
         if slot is None and order and st0(c) > st0(order[-1]):
             slot = len(order)  # za poslední úder, když zazněl později (AI tok S4: upoutávka jen 10,7 s z 20)
-        if slot is None and order and st0(c) < st0(order[0]):
-            slot = 0  # před první úder (noc 2026-11-23: náhradníci zazněli dřív než otázka – 30s upoutávka měla 9 s)
+        if slot is None and order and st0(c) < st0(order[0]) and all(st0(a) < st0(b) for a, b in zip(order, order[1:])):
+            slot = 0  # před první úder, jen když jdou údery chronologicky – jinak je první hák z pozdější části (revize)
         if slot is not None:
             order.insert(slot, c)
-    return order
+    # pojistka: žádná věta dvakrát (náhrada úderu se spojkou hlídala překryv jen s údery před ní – noc 2026-11-23:
+    # 30s upoutávka měla #213 dvakrát za sebou)
+    uniq: list = []
+    for c in order:
+        if not any(key(c) & key(y) or {u["id"] for u in c["units"]} & {u["id"] for u in y["units"]} for y in uniq):
+            uniq.append(c)
+    return uniq
 
 
 def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude: set, backend: str, ctx,
