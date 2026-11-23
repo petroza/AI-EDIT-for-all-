@@ -1,0 +1,27 @@
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead.
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): Cannot write to the folder C:/Program Files – choose another place to save.
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): Sequence not found: neni takova
+
+=== transcribe_media (0.0 s) ERROR
+Soubor neexistuje: C:/Users/Petr/Downloads/neexistuje-s4.mp4
+
+=== build_sequence_from_transcript (0.0 s) ERROR
+Pro C:/Users/Petr/Downloads/neexistuje-s4.mp4 ještě neexistuje přepis. Nejdřív zavolej transcribe_media.
+
+=== import_media (0.0 s)
+[{"path":"C:/Users/Petr/Downloads/neexistuje-s4.mp4","error":"Project item not found: C:/Users/Petr/Downloads/neexistuje-s4.mp4"}]
+
+=== plan_edit_local (1.4 s) ERROR
+plan_edit selhal: RuntimeError: Pro C:/Users/Petr/Downloads/neexistuje-s4.mp4 neexistuje přepis – nejdřív transcribe.
+
+=== reframe_sequence (0.0 s) ERROR
+Střihový program (reframeSequence): Sequence not found: neni takova
+
+=== add_captions (0.0 s) ERROR
+Střihový program (getSequence): Sequence not found: neni takova

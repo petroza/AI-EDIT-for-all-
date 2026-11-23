@@ -1,0 +1,37 @@
+{
+ "name": "AI-S4 vyrok mama 9x16",
+ "style": {
+  "lines": 1,
+  "maxChars": 20,
+  "size": 1,
+  "pos": 30,
+  "color": "#ffffff",
+  "box": false
+ },
+ "n": 22,
+ "multi": 0,
+ "caps": [
+  "0.02-1.04 Když přijde",
+  "1.04-2.50 rodina o člověka",
+  "2.50-3.75 jako je máma?",
+  "3.75-5.25 Co všechno se v tu",
+  "5.25-6.52 chvíli, nevím,",
+  "6.52-7.83 zbortí, změní,",
+  "7.84-9.43 nastavuje znova?",
+  "9.60-10.60 Všechno, naprosto",
+  "10.60-11.88 všechno, protože",
+  "11.88-12.73 moje máma",
+  "12.73-13.84 byla tmel té",
+  "13.84-15.11 naší rodiny.",
+  "15.11-16.52 To byl někdo,",
+  "16.52-17.48 kdo držel celou",
+  "17.48-18.60 rodinu pohromadě",
+  "18.60-21.23 a kdo svolával nás",
+  "21.23-23.82 všechny na obědy,",
+  "23.82-25.79 svátky, narozeniny.",
+  "25.84-26.75 To byl prostě můj",
+  "26.75-27.80 nejbližší člověk.",
+  "27.80-28.50 A najednou",
+  "28.50-29.24 byl pryč."
+ ]
+}

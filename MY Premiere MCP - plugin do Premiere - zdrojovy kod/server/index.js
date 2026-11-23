@@ -70,9 +70,9 @@ async function bridge(url, payload, timeoutMs = 120000) {
   if (res.status === 504) {
     // ExtendScript běží dál i po vypršení limitu a engine je jednovláknový – opakované volání by čekalo za ním
     // (agent tak jednou zopakoval detekci řezů a zablokoval Premiere na desítky minut)
-    throw new Error(`Premiere nestihla odpovědět do ${Math.round(timeoutMs / 1000)} s a nejspíš ještě počítá. ` +
+    throw new Error(`Střihový program (Premiere / PZ AI Cut) nestihl odpovědět do ${Math.round(timeoutMs / 1000)} s a nejspíš ještě počítá. ` +
       'NEOPAKUJ stejné volání – zmenši rozsah (např. detect_scene_cuts s ranges), nebo počkej. ' +
-      'Pokud je v Premiere otevřený dialog, zavři ho.');
+      'Pokud je v programu otevřený dialog, zavři ho.');
   }
   if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
   return body.raw;

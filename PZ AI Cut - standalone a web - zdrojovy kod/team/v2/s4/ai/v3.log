@@ -1,0 +1,6 @@
+
+=== add_captions (1.5 s)
+{"cues":22,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\AI-S4_vyrok_mama_9x16.959beaea.srt","sequence":"AI-S4 vyrok mama 9x16","sample":["Když přijde rodina o člověka jako je","máma? Co všechno se v tu chvíli,","nevím, zbortí, změní,"]}
+
+=== export_sequence (5.3 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-vyrok-916-1radek.mp4","format":"h264","sizeMB":19.443,"duration":29.24,"captionsBurned":true,"loudness":"social"}

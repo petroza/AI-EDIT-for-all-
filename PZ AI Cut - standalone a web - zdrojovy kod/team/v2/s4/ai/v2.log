@@ -1,0 +1,12 @@
+
+=== export_sequence (2.8 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-vyrok-169.mp4","format":"h264","sizeMB":7.148,"duration":29.24,"captionsBurned":true,"loudness":"social"}
+
+=== reframe_sequence (12.4 s)
+{"sequenceID":"959beaea-f94b-4e75-a5a5-2f206c0090bd","name":"AI-S4 vyrok mama 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":3,"shots":6,"facesFound":6,"summary":"Vytvořena sekvence „AI-S4 vyrok mama 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 3)."}
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S4 vyrok mama 9x16"}
+
+=== export_sequence (5.2 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-vyrok-916.mp4","format":"h264","sizeMB":19.455,"duration":29.24,"captionsBurned":true,"loudness":"social"}

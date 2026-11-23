@@ -1,0 +1,12 @@
+
+=== export_sequence (1.2 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-upoutavka-mcp-169.mp4","format":"h264","sizeMB":3.182,"duration":10.72,"captionsBurned":false,"loudness":"social"}
+
+=== reframe_sequence (1.9 s)
+{"sequenceID":"bd37aec4-5d9b-4b3a-83c1-f42a08963c13","name":"AI-S4 upoutavka MCP 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":0,"shots":2,"facesFound":2,"summary":"Vytvořena sekvence „AI-S4 upoutavka MCP 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %)."}
+
+=== get_sequence (0.0 s)
+{"name":"AI-S4 upoutavka MCP 9x16","sequenceID":"bd37aec4-5d9b-4b3a-83c1-f42a08963c13","fps":25,"width":1080,"height":1920,"duration":10.72,"playhead":0,"videoTracks":3,"audioTracks":3,"inPoint":null,"outPoint":null,"clips":[{"kind":"video","track":0,"index":0,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":0,"end":4.2,"inPoint":63.6,"outPoint":67.8,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsgzerw0y5pe1","disabled":false,"speed":1,"selected":false},{"kind":"video","track":0,"index":1,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":4.2,"end":10.72,"inPoint":282.84,"outPoint":289.36,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsgzerw0y5pe1","disabled":false,"speed":1,"selected":false},{"kind":"audio","track":0,"index":0,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":0,"end":4.2,"inPoint":63.6,"outPoint":67.8,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsgzerw0y5pe1","disabled":false,"speed":1,"selected":false},{"kind":"audio","track":0,"index":1,"name":"tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","start":4.2,"end":10.72,"inPoint":282.84,"outPoint":289.36,"mediaPath":"C:/Users/Petr/Downloads/tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4","nodeId":"mmwsgzerw0y5pe1","disabled":false,"speed":1,"selected":false}]}
+
+=== export_sequence (1.7 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-upoutavka-mcp-916.mp4","format":"h264","sizeMB":9.229,"duration":10.72,"captionsBurned":false,"loudness":"social"}

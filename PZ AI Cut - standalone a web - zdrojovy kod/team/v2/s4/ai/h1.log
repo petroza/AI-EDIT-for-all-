@@ -1,0 +1,48 @@
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"STRIH HERMES 20s 00:37:36 9x16"}
+
+=== transcribe_media (5.5 s)
+Přepis: O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-novy-70s.mp4
+Délka 00:01:10.02 · jazyk cs · 13 vět · 223 slov · large-v3/cuda · 4.7 s
+Soubor: O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\cache\transcripts\ai-s4-novy-70s.mp4.99f5f35e2ebf.json
+#1 00:00:00.00–00:00:03.72 Dva cesta vedla takhle úplně od začátku a teď jsi moderátorka.
+#2 00:00:03.72–00:00:05.02 To je taky úplně jiná disciplína.
+#3 00:00:07.18–00:00:11.08 Možná, co to pro tebe znamenalo a co pro tebe znamená snídaně s novou, když se řekne.
+#4 00:00:11.12–00:00:13.68 Protože pro mě to je domov, je to základ, je to začátek.
+#5 00:00:13.90–00:00:18.36 Nevím, jak jsi to cítila. Protože už jsi tady byla součást toho života a té rodiny.
+#6 00:00:18.46–00:00:21.84 Protože ať chceš nebo nechceš, což možná diváci neví, ty tady žiješ.
+#7 00:00:21.84–00:00:24.88 Tady odžiješ jako kus života a není to tak, že člověk přijde do práce.
+#8 00:00:25.42–00:00:32.04 v osm a v pět skončí, protože máš přípravu doma, pak seš tady dýl, mezi tím natáčíš, nedá se to podle mě vůbec jako...
+#9 00:00:32.04–00:00:51.08 Tak jako ten moderátorský post pro mě bylo něco, kam jsem hodně dlouhou dobu si myslím ani jako nedohlédla, že jsem si říkal, že to je fakt hodně jako pro mě nedosažitelný, že si myslím, že vlastně téměř každá jako slečna nebo kdokoliv prostě sem přijde dělat reportéra, tak vlastně ten jeho sen je ve finále potom jako...
+#10 00:00:51.76–00:00:54.80 moderovat nějaký pořad nebo prostě něco moderovat.
+#11 00:00:54.82–00:01:00.54 Myslím si, že to tak zkrátka je a každý k tomu směřuje, protože to je vlastně potom ta odměna, že jo.
+#12 00:01:00.64–00:01:08.50 Ale já jsem dlouhou dobu jako tam ani nekoukala, protože vlastně ve víkendu jsem byla čtyři roky a naj
+
+=== plan_edit_local (622.3 s) ERROR
+Premiere nestihla odpovědět do 600 s a nejspíš ještě počítá. NEOPAKUJ stejné volání – zmenši rozsah (např. detect_scene_cuts s ranges), nebo počkej. Pokud je v Premiere otevřený dialog, zavři ho.
+
+=== plan_edit_local (7.5 s)
+Návrh (hermes): 4 vět, 13.7 s (cíl 20 s).
+VYBRÁNO (v pořadí střihu):
+#1 [?] 3.7s Dva cesta vedla takhle úplně od začátku a teď jsi moderátorka.
+#2 [?] 1.3s To je taky úplně jiná disciplína.
+#3 [?] 3.9s Možná, co to pro tebe znamenalo a co pro tebe znamená snídaně s novou, když se řekne.
+#4 [?] 2.6s Protože pro mě to je domov, je to základ, je to začátek.
+Zkontroluj návaznost, zadání a vyváženost; případně vyměň věty za náhradníky nebo dohledej jiné (get_transcript fromId/toId), pak build_sequence_from_transcript. Řádek s ↳ je pokračování předchozí věty (jedno souvětí) – vyhazuj ho jen spolu s ní, jinak souvětí skončí uprostřed.
+
+=== plan_edit_local (30.4 s)
+Návrh (hermes): 6 vět, 68 s (cíl 60 s).
+VYBRÁNO (v pořadí střihu):
+#117 [Barbora Šimková] 19.0s Tak jako ten moderátorský post pro mě bylo něco, kam jsem hodně dlouhou dobu si myslím ani jako nedohlédla, že jsem si říkal, že to je fakt hodně jako pro mě nedosažitelný, že si myslím, že vlastně téměř každá jako slečna nebo kdokoliv prostě sem přijde dělat reportéra, tak vlastně ten jeho sen je ve finále potom jako...
+#118 [Barbora Šimková] 8.8s Moderovat nějaký pořad nebo prostě něco moderovat, myslím si, že to tak zkrátka je a každý k tomu směřuje, protože to je vlastně potom ta odměna, že jo.
+#142 [Barbora Šimková] 18.6s No a to se vlastně jako potvrdilo. A já jsem jako měla velký respekt samozřejmě k času trávila s nima a jako od nich jsem vlastně těch zkušeností podle mě nasáhla úplně nejvíc, protože oni už tehdy moderovali hodně, moderovali snídaně vlastně dlouho a ještě ke...
+↳ #143 [Barbora Šimková] 5.9s oni mají mezi sobou podle mě jako velmi unikátní chemii, kterou ne každá moderátorská dvojice má.
+#144 [Barbora Šimková] 11.7s Oni na sebe neuvěřitelně slyší, neuvěřitelně se doplňují, mají vlastně jako neuvěřitelně stejný smysl pro humor, ale tak jako, že se popichují, ale vlastně tak hrozně jako příjemně.
+#145 [Barbora Šimková] 4.2s Jsou to prostě kámoši, kteří spolu moderují a je to za mě jako skvělá kombinace.
+NÁHRADNÍCI (k tématu, vyřazeno kvůli délce):
+#22 [Barbora Šimková] 7.0s Vlastně jsem si pak uvědomila, že bych radši si ty příběhy vlastně jako psala sama a proto jsem se dostala na novu jako reportérka.
+Zkontroluj návaznost, zadání a vyváženost; případně vyměň věty za náhradníky nebo dohledej jiné (get_transcript fromId/toId), pak build_sequence_from_transcript. Řádek s ↳ je pokračování předchozí věty (jedno souvětí) – vyhazuj ho jen spolu s ní, jinak so
+
+=== worker_status (0.4 s)
+{"health":{"ok":true,"version":"0.2.0","pid":15964,"codeStamp":1795387253,"models":{"whisper":true,"whisperCzech":true,"segmentation":true,"embedding":true,"llm":true,"llmVision":true,"llmVisionMmproj":true},"llmBackends":[{"name":"local","label":"vlastní llama-server (gemma3-12b-Q4_K_M.gguf)","running":false},{"name":"hermes","label":"Hermes – Qwen3.6-35B-A3B (součást projektu, port 8000)","url":"http://127.0.0.1:8000","model":"dflash","running":true}],"running":[],"queued":0,"whisperLoaded":true,"whisperDevice":"cuda","llmRunning":false,"visionLlmRunning":false},"jobs":[{"id":"cfaa5a8f6ba3","type":"plan_edit","status":"done","progress":1,"message":"hotovo","error":null},{"id":"5589827f2d70","type":"plan_edit","status":"done","progress":1,"message":"hotovo","error":null},{"id":"0ea623053971","type":"edge_levels","status":"done","progress":1,"message":"hotovo","error":null},{"id":"2e2ba2c3ca9a","type":"refine_edges","status":"done","progress":1,"message":"hotovo","error":null},{"id":"fd1b6f8e747a","type":"edge_levels","status":"done","progress":1,"message":"hotovo","error":null},{"id":"ca35d33ff210","type":"refine_edges","status":"done","progress":1,"message":"hotovo","error":null},{"id":"ee8c7c9b0936","type":"transcribe","status":"done","progress":1,"message":"hotovo","error":null},{"id":"bff29bcb99bd","type":"edge_levels","status":"done","progress":1,"message":"hotovo","error":null},{"id":"a2df6e0c1b7c","type":"refine_edges","status":"done","progress":1,"message":"hotovo","error":null},{"id":"ae7dbd293758","type":"plan_edit","status":"done","progress":1,"message":"hotovo","error":null}]}

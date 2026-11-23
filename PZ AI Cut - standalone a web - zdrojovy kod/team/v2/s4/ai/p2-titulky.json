@@ -1,0 +1,26 @@
+{
+ "sec": 8.087,
+ "paneTxt": "Vytvoří titulky z přepisu aktivní sekvence – spusť až po dokončeném střihu.\nZnaků na řádek\n20\n25\n30\n35\n40\n45\n50\nŘádky\njednořádkové\ndvouřádkové\nJazyk\njen přepis\n▾\nPřidat titulky",
+ "outTail": " HERMES 20s 00:37:36“? 👍👎▶ Otevřít⬇ Export MP4⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 20s 00:37:36“✔ STRIH HERMES 20s 00:37:36 9x16 (1080×1920, střihy kamery: 2)› Titulky do aktivní sekvence   0 % ve frontě✔ Titulky přidány do „STRIH HERMES 20s 00:37:36 9x16“ – 9 titulků   „Za tři týdny. Takže to přišlo úplně,“   „jak my jsme se rozvěděli,“   „že je nemocná a za tři týdny byla pryč.“",
+ "seq": "STRIH HERMES 20s 00:37:36 9x16",
+ "style": {
+  "lines": 2,
+  "maxChars": 25,
+  "size": 1,
+  "pos": 30,
+  "color": "#ffffff",
+  "box": false
+ },
+ "n": 9,
+ "caps": [
+  "0.00-0.92 Za tři týdny.",
+  "0.92-2.53 Takže to přišlo / úplně,",
+  "2.53-3.37 jak my jsme / se rozvěděli,",
+  "3.37-5.47 že je nemocná a za / tři týdny byla pryč.",
+  "5.47-7.63 My jsme vlastně / vůbec neměli",
+  "7.63-9.82 možnost se na / to připravit.",
+  "9.96-11.56 Všechno, / naprosto všechno,",
+  "11.56-13.58 protože moje / máma byla",
+  "13.58-15.17 tmel té / naší rodiny."
+ ]
+}

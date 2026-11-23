@@ -379,7 +379,7 @@ async function reframeCopy(app, src, num, den, W, H, fileOf, status = () => {}) 
   seq.width = W; seq.height = H;
   for (const tr of seq.tracks.video) for (const c of tr.clips) { c.fit = 'cover'; c.scale = 1; c.posX = 0; c.posY = 0; }
   // výška a velikost titulků podle nového tvaru; zvýraznění slova, barva a podklad zůstanou jako ve zdroji
-  if ((seq.captions || []).length) { const keepSt = {}; for (const k of ['highlight', 'color', 'box']) if (src.captionStyle && src.captionStyle[k] !== undefined) keepSt[k] = src.captionStyle[k]; delete seq.captionStyle; if (Object.keys(keepSt).length) seq.captionStyle = Object.assign(CL.styleOf(seq), keepSt); seq.captions = CL.reflow(seq); }
+  if ((seq.captions || []).length) { const keepSt = {}; for (const k of ['highlight', 'color', 'box', 'lines']) if (src.captionStyle && src.captionStyle[k] !== undefined) keepSt[k] = src.captionStyle[k]; delete seq.captionStyle; if (Object.keys(keepSt).length) seq.captionStyle = Object.assign(CL.styleOf(seq), keepSt); seq.captions = CL.reflow(seq); }
   app.edit('Auto Reframe Sequence', () => { app.project.addSequence(seq); });
   const added = app.project.sequences.find((x) => x.id === seq.id);
   app.openSequence(added.id);
@@ -436,8 +436,9 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
         let src = srcs.get(m.id);
         if (!src) { src = await VideoSource.open(fileOf(m)); srcs.set(m.id, src); }
         const ah = Math.round(AW * m.height / m.width / 2) * 2, fps = m.fps || 25;
+        const vEnd = Math.min(clip.out, (m.duration || clip.out) - 2 / fps); // poslední snímky souboru dekodér někdy nevydá
         const head = await cameraCuts(src, clip.in, clip.in + MIN_SHOT + 0.1, fps, ah, 0.1);
-        const tail = await cameraCuts(src, clip.out - MIN_SHOT - 0.1, clip.out, fps, ah, 0.1);
+        const tail = vEnd - (clip.out - MIN_SHOT - 0.1) > 0.2 ? await cameraCuts(src, clip.out - MIN_SHOT - 0.1, vEnd, fps, ah, 0.1) : [];
         const bounds = [clip.in, ...head.slice(-1), ...tail.slice(0, 1), clip.out];
         const shots = [];
         for (let i = 0; i < bounds.length - 1; i++) shots.push({ in: bounds[i], out: bounds[i + 1], x: null });

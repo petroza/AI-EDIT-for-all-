@@ -1484,6 +1484,15 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
                 continue
         out.append(c)
     order = out or order
+    # otázka (končí „?“) musí mít za sebou svou odpověď – úder, který v rozhovoru následuje hned po ní (AI tok S4: otázka
+    # na hereckou dráhu + odpověď o posílání životopisu z jiné části rozhovoru)
+    fixed: list = []
+    for i, c in enumerate(order):
+        nxt = order[i + 1] if i + 1 < len(order) else None
+        if text(c).strip().endswith("?") and not (nxt and 0 < first(nxt) - last(c) <= 2) and len(order) > 2:
+            continue
+        fixed.append(c)
+    order = fixed or order
     if not re.search(r"moder", instruction, re.I):
         spk: dict = {}
         for c in cands:
@@ -1504,6 +1513,8 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
                         or _CONJ_START.match(text(c).strip()) or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
                     continue
                 slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
+                if slot is None and order and st0(c) > st0(order[-1]):
+                    slot = len(order)  # za poslední úder, když zazněl později (AI tok S4: upoutávka jen 10,7 s z 20)
                 if slot is not None:
                     order.insert(slot, c)
     return order
@@ -1627,6 +1638,8 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         if c in order or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
             continue
         slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
+        if slot is None and order and st0(c) > st0(order[-1]):
+            slot = len(order)
         if slot is not None:
             order.insert(slot, c)
     order = _teaser_guard(order, cands, top, instruction, target, text, key)

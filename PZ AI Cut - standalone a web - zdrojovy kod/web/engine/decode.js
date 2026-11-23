@@ -72,8 +72,11 @@ class VideoSource {
       if (!this.dec || needReset) this.reset(k);
     }
     this.lastTs = tts;
+    // časový limit (AI tok S4: u snímku na konci souboru se dekodér zasekl a s ním most aplikace na 10 min)
+    const deadline = Date.now() + 8000;
     for (let guard = 0; guard < 100000; guard++) {
       if (this.err) throw this.err;
+      if (Date.now() > deadline) { this.err = new Error('Decoding timeout at ' + t.toFixed(3) + ' s'); throw this.err; }
       // zahodit staré snímky, ponechat poslední <= cíl
       while (this.queue.length > 1 && this.queue[1].timestamp <= tts) this.queue.shift().close();
       // fronta je seřazená a starší snímky jsou pryč: [0] = nejnovější <= cíl (nebo první po něm)
@@ -82,7 +85,10 @@ class VideoSource {
         if (this.dec.decodeQueueSize > 6) { await this.waitOutput(50); continue; }
         await this.push(this.feed++);
         if (this.queue.length === 0 && this.dec.decodeQueueSize > 3) await this.waitOutput(20);
-      } else if (!this.flushed) { this.flushed = true; await this.dec.flush(); } else {
+      } else if (!this.flushed) {
+        this.flushed = true;
+        await Promise.race([this.dec.flush(), new Promise((r) => setTimeout(r, 3000))]);
+      } else {
         if (this.queue.length) return this.queue[this.queue.length - 1].clone();
         throw new Error('Frame not found at ' + t.toFixed(3) + ' s');
       }

@@ -179,7 +179,8 @@ function createApi(project, hooks = {}) {
   async function edgeShots(res) {
     if (!hooks.edgeShots || !res || !res.sequenceID) return;
     try {
-      const r = await hooks.edgeShots(getSeq(res.sequenceID));
+      // nejvýš 20 s – úklid krajů je navíc, sekvence platí i bez něj; most nesmí čekat (AI tok S4: zaseknutí na 10 min)
+      const r = await Promise.race([hooks.edgeShots(getSeq(res.sequenceID)), new Promise((ok) => setTimeout(() => ok(null), 20000))]);
       if (r && r.merged) res.edgeShotsFixed = r.merged;
     } catch (e) { /* bez opravy krajů – sekvence platí */ }
   }
@@ -325,7 +326,7 @@ function createApi(project, hooks = {}) {
     seq.width = W; seq.height = H;
     for (const t of seq.tracks.video) for (const c of t.clips) { c.fit = 'cover'; c.scale = 1; c.posX = 0; c.posY = 0; }
     // titulky přeskládat na nový tvar obrazu (styl podle formátu: 9:16 výš kvůli rozhraní sítí)
-    if ((seq.captions || []).length) { try { const CL = require('./captionlayout'); const src = { captionStyle: seq.captionStyle }; const keepSt = {}; for (const k of ['highlight', 'color', 'box']) if (src.captionStyle && src.captionStyle[k] !== undefined) keepSt[k] = src.captionStyle[k]; delete seq.captionStyle; if (Object.keys(keepSt).length) seq.captionStyle = Object.assign(CL.styleOf(seq), keepSt); seq.captions = CL.reflow(seq); } catch (e) { /* ponechat */ } }
+    if ((seq.captions || []).length) { try { const CL = require('./captionlayout'); const src = { captionStyle: seq.captionStyle }; const keepSt = {}; for (const k of ['highlight', 'color', 'box', 'lines']) if (src.captionStyle && src.captionStyle[k] !== undefined) keepSt[k] = src.captionStyle[k]; delete seq.captionStyle; if (Object.keys(keepSt).length) seq.captionStyle = Object.assign(CL.styleOf(seq), keepSt); seq.captions = CL.reflow(seq); } catch (e) { /* ponechat */ } }
     let splits = 0, faced = 0, shots = 0;
     if (a.faces !== false) {
       // 1) střihy kamery uvnitř klipů -> rozříznout jen video
