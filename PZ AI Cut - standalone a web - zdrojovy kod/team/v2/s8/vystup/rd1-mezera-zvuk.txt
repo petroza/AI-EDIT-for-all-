@@ -1,0 +1,4 @@
+mezera 9,64-10,68 (bez kraju 60 ms): export RD1 -36.8 dBFS | puvodni mix -31.5 | A1 -33.1 | A2+A3 -36.8 | RD1 - (A2+A3) -70.6 | RD1 - mix -33.1
+pred mezerou 5-9,5: export RD1 -31.8 dBFS | puvodni mix -31.8 | A1 -32.4 | A2+A3 -40.3 | RD1 - (A2+A3) -32.4 | RD1 - mix -66.8
+za mezerou 11-20: export RD1 -29.8 dBFS | puvodni mix -29.8 | A1 -30.2 | A2+A3 -40.6 | RD1 - (A2+A3) -30.2 | RD1 - mix -67.0
+delka RD1 50.080 s, mix 50.080 s

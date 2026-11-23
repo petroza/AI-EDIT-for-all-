@@ -697,6 +697,8 @@ function createTimeline(app) {
       app.edit(d.ripple ? 'Ripple Edit' : 'Trim', () => E.trimEdge(s, d.clip.id, d.edge, d.t, {
         ripple: d.ripple, unlinked: d.alt || !app.linkedSel, mediaDuration: (id) => (app.project.mediaById(id) || {}).duration || Infinity,
       }));
+      // nový kraj uprostřed slova → upozornit (jako žiletka)
+      if (app.warnMidWord) { const f = E.findClip(s, d.clip.id); if (f) app.warnMidWord(s, d.edge === 'in' ? f.clip.start : clipEnd(f.clip)); }
     } else if (d.type === 'marquee') {
       if (!d.moved) {
         // klik do prázdna: playhead tam neskáče (jako v Premiere), jen výběr mezery

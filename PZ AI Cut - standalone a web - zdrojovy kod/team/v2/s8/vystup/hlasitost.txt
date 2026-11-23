@@ -1,0 +1,16 @@
+vystup-s8-a.mp4 | h264,1280,720,400 | A: aac,2,16.000000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-a916.mp4 | h264,1080,1920,400 | A: aac,2,16.000000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-a11.mp4 | h264,1080,1080,400 | A: aac,2,16.000000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-sim.mp4 | h264,1280,720,1148 | A: aac,2,45.920000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-sim916.mp4 | h264,1080,1920,1148 | A: aac,2,45.920000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-sim11.mp4 | h264,1080,1080,1148 | A: aac,2,45.920000 |  I: -13.9 LUFS Peak: -1.5 dBFS 
+vystup-s8-k219.mp4 | h264,1280,720,38 | A: aac,2,1.520000 |  I: -16.4 LUFS Peak: -1.5 dBFS 
+vystup-s8-k219916.mp4 | h264,1080,1920,38 | A: aac,2,1.520000 |  I: -16.4 LUFS Peak: -1.5 dBFS 
+vystup-s8-k21911.mp4 | h264,1080,1080,38 | A: aac,2,1.520000 |  I: -16.4 LUFS Peak: -1.5 dBFS 
+vystup-s8-a1080-xdcam.mxf (A1+A2 mono -> stereo) |  I: -23.4 LUFS Peak: -8.2 dBFS 
+vystup-s8-sim1080-xdcam.mxf (A1+A2 mono -> stereo) |  I: -22.9 LUFS Peak: -7.4 dBFS 
+vystup-s8-sim-dnxhr.mxf (A1+A2 mono -> stereo) |  I: -22.9 LUFS Peak: -7.4 dBFS 
+vystup-s8-multi.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS 
+vystup-s8-multi916.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS 
+vystup-s8-multi11.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS 
+vystup-s8-multi1080-xdcam.mxf (A1+A2 mono -> stereo) |  I: -22.9 LUFS Peak: -7.9 dBFS 

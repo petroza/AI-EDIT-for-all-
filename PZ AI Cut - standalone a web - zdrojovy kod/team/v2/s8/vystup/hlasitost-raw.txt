@@ -1,0 +1,12 @@
+vystup-s8-a.mp4 :: [Parsed_ebur128_2 @ 0000023c11dbcac0]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 2.9 LU Threshold: -31.2 LUFS LRA low: -12.4 LUFS LRA high: -9.4 LUFS True peak: 
+vystup-s8-a916.mp4 :: [Parsed_ebur128_2 @ 0000019f775fab80]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 2.9 LU Threshold: -31.2 LUFS LRA low: -12.4 LUFS LRA high: -9.4 LUFS True peak: 
+vystup-s8-a11.mp4 :: [Parsed_ebur128_2 @ 00000248407cb0c0]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 2.9 LU Threshold: -31.2 LUFS LRA low: -12.4 LUFS LRA high: -9.4 LUFS True peak: 
+vystup-s8-sim.mp4 :: [Parsed_ebur128_2 @ 000001c02171c340]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 5.1 LU Threshold: -31.1 LUFS LRA low: -13.9 LUFS LRA high: -8.8 LUFS True peak: 
+vystup-s8-sim916.mp4 :: [Parsed_ebur128_2 @ 000002db4efcafc0]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 5.1 LU Threshold: -31.1 LUFS LRA low: -13.9 LUFS LRA high: -8.8 LUFS True peak: 
+vystup-s8-sim11.mp4 :: [Parsed_ebur128_2 @ 0000021584401800]  I: -10.9 LUFS Threshold: -21.1 LUFS Loudness range: LRA: 5.1 LU Threshold: -31.1 LUFS LRA low: -13.9 LUFS LRA high: -8.8 LUFS True peak: 
+vystup-s8-k219.mp4 :: [Parsed_ebur128_2 @ 000001e2fcebc780]  I: -13.4 LUFS Threshold: -24.6 LUFS Loudness range: LRA: 0.0 LU Threshold: 0.0 LUFS LRA low: 0.0 LUFS LRA high: 0.0 LUFS True peak: 
+vystup-s8-k219916.mp4 :: [Parsed_ebur128_2 @ 000001efa175cac0]  I: -13.4 LUFS Threshold: -24.6 LUFS Loudness range: LRA: 0.0 LU Threshold: 0.0 LUFS LRA low: 0.0 LUFS LRA high: 0.0 LUFS True peak: 
+vystup-s8-k21911.mp4 :: [Parsed_ebur128_2 @ 0000018cf46d23c0]  I: -13.4 LUFS Threshold: -24.6 LUFS Loudness range: LRA: 0.0 LU Threshold: 0.0 LUFS LRA low: 0.0 LUFS LRA high: 0.0 LUFS True peak: 
+vystup-s8-a1080-xdcam.mxf :: [Parsed_ebur128_2 @ 0000028c27bea9c0]  I: -20.4 LUFS Threshold: -30.5 LUFS Loudness range: LRA: 3.7 LU Threshold: -40.6 LUFS LRA low: -22.1 LUFS LRA high: -18.5 LUFS True peak: 
+vystup-s8-sim1080-xdcam.mxf :: [Parsed_ebur128_2 @ 0000019dda1f3300]  I: -19.9 LUFS Threshold: -30.1 LUFS Loudness range: LRA: 5.3 LU Threshold: -40.1 LUFS LRA low: -23.0 LUFS LRA high: -17.7 LUFS True peak: 
+vystup-s8-sim-dnxhr.mxf :: [Parsed_ebur128_2 @ 000001c2a20bb100]  I: -19.9 LUFS Threshold: -30.1 LUFS Loudness range: LRA: 5.3 LU Threshold: -40.1 LUFS LRA low: -23.0 LUFS LRA high: -17.7 LUFS True peak: 

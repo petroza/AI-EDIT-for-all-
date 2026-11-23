@@ -476,11 +476,13 @@ const commands = {
     if (!a || !s) return;
     for (const tr of s.tracks.audio) {
       if (tr.muted) continue;
-      const c = tr.clips.find((x) => !x.disabled && Math.abs(x.start + (x.out - x.in) - t) < 0.02);
-      const m = c && project.mediaById(c.mediaId);
-      const tx = m && a.get(m);
-      const w = tx && tx.words && tx.words.find((x) => x.s + 0.04 < c.out && x.e - 0.04 > c.out);
-      if (w) { app.toast(`The cut is in the middle of the word “${String(w.w).replace(/[.,!?…]+$/, '')}” – move it into a pause (Q / W, or drag the edit).`, true); return; }
+      // konec klipu na t (žiletka, ořez konce) i začátek klipu na t (ripple trim začátku, redaktorka S8: „zajímavým“)
+      for (const [c, src] of tr.clips.filter((x) => !x.disabled).flatMap((x) => [[x, x.out, x.start + (x.out - x.in)], [x, x.in, x.start]]).filter(([, , at]) => Math.abs(at - t) < 0.02).map(([x, sv]) => [x, sv])) {
+        const m = project.mediaById(c.mediaId);
+        const tx = m && a.get(m);
+        const w = tx && tx.words && tx.words.find((x) => x.s + 0.04 < src && x.e - 0.04 > src);
+        if (w) { app.toast(`The cut is in the middle of the word “${String(w.w).replace(/[.,!?…]+$/, '')}” – move it into a pause (Q / W, or drag the edit).`, true); return; }
+      }
     }
   },
   addEditAll() { const s = app.seq(); if (s) { app.edit('Add Edit to All Tracks', () => E.razor(s, s.playhead)); app.warnMidWord(s, s.playhead); } },
@@ -1353,7 +1355,10 @@ function exportDialog() {
         if (q.response !== 0) return;
       }
       settings.lastExportDir = path.dirname(out); settings.encoder = b.querySelector('#exEnc').value;
-      settings.exportFormat = b.querySelector('#exFmt').value; if (s.width / s.height < 1.06) settings.loudnessSocial = b.querySelector('#exLoud').value; else settings.loudness = b.querySelector('#exLoud').value; saveSettings();
+      settings.exportFormat = b.querySelector('#exFmt').value;
+      // MXF má vlastní výchozí hlasitost (TV −23) – nepřenášet ji do příštího exportu MP4 (redaktorka S8)
+      if (exporter.FORMATS[settings.exportFormat].ext !== 'mxf') { if (s.width / s.height < 1.06) settings.loudnessSocial = b.querySelector('#exLoud').value; else settings.loudness = b.querySelector('#exLoud').value; }
+      saveSettings();
       signal = {};
       $('modal').dataset.busy = '1';
       b.querySelector('#exGo').disabled = true;

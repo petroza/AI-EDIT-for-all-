@@ -1,0 +1,17 @@
+vystup-s8-a.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s8-a916.mp4: 400 snimku, strihy 1.36 2.76 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s8-a11.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s8-sim.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s8-sim916.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s8-sim11.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s8-k219.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s8-k219916.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s8-k21911.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s8-a1080-xdcam.mxf: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s8-sim1080-xdcam.mxf: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s8-sim-dnxhr.mxf: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s8-multi.mp4: 1252 snimku, strihy 33.00 33.56 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s8-multi916.mp4: 1252 snimku, strihy 27.00 33.00 33.56 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s8-multi11.mp4: 1252 snimku, strihy 27.00 33.00 33.56 40.28 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s8-multi1080-xdcam.mxf: 1252 snimku, strihy 33.00 33.56 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s8-rx1-bez.mp4: 1226 snimku, strihy 31.96 32.52 45.44 46.64 48.44 | kratke zabery (<13 sn.): zadne

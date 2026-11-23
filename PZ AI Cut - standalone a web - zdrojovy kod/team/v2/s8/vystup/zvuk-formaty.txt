@@ -1,0 +1,5 @@
+vystup-s8-a.mp4 vystup-s8-a916.mp4 1536000 1536000 rozdil dBFS -240.0
+vystup-s8-a.mp4 vystup-s8-a11.mp4 1536000 1536000 rozdil dBFS -240.0
+vystup-s8-sim.mp4 vystup-s8-sim916.mp4 4400640 4400640 rozdil dBFS -240.0
+vystup-s8-sim.mp4 vystup-s8-sim11.mp4 4400640 4400640 rozdil dBFS -240.0
+vystup-s8-k219.mp4 vystup-s8-k219916.mp4 145920 145920 rozdil dBFS -240.0
