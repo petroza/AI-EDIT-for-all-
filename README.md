@@ -35,12 +35,13 @@ před zveřejněním opraví člověk nebo AI (`get_captions` / `set_captions`).
 
 | | 1 · Premiere plugin | 2 · Standalone | 3 · Web |
 |---|---|---|---|
-| **Potřebuješ** | Adobe Premiere Pro, Windows | Windows | Chrome nebo Edge |
+| **Potřebuješ** | Adobe Premiere Pro, Windows | Windows + ffmpeg; pro přepis a AI navíc bod 1 (~15 GB, NVIDIA GPU) | Chrome nebo Edge |
 | **Instalace** | ~15 GB (+23 GB s Hermesem) | aplikace ~350 MB + AI jádro z bodu 1 | nic (model přepisu ~1 GB se stáhne do prohlížeče) |
 | **Přepis řeči** | Whisper large-v3 na GPU | Whisper large-v3 na GPU | Whisper v prohlížeči |
 | **Kdo kdy mluví, multicam** | ✅ diarizace, střih kamer podle mluvčího | ✅ stejné nástroje | – |
 | **AI agent** | Claude Code, Claude Desktop, Codex, **Hermes lokálně** | Claude Code, Claude Desktop, Codex, **Hermes lokálně** | Claude Desktop, Codex |
 | **Bez kreditů (vše lokálně)** | ✅ Hermes | ✅ Hermes | – (přepis ano, střih potřebuje Claude/Codex) |
+| **Cena** | program zdarma · Hermes zdarma (lokálně) · Claude = předplatné Claude (Pro/Max) nebo API · Codex = účet ChatGPT | stejně | stejně (bez Hermesu) |
 | **9:16 · 4:5 · 1:1** | Premiere Auto Reframe | výřez podle obličeje (OpenCV) | výřez podle obličeje a mluvčího (MediaPipe) |
 | **Titulky** | ✅ i překlad do češtiny | ✅ | ✅ + nadpis nahoře |
 | **Export** | vše, co umí Premiere | MP4, MOV (ProRes), MXF (XDCAM HD422), −14 / −23 LUFS | MP4 (H.264) |
@@ -48,13 +49,21 @@ před zveřejněním opraví člověk nebo AI (`get_captions` / `set_captions`).
 
 ## Rychle (Windows)
 
+**Jen střižna (bez AI):** v [Releases](https://github.com/petroza/AI-EDIT-for-all-/releases/latest) stáhni
+`PZ-AI-Cut-portable.zip`, rozbal kamkoli a spusť `PZ AI Cut - hotova aplikace pro Windows\PZ AI Cut.exe`
+(git ani `START.bat` nepotřebuješ, nic se neinstaluje). Potřebuje **ffmpeg** – když chybí, aplikace ho nabídne
+nainstalovat (`winget install Gyan.FFmpeg`). Aplikace není podepsaná: když Windows napíše „Systém Windows ochránil
+počítač“, klikni **Další informace → Přesto spustit**. Bez AI funguje střih, Auto Reframe 9:16 a export.
+
+**Vše včetně AI (přepis, Hermes, Claude):**
+
 ```powershell
 git clone https://github.com/petroza/AI-EDIT-for-all-.git
 ```
 
-Pak ve složce dvojklik na **`START.bat`** (rozcestník), nebo přímo na jeden ze tří souborů níž.
-Hotová webová verze běží i online na **https://pz-ai-cut.pages.dev**, hotová přenosná aplikace je v **Releases**
-(`PZ-AI-Cut-portable.zip` – rozbalit vedle `START.bat` a složku přejmenovat na `PZ AI Cut - hotova aplikace pro Windows`).
+Pak ve složce dvojklik na **`START.bat`** (rozcestník), nebo přímo na jeden ze tří souborů níž. Přenosnou aplikaci
+z Releases pak můžeš rozbalit do téhle složky – AI najde sama.
+Hotová webová verze běží i online na **https://pz-ai-cut.pages.dev**.
 
 ---
 
@@ -139,9 +148,9 @@ Na vlastní web stačí nahrát `web\dist` jako statické soubory (např. Cloudf
 | `PZ AI Cut - standalone a web - zdrojovy kod\` | PZ AI Cut: `src\` (střižna – jádro a UI), `web\` (webová verze, build bez bundleru), `connector\` (MCP konektor pro web), `tools\` (`pack-portable.js`, obličeje, synchronizace AI panelu), `test\`, `team\` (zápisy z vývoje) |
 | `PZ AI Cut web - plugin pro Claude\` | hotový plugin pro Claude k webové verzi |
 | `PZ AI Cut - hotova aplikace pro Windows\` | hotová přenosná aplikace (`PZ AI Cut.exe`) – vytvoří ji `2 Standalone - postavit.bat`, v gitu není (je v Releases) |
+| `Obrazky a schemata pro navod\` | obrázky a schémata (`python "Obrazky a schemata pro navod\make_diagrams.py"` je vygeneruje znovu) |
 
 Plugin pro Claude k Premiere je ve složce MY Premiere MCP: `PLUGIN CLAUDE\my-premiere-mcp.zip`.
-| `Obrazky a schemata pro navod\` | obrázky a schémata (`python "Obrazky a schemata pro navod\make_diagrams.py"` je vygeneruje znovu) |
 
 Ručně (bez .bat): `cd "PZ AI Cut - standalone a web - zdrojovy kod"` → `npm install` → `npm start` (ze zdrojů) / `npm run pack` (přenosná) /
 `npm run web:serve` (web) / `npm test` (testy).

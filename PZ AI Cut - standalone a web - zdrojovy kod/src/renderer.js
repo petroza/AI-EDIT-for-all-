@@ -22,6 +22,11 @@ const i18n = require('./i18n-app');
 
 const $ = (id) => document.getElementById(id);
 const cfg = media.cfg;
+// AI část (MY Premiere MCP: přepis, Hermes, Claude) – přenosný zip z Releases ji nemá (S14 Nováček: aplikace slibovala
+// AI panel, Přepis i titulky z přepisu, které bez ní nejdou)
+const AI_OK = media.WEB || !!(cfg.aiRoot && fs.existsSync(path.join(cfg.aiRoot, 'server', 'index.js')));
+window.__pzAiOk = AI_OK;
+const AI_HELP_URL = 'https://github.com/petroza/AI-EDIT-for-all-#readme';
 const SETTINGS_DIR = path.join(process.env.APPDATA || media.APP_ROOT, 'TN_strihatoko');
 const SETTINGS_FILE = path.join(SETTINGS_DIR, 'settings.json');
 const AUTOSAVE = path.join(SETTINGS_DIR, 'autosave.tnproj');
@@ -662,6 +667,7 @@ const commands = {
   newProject: () => newProject(),
   toggleAi: (arg) => toggleAi(arg === true ? true : undefined),
   help: () => helpDialog(),
+  installFfmpeg: () => installFfmpeg(),
   socialGuide: () => socialGuide(),
   reframe916: () => reframeTo(9, 16, 1080, 1920),
   reframe45: () => reframeTo(4, 5, 1080, 1350),
@@ -1315,6 +1321,12 @@ function socialGuide() {
     ['Check', 'For 9:16 the <b>Safe zones</b> button in the monitor shows what Instagram / TikTok cover on a phone. ' + (media.WEB ? 'Listen to the cut points – on the web they are approximate.' : 'Listen to the whole edit once before exporting.')],
     ['Export', '<b>File → Export Social Versions</b> saves all formats into one folder (captions burned in, loudness −14 LUFS). One sequence: File → Export Media.'],
   ];
+  if (!AI_OK) {
+    steps.splice(1, 2);
+    const ci = steps.findIndex((s) => s[0] === 'Titulky' || s[0] === 'Captions');
+    if (ci >= 0) steps[ci] = [steps[ci][0], cs ? 'Titulky z přepisu potřebují přepis řeči – <b>MY Premiere MCP</b> (README, bod 1). Bez něj můžeš titulky napsat ručně (stopa titulků, <b>Aa</b>).'
+      : 'Captions from the transcript need speech transcription – <b>MY Premiere MCP</b> (README, step 1). Without it you can type captions by hand (caption track, <b>Aa</b>).'];
+  }
   openModal(`<h2>${cs ? 'Jak na video pro sítě' : 'How to make a social video'}</h2>
     <ol class="guide">${steps.map(([h, t]) => `<li><b>${h}</b><span>${t}</span></li>`).join('')}</ol>
     <div class="btns"><button class="primary" id="gdOk">${cs ? 'Rozumím' : 'Got it'}</button></div>`, (b) => { b.querySelector('#gdOk').onclick = closeModal; });
@@ -1327,9 +1339,9 @@ function helpDialog() {
     'Tools': ['V|Selection', 'A / Shift+A|Track Select Forward / Backward', 'B|Ripple Edit', 'N|Rolling Edit', 'C|Razor (Shift+click = all tracks)', 'Y|Slip', 'H|Hand', 'Z|Zoom (Alt = out)', 'Ctrl+drag edge|Ripple Edit with Selection Tool', 'Alt+click|Video or audio only'],
     'View and File': ['= / −|Zoom In / Out', '\\|Zoom to Sequence', 'Ctrl+= / Ctrl+−|Video track height', 'Alt+= / Alt+−|Audio track height', 'Shift+= / Shift+−|Expand / Minimize all tracks', '`|Maximize panel', 'Ctrl+Shift+0 / 1|Program: Fit / 100 %', 'Ctrl+Z / Ctrl+Shift+Z|Undo / Redo', 'Ctrl+S|Save', 'Ctrl+Alt+S|Save a Copy', 'Ctrl+I|Import', 'Ctrl+N|New Sequence', 'Ctrl+F|Search the transcript', 'F2|Fix the caption at the playhead', 'Ctrl+W|Close Sequence', 'Ctrl+M|Export Media', 'Ctrl+Shift+E|Export Frame', 'F4|AI Panel'],
   };
-  openModal(`<h2>Keyboard Shortcuts (Premiere Pro defaults)</h2><div class="keys">${Object.entries(groups).map(([g, l]) =>
+  openModal(`<h2>Keyboard Shortcuts (Premiere Pro defaults)</h2><p class="hint"><a href="#" id="hGuide">${TN.lang === 'cs' ? 'Nový v programu? Jak na video pro sítě →' : 'New here? How to make a social video →'}</a></p><div class="keys">${Object.entries(groups).map(([g, l]) =>
     `<h3>${g}</h3>` + l.map((x) => { const i = x.lastIndexOf('|'); const d = x.slice(i + 1); let k = x.slice(0, i); if (TN.lang === 'cs') k = k.replace(/Space/g, 'Mezerník').replace(/drag edge/g, 'tažení okraje').replace(/drag/g, 'tažení').replace(/click/g, 'klik'); return `<div><span>${d}</span><kbd>${k}</kbd></div>`; }).join('')).join('')}</div>
-    <div class="btns"><button class="primary" id="hOk">Close</button></div>`, (b) => { b.querySelector('#hOk').onclick = closeModal; });
+    <div class="btns"><button class="primary" id="hOk">Close</button></div>`, (b) => { b.querySelector('#hOk').onclick = closeModal; b.querySelector('#hGuide').onclick = (e) => { e.preventDefault(); closeModal(); socialGuide(); }; });
 }
 
 /* ======================================================= import, export */
@@ -1636,7 +1648,7 @@ function portFree(port) {
   if (cfg.bridgePort === 'auto' || !Number(cfg.bridgePort)) BRIDGE_PORT = (await portFree(7880)) ? 7880 : 7890;
   process.env.PMCP_PORT = String(BRIDGE_PORT);
   window.TN.bridgePort = BRIDGE_PORT;
-  $('aiFrame').src = 'ai/index.html';
+  $('aiFrame').src = AI_OK ? 'ai/index.html' : 'ai-missing.html'; // bez MY Premiere MCP vysvětlení místo nefunkčních karet
 })();
 const api = createApi(project, {
   isSelected: (id) => app.sel.has(id),
@@ -1795,9 +1807,35 @@ function pingBridge() {
   req.on('error', () => { const el = $('bridgeState'); el.className = 'bridge off'; el.textContent = 'bridge not running (AI panel)'; });
   req.on('timeout', () => req.destroy());
 }
-if (!media.WEB) { setInterval(pingBridge, 5000); setTimeout(pingBridge, 2500); }
-if (!media.WEB && (!cfg.aiRoot || !fs.existsSync(path.join(cfg.aiRoot, 'server', 'index.js')))) {
-  setTimeout(() => app.toast(`AI folder not found (${cfg.aiRoot || 'config.json → aiRoot'}) – editing works, the AI panel does not.`, true), 1500);
+if (!media.WEB && AI_OK) { setInterval(pingBridge, 5000); setTimeout(pingBridge, 2500); }
+else if (!media.WEB) { const el = $('bridgeState'); if (el) { el.className = 'bridge off'; el.textContent = 'AI not installed'; } }
+if (!AI_OK) {
+  setTimeout(() => app.toast(LL('AI is not installed – editing, 9:16 and export work. For transcription and AI install MY Premiere MCP (README, step 1).',
+    'AI není nainstalovaná – střih, 9:16 a export fungují. Pro přepis a AI nainstaluj MY Premiere MCP (README, bod 1).')), 1500);
+}
+// bez ffmpeg nejde import ani export – na čerstvém PC z přenosného zipu (S14 Nováček)
+function installFfmpeg() {
+  const cs = TN.lang === 'cs';
+  try {
+    require('child_process').spawn('cmd.exe', ['/c', 'start', '"ffmpeg"', 'cmd.exe', '/k', 'winget install -e --id Gyan.FFmpeg'], { detached: true, windowsHide: false, shell: false, windowsVerbatimArguments: true }).unref();
+    app.toast(cs ? 'Instalace ffmpeg běží v novém okně – potvrď ji tam. Pak zkus import znovu (aplikaci není třeba restartovat).'
+      : 'ffmpeg is being installed in a new window – confirm it there. Then try the import again (no restart needed).');
+  } catch (e) {
+    require('electron').shell.openExternal('https://www.gyan.dev/ffmpeg/builds/');
+  }
+}
+if (!media.WEB && media.ffmpegMissing && media.ffmpegMissing()) {
+  setTimeout(async () => {
+    const cs = TN.lang === 'cs';
+    const r = await ipcRenderer.invoke('dialog', 'message', {
+      type: 'warning', noLink: true, defaultId: 0, cancelId: 1,
+      buttons: cs ? ['Nainstalovat ffmpeg', 'Později'] : ['Install ffmpeg', 'Later'],
+      message: cs ? 'Chybí program ffmpeg' : 'ffmpeg is missing',
+      detail: cs ? 'Bez něj nejde načíst ani exportovat video. Instalace proběhne přes winget (Windows) v novém okně: winget install Gyan.FFmpeg. Později ji najdeš v menu Nápověda → Nainstalovat ffmpeg.'
+        : 'Without it videos cannot be opened or exported. It installs via winget (Windows) in a new window: winget install Gyan.FFmpeg. Later: Help → Install ffmpeg.',
+    }).catch(() => ({ response: 1 }));
+    if (r.response === 0) installFfmpeg();
+  }, 1200);
 }
 
 /* ======================================================= rozdělovače panelů */
@@ -2042,7 +2080,11 @@ async function captionsFromTranscript() {
   const s = app.seq();
   const a = window.__pzASR;
   if (!s) { app.toast(LL('Open a sequence first.', 'Nejdřív otevři sekvenci.')); return; }
-  if (!a) { app.toast(LL('Captions from the transcript: use the AI panel (Captions) in this version.', 'Titulky z přepisu: v této verzi přes panel AI (Titulky).')); return; }
+  if (!a) {
+    app.toast(AI_OK ? LL('Captions from the transcript: use the AI panel (Captions) in this version.', 'Titulky z přepisu: v této verzi přes panel AI (Titulky).')
+      : LL('Captions from the transcript need speech transcription – install MY Premiere MCP (README, step 1); the app then finds it itself.', 'Titulky z přepisu potřebují přepis řeči – nainstaluj MY Premiere MCP (README, bod 1), aplikace ho pak najde sama.'), !AI_OK);
+    return;
+  }
   const tr0 = s.tracks.audio.filter((x) => !x.muted).find((x) => x.clips.length);
   if (!tr0) { app.toast(LL('The sequence has no clips with sound.', 'Sekvence nemá klipy se zvukem.')); return; }
   const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -2200,5 +2242,5 @@ async function captionsFromTranscript() {
   updateTools();
   updateTitle();
   app.focusPanel('timeline');
-  app.status(media.WEB ? 'Ready' : `Ready · ffmpeg: ${media.FFMPEG === 'ffmpeg' ? 'from PATH' : media.FFMPEG}`);
+  app.status(media.WEB ? 'Ready' : media.ffmpegMissing() ? 'Ready · ffmpeg not found – Help → Install ffmpeg' : `Ready · ffmpeg: ${media.FFMPEG === 'ffmpeg' ? 'from PATH' : media.FFMPEG}`);
 })();

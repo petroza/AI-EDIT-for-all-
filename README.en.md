@@ -37,12 +37,13 @@ the AI fixes before publishing (`get_captions` / `set_captions`).
 
 | | 1 · Premiere plugin | 2 · Standalone | 3 · Web |
 |---|---|---|---|
-| **You need** | Adobe Premiere Pro, Windows | Windows | Chrome or Edge |
+| **You need** | Adobe Premiere Pro, Windows | Windows + ffmpeg; for transcription and AI also step 1 (~15 GB, NVIDIA GPU) | Chrome or Edge |
 | **Install size** | ~15 GB (+23 GB with Hermes) | app ~350 MB + the AI core from step 1 | nothing (the ~1 GB speech model downloads into the browser) |
 | **Speech recognition** | Whisper large-v3 on GPU | Whisper large-v3 on GPU | Whisper in the browser |
 | **Who speaks when, multicam** | ✅ diarization, camera switching by speaker | ✅ same tools | – |
 | **AI agent** | Claude Code, Claude Desktop, Codex, **local Hermes** | Claude Code, Claude Desktop, Codex, **local Hermes** | Claude Desktop, Codex |
 | **No credits (fully local)** | ✅ Hermes | ✅ Hermes | – (transcription yes, editing needs Claude/Codex) |
+| **Cost** | the software is free · Hermes free (local) · Claude = Claude subscription (Pro/Max) or API · Codex = ChatGPT account | same | same (no Hermes) |
 | **9:16 · 4:5 · 1:1** | Premiere Auto Reframe | face-based crop (OpenCV) | face and speaker-based crop (MediaPipe) |
 | **Captions** | ✅ incl. translation to Czech | ✅ | ✅ + headline on top |
 | **Export** | anything Premiere can do | MP4, MOV (ProRes), MXF (XDCAM HD422), −14 / −23 LUFS | MP4 (H.264) |
@@ -50,13 +51,22 @@ the AI fixes before publishing (`get_captions` / `set_captions`).
 
 ## Quick start (Windows)
 
+**Just the editor (no AI):** download `PZ-AI-Cut-portable.zip` from
+[Releases](https://github.com/petroza/AI-EDIT-for-all-/releases/latest), unzip it anywhere and run
+`PZ AI Cut - hotova aplikace pro Windows\PZ AI Cut.exe` (no git, no `START.bat`, nothing gets installed). It needs
+**ffmpeg** – if it is missing, the app offers to install it (`winget install Gyan.FFmpeg`). The app is not signed: if
+Windows says “Windows protected your PC”, click **More info → Run anyway**. Without AI you get editing, Auto Reframe
+9:16 and export.
+
+**Everything including AI (transcription, Hermes, Claude):**
+
 ```powershell
 git clone https://github.com/petroza/AI-EDIT-for-all-.git
 ```
 
-Then double-click **`START.bat`** in the folder (launcher menu), or one of the three files below directly.
-The finished web version also runs online at **https://pz-ai-cut.pages.dev**; the finished portable app is in
-**Releases** (`PZ-AI-Cut-portable.zip` – unzip next to `START.bat` and rename the folder to `PZ AI Cut - hotova aplikace pro Windows`).
+Then double-click **`START.bat`** in the folder (launcher menu), or one of the three files below directly. You can
+unzip the portable app from Releases into this folder – it finds the AI itself.
+The finished web version also runs online at **https://pz-ai-cut.pages.dev**.
 
 > The app UI and AI panel are available in Czech and English (flag switch in the top right corner).
 > The installer scripts and file names are in Czech: *instalace* = install, *postavit* = build, *spustit* = run.
@@ -147,9 +157,9 @@ on 127.0.0.1). To host it yourself, upload `web\dist` as static files (e.g. Clou
 | `PZ AI Cut - standalone a web - zdrojovy kod\` | PZ AI Cut: `src\` (editor core and UI), `web\` (web version, bundler-free build), `connector\` (MCP connector for the web), `tools\` (`pack-portable.js`, faces, AI panel sync), `test\`, `team\` (development notes) |
 | `PZ AI Cut web - plugin pro Claude\` | ready-made Claude plugin for the web version |
 | `PZ AI Cut - hotova aplikace pro Windows\` | the finished portable app (`PZ AI Cut.exe`) – built by `2 Standalone - postavit.bat`, not in git (see Releases) |
+| `Obrazky a schemata pro navod\` | images and diagrams (`python "Obrazky a schemata pro navod\make_diagrams.py"` regenerates them) |
 
 The Claude plugin for Premiere is in the MY Premiere MCP folder: `PLUGIN CLAUDE\my-premiere-mcp.zip`.
-| `Obrazky a schemata pro navod\` | images and diagrams (`python "Obrazky a schemata pro navod\make_diagrams.py"` regenerates them) |
 
 Manually (without .bat): `cd "PZ AI Cut - standalone a web - zdrojovy kod"` → `npm install` → `npm start` (from source) / `npm run pack` (portable) /
 `npm run web:serve` (web) / `npm test` (tests).

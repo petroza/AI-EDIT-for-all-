@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>PZ AI panel</title>
+<!-- AI panel bez MY Premiere MCP (přenosný zip z Releases) – místo karet, které by nefungovaly (S14 Nováček) -->
+<style>
+  html, body { margin: 0; background: #17161d; color: #ecebf3; font: 13px/1.5 "Segoe UI", system-ui, sans-serif; }
+  .box { margin: 16px 14px; padding: 16px; background: #1f1e27; border: 1px solid #34323f; border-radius: 3px; }
+  h2 { margin: 0 0 8px; font-size: 15px; }
+  p { margin: 6px 0; color: #c9c7d6; }
+  ul { margin: 6px 0 10px 18px; padding: 0; color: #c9c7d6; }
+  .ok { color: #22c55e; }
+  a.btn { display: inline-block; margin-top: 8px; padding: 7px 12px; background: #8b5cf6; color: #fff; border-radius: 3px; text-decoration: none; }
+  a.btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .foot { margin: 0 14px; color: #9a98a8; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #6b6880; display: inline-block; }
+  [data-lang] { display: none; }
+  html[lang="cs"] [data-lang="cs"], html[lang="en"] [data-lang="en"] { display: block; }
+</style>
+</head>
+<body>
+<div class="box" data-lang="cs">
+  <h2>AI není nainstalovaná</h2>
+  <p class="ok">Střih, Auto Reframe 9:16 a export fungují i bez ní.</p>
+  <p>Přepis řeči, titulky z přepisu a střih s AI (Hermes lokálně zdarma, Claude, Codex) potřebují <b>MY Premiere MCP</b>:</p>
+  <ul>
+    <li>stáhni celý repozitář (README, bod 1 – ~15 GB, doporučená grafika NVIDIA),</li>
+    <li>aplikaci spusť z jeho složky – AI najde sama.</li>
+  </ul>
+  <a class="btn" href="https://github.com/petroza/AI-EDIT-for-all-#readme" target="_blank" rel="noopener">Jak nainstalovat AI →</a>
+</div>
+<div class="box" data-lang="en">
+  <h2>AI is not installed</h2>
+  <p class="ok">Editing, Auto Reframe 9:16 and export work without it.</p>
+  <p>Speech transcription, captions from the transcript and AI editing (Hermes locally for free, Claude, Codex) need <b>MY Premiere MCP</b>:</p>
+  <ul>
+    <li>download the whole repository (README, step 1 – ~15 GB, an NVIDIA GPU recommended),</li>
+    <li>run the app from its folder – it finds the AI itself.</li>
+  </ul>
+  <a class="btn" href="https://github.com/petroza/AI-EDIT-for-all-#readme" target="_blank" rel="noopener">How to install the AI →</a>
+</div>
+<div class="foot"><span class="dot"></span><span data-lang="cs" style="display:inline">AI není nainstalovaná</span></div>
+<script src="ai-missing.js"></script>
+</body>
+</html>

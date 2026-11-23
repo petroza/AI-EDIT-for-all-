@@ -73,7 +73,7 @@ function createProgram(app) {
     empty.className = 'mon-empty onboard';
     empty.innerHTML = '';
     const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
-    empty.appendChild(h('div', 'ob-title', hasMedia ? L('Open a clip or let the AI cut', 'Otevři klip, nebo nech stříhat AI') : L('Start here', 'Začni tady')));
+    empty.appendChild(h('div', 'ob-title', hasMedia ? (window.__pzAiOk === false ? L('Open a clip', 'Otevři klip') : L('Open a clip or let the AI cut', 'Otevři klip, nebo nech stříhat AI')) : L('Start here', 'Začni tady')));
     const ol = h('ol', 'ob-steps');
     const step = (text, btnText, fn) => { const li = h('li'); li.appendChild(h('span', null, text)); if (btnText) { const b = h('button', null, btnText); b.onclick = fn; li.appendChild(b); } ol.appendChild(li); };
     if (!hasMedia) step(L('Import a video – or drop it anywhere in the window.', 'Importuj video – nebo ho přetáhni kamkoli do okna.'), L('Import video…', 'Importovat video…'), () => app.cmd('import'));
@@ -81,7 +81,8 @@ function createProgram(app) {
     // „přepíše se sama“ jen když je automatický přepis zapnutý (redaktor-4: tvrdilo to i s vypnutou volbou)
     if (window.__pzASR) step(window.__pzASR.auto ? L('Speech is transcribed automatically – on the Transcript tab click a sentence and insert it.', 'Řeč se přepíše sama – v záložce Přepis klikni na větu a vlož ji.')
       : L('Start the transcript: right-click the clip → Transcribe Speech. Then find the quote on the Transcript tab and insert it into the sequence.', 'Přepis spustíš: pravý klik na klip → Přepsat řeč. Výrok pak najdeš v záložce Přepis a vložíš ho do sekvence.'), hasMedia ? L('Transcript', 'Přepis') : '', () => { if (app.transcript) app.transcript.showFor(); });
-    step(L('Or let the AI cut: write a task in the AI panel, e.g. “20 s teaser for Reels”.', 'Nebo nech stříhat AI: napiš zadání v panelu AI, třeba „20s upoutávka pro Reels“.'), L('AI panel', 'Panel AI'), () => app.cmd('toggleAi', true));
+    if (window.__pzAiOk !== false) step(L('Or let the AI cut: write a task in the AI panel, e.g. “20 s teaser for Reels”.', 'Nebo nech stříhat AI: napiš zadání v panelu AI, třeba „20s upoutávka pro Reels“.'), L('AI panel', 'Panel AI'), () => app.cmd('toggleAi', true));
+    else step(L('Then Sequence → Auto Reframe (9:16) and Export. Transcription and AI cutting need MY Premiere MCP (README, step 1).', 'Pak Sekvence → Auto Reframe (9:16) a Export. Přepis řeči a střih s AI potřebují MY Premiere MCP (README, bod 1).'));
     empty.appendChild(ol);
   }
   const offl = document.createElement('div');

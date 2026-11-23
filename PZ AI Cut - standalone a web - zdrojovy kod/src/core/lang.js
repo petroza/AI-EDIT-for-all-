@@ -31,7 +31,7 @@ const CS = {
   'Clear In and Out': 'Smazat In a Out', 'Mark Clip': 'Označit klip', 'Mark Selection': 'Označit výběr', 'Add Marker': 'Přidat značku',
   'Go to Next Marker': 'Na další značku', 'Clear Selected Marker': 'Smazat značku', 'Clear All Markers': 'Smazat všechny značky',
   'Window': 'Okno', 'AI Panel': 'AI panel', 'AI panel': 'AI panel', 'Maximize Frame': 'Maximalizovat panel', 'Full Screen': 'Celá obrazovka',
-  'Reload': 'Načíst znovu', 'Developer Tools': 'Vývojářské nástroje', 'Help': 'Nápověda', 'Open Application Folder': 'Otevřít složku aplikace',
+  'Reload': 'Načíst znovu', 'Developer Tools': 'Vývojářské nástroje', 'Help': 'Nápověda', 'Install ffmpeg': 'Nainstalovat ffmpeg', 'AI not installed': 'AI není nainstalovaná', 'Open Application Folder': 'Otevřít složku aplikace',
   'Language': 'Jazyk',
   // ---------- horní lišta, monitory, projekt
   'Bridge for the AI panel (MCP server)': 'Most pro AI panel (MCP server)', 'Export Media (Ctrl+M)': 'Exportovat média (Ctrl+M)',
@@ -203,7 +203,9 @@ const RULES = [
   [/^The gap stays open: another clip lies across it \(B-roll, music\)\. To remove the part from all tracks use Extract \(I and O around it, then the apostrophe key\)\.$/, 'Mezera zůstala: přes ni leží jiný klip (b-roll, hudba). Úsek ze všech stop vyjmeš přes Extract (I a O kolem něj, pak klávesa apostrof).'],
   [/^The crop could not follow the face here – edit in 16:9 and use Sequence → Auto Reframe\.$/, 'Výřez podle obličeje se tu nepodařil – stříhej v 16:9 a použij Sekvence → Auto Reframe.'],
   [/^Media relinked: (.+)$/, 'Médium znovu připojeno: $1'],
-  [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)').replace(/\(file not found\)/g, '(soubor nenalezen)')],
+  [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)').replace(/\(file not found\)/g, '(soubor nenalezen)').split('ffmpeg is missing – without it videos cannot be opened or exported. Install it (Help → Install ffmpeg, or the command: winget install Gyan.FFmpeg) and try again.').join('chybí program ffmpeg – bez něj nejde načíst ani exportovat video. Nainstaluj ho (Nápověda → Nainstalovat ffmpeg, nebo příkaz winget install Gyan.FFmpeg) a zkus to znovu.')],
+  [/^ffmpeg is missing – without it videos cannot be opened or exported\. Install it \(Help → Install ffmpeg, or the command: winget install Gyan\.FFmpeg\) and try again\.$/, 'Chybí program ffmpeg – bez něj nejde načíst ani exportovat video. Nainstaluj ho (Nápověda → Nainstalovat ffmpeg, nebo příkaz winget install Gyan.FFmpeg) a zkus to znovu.'],
+
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],
   [/^Delete sequence “(.+)”\?$/, 'Smazat sekvenci „$1“?'], [/^✖ (.+)$/, (m, a) => '✖ ' + tr(a)],
   [/^XDCAM HD422 needs (.+) – use MXF DNxHR HQ or H\.264 instead, or change the sequence to 1920×1080 25 fps \(Sequence → Sequence Settings\)\.$/, 'XDCAM HD422 potřebuje 1920×1080 25/50 fps nebo 1280×720 50 fps – použij MXF DNxHR HQ nebo H.264, nebo změň sekvenci na 1920×1080 25 fps (Sekvence → Nastavení sekvence).'],
@@ -220,7 +222,7 @@ const RULES = [
   [/^Created: (.+)$/, 'Vytvořeno: $1'], [/^Exported: (.+)$/, 'Exportováno: $1'], [/^Export (\d+)\/(\d+) – (.+) (\d+) %$/, 'Export $1/$2 – $3 $4 %'],
   [/^Reframing: finding faces \((\d+)\/(\d+)\)$/, 'Výřez podle obličeje: hledám obličeje ($1/$2)'],
   [/^Export (\d+) %(.*)$/, 'Export $1 %$2'], [/^✔ Done in (\d+) s · (.+)$/, '✔ Hotovo za $1 s · $2'],
-  [/^Ready · ffmpeg: from PATH$/, 'Připraveno · ffmpeg: z PATH'], [/^Ready · ffmpeg: (.+)$/, 'Připraveno · ffmpeg: $1'],
+  [/^Ready · ffmpeg: from PATH$/, 'Připraveno · ffmpeg: z PATH'], [/^Ready · ffmpeg not found – Help → Install ffmpeg$/, 'Připraveno · ffmpeg nenalezen – Nápověda → Nainstalovat ffmpeg'], [/^Ready · ffmpeg: (.+)$/, 'Připraveno · ffmpeg: $1'],
   [/^Entire Sequence \((.+)\)$/, 'Celá sekvence ($1)'], [/^Export – (.+)$/, 'Export – $1'],
   [/^Matches clip (.+)\. The clip is placed in the new sequence\.$/, 'Podle klipu $1. Klip se vloží do nové sekvence.'],
   [/^port (\d+) is used by another program$/, 'port $1 používá jiný program'],

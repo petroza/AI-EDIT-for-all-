@@ -82,6 +82,7 @@ function menuTemplate() {
     { label: 'Help', submenu: [
       m('How to Make a Social Video', 'socialGuide', undefined, false),
       m('Keyboard Shortcuts', 'help', undefined, false),
+      { label: 'Install ffmpeg', cmd: 'installFfmpeg', desktop: true },
       { label: 'Open Application Folder', cmd: 'openAppFolder', desktop: true },
       { label: 'About', cmd: 'about', about: true },
     ] },

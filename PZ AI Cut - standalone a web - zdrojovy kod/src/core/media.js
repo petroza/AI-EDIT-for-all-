@@ -23,10 +23,29 @@ function findTool(name) {
     const ai = path.join(cfg.aiRoot, 'tools', 'ffmpeg', name + '.exe');
     if (fs.existsSync(ai)) return ai;
   }
-  return name; // z PATH
+  // PATH (Windows) a winget (Gyan.FFmpeg) – i po instalaci za běhu aplikace, kdy PATH procesu ještě nové složky nemá
+  // (S14 Nováček: čerstvé PC bez ffmpeg → import končil anglickým „spawn ffprobe ENOENT“)
+  const isFile = (f) => { try { return fs.statSync(f).isFile(); } catch (e) { return false; } };
+  for (const d of String(process.env.PATH || '').split(path.delimiter)) {
+    if (d && isFile(path.join(d.replace(/^"|"$/g, ''), name + '.exe'))) return name; // z PATH
+  }
+  const la = process.env.LOCALAPPDATA;
+  if (!la) return null;
+  const extra = [path.join(la, 'Microsoft', 'WinGet', 'Links')];
+  try {
+    const pk = path.join(la, 'Microsoft', 'WinGet', 'Packages');
+    for (const d of fs.readdirSync(pk)) {
+      if (!/^Gyan\.FFmpeg/i.test(d)) continue;
+      for (const v of fs.readdirSync(path.join(pk, d))) extra.push(path.join(pk, d, v, 'bin'));
+    }
+  } catch (e) { /* winget není */ }
+  for (const d of extra) { const f = path.join(d, name + '.exe'); if (isFile(f)) return f; }
+  return null;
 }
-const FFMPEG = findTool('ffmpeg');
-const FFPROBE = findTool('ffprobe');
+const FFMPEG = findTool('ffmpeg') || 'ffmpeg';
+const FFPROBE = findTool('ffprobe') || 'ffprobe';
+// ffmpeg nenalezen při startu (null = není v PATH ani ve winget) – dotaz po instalaci viz run()
+function ffmpegMissing() { return !findTool('ffmpeg') || !findTool('ffprobe'); }
 
 function hashOf(p) {
   let st = { size: 0, mtimeMs: 0 };
@@ -34,14 +53,29 @@ function hashOf(p) {
   return crypto.createHash('sha1').update(path.resolve(p).toLowerCase() + '|' + st.size + '|' + Math.round(st.mtimeMs)).digest('hex').slice(0, 16);
 }
 
+// ffmpeg nainstalovaný až za běhu (winget) se najde bez restartu aplikace
+const lateTool = {};
 function run(exe, args, opts = {}) {
+  if ((exe === 'ffmpeg' || exe === 'ffprobe') && lateTool[exe]) exe = lateTool[exe];
   return new Promise((resolve, reject) => {
     const p = cp.spawn(exe, args, { windowsHide: true, cwd: opts.cwd });
     let out = Buffer.alloc(0), err = '';
     p.stdout.on('data', (d) => { if (opts.onStdout) opts.onStdout(d); else out = Buffer.concat([out, d]); });
     p.stderr.on('data', (d) => { err += d; if (err.length > 200000) err = err.slice(-100000); if (opts.onStderr) opts.onStderr(String(d)); });
-    p.on('error', (e) => reject(new Error(`${baseName(exe)}: ${e.message} – is ffmpeg installed? (config.json → ffmpeg)`)));
+    let spawnFailed = false; // po ENOENT přijde i 'close' s kódem -4058 – nesmí předběhnout opakování s nalezeným ffmpeg
+    p.on('error', (e) => {
+      spawnFailed = true;
+      const name = baseName(exe).replace(/\.exe$/i, '');
+      if (e.code === 'ENOENT' && (name === 'ffmpeg' || name === 'ffprobe')) {
+        const f = findTool(name);
+        if (f && f !== name && f !== exe && !opts._retried) { lateTool[name] = f; run(f, args, { ...opts, _retried: true }).then(resolve, reject); return; }
+        reject(new Error('ffmpeg is missing – without it videos cannot be opened or exported. Install it (Help → Install ffmpeg, or the command: winget install Gyan.FFmpeg) and try again.'));
+        return;
+      }
+      reject(new Error(`${baseName(exe)}: ${e.message}`));
+    });
     p.on('close', (code) => {
+      if (spawnFailed) return;
       if (code === 0 || opts.allowFail) resolve({ out, err, code });
       else reject(new Error(`${baseName(exe)} exited with code ${code}: ${err.split('\n').filter(Boolean).slice(-3).join(' | ')}`));
     });
@@ -178,4 +212,4 @@ async function waveform(p) {
   return arr;
 }
 
-module.exports = { CACHE, FFMPEG, FFPROBE, APP_ROOT, cfg, run, probe, makeProxy, thumbnail, waveform, WAVE_RATE, hashOf, isPlayable };
+module.exports = { CACHE, FFMPEG, FFPROBE, APP_ROOT, cfg, run, probe, makeProxy, thumbnail, waveform, WAVE_RATE, hashOf, isPlayable, ffmpegMissing, findTool };
