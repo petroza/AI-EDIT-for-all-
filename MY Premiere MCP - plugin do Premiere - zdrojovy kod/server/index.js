@@ -406,6 +406,7 @@ async function refineOutPoints(source, ranges, extra) {
   const starts = ranges.map((r) => ({
     at: r.in, direction: 'start', maxExtend: Math.max(0, Math.min(0.3, r.in - (r.minIn ?? r.in - 0.3) + 0.1)),
     fallbackExtend: Math.max(0, Math.min(0.3, r.in - (r.minIn ?? r.in - 0.3) - 0.02)),
+    word: r.word, // začátek prvního slova: pauza mezi r.in a ním má přednost (úlomek „…k“ z „tak.“)
   }));
   try {
     const res = await runJob('refine_edges', { path: source, points: [...points, ...starts] }, extra);
@@ -760,7 +761,7 @@ function picksToRanges(tr, picks, { padBefore, padAfter, mergeGap }) {
     }
     const [lo, hi, hiCeiling, loFloor] = cutBounds(words, a, b, padBefore, padAfter);
     const dur = tr.duration || hi;
-    return { in: lo, minIn: loFloor, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [p.id] };
+    return { in: lo, minIn: loFloor, word: a, out: Math.min(hi, dur), maxOut: Math.min(hiCeiling, dur), ids: [p.id] };
   });
   return mergeRanges(ranges, mergeGap);
 }

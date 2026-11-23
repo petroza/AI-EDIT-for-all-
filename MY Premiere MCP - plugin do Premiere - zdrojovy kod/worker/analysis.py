@@ -998,48 +998,22 @@ def _teaser_candidates(path: str, segs: dict[int, dict], exclude: set, avoid: se
                 out.append({"units": units[n: m + 1], "dur": round(d, 1),
                             # nejkratší ticho na krajích (ms): krátká pauza = větší riziko slyšitelné hranice
                             "edge_ms": min(edge_ms[n - 1] if n else 500.0, edge_ms[m]),
-                            # sousední slova (i jiného mluvčího) – poloha střihu jako na serveru (_teaser_cut_check)
-                            "prev_e": units[n - 1]["e"] if n else None,
-                            "next_s": units[m + 1]["s"] if m + 1 < len(units) else None,
                             # okolí pro kontrolu vytržení z kontextu
                             "before": " ".join(u["text"] for u in units[max(0, n - 2): n]),
                             "after": " ".join(u["text"] for u in units[m + 1: m + 3])})
     return out
 
 
-def _teaser_cut_check(path: str, cands: list[dict], words: list[dict] | None = None) -> list[dict]:
-    """Vyřadí kandidáty, jejichž hranice by kontrola po stavbě (server edgeWarnings, > −12 dB) označila za střih skrz
-    řeč. Poloha střihu stejně jako na serveru: cutBounds (padBefore 0,08 / padAfter 0,15, 20 ms od sousedního slova)
-    + refineOutPoints. Pauza nalezená až za dalším slovem (boundary_pauses hledá 0,3 s za ním – „životopis.|Ale“,
-    ticho až za „Ale“) se střihem nedá zasáhnout: dřív takové údery prošly, po stavbě je vyřadilo opakování plánu
-    a z upoutávky 20 s zbylo 6,5 s (noc 2026-11-23). Když by zbyly méně než 2 údery, nechá všechny (rozhodne server)."""
-    G = 0.02
-    cuts = []
-    for c in cands:
-        a, b = c["units"][0]["s"], c["units"][-1]["e"]
-        pe, ns = c.get("prev_e"), c.get("next_s")
-        ceil = (ns - G) if ns is not None else float("inf")
-        out = max(b, min(b + 0.15, ceil))
-        lo = a - 0.08 if pe is None else max(a - 0.08, pe + G)
-        t_in = max(0.0, min(lo, a))
-        min_in = 0.0 if pe is None else min(pe + G, a)
-        cuts.append({"in": t_in, "out": out,
-                     "outMax": max(0.0, min(0.4, ceil - out - 0.02)) if ns is not None else 0.4,
-                     "inMax": max(0.0, min(0.3, t_in - min_in + 0.1)), "inFb": max(0.0, min(0.3, t_in - min_in - 0.02))})
-    lv = audiosync.cut_levels(path, cuts)
-    if lv is None:
+def _teaser_cut_check(path: str, segs: dict[int, dict], cands: list[dict]) -> list[dict]:
+    """Vyřadí kandidáty, jejichž hranice by kontrola po stavbě (server edgeWarnings) označila za střih skrz řeč –
+    stejná předpověď jako u skládaného reelu (_edge_check: poloha střihu jako server + doladění podle zvuku).
+    Pauza nalezená až za dalším slovem (boundary_pauses hledá 0,3 s za ním – „životopis.|Ale“, ticho až za „Ale“)
+    se střihem nedá zasáhnout: dřív takové údery prošly, po stavbě je vyřadilo opakování plánu a z upoutávky 20 s
+    zbylo 6,5 s (noc 2026-11-23). Když by zbyly méně než 2 údery, nechá všechny (rozhodne server)."""
+    chk = _edge_check(path, segs, [(c["units"][0]["s"], c["units"][-1]["e"]) for c in cands])
+    if chk is None:
         return cands
-    words = words or []
-
-    def bad(rel, t):
-        # stejné pravidlo jako server edgeWarnings: nad −12 dB, nebo nad −20 dB uvnitř slova podle přepisu
-        inside = any(w["s"] < t - 0.01 and w["e"] > t + 0.01 for w in words)
-        return rel > -12 or (inside and rel > -20)
-
-    for c, (ri, ro, ti, to) in zip(cands, lv):
-        c["cut_db"] = (ri, ro)
-        c["cut_bad"] = bad(ri, ti) or bad(ro, to)
-    good = [c for c in cands if not c["cut_bad"]]
+    good = [c for c, (bi, bo) in zip(cands, chk) if not (bi or bo)]
     return good if len(good) >= 2 else cands
 
 
@@ -1180,7 +1154,7 @@ def _edge_check(path: str, segs: dict[int, dict], spans: list[tuple[float, float
         pts.append({"at": t_out, "direction": "end",
                     "maxExtend": max(0.0, min(0.4, max_out - t_out - 0.02)) if max_out != float("inf") else 0.4})
         pts.append({"at": t_in, "direction": "start", "maxExtend": max(0.0, min(0.3, t_in - min_in + 0.1)),
-                    "fallbackExtend": max(0.0, min(0.3, t_in - min_in - 0.02))})
+                    "fallbackExtend": max(0.0, min(0.3, t_in - min_in - 0.02)), "word": a})
     try:
         ref = audiosync.refine_edges({"path": path, "points": pts}, None)["points"]
         edges = []
@@ -1609,7 +1583,7 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         return None
     cands = [c for c in cands if not _SMALLTALK.search(" ".join(u["text"] for u in c["units"]))] or cands
     n_all = len(cands)
-    cands = _teaser_cut_check(path, cands, [w for i in sorted(segs) for w in (segs[i].get("words") or [])])
+    cands = _teaser_cut_check(path, segs, cands)
     ctx.progress(0.28, f"Hranice úderů ověřené podle zvuku: {len(cands)} z {n_all} kandidátů lze čistě střihnout")
     text = lambda c: " ".join(u["text"] for u in c["units"])  # noqa: E731
     key = lambda c: {(u["id"], u["w0"]) for u in c["units"]}  # noqa: E731

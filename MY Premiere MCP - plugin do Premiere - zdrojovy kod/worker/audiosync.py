@@ -221,6 +221,31 @@ def refine_edges(params: dict, ctx) -> dict:
         limit = round(max_extend / frame_s)
         step = 1 if direction == "end" else -1
         refined, clean = None, False
+        # začátek ve zvuku, ale mezi ním a prvním slovem (word) je pauza: střih do ní, ne pozpátku přes konec předchozího
+        # slova – hledání zpět prošlo výbuchem „k“ z „tak.“ do jeho uzávěru (15 ms ticha) a úsek začínal úlomkem
+        # „…k“ (AI tok S2/S3, upoutávka #22: střih 121,32 uvnitř „tak.“, pauza před „Vlastně“ 121,45–121,54)
+        word = pt.get("word")
+        if direction == "start" and word is not None and word > at and not quiet[at_idx]:
+            w_idx = min(len(ctx_env), round((word - clo) / frame_s) + 6)  # Whisperův začátek slova bývá i uprostřed ticha
+            last_q, first_q = None, None
+            for i in range(w_idx - 1, at_idx, -1):
+                if quiet[i]:
+                    if last_q is None:
+                        last_q = i
+                    first_q = i
+                elif last_q is not None:
+                    if last_q - first_q + 1 > min_run:
+                        break
+                    last_q, first_q = None, None  # krátký pokles uvnitř zvuku – hledat dál
+            if last_q is not None and last_q - first_q + 1 > min_run:
+                # v pauze místo, kde je nejtišší okno, které měří kontrola hranic (40 ms před střihem, 12 ms za ním) –
+                # pevná rezerva před slovem nechala v okně doznívání předchozí hlásky (−16 dB místo −22 dB);
+                # aspoň 10 ms před koncem pauzy (náběh slova)
+                hi_j = max(first_q, last_q - 1)
+                j = min(range(first_q, hi_j + 1),
+                        key=lambda q: (float(ctx_env[max(0, q - 8): q + 3].max()), -q))
+                out.append({"at": at, "time": round(clo + j * frame_s, 3), "clean": True})
+                continue
         run = 0
         for k in range(0, limit + 1):
             i = at_idx + step * k
@@ -249,20 +274,3 @@ def refine_edges(params: dict, ctx) -> dict:
         out.append({"at": at, "time": round(refined, 3), "clean": clean})
     return {"points": out}
 
-
-def cut_levels(path: str, cuts: list[dict]) -> list[tuple[float, float, float, float]] | None:
-    """Předpověď hranic tak, jak je postaví server (plan_edit_local → picksToRanges + refineOutPoints + edgeWarnings):
-    cuts = [{in, inMax, inFb, out, outMax}] → [(rel dB začátku, rel dB konce, čas začátku, čas konce)] po doladění. Výběr úderů
-    upoutávky tím vyřadí kandidáty, jejichž hranice by kontrola po stavbě označila (> −12 dB = střih skrz řeč) –
-    dřív je vyřadila až ta a opakovaný plán ze 17 s upoutávky nechal 6,5 s (noc 2026-11-23). None = zvuk nejde přečíst."""
-    try:
-        if not cuts or not os.path.exists(path) or not _has_audio(path):
-            return None
-        pts = [{"at": c["out"], "direction": "end", "maxExtend": c["outMax"]} for c in cuts] +               [{"at": c["in"], "direction": "start", "maxExtend": c["inMax"], "fallbackExtend": c["inFb"]} for c in cuts]
-        ref = refine_edges({"path": path, "points": pts}, None)["points"]
-        n = len(cuts)
-        edges = [{"t": ref[n + k]["time"], "kind": "in"} for k in range(n)] + [{"t": ref[k]["time"], "kind": "out"} for k in range(n)]
-        lv = edge_levels({"path": path, "edges": edges}, None)["edges"]
-        return [(lv[k]["rel"], lv[n + k]["rel"], lv[k]["t"], lv[n + k]["t"]) for k in range(n)]
-    except Exception:  # noqa: BLE001 – bez zvuku rozhodne až kontrola po stavbě
-        return None
