@@ -1529,6 +1529,24 @@ function loadProjectFile(p, asUntitled, data0) {
   app.waves.clear();
   project.load(data, asUntitled ? null : p);
   if (asUntitled) { project.dirty = true; }
+  // Bezpečnost S13: projekt z cizí ruky může odkazovat na \\server\… – Windows by se při pouhém ověření existence souboru
+  // připojil a poslal přihlašovací hash. Náhledové kopie jen z vlastní cache; média na serveru, kterému uživatel ještě
+  // nedůvěřoval, zůstanou offline, dokud připojení nepotvrdí (servery si pamatujeme – redakční disky se ptají jen jednou).
+  // \\server\… a //server/… = síť; \\?\C:\… (dlouhá místní cesta) ne, \\?\UNC\server\… ano
+  const uncHost = (q) => {
+    const mm = /^(?:\\\\|\/\/)([^\\/]+)[\\/]?([^\\/]*)[\\/]?([^\\/]*)/.exec(String(q || ''));
+    if (!mm) return null;
+    if (mm[1] === '?' || mm[1] === '.') return /^unc$/i.test(mm[2]) ? (mm[3] || '').toLowerCase() || null : (mm[1] === '.' ? '.' : null);
+    return mm[1].toLowerCase();
+  };
+  const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
+  const askHosts = new Set();
+  for (const m of project.media) {
+    if (m.proxy && !path.resolve(m.proxy).toLowerCase().startsWith(path.resolve(media.CACHE).toLowerCase())) delete m.proxy;
+    const h = uncHost(m.path);
+    if (h && !trusted.has(h)) { m.uncBlocked = true; askHosts.add(h); }
+  }
+  if (askHosts.size && !media.WEB) setTimeout(() => askNetworkHosts([...askHosts]), 300);
   importer.relink(project);
   for (const m of project.media) { loadThumb(m); }
   app.projectPanel.render();
@@ -1536,6 +1554,23 @@ function loadProjectFile(p, asUntitled, data0) {
   updateTitle();
   const miss = project.media.filter((m) => m.missing);
   if (miss.length && !media.WEB) setTimeout(() => { app.toast(`Media offline: ${miss.map((m) => m.name).join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`, true); if (app.program && app.program.ui) app.program.ui(); }, 400);
+}
+/** Dotaz na připojení k síťovým serverům z projektu (bezpečnost S13). */
+async function askNetworkHosts(hosts) {
+  const cs = TN.lang === 'cs';
+  const r = await ipcRenderer.invoke('dialog', 'message', {
+    type: 'question', noLink: true, defaultId: 0, cancelId: 1,
+    buttons: cs ? ['Připojit', 'Nepřipojovat'] : ['Connect', 'Do not connect'],
+    message: cs ? `Projekt odkazuje na média na síti: ${hosts.map((h) => '\\\\' + h).join(', ')}` : `The project uses media on the network: ${hosts.map((h) => '\\\\' + h).join(', ')}`,
+    detail: cs ? 'Připoj se jen k serverům, které znáš (třeba redakční disk). U projektu z neznámého zdroje zvol Nepřipojovat – média zůstanou offline.'
+      : 'Only connect to servers you know (e.g. the newsroom drive). For a project from an unknown source choose Do not connect – the media stay offline.',
+  }).catch(() => ({ response: 1 }));
+  if (r.response !== 0) { app.toast(cs ? 'Média na síti zůstala offline.' : 'Network media stay offline.'); return; }
+  settings.trustedHosts = [...new Set([...(settings.trustedHosts || []), ...hosts])]; saveSettings();
+  for (const m of project.media) if (m.uncBlocked) delete m.uncBlocked;
+  importer.relink(project);
+  for (const m of project.media) loadThumb(m);
+  app.projectPanel.render(); app.timeline.render(); if (app.program && app.program.ui) app.program.ui();
 }
 async function openProjectDialog() {
   if (!(await confirmDiscard())) return;

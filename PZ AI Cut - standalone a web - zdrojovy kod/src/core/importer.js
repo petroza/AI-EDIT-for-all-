@@ -45,6 +45,7 @@ async function importFiles(project, paths) {
 /** Při otevření projektu ověří média (přesunutý soubor, chybějící proxy). */
 function relink(project) {
   for (const m of project.media) {
+    if (m.uncBlocked) { m.missing = true; continue; } // síťový server, kterému uživatel zatím nedůvěřoval – nesahat (bezpečnost S13)
     m.missing = !fs.existsSync(m.path);
     if (!m.missing) ensureProxy(project, m);
   }

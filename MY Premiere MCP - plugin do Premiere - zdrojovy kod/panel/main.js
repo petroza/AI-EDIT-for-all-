@@ -389,7 +389,9 @@
     if (!hostOk || req.headers.origin) return send(403, { error: 'forbidden' });
 
     if (req.method === 'GET' && req.url === '/ping') return send(200, { ok: true, app: 'PPRO', panel: '0.1.0' });
-    if (req.headers['x-pmcp-token'] !== TOKEN) return send(401, { error: 'bad token' });
+    // token v konstantním čase (bezpečnost S13)
+    var tk = Buffer.from(String(req.headers['x-pmcp-token'] || '')), tt = Buffer.from(String(TOKEN));
+    if (tk.length !== tt.length || !require('crypto').timingSafeEqual(tk, tt)) return send(401, { error: 'bad token' });
     if (req.method !== 'POST') return send(404, { error: 'not found' });
 
     var body = '';
