@@ -1,0 +1,5 @@
+{"t":"13:03:48.239","targets":["page -%20standalone%20a%20web%20-%20zdrojovy%20kod/src/index.html"]}
+{"t":"13:03:48.273","ctx":3,"origin":"file://","name":"","frame":"6B87B6D2EBAFFF2B6440B92409853AE9"}
+{"t":"13:03:48.273","ctx":1,"origin":"file://","name":"","frame":"C2C609F92EC8DB1298B6FE5902268AC6"}
+{"t":"13:03:48.273","console":"warning","ctx":1,"text":"%cElectron Security Warning (Disabled webSecurity) font-weight: bold; This renderer process has \"webSecurity\" disabled. This\n  exposes users of this app to severe security risks.\n\nFor more information and help, consult\nhttps://electronjs.org/docs/tutorial/security.\nThis warning will not show up\nonce the app is packaged."}
+{"t":"13:03:48.274","console":"warning","ctx":1,"text":"%cElectron Security Warning (allowRunningInsecureContent) font-weight: bold; This renderer process has \"allowRunningInsecureContent\"\n  enabled. This exposes users of this app to severe security risks.\n\n  \nFor more information and help, consult\nhttps://electronjs.org/docs/tutorial/security.\nThis warning will not show up\nonce the app is packaged."}

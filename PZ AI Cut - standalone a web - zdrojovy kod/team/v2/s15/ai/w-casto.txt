@@ -1,0 +1,2 @@
+t=1541.90: často[1540.20-1541.64 p0.56] rozhodně[1541.64-1542.08 p0.99] nezahají.[1542.08-1542.54 p0.87]
+   RMS 20ms od 1541.70: [np.float32(-27.0), np.float32(-22.4), np.float32(-24.5), np.float32(-29.9), np.float32(-24.2), np.float32(-21.2), np.float32(-21.3), np.float32(-26.0), np.float32(-30.4), np.float32(-34.7), np.float32(-37.0), np.float32(-37.1), np.float32(-34.3), np.float32(-31.0), np.float32(-29.3), np.float32(-29.0), np.float32(-30.4), np.float32(-29.5), np.float32(-28.1), np.float32(-29.4)]

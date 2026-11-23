@@ -1,0 +1,130 @@
+13:58:35 Worker 0.2.0 (pid 42648) poslouchá na 127.0.0.1:7881
+14:01:48 úloha e13ddfa200e7 transcribe start
+14:01:48 úloha e13ddfa200e7 done za 0.0 s
+14:04:32 úloha ee290fc69c79 transcribe start
+14:04:37 GPU: načítám Whisper O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\models\whisper-large-v3 (cuda/int8_float16)
+14:04:48 úloha ee290fc69c79 done za 15.9 s
+14:04:49 úloha f4502c55c535 transcribe start
+14:04:49 úloha f4502c55c535 done za 0.0 s
+14:04:50 úloha 1ecaa012e3f2 transcribe start
+14:04:50 úloha 1ecaa012e3f2 done za 0.0 s
+14:05:26 úloha 9f781c42ceab transcribe start
+14:05:26 úloha 9f781c42ceab done za 0.0 s
+14:07:01 úloha f18e1a528a8d transcribe start
+14:07:01 úloha f18e1a528a8d done za 0.0 s
+14:07:02 úloha 631795541af4 plan_edit start
+14:08:55 úloha 631795541af4 done za 112.9 s
+14:08:55 úloha ec061ae05a39 refine_edges start
+14:08:58 úloha ec061ae05a39 done za 2.3 s
+14:08:58 úloha 1e3910662e2c edge_levels start
+14:08:59 úloha 1e3910662e2c done za 0.1 s
+14:08:59 úloha d45bbd0a1aa9 plan_edit start
+14:10:30 úloha d45bbd0a1aa9 done za 90.3 s
+14:10:31 úloha 979c85397ed5 refine_edges start
+14:10:31 úloha 979c85397ed5 done za 0.0 s
+14:10:32 úloha c30b871619d9 edge_levels start
+14:10:32 úloha c30b871619d9 done za 0.1 s
+14:10:41 úloha 3da634e12c64 transcribe start
+14:10:41 úloha 3da634e12c64 done za 0.0 s
+14:10:42 úloha 5727fccee6d7 plan_edit start
+14:11:10 úloha 5727fccee6d7 done za 28.6 s
+14:11:12 úloha 7834d695362a refine_edges start
+14:11:12 úloha 7834d695362a done za 0.5 s
+14:11:13 úloha 1b3563c87b39 edge_levels start
+14:11:13 úloha 1b3563c87b39 done za 0.0 s
+14:11:30 úloha 288d0ab6ae7c transcribe start
+14:11:30 úloha 288d0ab6ae7c done za 0.0 s
+14:11:46 úloha 9b8fb81d4287 transcribe start
+14:11:46 úloha 9b8fb81d4287 done za 0.0 s
+14:11:47 úloha 882402641154 plan_edit start
+14:12:08 úloha 882402641154 done za 20.6 s
+14:12:09 úloha 922be67480c1 refine_edges start
+14:12:09 úloha 922be67480c1 done za 0.0 s
+14:12:10 úloha 310407d11525 edge_levels start
+14:12:10 úloha 310407d11525 done za 0.0 s
+14:12:35 úloha 7a920c285263 plan_edit start
+14:12:45 úloha 7a920c285263 done za 9.3 s
+14:12:46 úloha 4e9b2cb7935c refine_edges start
+14:12:46 úloha 4e9b2cb7935c done za 0.0 s
+14:12:47 úloha 23dd83bfb119 edge_levels start
+14:12:47 úloha 23dd83bfb119 done za 0.0 s
+14:12:49 úloha cd987f6130db plan_edit start
+14:12:55 úloha cd987f6130db done za 6.5 s
+14:12:56 úloha 26b07abea8be refine_edges start
+14:12:56 úloha 26b07abea8be done za 0.0 s
+14:12:57 úloha f8ce4eb7c8c7 edge_levels start
+14:12:57 úloha f8ce4eb7c8c7 done za 0.0 s
+14:12:59 úloha 174354d28a5e plan_edit start
+14:13:08 úloha 174354d28a5e done za 8.7 s
+14:13:08 úloha fdd8c17df3f3 refine_edges start
+14:13:08 úloha fdd8c17df3f3 done za 0.0 s
+14:13:09 úloha 3b0247b311f8 edge_levels start
+14:13:09 úloha 3b0247b311f8 done za 0.0 s
+14:13:36 úloha a5b2cf757929 plan_edit start
+14:14:03 úloha a5b2cf757929 done za 26.7 s
+14:14:03 úloha 55b7b2786617 transcribe start
+14:14:03 úloha 55b7b2786617 done za 0.0 s
+14:14:04 úloha 964ef6ccd22a refine_edges start
+14:14:04 úloha 964ef6ccd22a done za 0.0 s
+14:14:05 úloha 8d3b0b3f2338 edge_levels start
+14:14:05 úloha 8d3b0b3f2338 done za 0.0 s
+14:14:07 úloha 564cd11c2691 plan_edit start
+14:14:43 úloha 564cd11c2691 done za 36.0 s
+14:14:44 úloha a5574efaf809 refine_edges start
+14:14:44 úloha a5574efaf809 done za 0.0 s
+14:14:45 úloha 0bf844b9b35b edge_levels start
+14:14:45 úloha 0bf844b9b35b done za 0.0 s
+14:14:46 úloha 81e34fcf24d3 plan_edit start
+14:14:59 úloha 81e34fcf24d3 done za 13.0 s
+14:14:59 úloha 491504791da7 refine_edges start
+14:14:59 úloha 491504791da7 done za 0.0 s
+14:15:00 úloha f3c24a3329af edge_levels start
+14:15:00 úloha f3c24a3329af done za 0.0 s
+14:16:32 úloha 1a9cff5bece6 transcribe start
+14:16:32 úloha 1a9cff5bece6 done za 0.0 s
+14:16:33 úloha e01d5a66cc90 plan_edit start
+14:16:48 úloha e01d5a66cc90 done za 14.2 s
+14:16:49 úloha 76562ebeba03 refine_edges start
+14:16:49 úloha 76562ebeba03 done za 0.1 s
+14:16:50 úloha a95ce3197173 edge_levels start
+14:16:50 úloha a95ce3197173 done za 0.0 s
+14:16:51 úloha f89ff9cac618 plan_edit start
+14:16:57 úloha f89ff9cac618 done za 6.2 s
+14:16:58 úloha 354f1a475d12 refine_edges start
+14:16:58 úloha 354f1a475d12 done za 0.0 s
+14:16:59 úloha 41149ef6a03f edge_levels start
+14:16:59 úloha 41149ef6a03f done za 0.0 s
+14:17:02 úloha c6dcbeddd67b transcribe start
+14:17:02 úloha c6dcbeddd67b done za 0.0 s
+14:17:03 úloha 3892fa30b5dd plan_edit start
+14:17:11 úloha 3892fa30b5dd done za 8.0 s
+14:17:12 úloha d0ce3e91ce17 refine_edges start
+14:17:12 úloha d0ce3e91ce17 done za 0.0 s
+14:17:13 úloha 34a24af4ee09 edge_levels start
+14:17:13 úloha 34a24af4ee09 done za 0.0 s
+14:17:16 úloha a8e5157cb9b8 transcribe start
+14:17:16 úloha a8e5157cb9b8 done za 0.0 s
+14:17:17 úloha af39511be55e plan_edit start
+14:17:20 úloha af39511be55e done za 2.8 s
+14:17:20 úloha abf869983dad refine_edges start
+14:17:20 úloha abf869983dad done za 0.0 s
+14:17:21 úloha d0f1393f9551 edge_levels start
+14:17:21 úloha d0f1393f9551 done za 0.0 s
+14:17:42 úloha a9cc73fd7e22 transcribe start
+14:17:42 úloha a9cc73fd7e22 done za 0.0 s
+14:17:43 úloha 484d4e86a878 plan_edit start
+14:17:55 úloha 484d4e86a878 done za 12.0 s
+14:17:55 úloha 6b441d68dcdd refine_edges start
+14:17:55 úloha 6b441d68dcdd done za 0.0 s
+14:17:56 úloha 46ffb6ab06b1 edge_levels start
+14:17:56 úloha 46ffb6ab06b1 done za 0.0 s
+14:18:06 úloha 8b658ef9c2cc transcribe start
+14:18:06 úloha 8b658ef9c2cc done za 0.0 s
+14:18:07 úloha 089d10748408 plan_edit start
+14:18:22 úloha 089d10748408 done za 15.0 s
+14:18:23 úloha 5f30012e804e refine_edges start
+14:18:23 úloha 5f30012e804e done za 0.0 s
+14:18:24 úloha 303a8754a49c edge_levels start
+14:18:24 úloha 303a8754a49c done za 0.0 s
+14:19:05 úloha 8358ba3b90a6 transcribe start
+14:19:05 úloha 8358ba3b90a6 done za 0.0 s

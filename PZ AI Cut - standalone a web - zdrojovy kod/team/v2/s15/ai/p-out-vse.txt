@@ -1,0 +1,136 @@
+➕ do fronty: Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napět [Hermes]
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ lokální model (hermes) – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 Bara cela": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+➕ do fronty: Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátor [Hermes, 30 s]
+   21 % LLM vybírá věty (2/8)
+   38 % LLM vybírá věty (4/8)
+   56 % LLM vybírá věty (6/8)
+   73 % LLM vybírá věty (8/8)
+   90 % LLM kontroluje téma vybraných vět
+✔ vybráno 134 vět, odhad 812 s
+✔ hotovo: sekvence „STRIH HERMES 14:07:02" (Vytvořena sekvence „STRIH HERMES 14:07:02“ (00:13:57.40) z 39 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (48) · doplněny začátky souvětí: 10 · kraje dotaženy k pauze: 42 · plánování trvalo 90 s
+⚠ #209 pokračuje větou #210 („nebyla možnost se připravit a jediné, co…“), která ve střihu chybí – souvětí skončí uprostřed
+⚠ 00:04:40.04 začátek: zvuk na hranici -7.8 dB proti řeči – možná useknuté slovo „složitá.“ (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:04:49.34 konec: zvuk na hranici -7.3 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:05:23.49 začátek: zvuk na hranici -8.3 dB proti řeči – možná useknuté slovo „pomohly.“ (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:08:09.26 konec: zvuk na hranici -5.1 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:11:23.07 začátek: zvuk na hranici -0.9 dB proti řeči – možná useknuté slovo „pozici.“ (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:11:25.60 konec: zvuk na hranici -4.5 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:11:34.78 začátek: zvuk na hranici -10.8 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:12:04.56 konec: zvuk na hranici -1.3 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:12:17.16 konec: zvuk na hranici -2.2 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:12:46.09 začátek: zvuk na hranici 6.5 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:22:43.72 konec: zvuk na hranici -7 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:23:11.44 začátek: zvuk na hranici -4.6 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:24:48.98 konec: zvuk na hranici -7.5 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+⚠ 00:26:26.27 konec: zvuk na hranici 0.4 dB proti řeči (zkus sousední větu nebo fromWord/toWord)
+ℹ plán složen znovu bez vět se slyšitelnou hranicí: #21, #50, #55, #57, #59, #69, #88, #91, #122, #130, #141, #152, #164, #178, #210, #233, #256, #271
+Jak dopadl střih „STRIH HERMES 14:07:02“? 👍👎▶ Otevřít⬇ Export MP4
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 vyrez5": vyrez-5min.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   50 % LLM kapitoly 2/2
+   85 % LLM vybírá nejlepší pasáž
+✔ vybráno 5 vět, odhad 31 s
+✔ hotovo: sekvence „STRIH HERMES 30s 14:10:42" (Vytvořena sekvence „STRIH HERMES 30s 14:10:42“ (00:00:31.68) z 1 úseků.)
+ℹ plánování trvalo 29 s
+🎞 ⚠ 00:01:59.50: střih obrazu 0.78 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ souvislá pasáž (7 kandidátů) – P1 je srozumitelná a silná, ale obsahuje mnoho filler slov a je méně strukturovaná. P2 začíná kontextově závisle a P3 končí otázkou, což není ideální pointa pro samostatný klip. P3 má nejsilnější úvodní tvrzení ('Absolutně') a končí jasnou pointou o roli matky jako 'tmele', což je univerzálně srozumitelné a emocionálně působivé.
+Jak dopadl střih „STRIH HERMES 30s 14:10:42“? 👍👎▶ Otevřít⬇ Export MP4
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 Bara cela": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 24
+   58 % LLM hodnotí údery 16–24 z 24
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 3 vět, odhad 16 s
+✔ hotovo: sekvence „STRIH HERMES 20s 14:11:47" (Vytvořena sekvence „STRIH HERMES 20s 14:11:47“ (00:00:17.28) z 2 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plánování trvalo 21 s
+ℹ upoutávka z úderů (24 kandidátů) – Údery (výběr upravila kontrola bez modelu): „Za tři týdny. Takže to přišlo úplně, jak my jsme se rozvěděl…“ → „My jsme vlastně vůbec neměli možnost se na to připravit.“ → „Já jsem se rozcházela s přítelem tehdy po pěti letech, do to…“
+ℹ vyřazeno – vytržené by zkreslilo význam: „Přijde a totálně jako pohltí. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci.“, „To nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.“
+Jak dopadl střih „STRIH HERMES 20s 14:11:47“? 👍👎▶ Otevřít⬇ Export MP4
+➕ do fronty: Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátor [Hermes, 10 s]
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 10 s
+⚙ lokální model (hermes), cílová délka 10 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 novy 75s": s15-novy-75s.mp4
+⚙ přepis (z cache, pokud už existuje)
+➕ do fronty: Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napět [Hermes, 10 s]
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+➕ do fronty: Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátor [Hermes, 30 s]
+   30 % LLM hodnotí pasáže 1–8 z 8
+   85 % LLM vybírá nejlepší pasáž
+✔ vybráno 2 vět, odhad 11 s
+✔ hotovo: sekvence „STRIH HERMES 10s 14:16:33" (Vytvořena sekvence „STRIH HERMES 10s 14:16:33“ (00:00:11.08) z 1 úseků.)
+ℹ plánování trvalo 6 s
+ℹ plán složen znovu bez vět se slyšitelnou hranicí: #6
+ℹ souvislá pasáž (6 kandidátů) – P1 je závislá na kontextu 'nemocná' a působí spíše jako vyprávění faktů. P3 je příliš obecná a končí slabým konstatováním. P2 obsahuje silnou metaforu 'tmel rodiny', je srozumitelná bez předchozího kontextu a končí emotivní pointou, což z ní dělá nejlepší samostatný klip.
+Jak dopadl střih „STRIH HERMES 10s 14:16:33“? 👍👎▶ Otevřít⬇ Export MP4
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 10 s
+⚙ lokální model (hermes), cílová délka 10 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 novy 75s": s15-novy-75s.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–6 z 6
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 2 vět, odhad 9 s
+✔ hotovo: sekvence „STRIH HERMES 10s 14:17:03" (Vytvořena sekvence „STRIH HERMES 10s 14:17:03“ (00:00:09.84) z 1 úseků.)
+ℹ plánování trvalo 8 s
+ℹ upoutávka z úderů (6 kandidátů) – Hákem je nejdrsnější fakt – rychlost a nečekanost (U5, 5 s), která okamžitě vytváří šok. Následuje U4 (4 s), který tento šok vysvětluje absencí přípravy a logicky navazuje na rychlost z U5. Celkem 9 s, což je ideální pro 10s slot. U3 by bylo příliš dlouhé a repetitivní s tématem přípravy, U2 je příliš obecné na konec.
+Jak dopadl střih „STRIH HERMES 10s 14:17:03“? 👍👎▶ Otevřít⬇ Export MP4
+› Nejsilnější výrok hosta: celá myšlenka, která obstojí sama o sobě, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 novy 75s": s15-novy-75s.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí pasáže 1–2 z 2
+✔ vybráno 7 vět, odhad 31 s
+✔ hotovo: sekvence „STRIH HERMES 30s 14:17:17" (Vytvořena sekvence „STRIH HERMES 30s 14:17:17“ (00:00:31.84) z 1 úseků.)
+ℹ plánování trvalo 3 s
+🎞 ⚠ 00:00:19.35: střih obrazu 0.90 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ souvislá pasáž (2 kandidátů)
+Jak dopadl střih „STRIH HERMES 30s 14:17:17“? 👍👎▶ Otevřít⬇ Export MP4
+➕ do fronty: Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napět [Hermes, 30 s]
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 30 s
+⚙ lokální model (hermes), cílová délka 30 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 Bara cela": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+➕ do fronty: Upoutávka na 15 sekund ve stylu zpravodajství: krátké silné údery, hák hned na z [Hermes]
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 6 vět, odhad 25 s
+✔ hotovo: sekvence „STRIH HERMES 30s 14:17:43" (Vytvořena sekvence „STRIH HERMES 30s 14:17:43“ (00:00:25.36) z 5 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plánování trvalo 12 s
+🎞 ⚠ 00:25:41.04: střih obrazu 0.38 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+🎞 ⚠ 00:25:42.67: střih obrazu 1.25 s před koncem klipu, uvnitř řeči – obraz jen bleskne
+ℹ upoutávka z úderů (24 kandidátů) – Údery (výběr upravila kontrola bez modelu): „Za tři týdny. Takže to přišlo úplně, jak my jsme se rozvěděl…“ → „My jsme vlastně vůbec neměli možnost se na to připravit.“ → „Prostě to období bylo... Strašně jako nečekaný, protože my j…“ → „Já jsem se rozcházela s přítelem tehdy po pěti letech, do to…“ → „Často rozhodně nezahojí.“
+ℹ vyřazeno – vytržené by zkreslilo význam: „Přijde a totálně jako pohltí. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci.“, „To nepotřebujeme slyšet. Já potřebuju slyšet něco jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv.“
+Jak dopadl střih „STRIH HERMES 30s 14:17:43“? 👍👎▶ Otevřít⬇ Export MP4
+› Upoutávka na 15 sekund ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ lokální model (hermes), cílová délka 15 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S15 Bara cela": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 24
+   58 % LLM hodnotí údery 16–24 z 24
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 4 vět, odhad 13 s
+✔ hotovo: sekvence „STRIH HERMES 15s 14:18:07" (Vytvořena sekvence „STRIH HERMES 15s 14:18:07“ (00:00:13.52) z 4 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plánování trvalo 15 s
+🎞 ⚠ 00:19:59.35: střih obrazu 0.90 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ upoutávka z úderů (24 kandidátů) – Údery (výběr upravila kontrola bez modelu): „Jsem na Novo, ale v tom životopise nic nebylo.“ → „Prostě to období bylo... Strašně jako nečekaný, protože my j…“ → „My jsme vlastně vůbec neměli možnost se na to připravit.“
+ℹ vyřazeno – vytržené by zkreslilo význam: „Často rozhodně nezahojí.“, „Jí už je teď dobře.“, „To nepotřebujeme slyšet.“, „Tady si myslím, že je strašně důležitý říct, když ty říkáš, ty si to zvládla a zvládáš to.“, „Tady není jiná možnost. ty nemáš v tu chvíli jako vlastně jinou možnost.“, „Přijde a totálně jako pohltí. Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci.“
+Jak dopadl střih „STRIH HERMES 15s 14:18:07“? 👍👎▶ Otevřít⬇ Export MP4

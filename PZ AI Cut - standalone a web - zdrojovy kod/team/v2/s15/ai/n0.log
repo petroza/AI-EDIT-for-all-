@@ -1,0 +1,22 @@
+
+=== transcribe_media (1.4 s)
+Přepis: C:/Users/Petr/AppData/Local/Temp/pz-s15-ai-media/s15-novy-75s.mp4
+Délka 00:01:15.02 · jazyk cs · 14 vět · 174 slov · large-v3/cuda · z cache
+Soubor: O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\cache\transcripts\s15-novy-75s.mp4.eeb389721ac9.json
+#1 00:00:00.00–00:00:04.66 A proto jí bolily ty záda, protože ona už měla naprasklý žebra a tak dále.
+#2 00:00:04.72–00:00:07.26 A zjistilo se to strašně, strašně pozdě.
+#3 00:00:07.36–00:00:13.86 A vlastně jí hospitalizovali v nemocnici a za tři týdny vlastně byl konec.
+#4 00:00:13.92–00:00:19.16 Za tři týdny. Takže to přišlo úplně, jako my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč.
+#5 00:00:19.46–00:00:23.24 My jsme vlastně vůbec neměli možnost se na to připravit.
+#6 00:00:24.04–00:00:26.16 Absolutně. My jsme nechápali, co se vlastně stalo.
+#7 00:00:26.24–00:00:27.64 Takže to byl takový šok, že...
+#8 00:00:28.08–00:00:35.78 Nebyla možnost se připravit a jediné, co nám zbylo, tak se s tím poprat, zvládnout to.
+#9 00:00:36.41–00:00:39.69 Když přijde rodina o člověka jako je máma?
+#10 00:00:40.22–00:00:45.46 Co všechno se v tu chvíli změní, nastavuje znova?
+#11 00:00:45.78–00:00:50.82 Všechno, naprosto všechno, protože moje máma byla tmel té naší rodiny.
+#12 00:00:51.40–00:01:01.82 To byl někdo, kdo držel celou rodinu pohromadě a kdo svolával nás všechny na obědy, svátky, narozeniny.
+#13 00:01:01.82–00:01:08.70 Ona všechno organizovala. A třeba moje máma byl můj nejbližší člověk, moje nejlepší kamarádka, moje prostě...
+#14 00:01:09.32–00:01:14.98 Všechno, jako všechno. My jsme neměli klasický vztah, možná třeba máma, dcera, že by tam byl nějaký...
+
+=== build_sequence (3.5 s)
+{"sequenceID":"88e1a315-9b72-45aa-a5c2-edd00d01c26b","name":"AI-S15 novy 75s","duration":75,"segments":1,"warnings":[],"audioFades":0,"summary":"Vytvořena sekvence „AI-S15 novy 75s“ (00:01:15.00) z 1 úseků."}

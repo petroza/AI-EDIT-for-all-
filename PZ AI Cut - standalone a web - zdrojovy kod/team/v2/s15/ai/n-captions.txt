@@ -1,0 +1,26 @@
+25 titulku
+{"start":0,"end":4.72,"text":"A proto jí bolily ty záda, protože ona\nuž měla naprasklý žebra a tak dále.","ws":[0,0.08,0.52,0.7,0.9,1.02,1.4,1.66,1.8,1.92,2.1,2.94,3.98,4.18,4.4]}
+{"start":4.72,"end":7.36,"text":"A zjistilo se to strašně,\nstrašně pozdě.","ws":[4.72,4.8,5.06,5.14,5.26,6.06,6.62]}
+{"start":7.36,"end":10.3,"text":"A vlastně jí\nhospitalizovali v nemocnici","ws":[7.36,7.74,8.02,8.48,9.38,9.6]}
+{"start":10.3,"end":13.92,"text":"a za tři týdny\nvlastně byl konec.","ws":[10.3,11,12.16,12.44,12.68,13.22,13.42]}
+{"start":13.92,"end":15.01,"text":"Za tři týdny.","ws":[13.92,14.36,14.58]}
+{"start":15.06,"end":17.14,"text":"Takže to přišlo úplně,\njako my jsme se rozvěděli,","ws":[15.06,15.5,15.54,15.86,16.32,16.42,16.5,16.54,16.62]}
+{"start":17.14,"end":19.195,"text":"že je nemocná a za tři\ntýdny byla pryč.","ws":[17.14,17.26,17.38,17.88,18.04,18.16,18.38,18.62,18.8]}
+{"start":19.195,"end":23.39,"text":"My jsme vlastně vůbec neměli\nmožnost se na to připravit.","ws":[19.195,19.666,19.858,20.137,20.65,21.036,21.849,22.02,22.491,22.598]}
+{"start":23.93,"end":26.197,"text":"Absolutně. My jsme nechápali,\nco se vlastně stalo.","ws":[23.93,24.404,24.713,24.919,25.414,25.496,25.599,25.847]}
+{"start":26.197,"end":27.79,"text":"Takže to byl\ntakový šok, že...","ws":[26.197,26.321,26.424,26.527,26.898,27.207]}
+{"start":28.425,"end":32.188,"text":"Nebyla možnost se\npřipravit a jediné,","ws":[28.425,29.055,30.221,30.412,30.985,31.233]}
+{"start":32.188,"end":35.93,"text":"co nám zbylo, tak se s tím\npoprat, zvládnout to.","ws":[32.188,32.265,32.456,32.972,33.698,34.099,34.252,34.328,34.997,35.646]}
+{"start":36.83,"end":39.84,"text":"Když přijde rodina\no člověka jako je máma?","ws":[36.83,37.336,37.615,37.929,38.103,39.202,39.324,39.394]}
+{"start":40.58,"end":45.61,"text":"Co všechno se v tu chvíli\nzmění, nastavuje znova?","ws":[40.58,41.176,41.549,41.679,41.772,41.865,42.275,44.138,45.218]}
+{"start":45.78,"end":47.28,"text":"Všechno, naprosto všechno,","ws":[45.78,46.44,46.88]}
+{"start":47.28,"end":50.97,"text":"protože moje máma byla\ntmel té naší rodiny.","ws":[47.28,47.62,48.16,48.5,48.7,49.84,50.16,50.44]}
+{"start":51.175,"end":52.391,"text":"To byl někdo,","ws":[51.175,51.844,52.006]}
+{"start":52.391,"end":57.172,"text":"kdo držel celou rodinu\npohromadě a kdo svolával","ws":[52.391,52.553,52.857,53.12,53.404,54.498,54.822,56.179]}
+{"start":57.172,"end":61.731,"text":"nás všechny na obědy,\nsvátky, narozeniny.","ws":[57.172,57.537,58.327,58.651,59.786,61.204]}
+{"start":61.731,"end":63.035,"text":"Ona všechno organizovala.","ws":[61.731,61.872,62.136]}
+{"start":63.108,"end":66.33,"text":"A třeba moje máma byl\nmůj nejbližší člověk,","ws":[63.108,63.291,64.628,64.79,65.073,65.215,65.377,65.924]}
+{"start":66.33,"end":68.85,"text":"moje nejlepší kamarádka,\nmoje prostě...","ws":[66.33,66.492,66.897,67.667,67.971]}
+{"start":69.365,"end":70.456,"text":"Všechno, jako všechno.","ws":[69.365,69.881,70.02]}
+{"start":70.456,"end":72.083,"text":"My jsme neměli\nklasický vztah,","ws":[70.456,70.555,70.694,70.932,71.567]}
+{"start":72.083,"end":75,"text":"možná třeba máma, dcera,\nže by tam byl nějaký...","ws":[72.083,72.797,73.254,73.591,73.909,74.087,74.186,74.345,74.524]}
