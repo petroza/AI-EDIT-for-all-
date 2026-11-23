@@ -25,6 +25,11 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
   sekvence – Shift+Delete vyjme úsek ze všech stop (b-roll, hudba, titulky synchronní), Ctrl+D na V2 prolne do stopy
   pod ním, zbytek cizího záběru na kraji b-rollu se odstřihne, poslední titulek na střihu už není nulový, MXF s titulky
   jako .srt; varování při řezu uprostřed slova, dotaz před přepsáním exportu, znovupřipojení přesunutého média importem.
+- **Nezávislá revize kódu (2:00)**: 21 nálezů, opraveno 20 (41e7a73) – mimo jiné smazání b-rollu/hudby mazalo titulky
+  řeči, Zpět po znovupřipojení média rozbilo klipy, webový export neznal prolínačku do stopy pod klipem.
+- **S6/S7**: Shift+Delete bezpečně (mezera se zavře jen když je prázdná na všech stopách, jinak hláška a rada Extract),
+  b-roll na V2 se po vložení sám očistí od cizího záběru, výřez podle obličeje i ve standalone při vkládání do 9:16,
+  náhledy klipů na časové ose ze začátku klipu, znovupřipojené médium se hned přehraje.
 
 ## Otevřené
 - Úlomek slova na začátku úseku z MCP (`refine_edges`: ticho 15 ms bere i uzávěr „k“) – ladit s Premiere + test-highlight.
@@ -34,4 +39,5 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
 - Export H.264 bez vypálených titulků: po jednosnímkovém úseku se zbytek posune o půl snímku (20 ms) – spojování
   segmentů TS bez překódování; neopraveno (riziko pro jádro exportu, vzácné).
 - `buildSequence` (API mostu) neumí položit klip přes jiný (překryv na V2) – rozšíření, MCP to pro Premiere taky nemá.
+- Q/W (ripple trim k hlavě) vyjme úsek ze všech stop – b-roll přes místo střihu se rozstřihne se skokem (chování z dřívějška).
 - MXF pro Novu: 2 mono stopy, TC 00:00:00:00, bez 1080i25 – potřeba technická specifikace TV.
