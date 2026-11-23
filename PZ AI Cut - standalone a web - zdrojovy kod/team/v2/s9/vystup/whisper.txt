@@ -1,0 +1,9 @@
+v916 Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuji slyšet něco, jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv. Bych jako doporučila všem, kdo přichází, nebo přišli do styku s někými možnostce na to, tak neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby, když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku, něco prostě. Takže to přišlo úplně, jako my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč.
+   cut 0.00: Ale[-0.50-0.56 0.38] my[0.56-0.68 0.60]
+   cut 16.08: cokoliv.[15.40-16.04 1.00] Bych[16.04-16.58 0.98] jako[16.58-16.70 0.91]
+   cut 45.88: prostě.[45.46-45.90 0.92] Takže[45.90-46.46 0.91] to[46.46-46.56 0.97]
+   cut 50.36: byla[49.74-49.90 0.90] přeč.[49.90-50.30 0.71]
+inout To zahojí, je teď líp, tak to mělo být, tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet, my potřebujeme jenom toho člověka, aby s náma byl, aby, když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo, nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku, něco prostě. Ale my nepotřebujeme prostě někoho, aby nám říkal.
+   cut 0.00: To[-0.50-0.04 0.51] zahojí[0.04-0.62 0.96]
+   cut 19.80: něco[19.12-19.38 0.74] prostě,[19.38-19.86 0.97] ale[19.86-20.30 1.00] my[20.30-20.48 0.77]
+   cut 23.00: říkal,[22.24-22.76 1.00]

@@ -1,0 +1,17 @@
+Jednoradkove titulky 9:16 (styl lines 1, dialog Titulky z prepisu), delka = end - start; zobrazeni = do zacatku dalsiho titulku
+s9-sim916-L1    46 tit. | max radku 1, nejdelsi radek 20 zn. | nejkratsi 0.54 s (zobrazeni 0.54 s) | < 0,7 s: 12 (26 %) | pres strih: zadny
+    kratke: 0.54 „Ale my“; 0.55 „prostě.“; 0.56 „nepotřebujeme“; 0.58 „potřebujeme“; 0.62 „se třeba dlouho“; 0.66 „jenom toho“; 0.70 „když“; 0.70 „neozýváme, aby“; 0.70 „nic slyšet, my“; 0.70 „pojď, kouknem“; 0.70 „prostě někoho,“; 0.70 „člověka, aby“
+s9-a916-L1      16 tit. | max radku 1, nejdelsi radek 19 zn. | nejkratsi 0.70 s (zobrazeni 0.70 s) | < 0,7 s: 1 (6 %) | pres strih: zadny
+    kratke: 0.70 „úplně, jak my jsme“
+s9-v916-L1      51 tit. | max radku 1, nejdelsi radek 20 zn. | nejkratsi 0.30 s (zobrazeni 0.30 s) | < 0,7 s: 12 (24 %) | pres strih: zadny
+    kratke: 0.30 „Bych jako“; 0.55 „prostě.“; 0.56 „nepotřebujeme“; 0.58 „potřebujeme“; 0.62 „se třeba dlouho“; 0.66 „jenom toho“; 0.69 „Ale my“; 0.70 „Prostě my“; 0.70 „když“; 0.70 „neozýváme, aby“; 0.70 „nic slyšet, my“; 0.70 „takový ty“
+s9-multi916-L1  49 tit. | max radku 1, nejdelsi radek 20 zn. | nejkratsi 0.54 s (zobrazeni 0.54 s) | < 0,7 s: 12 (24 %) | pres strih: zadny
+    kratke: 0.54 „Ale my“; 0.55 „prostě.“; 0.56 „nepotřebujeme“; 0.58 „potřebujeme“; 0.62 „se třeba dlouho“; 0.66 „jenom toho“; 0.70 „když“; 0.70 „neozýváme, aby“; 0.70 „nic slyšet, my“; 0.70 „pojď, kouknem“; 0.70 „prostě někoho,“; 0.70 „člověka, aby“
+s9-sim916       25 tit. | max radku 2, nejdelsi radek 20 zn. | nejkratsi 0.80 s (zobrazeni 0.80 s) | < 0,7 s: 0 (0 %) | pres strih: zadny
+s9-v916         28 tit. | max radku 2, nejdelsi radek 20 zn. | nejkratsi 0.74 s (zobrazeni 0.74 s) | < 0,7 s: 0 (0 %) | pres strih: zadny
+s9-sim916-L1: < 0,70 s (presne float) 12, < 0,69 s 6 (13 %), < 0,6 s 4; snimku (25p) nejkratsi 13.5
+s9-a916-L1: < 0,70 s (presne float) 1, < 0,69 s 0 (0 %), < 0,6 s 0; snimku (25p) nejkratsi 17.5
+s9-v916-L1: < 0,70 s (presne float) 12, < 0,69 s 6 (12 %), < 0,6 s 4; snimku (25p) nejkratsi 7.5
+s9-multi916-L1: < 0,70 s (presne float) 12, < 0,69 s 6 (12 %), < 0,6 s 4; snimku (25p) nejkratsi 13.5
+v916-L1 nejkratsi a okoli: 14.25-15.05 tady pro tebe, | 15.05-16.07 kdyby cokoliv. | 16.07-16.37 Bych jako | 16.77-17.91 doporučila všem, | 17.91-19.16 kdo přichází nebo
+v916 strihy A1: [0, 16.08, 45.88]

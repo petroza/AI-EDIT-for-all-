@@ -1,0 +1,266 @@
+{
+ "build": {
+  "dur": 49.72,
+  "edge": 1,
+  "ms": 616,
+  "warnings": []
+ },
+ "endT": 50.08000000000004,
+ "bids": [
+  [
+   "cmwsnu0jazvhiv36",
+   "cmwsnu0jazdu6n37"
+  ],
+  "Připraveno",
+  [
+   "cmwsnu2v20zpem39",
+   "cmwsnu2v2nryf93a"
+  ],
+  "Připraveno",
+  [
+   "cmwsnu56ov12nw3c",
+   "cmwsnu56o25cvh3d"
+  ],
+  "Připraveno"
+ ],
+ "toasts": [
+  "Na kraji b-rollu bylo odstřiženo pár snímků jiného záběru kamery (Ctrl+Z vrátí)."
+ ],
+ "cuts": [
+  29.8,
+  45.92
+ ],
+ "transitions": [
+  [
+   "V1 cross",
+   29.8,
+   "Cross Dissolve applied at 00:00:29:20"
+  ],
+  [
+   "V1 cross",
+   45.92,
+   "Cross Dissolve applied at 00:00:45:23"
+  ],
+  [
+   "V2 cross",
+   8,
+   "Cross Dissolve applied at 00:00:08:00"
+  ],
+  [
+   "V2 cross",
+   12,
+   "Cross Dissolve applied at 00:00:12:00"
+  ],
+  [
+   "dipBlack end",
+   50.08000000000004,
+   "Dip to Black applied at 00:00:50:02"
+  ]
+ ],
+ "seq": {
+  "w": 1280,
+  "h": 720,
+  "fps": 25,
+  "video": [
+   [
+    {
+     "start": 0,
+     "end": 29.8,
+     "in": 1544.4,
+     "out": 1574.2,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu020mue7t2w",
+     "media": "tncz-TIT_202"
+    },
+    {
+     "start": 29.8,
+     "end": 45.92,
+     "in": 1596,
+     "out": 1612.12,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": {
+      "type": "cross",
+      "dur": 1
+     },
+     "vOut": null,
+     "link": "lmwsnu020qtu1c2z",
+     "media": "tncz-TIT_202"
+    },
+    {
+     "start": 45.92,
+     "end": 50.08,
+     "in": 749.52,
+     "out": 753.68,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": {
+      "type": "cross",
+      "dur": 1
+     },
+     "vOut": {
+      "type": "dipBlack",
+      "dur": 1
+     },
+     "link": "lmwsnu02013ivv32",
+     "media": "tncz-TIT_202"
+    }
+   ],
+   [
+    {
+     "start": 8,
+     "end": 12,
+     "in": 30,
+     "out": 34,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": {
+      "type": "cross",
+      "dur": 1,
+      "under": true
+     },
+     "vOut": {
+      "type": "cross",
+      "dur": 1,
+      "under": true
+     },
+     "link": "lmwsnu0jas5p7i35",
+     "media": "vyrez-5min.m"
+    },
+    {
+     "start": 27,
+     "end": 33,
+     "in": 200,
+     "out": 206,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu2v2s82q938",
+     "media": "vyrez-5min.m"
+    },
+    {
+     "start": 40.28,
+     "end": 43,
+     "in": 120.28,
+     "out": 123,
+     "gainDb": 0,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu56orxhlk3b",
+     "media": "vyrez-5min.m"
+    }
+   ],
+   []
+  ],
+  "audio": [
+   [
+    {
+     "start": 0,
+     "end": 29.8,
+     "in": 1544.4,
+     "out": 1574.2,
+     "gainDb": 0,
+     "fadeIn": 0.08,
+     "fadeOut": 0.08,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu020mue7t2w",
+     "media": "tncz-TIT_202"
+    },
+    {
+     "start": 29.8,
+     "end": 45.92,
+     "in": 1596,
+     "out": 1612.12,
+     "gainDb": 0,
+     "fadeIn": 0.08,
+     "fadeOut": 0.08,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu020qtu1c2z",
+     "media": "tncz-TIT_202"
+    },
+    {
+     "start": 45.92,
+     "end": 50.08,
+     "in": 749.52,
+     "out": 753.68,
+     "gainDb": 0,
+     "fadeIn": 0.08,
+     "fadeOut": 0.08,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu02013ivv32",
+     "media": "tncz-TIT_202"
+    }
+   ],
+   [
+    {
+     "start": 8,
+     "end": 12,
+     "in": 30,
+     "out": 34,
+     "gainDb": -12,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu0jas5p7i35",
+     "media": "vyrez-5min.m"
+    },
+    {
+     "start": 27,
+     "end": 33,
+     "in": 200,
+     "out": 206,
+     "gainDb": -12,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu2v2s82q938",
+     "media": "vyrez-5min.m"
+    },
+    {
+     "start": 40.28,
+     "end": 43,
+     "in": 120.28,
+     "out": 123,
+     "gainDb": -12,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": "lmwsnu56orxhlk3b",
+     "media": "vyrez-5min.m"
+    }
+   ],
+   [
+    {
+     "start": 0,
+     "end": 50.08,
+     "in": 0,
+     "out": 50.08,
+     "gainDb": -18,
+     "fadeIn": 0,
+     "fadeOut": 0,
+     "vIn": null,
+     "vOut": null,
+     "link": null,
+     "media": "mus_stem.wav"
+    }
+   ]
+  ]
+ }
+}

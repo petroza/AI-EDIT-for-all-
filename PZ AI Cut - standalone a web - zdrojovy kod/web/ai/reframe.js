@@ -260,6 +260,7 @@ async function reframeSequence(app, seq, fileOf, progress = () => {}, only = nul
         if (s.x !== null) { cur.posX = posFor(s.x, iw, k); faced++; }
       });
     }
+    relinkAV(seq);
   });
   syncRepeats(seq);
   return { clips: vclips.length, splits, faced, merged, shots: plan.reduce((a, x) => a + x.shots.length, 0) };
@@ -424,6 +425,46 @@ class FsFile {
  * na začátku/konci klipu převezme sousední klip na stopě (stejně jako reframeSequence). Hledá jen v okně MIN_SHOT u krajů,
  * In/Out zvuku se nemění. Kolo 7 (kontrolor výstupu): 16:9 export ukázal 2 snímky moderátorky na začátku klipu.
  */
+/** Obraz rozříznutý výřezem / úklidem krajů se odpojil (linkId null), zvuk si nechal propojení na obraz, který už neexistuje
+ *  („osiřelý“) – žiletka, Shift+Delete i ořez pak působily jen na obraz (redaktorka S9: černá díra se zvukem). Jako v Premiere:
+ *  osiřelý zvuk téhož zdroje se stejným časováním (start − in) se rozřízne na začátcích kusů obrazu uvnitř něj a každý kus
+ *  obrazu se propojí se svým zvukem (všechny zvukové stopy). Zvuk, který rozpojil uživatel (linkId null), zůstane netknutý.
+ *  Kraje posunuté úklidem (o pár snímků) zůstanou propojené s posunem. Export čte navazující kusy zvuku vcelku. */
+function relinkAV(seq) {
+  const { uid } = require('../../src/core/util');
+  const fd = 1 / (seq.fps || 25);
+  const off = (c) => c.start - c.in;
+  const vids = [];
+  seq.tracks.video.forEach((tr) => tr.clips.forEach((v) => { if (!v.linkId) vids.push(v); }));
+  if (!vids.length) return 0;
+  const vLinks = () => new Set(seq.tracks.video.flatMap((tr) => tr.clips.map((c) => c.linkId).filter(Boolean)));
+  let have = vLinks();
+  const orphan = (a) => a.linkId && !have.has(a.linkId);
+  const same = (a, v) => a.mediaId === v.mediaId && Math.abs(off(a) - off(v)) < fd / 2;
+  for (const atr of seq.tracks.audio) {
+    if (atr.locked) continue;
+    for (const v of vids) {
+      const a = atr.clips.find((x) => orphan(x) && same(x, v) && v.start > x.start + fd / 2 && v.start < clipEnd(x) - fd / 2);
+      if (a) E.splitClip(seq, atr, a, v.start);
+    }
+  }
+  have = vLinks();
+  let n = 0;
+  for (const v of vids) {
+    const ve = clipEnd(v), group = [];
+    for (const atr of seq.tracks.audio) {
+      let best = null, bestOv = 0;
+      for (const a of atr.clips) {
+        if (!orphan(a) || !same(a, v)) continue;
+        const ov = Math.min(ve, clipEnd(a)) - Math.max(v.start, a.start);
+        if (ov > bestOv) { best = a; bestOv = ov; }
+      }
+      if (best && bestOv > 0.5 * Math.min(ve - v.start, clipEnd(best) - best.start)) group.push(best);
+    }
+    if (group.length) { const l = uid('l'); v.linkId = l; for (const a of group) a.linkId = l; have.add(l); n++; }
+  }
+  return n;
+}
 /** Zopakované snímky na konci sekvence (footRepeat, `rep`) mají výřez jako záběr, který opakují – jinak výřez 9:16
  *  poskočí (kontrolor S4: o 23 px), protože se obličej hledá v každém klipu zvlášť. */
 function syncRepeats(seq) {
@@ -497,11 +538,12 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
       if (e.cutTail) { for (const x of [e.clip, ...linkedA(e.clip)]) x.out -= e.cutTail.d; }
       if (e.footRepeat) {
         const { d } = e.footRepeat, c = e.clip;
-        for (const tr of seq.tracks.audio) for (const a of tr.clips) if (c.linkId && a.linkId === c.linkId) a.linkId = null;
-        c.out -= d; c.linkId = null;
+        // klip zůstane propojený se svým zvukem (obraz končí o d dřív – jako L-střih; redaktorka S9: rozpojený obraz a zvuk
+        // – žiletka, Shift+Delete i ořez pak působily jen na obraz); zopakovaný kousek je jen obraz, bez propojení
+        c.out -= d;
         const { uid } = require('../../src/core/util');
         // kopie bez přechodu na začátku; konec (vOut / fadeOut) přejde z původního klipu na kopii (revize #15)
-        const rep = Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c), rep: true, vIn: null, fadeIn: 0 });
+        const rep = Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c), rep: true, vIn: null, fadeIn: 0, linkId: null });
         c.vOut = null; c.fadeOut = 0;
         e.track.clips.push(rep);
         e.track.clips.sort((x, y) => x.start - y.start);
@@ -509,6 +551,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
       if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
       if (e.tail) { const { next, d } = e.tail; next.clip.in -= d; next.clip.start -= d; next.clip.linkId = null; e.clip.out -= d; e.clip.linkId = null; }
     }
+    relinkAV(seq);
   });
   return { merged: todo.length };
 }

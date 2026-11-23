@@ -260,7 +260,13 @@ async function exportSequence(project, seq, opts) {
     for (const c of clips) {
       const a = Math.max(rs, c.start), b = Math.min(re, clipEnd(c));
       if (a - cursor > 1e-4) pieces.push({ silence: a - cursor });
-      pieces.push({ clip: c, a, b });
+      // navazující kus téhož zdroje (žiletka, řez zvuku spolu s obrazem po úklidu krajů / výřezu) číst vcelku – jinak
+      // zaokrouhlení začátku kusu (-ss) může na řezu uprostřed řeči lupnout
+      const lp = pieces[pieces.length - 1], lc = lp && (lp.endClip || lp.clip);
+      if (lc && Math.abs(lp.b - a) < 1e-4 && lc.mediaId === c.mediaId && (lc.gainDb || 0) === (c.gainDb || 0)
+        && !(lc.fadeOut > 0) && !(c.fadeIn > 0) && Math.abs((lc.in + (lp.b - lc.start)) - (c.in + (a - c.start))) < 1e-3) {
+        lp.b = b; lp.endClip = c;
+      } else pieces.push({ clip: c, a, b });
       cursor = b;
     }
     if (re - cursor > 1e-4) pieces.push({ silence: re - cursor });
@@ -278,7 +284,8 @@ async function exportSequence(project, seq, opts) {
       const src = c.in + (p.a - c.start);
       const f = [`aresample=${SR}`, 'aformat=channel_layouts=stereo', `volume=${dbToGain(c.gainDb).toFixed(4)}`];
       if (c.fadeIn > 0 && Math.abs(p.a - c.start) < 1e-3) f.push(`afade=t=in:d=${c.fadeIn.toFixed(4)}`);
-      if (c.fadeOut > 0 && Math.abs(p.b - clipEnd(c)) < 1e-3) f.push(`afade=t=out:st=${Math.max(0, dur - c.fadeOut).toFixed(4)}:d=${c.fadeOut.toFixed(4)}`);
+      const ce = p.endClip || c;
+      if (ce.fadeOut > 0 && Math.abs(p.b - clipEnd(ce)) < 1e-3) f.push(`afade=t=out:st=${Math.max(0, dur - ce.fadeOut).toFixed(4)}:d=${ce.fadeOut.toFixed(4)}`);
       f.push('apad', `atrim=end_sample=${samples}`);
       await ff(['-ss', src.toFixed(4), '-i', m.path, '-vn', '-af', f.join(','), '-ar', String(SR), '-ac', '2', '-c:a', 'pcm_s24le', file]);
       tick('audio');

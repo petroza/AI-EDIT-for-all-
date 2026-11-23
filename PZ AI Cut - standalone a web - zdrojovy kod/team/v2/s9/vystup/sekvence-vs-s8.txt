@@ -1,0 +1,19 @@
+s9-a             titulky shodne 6 | stopy shodne | styl shodny
+s9-a916          titulky shodne 10 | stopy shodne | styl shodny
+s9-a11           titulky shodne 6 | stopy shodne | styl shodny
+s9-sim           titulky shodne 11 | stopy shodne | styl shodny
+s9-sim916        titulky shodne 25 | stopy shodne | styl shodny
+s9-sim11         titulky shodne 15 | stopy shodne | styl shodny
+s9-k219          titulky shodne 1 | stopy shodne | styl shodny
+s9-k219916       titulky shodne 1 | stopy shodne | styl shodny
+s9-k21911        titulky shodne 1 | stopy shodne | styl shodny
+s9-a1080         titulky shodne 6 | stopy shodne | styl shodny
+s9-sim1080       titulky shodne 11 | stopy shodne | styl shodny
+s9-multi         titulky shodne 12 | stopy shodne | styl shodny
+s9-multi1080     titulky shodne 12 | stopy shodne | styl shodny
+s9-multi916      titulky shodne 27 | stopy shodne | styl shodny
+s9-multi11       titulky shodne 16 | stopy shodne | styl shodny
+s9-v916          titulky shodne 28 | stopy LISI | styl shodny
+s9-v916-stred    titulky shodne 28 | stopy LISI | styl shodny
+s9-drop916 (v S8 neni) 0 tit.
+s9-drop916b (v S8 neni) 0 tit.

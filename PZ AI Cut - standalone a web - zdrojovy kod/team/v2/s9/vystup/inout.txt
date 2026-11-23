@@ -1,0 +1,6 @@
+vystup-s9-sim-inout.mp4 vs vystup-s9-sim.mp4: snimku 575/575 | horni 75 %: prumer 0.09 max 0.60 (sn. 48) | spodni pas: prumer 0.11 max 0.64, snimku s chybou >3: 0
+zvuk in/out: delka 23.000 s (ocekavano 23,000)
+  okno 1.0 s (sekv. 11.0 s): posun 0.0 ms, r 1.000, zisk proti plnemu exportu +0.15 dB
+  okno 8.0 s (sekv. 18.0 s): posun 0.0 ms, r 1.000, zisk proti plnemu exportu -0.61 dB
+  okno 19.0 s (sekv. 29.0 s): posun 0.0 ms, r 0.999, zisk proti plnemu exportu -0.36 dB
+  okno 21.0 s (sekv. 31.0 s): posun 0.0 ms, r 1.000, zisk proti plnemu exportu -0.74 dB

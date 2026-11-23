@@ -180,14 +180,17 @@ const app = {
     // b-roll vložený do V2+ přes jiný obraz: zbytek cizího záběru na jeho kraji odstřihnout hned (kontrolor S6), Ctrl+Z vrátí
     else if (s && m.hasVideo && !app._transcriptInsert && s.height > s.width && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
       // širší záběr vložený do sekvence na výšku (b-roll přetažením): výřez podle obličeje jen pro vložené klipy (kontrolor S8)
-      const ids = new Set([...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video'; }));
+      const fs = [...app.sel].map((id) => E.findClip(s, id)).filter((f) => f && f.kind === 'video');
+      const ids = new Set(fs.map((f) => f.clip.id));
       if (ids.size) {
+        // úsek vložení (výřez klip rozdělí na střihu kamery – nové klipy se pak najdou podle času, ne podle id)
+        const span = fs.map((f) => ({ track: f.track, a: f.clip.start, b: f.clip.start + (f.clip.out - f.clip.in) }));
         const merge = reframeMerger(); // jedno Ctrl+Z vrátí vložení i výřez
-        window.__pzReframeHere(s, ids).then(() => { merge(); app.program.refresh(); }).catch(() => merge());
+        window.__pzReframeHere(s, ids).then(() => { merge(); app.program.refresh(); edgeCleanup(s, span, true); }).catch(() => merge());
       }
     } else if (s && m.hasVideo && window.__pzEdgeShots) {
-      const ids = [...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video' && f.track > 0; });
-      if (ids.length) window.__pzEdgeShots(s, { only: ids }).then((r) => { if (r && r.merged) { app.toast(LL('A few frames of another camera shot at the B-roll edge were trimmed (Ctrl+Z undoes it).', 'Na kraji b-rollu bylo odstřiženo pár snímků jiného záběru kamery (Ctrl+Z vrátí).')); app.timeline.render(); app.program.refresh(); } }).catch(() => {});
+      const fs = [...app.sel].map((id) => E.findClip(s, id)).filter((f) => f && f.kind === 'video' && f.track > 0);
+      edgeCleanup(s, fs.map((f) => ({ track: f.track, a: f.clip.start, b: f.clip.start + (f.clip.out - f.clip.in) })));
     }
   },
 
@@ -215,7 +218,8 @@ const app = {
       app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
       // výřez je součást vložení: jeho kroky Zpět sloučit s vložením (jedno Ctrl+Z vrátí obojí – B1 undoInsert)
       const merge = reframeMerger();
-      window.__pzReframeHere(s, added).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
+      const span = [...added].map((id) => E.findClip(s, id)).filter(Boolean).map((f) => ({ track: f.track, a: f.clip.start, b: f.clip.start + (f.clip.out - f.clip.in) }));
+      window.__pzReframeHere(s, added).then(() => { merge(); app.status(''); app.program.refresh(); edgeCleanup(s, span, true); }).catch(() => { merge(); app.status(''); });
     }
     app.status(p.where === 'end' ? LL('Added at the end of the sequence', 'Přidáno na konec sekvence') : LL('Inserted at the playhead', 'Vloženo na místo hlavy'));
     return Object.assign(p, { dur: b - a, seqId: s.id });
@@ -1345,7 +1349,11 @@ function exportDialog() {
       if (burn && !burn.disabled) { burn.checked = !mxf; if (mxf && srt) srt.checked = true; }
     };
     fmtInfo();
-    if (exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf' && !b.querySelector('#exBurn').disabled) { b.querySelector('#exBurn').checked = false; b.querySelector('#exSrt').checked = true; }
+    if (exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf') {
+      if (!b.querySelector('#exBurn').disabled) { b.querySelector('#exBurn').checked = false; b.querySelector('#exSrt').checked = true; }
+      // předvybrané MXF (po minulém exportu MXF) = TV −23 LUFS, ne hlasitost pro MP4 (redaktorka S9: MXF s −14 LUFS)
+      const lo = b.querySelector('#exLoud'); if (lo.value !== 'tv') { lo.dataset.before = lo.value; lo.value = 'tv'; }
+    }
     b.querySelector('#exBrowse').onclick = async () => {
       const r = await ipcRenderer.invoke('dialog', 'save', { title: 'Export', defaultPath: b.querySelector('#exOut').value, filters: [{ name: exporter.FORMATS[b.querySelector('#exFmt').value].label, extensions: [exporter.FORMATS[b.querySelector('#exFmt').value].ext] }] });
       if (!r.canceled && r.filePath) b.querySelector('#exOut').value = r.filePath;
@@ -1761,15 +1769,30 @@ if (settings.thumbSize) { $('thumbSize').value = settings.thumbSize; $('projList
 setProjView(settings.projView || 'icons');
 
 /** Záběr na šířku vložený do prázdné sekvence na výšku: výřez podle obličeje hned (jinak výřez na střed = často stůl). */
+/** B-roll vložený do V2+ přes jiný obraz: zbytek cizího záběru na jeho kraji odstřihnout hned (kontrolor S6), Ctrl+Z vrátí.
+ *  span = [{track, a, b}] vložené klipy; i po výřezu podle obličeje v sekvenci na výšku (kontrolor S9: větev výřezu úklid
+ *  přeskočila – 7 snímků celku na kraji b-rollu v 9:16). */
+function edgeCleanup(s, span, withV1) {
+  if (!window.__pzEdgeShots) return;
+  const ids = [];
+  s.tracks.video.forEach((tr, ti) => {
+    if (ti === 0 && !withV1) return;
+    for (const c of tr.clips) {
+      const ce = c.start + (c.out - c.in);
+      if (span.some((x) => x.track === ti && c.start < x.b - 1e-3 && ce > x.a + 1e-3)) ids.push(c.id);
+    }
+  });
+  if (ids.length) window.__pzEdgeShots(s, { only: ids }).then((r) => { if (r && r.merged) { app.toast(withV1 ? LL('A few frames of another camera shot at the clip edge were fixed (Ctrl+Z undoes it).', 'Na kraji klipu bylo opraveno pár snímků jiného záběru kamery (Ctrl+Z vrátí).') : LL('A few frames of another camera shot at the B-roll edge were trimmed (Ctrl+Z undoes it).', 'Na kraji b-rollu bylo odstřiženo pár snímků jiného záběru kamery (Ctrl+Z vrátí).')); app.timeline.render(); app.program.refresh(); } }).catch(() => {});
+}
 /** Kroky Zpět, které přidá výřez podle obličeje (Set to Fill, AI: Reframe…), sloučit s předchozím krokem (vložením).
  *  Jen ty kroky, ne celý rozsah od vložení: výřez trvá sekundy a mezitím přidaný krok uživatele nebo další vložení by se
  *  ztratil (revize noc 2026-11-23). Krok = stav PŘED úpravou, takže odebrání kroku ho jen sloučí s předchozím. */
-function reframeMerger() {
+function reframeMerger(also) {
   const before = new Set(project.history);
   return () => {
     for (let i = project.history.length - 1; i >= 0; i--) {
       const h = project.history[i];
-      if (!before.has(h) && /^(Set to Fill|AI: Reframe)/.test(h.label)) project.history.splice(i, 1);
+      if (!before.has(h) && (/^(Set to Fill|AI: Reframe)/.test(h.label) || (also && also.test(h.label)))) project.history.splice(i, 1);
     }
   };
 }
@@ -1781,8 +1804,10 @@ function autoFace(s, m) {
   }
   if (!s || !m || !m.hasVideo || !(s.height > s.width) || !(m.width > m.height) || !window.__pzReframeHere) return;
   app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
-  const merge = reframeMerger(); // jedno Ctrl+Z vrátí vložení i výřez (jako přetažení do sekvence na výšku)
-  window.__pzReframeHere(s).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
+  const merge = reframeMerger(/^Clean up camera-cut leftovers$/); // jedno Ctrl+Z vrátí vložení, výřez i úklid krajů
+  // po výřezu úklid krajů (redaktorka S9: klip končící 4 snímky v celku dostal výřez detailu – na konci stůl a nohy)
+  const clean = () => (window.__pzEdgeShots ? window.__pzEdgeShots(s).catch(() => {}) : Promise.resolve());
+  window.__pzReframeHere(s).then(clean).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
 }
 /** Název projektu pro soubor: „Bez názvu“ v češtině místo Untitled. */
 function projBaseName() { const n = project.name || 'Untitled'; return n === 'Untitled' && TN.lang === 'cs' ? 'Bez názvu' : n; }
@@ -1884,7 +1909,10 @@ function waitForCaptions(s, hl, fill) {
       const sts = r.pending.map((m) => a.status(m));
       if (sts.some((x) => x.state === 'stopped' || x.state === 'error' || x.state === 'none')) {
         w.off(); app.status('');
-        app.toast(LL('No captions were created – the transcript is stopped.', 'Titulky nevznikly – přepis je zastavený.'), true);
+        // selhaný přepis není „zastavený“ (redaktorka S9) – říct pravou příčinu
+        const err = sts.find((x) => x.state === 'error');
+        app.toast(err ? LL(`No captions were created – the transcription failed${err.msg ? ': ' + err.msg : ''}.`, `Titulky nevznikly – přepis řeči selhal${err.msg ? ': ' + err.msg : ''}.`)
+          : LL('No captions were created – the transcript is stopped.', 'Titulky nevznikly – přepis je zastavený.'), true);
         return;
       }
       const p = Math.min(...sts.map((x) => x.p || 0));

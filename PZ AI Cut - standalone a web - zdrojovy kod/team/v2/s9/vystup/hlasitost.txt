@@ -1,0 +1,27 @@
+vystup-s9-a1080-xdcam.mxf (A1+A2 mono -> stereo) | snimku 400, |  I: -23.4 LUFS  Peak: -8.2 dBFS 
+vystup-s9-sim1080-xdcam.mxf (A1+A2 mono -> stereo) | snimku 1148, |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s9-sim-dnxhr.mxf (A1+A2 mono -> stereo) | snimku 1148 |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s9-multi1080-xdcam.mxf (A1+A2 mono -> stereo) | snimku 1252, |  I: -22.9 LUFS  Peak: -7.9 dBFS 
+vystup-s9-a.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-a11.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-a916.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-k219.mp4 |  I: -16.4 LUFS  Peak: -1.5 dBFS 
+vystup-s9-k21911.mp4 |  I: -16.4 LUFS  Peak: -1.5 dBFS 
+vystup-s9-k219916.mp4 |  I: -16.4 LUFS  Peak: -1.5 dBFS 
+vystup-s9-multi-bez.mp4 |  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s9-multi.mp4 |  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s9-multi11.mp4 |  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s9-multi916.mp4 |  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s9-sim-bez.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-sim-inout.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-sim.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-sim11.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-sim916-bez.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-sim916.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s9-v916-bez.mp4 |  I: -14.1 LUFS  Peak: -1.5 dBFS 
+vystup-s9-v916.mp4 |  I: -14.1 LUFS  Peak: -1.5 dBFS 
+vystup-s9-pcm-a1.mov |  I: -29.1 LUFS  Peak: -13.7 dBFS 
+vystup-s9-pcm-a2.mov |  I: -41.4 LUFS  Peak: -26.0 dBFS 
+vystup-s9-pcm-a3.mov |  I: -32.2 LUFS  Peak: -19.0 dBFS 
+vystup-s9-pcm-mix.mov |  I: -27.9 LUFS  Peak: -12.9 dBFS 
+vystup-s9-sim-proreshq.mov |  I: -22.9 LUFS  Peak: -7.4 dBFS 

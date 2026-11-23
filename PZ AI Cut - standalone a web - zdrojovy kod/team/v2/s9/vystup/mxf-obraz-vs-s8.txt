@@ -1,0 +1,3 @@
+vystup-s8-a1080-xdcam.mxf vs vystup-s9-a1080-xdcam.mxf: snimku 400/400 | horni 75 %: prumer 0.10 max 0.24 (sn. 87) | spodni pas: prumer 3.75 max 5.81, snimku s chybou >3: 369
+vystup-s8-sim1080-xdcam.mxf vs vystup-s9-sim1080-xdcam.mxf: snimku 1148/1148 | horni 75 %: prumer 0.15 max 0.39 (sn. 1095) | spodni pas: prumer 6.91 max 9.68, snimku s chybou >3: 1111
+vystup-s8-multi1080-xdcam.mxf vs vystup-s9-multi1080-xdcam.mxf: snimku 1252/1252 | horni 75 %: prumer 0.16 max 0.48 (sn. 1152) | spodni pas: prumer 6.87 max 9.68, snimku s chybou >3: 1210

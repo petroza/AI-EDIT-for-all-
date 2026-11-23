@@ -1,0 +1,30 @@
+[
+ {
+  "seq": "s9-sim916-L1",
+  "n": 46,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "look": "Vzhled podle formátu: 1 řádek, 30 % od spodu. Změníš ho v okně Text v obraze.",
+  "maxLines": 1
+ },
+ {
+  "seq": "s9-a916-L1",
+  "n": 16,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (4 úseky z klipu vyrez-5min.mp4).",
+  "look": "Vzhled podle formátu: 1 řádek, 30 % od spodu. Změníš ho v okně Text v obraze.",
+  "maxLines": 1
+ },
+ {
+  "seq": "s9-v916-L1",
+  "n": 51,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (3 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4, vyrez-5min.mp4).",
+  "look": "Vzhled podle formátu: 1 řádek, 30 % od spodu. Změníš ho v okně Text v obraze.",
+  "maxLines": 1
+ },
+ {
+  "seq": "s9-multi916-L1",
+  "n": 49,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (3 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "look": "Vzhled podle formátu: 1 řádek, 30 % od spodu. Změníš ho v okně Text v obraze.",
+  "maxLines": 1
+ }
+]

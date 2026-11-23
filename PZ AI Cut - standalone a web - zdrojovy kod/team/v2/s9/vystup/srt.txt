@@ -1,0 +1,3 @@
+vystup-s9-a1080-xdcam.srt: 6 titulku v .srt / 6 v sekvenci, max odchylka casu 0.0 s, texty shodne: True, posledni konec 16.00 s
+vystup-s9-sim1080-xdcam.srt: 11 titulku v .srt / 11 v sekvenci, max odchylka casu 0.0 s, texty shodne: True, posledni konec 45.92 s
+vystup-s9-multi1080-xdcam.srt: 12 titulku v .srt / 12 v sekvenci, max odchylka casu 0.0 s, texty shodne: True, posledni konec 49.87 s

@@ -1,0 +1,14 @@
+a1080-xdcam.mxf stream 0: paketu 400, odlisnych od S8 400
+a1080-xdcam.mxf stream 1: paketu 400, odlisnych od S8 0
+a1080-xdcam.mxf stream 2: paketu 400, odlisnych od S8 0
+sim1080-xdcam.mxf stream 0: paketu 1148, odlisnych od S8 1148
+sim1080-xdcam.mxf stream 1: paketu 1148, odlisnych od S8 0
+sim1080-xdcam.mxf stream 2: paketu 1148, odlisnych od S8 0
+sim-dnxhr.mxf stream 0: paketu 1148, odlisnych od S8 0
+sim-dnxhr.mxf stream 1: paketu 1148, odlisnych od S8 0
+sim-dnxhr.mxf stream 2: paketu 1148, odlisnych od S8 0
+multi1080-xdcam.mxf stream 0: paketu 1252, odlisnych od S8 1252
+multi1080-xdcam.mxf stream 1: paketu 1252, odlisnych od S8 0
+multi1080-xdcam.mxf stream 2: paketu 1252, odlisnych od S8 0
+v916-bez.mp4 stream 0: paketu 1259, odlisnych od S8 82
+v916-bez.mp4 stream 1: paketu 2359, odlisnych od S8 2358

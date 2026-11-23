@@ -1,0 +1,30 @@
+a.mp4                            BITOVE SHODNE
+a1080-xdcam.mxf                  lisi se
+a1080-xdcam.srt                  (v S8 neni)
+a11.mp4                          BITOVE SHODNE
+a916.mp4                         BITOVE SHODNE
+k219.mp4                         BITOVE SHODNE
+k21911.mp4                       BITOVE SHODNE
+k219916.mp4                      BITOVE SHODNE
+multi-bez.mp4                    BITOVE SHODNE
+multi.mp4                        BITOVE SHODNE
+multi1080-xdcam.mxf              lisi se
+multi1080-xdcam.srt              (v S8 neni)
+multi11.mp4                      BITOVE SHODNE
+multi916.mp4                     BITOVE SHODNE
+pcm-a1.mov                       BITOVE SHODNE
+pcm-a2.mov                       BITOVE SHODNE
+pcm-a3.mov                       BITOVE SHODNE
+pcm-mix.mov                      BITOVE SHODNE
+sim-bez.mp4                      BITOVE SHODNE
+sim-dnxhr.mxf                    lisi se
+sim-inout.mp4                    (v S8 neni)
+sim-proreshq.mov                 (v S8 neni)
+sim.mp4                          BITOVE SHODNE
+sim1080-xdcam.mxf                lisi se
+sim1080-xdcam.srt                (v S8 neni)
+sim11.mp4                        BITOVE SHODNE
+sim916-bez.mp4                   BITOVE SHODNE
+sim916.mp4                       BITOVE SHODNE
+v916-bez.mp4                     lisi se
+v916.mp4                         lisi se
