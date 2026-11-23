@@ -1915,7 +1915,8 @@ function makeCaptions(s, words, hl, fill) {
   // titulek nesmí přesahovat do dalšího klipu (kolo 5, B1: konec titulku se natahoval do začátku sousedního výroku)
   const atr = s.tracks.audio.filter((x) => !x.muted).find((x) => x.clips.length);
   // titulek začínající přesně na střihu patří k DALŠÍMU klipu (kontrolor S5: 16,12 < 16,1200000000001 → nulová délka a poslední věta bez titulku)
-  if (atr) for (const c of caps) { const cl = atr.clips.find((k) => c.start >= k.start - 0.01 && c.start < k.start + (k.out - k.in) - 0.01); if (cl) c.end = Math.max(Math.min(c.end, cl.start + (cl.out - cl.in)), Math.min(c.end, c.start + 0.3)); }
+  // konec titulku jen na konci úseku zvuku – navazující kusy téhož zdroje (zvuk rozříznutý spolu s obrazem) jsou jeden úsek (kontrolor S11)
+  if (atr) for (const c of caps) { const cl = E.audioRuns(atr.clips).find((k) => c.start >= k.start - 0.01 && c.start < k.start + (k.out - k.in) - 0.01); if (cl) c.end = Math.max(Math.min(c.end, cl.start + (cl.out - cl.in)), Math.min(c.end, c.start + 0.3)); }
   if (!caps.length) return 0;
   app.edit(fill ? 'Add Captions from Transcript' : 'Captions from Transcript', () => {
     s.captionStyle = st;

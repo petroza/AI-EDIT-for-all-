@@ -1,0 +1,16 @@
+vystup-s11-a.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s11-a916.mp4: 400 snimku, strihy 1.36 2.76 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s11-a11.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s11-k219.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-k219916.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-k21911.mp4: 38 snimku, strihy 1.36 | kratke zabery (<13 sn.): [('1.36', 4)]
+vystup-s11-sim916.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s11-sim11.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s11-razor916.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s11-multi916-cc.mp4: 1252 snimku, strihy 27.00 33.00 33.56 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s11-multi916.mp4: 1252 snimku, strihy 27.00 33.00 33.56 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s11-v916.mp4: 1259 snimku, strihy 3.76 20.28 45.88 46.60 | kratke zabery (<13 sn.): zadne
+vystup-s11-v916-bez.mp4: 1259 snimku, strihy 3.76 20.28 45.88 46.60 | kratke zabery (<13 sn.): zadne
+vystup-s11-t-on.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s10-k219916.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s10-k21911.mp4: 38 snimku, strihy  | kratke zabery (<13 sn.): zadne

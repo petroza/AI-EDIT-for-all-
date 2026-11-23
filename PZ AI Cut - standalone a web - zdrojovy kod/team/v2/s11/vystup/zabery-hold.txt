@@ -1,0 +1,7 @@
+vystup-s11-h.mp4: 153 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-h-k-pred.mp4: 153 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-h-k-hold.mp4: 155 snimku, strihy 5.96 6.12 | kratke zabery (<13 sn.): [('5.96', np.int64(4)), ('6.12', np.int64(2))]
+vystup-s11-h-del.mp4: 115 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-h-ripdel.mp4: 115 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s11-h-w.mp4: 151 snimku, strihy 5.96 | kratke zabery (<13 sn.): [('5.96', np.int64(2))]
+vystup-s11-h-w-zpet.mp4: 153 snimku, strihy  | kratke zabery (<13 sn.): zadne

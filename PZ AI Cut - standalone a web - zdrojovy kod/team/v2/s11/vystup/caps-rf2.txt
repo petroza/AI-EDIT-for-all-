@@ -1,0 +1,39 @@
+== s11-a916m
+  0.13-1.36 (1.23 s) A zjistilo / se to strašně,
+  1.45-2.76 (1.31 s) strašně pozdě.
+  3.13-3.48 (0.35 s) Takže to přišlo / úplně,
+  4.41-5.15 (0.74 s) jak my jsme / se rozvěděli,
+  5.15-7.18 (2.03 s) že je nemocná a za / tři týdny byla pryč.
+  7.36-8.84 (1.48 s) Všechno, / naprosto všechno,
+  8.84-10.26 (1.42 s) protože moje / máma byla
+  10.26-12.53 (2.27 s) tmel té / naší rodiny.
+  12.93-14.82 (1.89 s) a byla to / ta nejtěžší
+  14.82-15.12 (0.30 s) věc v mým / životě.
+== s11-k219916m
+  0.65-1.52 (0.87 s) A najednou / byl pryč.
+== s11-sim916m
+  0.19-1.83 (1.64 s) Bych jako / doporučila všem,
+  1.83-4.06 (2.23 s) kdo přichází nebo / přišli do styku
+  4.06-6.09 (2.03 s) s někým, komu / se tohle stalo,
+  6.09-9.67 (3.58 s) tak neříkat / tyhle fádní věci,
+  9.67-12.70 (3.03 s) často zahojí, je teď / líp, tak to mělo
+  12.70-14.41 (1.71 s) být, tohle / fakt nepomáhá.
+  14.41-15.91 (1.50 s) Prostě my ani / nepotřebujeme
+  15.91-17.19 (1.28 s) nic slyšet, / my potřebujeme
+  17.19-18.16 (0.97 s) jenom toho / člověka,
+  18.16-20.62 (2.46 s) aby s náma byl, / aby, když se třeba
+  20.62-21.42 (0.80 s) dlouho / neozýváme,
+  21.42-23.41 (1.99 s) aby zavolal a řekl, / já jedu za tebou,
+  23.41-25.17 (1.76 s) já ti vezu jídlo, / nebo prostě
+  25.17-26.36 (1.19 s) pojď, kouknem / se na film.
+  26.38-27.50 (1.12 s) Jenom ta / přítomnost toho
+  27.50-29.00 (1.50 s) člověka chytne / vás za ruku,
+  29.00-29.80 (0.80 s) něco. prostě.
+  29.99-31.05 (1.06 s) Ale my / nepotřebujeme
+  31.05-32.71 (1.66 s) prostě někoho, / aby nám říkal
+  32.71-33.56 (0.85 s) takový ty / chlácholivý věci.
+  35.53-37.12 (1.59 s) Jí už je / teď dobře.
+  37.37-39.41 (2.04 s) To nepotřebujeme / slyšet.
+  39.41-42.01 (2.60 s) Já potřebuju slyšet / něco jako máma
+  42.01-44.05 (2.04 s) byla skvělá, tak jim / i chybí a jsem
+  44.05-45.92 (1.87 s) tady pro tebe, / kdyby cokoliv.

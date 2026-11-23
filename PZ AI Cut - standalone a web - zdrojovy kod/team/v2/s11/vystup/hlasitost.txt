@@ -1,0 +1,23 @@
+vystup-s11-a.mp4 |  I: -13.9 LUFS 
+vystup-s11-a916.mp4 |  I: -13.9 LUFS 
+vystup-s11-a11.mp4 |  I: -13.9 LUFS 
+vystup-s11-sim916.mp4 |  I: -13.9 LUFS 
+vystup-s11-sim11.mp4 |  I: -13.9 LUFS 
+vystup-s11-k219916.mp4 |  I: -16.4 LUFS 
+vystup-s11-multi916-cc.mp4 |  I: -13.9 LUFS 
+vystup-s11-razor916.mp4 |  I: -13.9 LUFS 
+vystup-s11-v916.mp4 |  I: -14.1 LUFS 
+vystup-s11-h.mp4 |  I: -14.0 LUFS 
+vystup-s11-h-k-hold.mp4 |  I: -14.0 LUFS 
+vystup-s11-h-w.mp4 |  I: -14.2 LUFS 
+vystup-s11-t-on.mp4 |  I: -13.9 LUFS 
+vystup-s11-a1080-xdcam.mxf |  I: -26.4 LUFS 
+vystup-s11-t1080-on.mxf |  I: -25.9 LUFS 
+vystup-s11-a1080-xdcam.mxf (A1+A2) |  I: -23.4 LUFS  Peak: -8.2 dBFS 
+vystup-s11-sim1080-xdcam.mxf (A1+A2) |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s11-multi1080-xdcam.mxf (A1+A2) |  I: -22.9 LUFS  Peak: -7.9 dBFS 
+vystup-s11-t1080-on.mxf (A1+A2) |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s11-t1080-off.mxf (A1+A2) |  I: -22.9 LUFS  Peak: -7.4 dBFS 
+vystup-s11-a.mp4 peak  Peak: -1.5 dBFS
+vystup-s11-v916.mp4 peak  Peak: -1.5 dBFS
+vystup-s11-h-k-hold.mp4 peak  Peak: -1.5 dBFS

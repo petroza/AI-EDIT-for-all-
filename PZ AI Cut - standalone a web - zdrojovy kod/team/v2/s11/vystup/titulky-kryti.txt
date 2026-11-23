@@ -1,0 +1,49 @@
+s11-a            S10  5 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-a            S11  6 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-a1080        S10  5 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-a1080        S11  6 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-a11          S10  6 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-a11          S11  6 tit | <0,7 s: ['3.13-3.48'] | rec bez titulku: ['strašně pozdě. 1.45-2.65 (1.20 s)', 'to přišlo úplně, jak my jsme se rozvěděli, 3.61-5.15 (1.54 s)', 'v mým životě. 15.18-16.00 (0.82 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-a916         S10 10 tit | <0,7 s: - | rec bez titulku: - | zdvojene: ['strašně @1.45'] | titulek konci pred slovem: ['0.13-1.45 „strašně," slovo do 2.01']
+s11-a916         S11 10 tit | <0,7 s: ['3.13-3.48', '14.82-15.12'] | rec bez titulku: ['to přišlo úplně, 3.61-4.37 (0.76 s)', 'v mým životě. 15.18-16.00 (0.82 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-a916m        S11 10 tit | <0,7 s: ['3.13-3.48', '14.82-15.12'] | rec bez titulku: ['to přišlo úplně, 3.61-4.37 (0.76 s)', 'v mým životě. 15.18-16.00 (0.82 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-k219         S10  1 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-k219         S11  1 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-k21911       S10  1 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-k21911       S11  1 tit | <0,7 s: - | rec bez titulku: ['pryč. 1.40-1.52 (0.12 s)'] | zdvojene: - | titulek konci pred slovem: ['0.65-1.36 „pryč." slovo do 1.52']
+s11-k219916      S10  1 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-k219916      S11  1 tit | <0,7 s: - | rec bez titulku: ['pryč. 1.40-1.52 (0.12 s)'] | zdvojene: - | titulek konci pred slovem: ['0.65-1.36 „pryč." slovo do 1.52']
+s11-k219916m     S11  1 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi        S10 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi        S11 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi1080    S10 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi1080    S11 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi11      S10 16 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi11      S11 16 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi916     S10 27 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi916     S11 27 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-multi916-cc  S10 28 tit | <0,7 s: ['45.92-46.48', '49.18-49.48'] | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)', 'pak jsem začala dělat 46.26-48.20 (1.94 s)'] | zdvojene: ['rádiu. @49.18'] | titulek konci pred slovem: ['48.20-49.18 „rádiu." slovo do 49.72', '49.18-49.48 „rádiu." slovo do 49.72']
+s11-multi916-cc  S11 27 tit | <0,7 s: ['45.92-46.48'] | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)', 'pak jsem začala dělat 46.26-48.20 (1.94 s)'] | zdvojene: - | titulek konci pred slovem: ['48.20-49.48 „rádiu." slovo do 49.72']
+s11-razor        S10 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razor        S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razor-g      S10 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razor-g      S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razor916     S10 25 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razor916     S11 25 tit | <0,7 s: - | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-razormulti   S10 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-razormulti   S11 12 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim          S10 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim          S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim1080      S10 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim1080      S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim11        S10 15 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim11        S11 15 tit | <0,7 s: - | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-sim916       S10 25 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-sim916       S11 25 tit | <0,7 s: - | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-sim916m      S11 25 tit | <0,7 s: - | rec bez titulku: ['chlácholivý věci. 33.35-34.35 (1.00 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-t            S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-t1080        S11 11 tit | <0,7 s: - | rec bez titulku: - | zdvojene: - | titulek konci pred slovem: -
+s11-v916         S10 28 tit | <0,7 s: ['45.95-46.60'] | rec bez titulku: ['chlácholivý věci. 3.55-4.55 (1.00 s)', 'to přišlo 46.73-47.14 (0.41 s)'] | zdvojene: - | titulek konci pred slovem: ['47.33-48.13 „rozvěděli," slovo do 48.27']
+s11-v916         S11 28 tit | <0,7 s: ['46.25-46.60'] | rec bez titulku: ['chlácholivý věci. 3.55-4.55 (1.00 s)', 'to přišlo úplně, 46.73-47.49 (0.76 s)'] | zdvojene: - | titulek konci pred slovem: -
+s11-v916-stred   S10 28 tit | <0,7 s: ['45.95-46.60'] | rec bez titulku: ['chlácholivý věci. 3.55-4.55 (1.00 s)', 'to přišlo 46.73-47.14 (0.41 s)'] | zdvojene: - | titulek konci pred slovem: ['47.33-48.13 „rozvěděli," slovo do 48.27']
+s11-v916-stred   S11 28 tit | <0,7 s: ['46.25-46.60'] | rec bez titulku: ['chlácholivý věci. 3.55-4.55 (1.00 s)', 'to přišlo úplně, 46.73-47.49 (0.76 s)'] | zdvojene: - | titulek konci pred slovem: -

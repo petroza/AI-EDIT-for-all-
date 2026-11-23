@@ -1,0 +1,32 @@
+a.mp4 stream 0 : paketu S10 400 S11 400 , odlisnych 138 (paket 176-317)
+a.mp4 stream 1 : paketu S10 751 S11 751 , odlisnych 0 
+a11.mp4 stream 0 : paketu S10 400 S11 400 , odlisnych 311 (paket 34-399)
+a11.mp4 stream 1 : paketu S10 751 S11 751 , odlisnych 0 
+a916.mp4 stream 0 : paketu S10 400 S11 400 , odlisnych 185 (paket 34-399)
+a916.mp4 stream 1 : paketu S10 751 S11 751 , odlisnych 0 
+a1080-xdcam.mxf stream 0 : paketu S10 400 S11 400 , odlisnych 0 
+a1080-xdcam.mxf stream 1 : paketu S10 400 S11 400 , odlisnych 0 
+a1080-xdcam.mxf stream 2 : paketu S10 400 S11 400 , odlisnych 0 
+k21911.mp4 stream 0 : paketu S10 38 S11 38 , odlisnych 11 (paket 27-37)
+k21911.mp4 stream 1 : paketu S10 73 S11 73 , odlisnych 0 
+k219916.mp4 stream 0 : paketu S10 38 S11 38 , odlisnych 14 (paket 24-37)
+k219916.mp4 stream 1 : paketu S10 73 S11 73 , odlisnych 0 
+multi1080-xdcam.mxf stream 0 : paketu S10 1252 S11 1252 , odlisnych 0 
+multi1080-xdcam.mxf stream 1 : paketu S10 1252 S11 1252 , odlisnych 0 
+multi1080-xdcam.mxf stream 2 : paketu S10 1252 S11 1252 , odlisnych 0 
+multi916-cc.mp4 stream 0 : paketu S10 1252 S11 1252 , odlisnych 31 (paket 1221-1251)
+multi916-cc.mp4 stream 1 : paketu S10 2348 S11 2348 , odlisnych 0 
+razor916.mp4 stream 0 : paketu S10 1148 S11 1148 , odlisnych 38 (paket 830-923)
+razor916.mp4 stream 1 : paketu S10 2150 S11 2150 , odlisnych 0 
+sim-dnxhr.mxf stream 0 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim-dnxhr.mxf stream 1 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim-dnxhr.mxf stream 2 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim1080-xdcam.mxf stream 0 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim1080-xdcam.mxf stream 1 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim1080-xdcam.mxf stream 2 : paketu S10 1148 S11 1148 , odlisnych 0 
+sim11.mp4 stream 0 : paketu S10 1148 S11 1148 , odlisnych 57 (paket 830-888)
+sim11.mp4 stream 1 : paketu S10 2150 S11 2150 , odlisnych 0 
+sim916.mp4 stream 0 : paketu S10 1148 S11 1148 , odlisnych 38 (paket 830-923)
+sim916.mp4 stream 1 : paketu S10 2150 S11 2150 , odlisnych 0 
+v916.mp4 stream 0 : paketu S10 1259 S11 1259 , odlisnych 62 (paket 1143-1214)
+v916.mp4 stream 1 : paketu S10 2360 S11 2360 , odlisnych 0 

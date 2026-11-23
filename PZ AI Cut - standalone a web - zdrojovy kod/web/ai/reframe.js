@@ -473,7 +473,8 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
         let src = srcs.get(m.id);
         if (!src) { src = await VideoSource.open(fileOf(m)); srcs.set(m.id, src); }
         const ah = Math.round(AW * m.height / m.width / 2) * 2, fps = m.fps || 25;
-        const vEnd = Math.min(clip.out, (m.duration || clip.out) - 2 / fps); // poslední snímky souboru dekodér někdy nevydá
+        // poslední snímky souboru dekodér někdy nevydá; zopakovaný konec (hold) má ve zdroji cizí záběr – nehledat v něm
+        const vEnd = Math.min(clip.out - holdOf(clip), (m.duration || clip.out) - 2 / fps);
         const head = await cameraCuts(src, clip.in, clip.in + MIN_SHOT + 0.1, fps, ah, 0.1);
         const tail = vEnd - (clip.out - MIN_SHOT - 0.1) > 0.2 ? await cameraCuts(src, clip.out - MIN_SHOT - 0.1, vEnd, fps, ah, 0.1) : [];
         const bounds = [clip.in, ...head.slice(-1), ...tail.slice(0, 1), clip.out];

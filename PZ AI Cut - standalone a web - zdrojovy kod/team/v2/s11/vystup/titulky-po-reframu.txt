@@ -1,0 +1,127 @@
+== s11-multi916 27 vs s11-multi916-cc 27 | A1 kusy s11-multi916-cc [(0, 29.8), (29.8, 33.56), (33.56, 45.92), (45.92, 46.48), (46.48, 47.68), (47.68, 49.48), (49.48, 50.08)]
+   jen v s11-multi916-cc 23.41-25.17 (1.76 s) já ti vezu jídlo, / nebo prostě
+   jen v s11-multi916-cc 25.17-26.36 (1.19 s) pojď, kouknem / se na film.
+   jen v s11-multi916-cc 29.00-29.80 (0.80 s) něco. prostě.
+   jen v s11-multi916-cc 32.71-33.56 (0.85 s) takový ty / chlácholivý věci.
+   jen v s11-multi916-cc 35.53-37.12 (1.59 s) Jí už je / teď dobře.
+   jen v s11-multi916-cc 45.92-46.48 (0.56 s) A pak jsem / začala dělat
+   jen v s11-multi916-cc 48.20-49.48 (1.28 s) moderátorku / v rádiu.
+   jen v s11-multi916 23.41-25.51 (2.09 s) já ti vezu jídlo, / nebo prostě pojď,
+   jen v s11-multi916 25.51-26.38 (0.88 s) kouknem / se na film.
+   jen v s11-multi916 29.00-29.85 (0.85 s) něco. prostě.
+   jen v s11-multi916 32.71-34.55 (1.84 s) takový ty / chlácholivý věci.
+   jen v s11-multi916 35.53-37.37 (1.84 s) Jí už je / teď dobře.
+   jen v s11-multi916 45.92-48.20 (2.28 s) A pak jsem / začala dělat
+   jen v s11-multi916 48.20-49.92 (1.72 s) moderátorku / v rádiu.
+== s11-a 6 vs s11-a1080 6 | A1 kusy s11-a1080 [(0, 2.76), (2.76, 7.24), (7.24, 12.72), (12.72, 16.0)]
+== s11-sim 11 vs s11-sim916 25 | A1 kusy s11-sim916 [(0, 29.8), (29.8, 33.56), (33.56, 45.92)]
+   jen v s11-sim916 0.19-1.83 (1.64 s) Bych jako / doporučila všem,
+   jen v s11-sim916 1.83-4.06 (2.23 s) kdo přichází nebo / přišli do styku
+   jen v s11-sim916 4.06-6.09 (2.04 s) s někým, komu / se tohle stalo,
+   jen v s11-sim916 6.09-9.67 (3.57 s) tak neříkat / tyhle fádní věci,
+   jen v s11-sim916 9.67-12.70 (3.03 s) často zahojí, je teď / líp, tak to mělo
+   jen v s11-sim916 12.70-14.41 (1.71 s) být, tohle / fakt nepomáhá.
+   jen v s11-sim916 14.41-15.91 (1.50 s) Prostě my ani / nepotřebujeme
+   jen v s11-sim916 15.91-17.19 (1.28 s) nic slyšet, / my potřebujeme
+   jen v s11-sim916 17.19-18.16 (0.98 s) jenom toho / člověka,
+   jen v s11-sim916 18.16-20.62 (2.45 s) aby s náma byl, / aby, když se třeba
+   jen v s11-sim916 20.62-21.42 (0.80 s) dlouho / neozýváme,
+   jen v s11-sim916 21.42-23.41 (1.99 s) aby zavolal a řekl, / já jedu za tebou,
+   jen v s11-sim916 23.41-25.17 (1.76 s) já ti vezu jídlo, / nebo prostě
+   jen v s11-sim916 25.17-26.36 (1.19 s) pojď, kouknem / se na film.
+   jen v s11-sim916 26.38-27.50 (1.12 s) Jenom ta / přítomnost toho
+   jen v s11-sim916 27.50-29.00 (1.50 s) člověka chytne / vás za ruku,
+   jen v s11-sim916 29.00-29.80 (0.80 s) něco. prostě.
+   jen v s11-sim916 29.99-31.05 (1.06 s) Ale my / nepotřebujeme
+   jen v s11-sim916 31.05-32.71 (1.66 s) prostě někoho, / aby nám říkal
+   jen v s11-sim916 32.71-33.56 (0.85 s) takový ty / chlácholivý věci.
+   jen v s11-sim916 35.53-37.12 (1.59 s) Jí už je / teď dobře.
+   jen v s11-sim916 37.37-39.41 (2.04 s) To nepotřebujeme / slyšet.
+   jen v s11-sim916 39.41-42.01 (2.59 s) Já potřebuju slyšet / něco jako máma
+   jen v s11-sim916 42.01-44.05 (2.04 s) byla skvělá, tak jim / i chybí a jsem
+   jen v s11-sim916 44.05-45.92 (1.87 s) tady pro tebe, / kdyby cokoliv.
+   jen v s11-sim 0.19-5.06 (4.87 s) Bych jako doporučila všem, kdo / přichází nebo přišli do styku s někým,
+   jen v s11-sim 5.06-9.67 (4.61 s) komu se tohle stalo, / tak neříkat tyhle fádní věci,
+   jen v s11-sim 9.67-14.41 (4.75 s) často zahojí, je teď líp, / tak to mělo být, tohle fakt nepomáhá.
+   jen v s11-sim 14.41-18.16 (3.75 s) Prostě my ani nepotřebujeme nic slyšet, / my potřebujeme jenom toho člověka,
+   jen v s11-sim 18.16-22.25 (4.09 s) aby s náma byl, aby, když se třeba / dlouho neozýváme, aby zavolal a řekl,
+   jen v s11-sim 22.25-26.36 (4.10 s) já jedu za tebou, já ti vezu jídlo, / nebo prostě pojď, kouknem se na film.
+   jen v s11-sim 26.38-29.80 (3.42 s) Jenom ta přítomnost toho člověka / chytne vás za ruku, něco. prostě.
+   jen v s11-sim 29.99-34.50 (4.51 s) Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci.
+   jen v s11-sim 35.53-39.41 (3.88 s) Jí už je teď dobře. / To nepotřebujeme slyšet.
+   jen v s11-sim 39.41-42.74 (3.33 s) Já potřebuju slyšet něco / jako máma byla skvělá,
+   jen v s11-sim 42.74-45.92 (3.18 s) tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv.
+== s11-k219 1 vs s11-k219916 1 | A1 kusy s11-k219916 [(0, 1.36), (1.36, 1.52)]
+   jen v s11-k219916 0.65-1.36 (0.72 s) A najednou / byl pryč.
+   jen v s11-k219 0.65-1.52 (0.88 s) A najednou byl pryč.
+== titulky S10 -> S11 (rozdily)
+  s11-a            5 -> 6
+     S10 7.52-12.53 Všechno, naprosto všechno, protože / moje máma byla tmel té naší rodiny.
+     S11 7.36-8.84 Všechno, naprosto všechno,
+     S11 8.84-12.53 protože moje máma byla / tmel té naší rodiny.
+  s11-a1080        5 -> 6
+     S10 7.52-12.53 Všechno, naprosto všechno, protože / moje máma byla tmel té naší rodiny.
+     S11 7.36-8.84 Všechno, naprosto všechno,
+     S11 8.84-12.53 protože moje máma byla / tmel té naší rodiny.
+  s11-a11          6 -> 6
+     S10 0.13-2.76 A zjistilo se to strašně, / strašně pozdě.
+     S10 3.13-5.15 Takže to přišlo úplně, / jak my jsme se rozvěděli,
+     S10 7.52-8.84 Všechno, / naprosto všechno,
+     S10 12.93-16.00 a byla to ta nejtěžší / věc v mým životě.
+     S11 0.13-1.36 A zjistilo se to strašně, / strašně pozdě.
+     S11 3.13-3.48 Takže to přišlo úplně, / jak my jsme se rozvěděli,
+     S11 7.36-8.84 Všechno, / naprosto všechno,
+     S11 12.93-15.12 a byla to ta nejtěžší / věc v mým životě.
+  s11-a916         10 -> 10
+     S10 0.13-1.45 A zjistilo / se to strašně,
+     S10 3.13-4.41 Takže to přišlo / úplně,
+     S10 7.52-8.84 Všechno, / naprosto všechno,
+     S10 14.82-16.00 věc v mým / životě.
+     S11 0.13-1.36 A zjistilo / se to strašně,
+     S11 3.13-3.48 Takže to přišlo / úplně,
+     S11 7.36-8.84 Všechno, / naprosto všechno,
+     S11 14.82-15.12 věc v mým / životě.
+  s11-drop916b     stejne (0)
+  s11-k219         stejne (1)
+  s11-k21911       1 -> 1
+     S10 0.65-1.52 A najednou byl pryč.
+     S11 0.65-1.36 A najednou byl pryč.
+  s11-k219916      1 -> 1
+     S10 0.65-1.52 A najednou / byl pryč.
+     S11 0.65-1.36 A najednou / byl pryč.
+  s11-multi        stejne (12)
+  s11-multi1080    stejne (12)
+  s11-multi11      stejne (16)
+  s11-multi916     stejne (27)
+  s11-multi916-cc  28 -> 27
+     S10 48.20-49.18 moderátorku / v rádiu.
+     S10 49.18-49.48 rádiu.
+     S11 48.20-49.48 moderátorku / v rádiu.
+  s11-razor        stejne (11)
+  s11-razor-g      stejne (11)
+  s11-razor916     25 -> 25
+     S10 32.71-34.50 takový ty / chlácholivý věci.
+     S11 32.71-33.56 takový ty / chlácholivý věci.
+  s11-razormulti   stejne (12)
+  s11-sim          stejne (11)
+  s11-sim1080      stejne (11)
+  s11-sim11        15 -> 15
+     S10 31.69-34.50 aby nám říkal takový / ty chlácholivý věci.
+     S11 31.69-33.56 aby nám říkal takový / ty chlácholivý věci.
+  s11-sim916       25 -> 25
+     S10 32.71-34.50 takový ty / chlácholivý věci.
+     S11 32.71-33.56 takový ty / chlácholivý věci.
+  s11-v916         28 -> 28
+     S10 45.95-46.60 Takže to přišlo / úplně,
+     S10 47.33-48.13 jak my jsme / se rozvěděli,
+     S10 48.13-50.30 že je nemocná a za / tři týdny byla pryč.
+     S11 46.25-46.60 Takže to přišlo / úplně,
+     S11 47.53-48.27 jak my jsme / se rozvěděli,
+     S11 48.27-50.30 že je nemocná a za / tři týdny byla pryč.
+  s11-v916-stred   28 -> 28
+     S10 45.95-46.60 Takže to přišlo / úplně,
+     S10 47.33-48.13 jak my jsme / se rozvěděli,
+     S10 48.13-50.30 že je nemocná a za / tři týdny byla pryč.
+     S11 46.25-46.60 Takže to přišlo / úplně,
+     S11 47.53-48.27 jak my jsme / se rozvěděli,
+     S11 48.27-50.30 že je nemocná a za / tři týdny byla pryč.

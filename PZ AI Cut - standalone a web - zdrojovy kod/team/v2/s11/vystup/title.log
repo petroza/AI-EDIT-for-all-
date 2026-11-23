@@ -1,0 +1,72 @@
+{
+ "s11-t": {
+  "tgBefore": [
+   true,
+   true
+  ],
+  "poNapsani": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1}",
+   true,
+   false
+  ],
+  "expOn": [
+   "t-on.mp4",
+   11.435,
+   "4.0"
+  ],
+  "poVypnuti": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1,\"off\":true}",
+   false,
+   "cs-title cs-off",
+   "Headline"
+  ],
+  "expOff": [
+   "t-off.mp4",
+   12.516,
+   "3.6"
+  ],
+  "poZpet": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1}",
+   true
+  ],
+  "poZnovu": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1,\"off\":true}",
+   false
+  ]
+ },
+ "s11-t1080": {
+  "tgBefore": [
+   true,
+   true
+  ],
+  "poNapsani": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1}",
+   true,
+   false
+  ],
+  "expOn": [
+   "t1080-on.mxf",
+   288.148,
+   "6.3"
+  ],
+  "poVypnuti": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1,\"off\":true}",
+   false,
+   "cs-title cs-off",
+   "Headline"
+  ],
+  "expOff": [
+   "t1080-off.mxf",
+   288.147,
+   "3.8"
+  ],
+  "poZpet": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1}",
+   true
+  ],
+  "poZnovu": [
+   "{\"text\":\"Nadpis S11: Most bude hotový v létě\",\"size\":1,\"off\":true}",
+   false
+  ]
+ }
+}

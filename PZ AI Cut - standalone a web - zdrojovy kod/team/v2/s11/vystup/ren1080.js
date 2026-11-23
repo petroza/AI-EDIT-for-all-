@@ -1,0 +1,1 @@
+const P = TN.app.project; P.edit('S10 ren', () => { for (const s of P.sequences) if (/^s11-(a|sim)1080$/.test(s.name)) s.name = 'x-old-' + s.name; }); return JSON.stringify(P.sequences.map((s) => s.name));

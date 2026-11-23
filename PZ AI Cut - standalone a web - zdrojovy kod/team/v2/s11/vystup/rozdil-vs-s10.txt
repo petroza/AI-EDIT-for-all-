@@ -1,0 +1,28 @@
+vystup-s11-a.mp4: 400 snimku, odlisnych (>1.5 v nekterem pasu) 130
+  sn. 184-313 (7.36-12.56 s) pasy s chybou: 80%:7 90%:9
+vystup-s11-a11.mp4: 400 snimku, odlisnych (>1.5 v nekterem pasu) 104
+  sn. 34-69 (1.36-2.80 s) pasy s chybou: 80%:13 90%:8
+  sn. 87-128 (3.48-5.16 s) pasy s chybou: 80%:8 90%:6
+  sn. 184-188 (7.36-7.56 s) pasy s chybou: 80%:8 90%:10
+  sn. 379-399 (15.16-16.00 s) pasy s chybou: 80%:11 90%:8
+vystup-s11-a916.mp4: 400 snimku, odlisnych (>1.5 v nekterem pasu) 53
+  sn. 34-36 (1.36-1.48 s) pasy s chybou: 60%:16
+  sn. 87-110 (3.48-4.44 s) pasy s chybou: 60%:14
+  sn. 184-188 (7.36-7.56 s) pasy s chybou: 60%:21
+  sn. 379-399 (15.16-16.00 s) pasy s chybou: 60%:12
+vystup-s11-k21911.mp4: 38 snimku, odlisnych (>1.5 v nekterem pasu) 4
+  sn. 34-37 (1.36-1.52 s) pasy s chybou: 00%:9 10%:16 20%:17 30%:20 40%:18 50%:34 60%:56 70%:49 80%:52 90%:45
+vystup-s11-k219916.mp4: 38 snimku, odlisnych (>1.5 v nekterem pasu) 4
+  sn. 34-37 (1.36-1.52 s) pasy s chybou: 00%:10 10%:21 20%:23 30%:23 40%:22 50%:37 60%:56 70%:44 80%:79 90%:70
+vystup-s11-multi916-cc.mp4: 1252 snimku, odlisnych (>1.5 v nekterem pasu) 8
+  sn. 1230-1237 (49.20-49.52 s) pasy s chybou: 60%:15
+vystup-s11-razor916.mp4: 1148 snimku, odlisnych (>1.5 v nekterem pasu) 24
+  sn. 839-862 (33.56-34.52 s) pasy s chybou: 60%:19
+vystup-s11-sim11.mp4: 1148 snimku, odlisnych (>1.5 v nekterem pasu) 24
+  sn. 839-862 (33.56-34.52 s) pasy s chybou: 80%:14 90%:10
+vystup-s11-sim916.mp4: 1148 snimku, odlisnych (>1.5 v nekterem pasu) 24
+  sn. 839-862 (33.56-34.52 s) pasy s chybou: 60%:19
+vystup-s11-v916.mp4: 1259 snimku, odlisnych (>1.5 v nekterem pasu) 16
+  sn. 1149-1156 (45.96-46.28 s) pasy s chybou: 60%:14
+  sn. 1184-1188 (47.36-47.56 s) pasy s chybou: 60%:15
+  sn. 1204-1206 (48.16-48.28 s) pasy s chybou: 60%:25

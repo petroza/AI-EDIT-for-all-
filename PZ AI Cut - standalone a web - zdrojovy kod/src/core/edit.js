@@ -3,7 +3,15 @@
 // overwrite přepíše, co je pod klipem; insert odsune vše za bodem vložení na všech odemčených stopách;
 // extract/ripple delete zavírá mezeru na všech stopách (synchronizace obrazu a zvuku zůstane).
 const { uid, EPS } = require('./util');
-const { clipEnd, sortTrack, newClip } = require('./model');
+const { clipEnd, sortTrack, newClip, holdOf } = require('./model');
+
+/** Konec klipu se zkrátil (žiletka, ořez, W, vyjmutí úseku) dovnitř zopakovaného konce (hold): klip si nechá zbytek opakování,
+ *  jinak by se odkryly snímky cizího záběru ze zdroje (kontrolor S11: Ctrl+K / W ukázaly 2 snímky celku). h = původní hold. */
+function keepHold(c, oldOut, h) {
+  if (!h) return;
+  const rem = oldOut - h; // začátek zbytku cizího záběru ve zdroji
+  if (c.out > rem + 1e-6 && c.out < oldOut - 1e-6) c.hold = { d: c.out - rem, out: c.out };
+}
 
 const fd = (seq) => 1 / (seq.fps || 25);
 const snapT = (seq, t) => Math.round(t * (seq.fps || 25)) / (seq.fps || 25);
@@ -122,7 +130,9 @@ function splitClip(seq, track, clip, t, linkMap) {
   if (t <= clip.start + h || t >= clipEnd(clip) - h) return null;
   const right = Object.assign({}, clip, { id: uid('c') });
   const cut = clip.in + (t - clip.start);
+  const h0 = holdOf(clip), o0 = clip.out;
   clip.out = cut;
+  keepHold(clip, o0, h0);
   right.start = t;
   right.in = cut;
   right.fadeIn = 0; right.xIn = 0;
@@ -163,11 +173,11 @@ function clearRange(seq, kind, ti, s, e) {
     if (cs >= s - h && ce <= e + h) { tr.clips.splice(tr.clips.indexOf(c), 1); continue; }
     if (cs < s - h && ce > e + h) {
       const right = splitClip(seq, tr, c, e);
-      c.out = c.in + (s - cs);
+      { const h0 = holdOf(c), o0 = c.out; c.out = c.in + (s - cs); keepHold(c, o0, h0); }
       if (right) { right.fadeIn = 0; right.xIn = 0; }
       continue;
     }
-    if (cs < s - h) { c.out = c.in + (s - cs); c.fadeOut = 0; c.vOut = null; continue; }
+    if (cs < s - h) { const h0 = holdOf(c), o0 = c.out; c.out = c.in + (s - cs); keepHold(c, o0, h0); c.fadeOut = 0; c.vOut = null; continue; }
     // začátek klipu leží v úseku
     const cut = e - cs;
     c.in += cut;
@@ -459,7 +469,7 @@ function trimEdge(seq, id, edge, t, opts = {}) {
     delta = snapT(seq, delta);
     if (Math.abs(delta) < EPS) return 0;
     const oldEnd = Math.max(...group.map(clipEnd));
-    for (const c of group) { c.out += delta; c.fadeOut = 0; }
+    for (const c of group) { const h0 = holdOf(c), o0 = c.out; c.out += delta; keepHold(c, o0, h0); c.fadeOut = 0; }
     if (opts.ripple && delta < 0 && onSpeech(seq, group)) { rippleCaptions(seq, oldEnd + delta, oldEnd); shiftAfter(seq, oldEnd, delta, { except: new Set(group.map((c) => c.id)), noCaps: true }); }
     else if (opts.ripple) shiftAfter(seq, oldEnd, delta, { except: new Set(group.map((c) => c.id)) });
   }

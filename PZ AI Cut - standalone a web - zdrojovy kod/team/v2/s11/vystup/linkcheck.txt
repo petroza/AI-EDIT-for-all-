@@ -1,0 +1,35 @@
+s11-a            V1 4 kusu (rep 0) | V1 2.76-7.52 zvuk 2.76-7.24 (kraje +0/-7 sn.); V1 7.52-12.72 zvuk 7.24-12.72 (kraje -7/+0 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s11-a916         V1 7 kusu (rep 0) | V1 3.48-7.52 zvuk 3.48-7.24 (kraje +0/-7 sn.); V1 7.52-12.72 zvuk 7.24-12.72 (kraje -7/+0 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s11-a11          V1 7 kusu (rep 0) | V1 3.48-7.52 zvuk 3.48-7.24 (kraje +0/-7 sn.); V1 7.52-12.72 zvuk 7.24-12.72 (kraje -7/+0 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s11-sim          V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-sim916       V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-sim11        V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-k219         V1 1 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-k219916      V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-k21911       V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-a1080        V1 4 kusu (rep 0) | V1 2.76-7.52 zvuk 2.76-7.24 (kraje +0/-7 sn.); V1 7.52-12.72 zvuk 7.24-12.72 (kraje -7/+0 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s11-sim1080      V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-multi        V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-multi1080    V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-multi916     V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-multi11      V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-multi916-cc  V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-v916         V1 5 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-v916-stred   V1 5 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-drop916b     V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-razor        V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-razor916     V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-razormulti   V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-razor-g      V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-a916m        V1 7 kusu (rep 0) | V1 3.48-7.52 zvuk 3.48-7.24 (kraje +0/-7 sn.); V1 7.52-12.72 zvuk 7.24-12.72 (kraje -7/+0 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s11-k219916m     V1 1 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-sim916m      V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h            V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-k-pred     V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-k-hold     V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-del        V1 1 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-ripdel     V1 1 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-w          V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-h-w-zpet     V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-t            V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s11-t1080        V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -

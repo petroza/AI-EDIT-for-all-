@@ -1,0 +1,10 @@
+vystup-s10-a.mp4 vs vystup-s11-a.mp4: snimku 400/400 | horni 75 %: prumer 0.05 max 0.31 (sn. 233) | spodni pas: prumer 2.50 max 8.05, snimku s chybou >3: 126
+vystup-s10-a11.mp4 vs vystup-s11-a11.mp4: snimku 400/400 | horni 75 %: prumer 0.20 max 0.52 (sn. 187) | spodni pas: prumer 2.19 max 8.86, snimku s chybou >3: 104
+vystup-s10-a916.mp4 vs vystup-s11-a916.mp4: snimku 400/400 | horni 75 %: prumer 0.31 max 2.96 (sn. 188) | spodni pas: prumer 0.08 max 0.32, snimku s chybou >3: 0
+vystup-s10-k21911.mp4 vs vystup-s11-k21911.mp4: snimku 38/38 | horni 75 %: prumer 2.77 max 26.04 (sn. 34) | spodni pas: prumer 5.22 max 49.18, snimku s chybou >3: 4
+vystup-s10-k219916.mp4 vs vystup-s11-k219916.mp4: snimku 38/38 | horni 75 %: prumer 2.98 max 27.92 (sn. 36) | spodni pas: prumer 7.30 max 69.43, snimku s chybou >3: 4
+vystup-s10-multi916-cc.mp4 vs vystup-s11-multi916-cc.mp4: snimku 1252/1252 | horni 75 %: prumer 0.02 max 2.16 (sn. 1237) | spodni pas: prumer 0.00 max 0.34, snimku s chybou >3: 0
+vystup-s10-razor916.mp4 vs vystup-s11-razor916.mp4: snimku 1148/1148 | horni 75 %: prumer 0.06 max 2.94 (sn. 848) | spodni pas: prumer 0.01 max 0.47, snimku s chybou >3: 0
+vystup-s10-sim11.mp4 vs vystup-s11-sim11.mp4: snimku 1148/1148 | horni 75 %: prumer 0.01 max 0.42 (sn. 851) | spodni pas: prumer 0.21 max 10.04, snimku s chybou >3: 24
+vystup-s10-sim916.mp4 vs vystup-s11-sim916.mp4: snimku 1148/1148 | horni 75 %: prumer 0.06 max 2.94 (sn. 848) | spodni pas: prumer 0.01 max 0.47, snimku s chybou >3: 0
+vystup-s10-v916.mp4 vs vystup-s11-v916.mp4: snimku 1259/1259 | horni 75 %: prumer 0.03 max 3.50 (sn. 1204) | spodni pas: prumer 0.00 max 0.31, snimku s chybou >3: 0
