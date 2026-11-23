@@ -1,0 +1,12 @@
+﻿vystup-s5-multi.mp4                  I -13.9 LUFS  TP -1.4 dBFS
+vystup-s5-multi-tv.mp4               I -23.0 LUFS  TP -7.8 dBFS
+vystup-s5-multi916.mp4               I -13.9 LUFS  TP -1.4 dBFS
+vystup-s5-multi11.mp4                I -13.9 LUFS  TP -1.4 dBFS
+vystup-s5-multi1080-xdcam.mxf        I -22.9 LUFS  TP -7.9 dBFS
+vystup-s5-multi1080-dnxhr.mxf        I -22.9 LUFS  TP -7.9 dBFS
+vystup-s5-multi720-dnxhr.mxf         I -22.9 LUFS  TP -7.9 dBFS
+vystup-s5-eofMulti.mp4               I -14.0 LUFS  TP -1.5 dBFS
+vystup-s5-eofMulti.mxf               I -23.0 LUFS  TP -9.8 dBFS
+vystup-s5-eofMulti916.mp4            I -14.0 LUFS  TP -1.5 dBFS
+vystup-s5-eofL.mp4                   I -13.8 LUFS  TP -2.1 dBFS
+vystup-s5-start0.mp4                 I -13.4 LUFS  TP -1.6 dBFS

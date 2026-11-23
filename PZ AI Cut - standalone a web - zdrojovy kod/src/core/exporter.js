@@ -94,7 +94,7 @@ function crossRegions(seq, track) {
 /** Úseky obrazu: [{a, b, clip|null, cross|null}] v čase sekvence, omezené na rozsah [rs, re). */
 function videoSegments(seq, rs, re) {
   const tracks = seq.tracks.video;
-  const regions = tracks.map((t) => (t.muted ? [] : crossRegions(seq, t)));
+  const regions = tracks.map((t, ti) => (t.muted ? [] : require('./edit').crossRegionsOf(seq, ti)));
   const pts = new Set([rs, re]);
   tracks.forEach((t, ti) => {
     if (t.muted) return;
@@ -131,7 +131,7 @@ function dipFilters(c, a, b) {
   if (c.vIn && c.vIn.type !== 'cross' && a < c.start + c.vIn.dur) {
     f.push(`fade=t=in:st=${Math.max(0, c.start - a).toFixed(4)}:d=${c.vIn.dur.toFixed(4)}:color=${color(c.vIn.type)}`);
   }
-  if (c.vOut && b > clipEnd(c) - c.vOut.dur) {
+  if (c.vOut && c.vOut.type !== 'cross' && b > clipEnd(c) - c.vOut.dur) {
     f.push(`fade=t=out:st=${Math.max(0, clipEnd(c) - c.vOut.dur - a).toFixed(4)}:d=${c.vOut.dur.toFixed(4)}:color=${color(c.vOut.type)}`);
   }
   return f;

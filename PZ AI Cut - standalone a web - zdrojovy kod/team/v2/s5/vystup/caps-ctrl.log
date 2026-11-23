@@ -1,0 +1,83 @@
+﻿[
+ {
+  "seq": "s5-ctrl",
+  "n": 12,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (3 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "wait": 551,
+  "caps": [
+   [
+    0.19,
+    5.06,
+    "Bych jako doporučila všem, kdo / přichází nebo přišli do styku s někým,"
+   ],
+   [
+    5.06,
+    9.67,
+    "komu se tohle stalo, / tak neříkat tyhle fádní věci,"
+   ],
+   [
+    9.67,
+    14.41,
+    "často zahojí, je teď líp, / tak to mělo být, tohle fakt nepomáhá."
+   ],
+   [
+    14.41,
+    18.16,
+    "Prostě my ani nepotřebujeme nic slyšet, / my potřebujeme jenom toho člověka,"
+   ],
+   [
+    18.16,
+    22.25,
+    "aby s náma byl, aby, když se třeba / dlouho neozýváme, aby zavolal a řekl,"
+   ],
+   [
+    22.25,
+    26.36,
+    "já jedu za tebou, já ti vezu jídlo, / nebo prostě pojď, kouknem se na film."
+   ],
+   [
+    26.38,
+    29.8,
+    "Jenom ta přítomnost toho člověka / chytne vás za ruku, něco. prostě."
+   ],
+   [
+    29.99,
+    34.5,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    35.53,
+    39.41,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    39.41,
+    42.74,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    42.74,
+    45.92,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ],
+   [
+    45.92,
+    45.92,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ },
+ {
+  "seq": "s5-ctrl3",
+  "n": 1,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (1 úsek z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "wait": 264,
+  "caps": [
+   [
+    0,
+    3.95,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ }
+]

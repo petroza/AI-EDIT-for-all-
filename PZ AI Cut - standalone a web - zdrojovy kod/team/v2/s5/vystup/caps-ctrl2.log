@@ -1,0 +1,101 @@
+﻿[
+ {
+  "seq": "s5-ctrl-23",
+  "n": 5,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "wait": 263,
+  "caps": [
+   [
+    0.19,
+    4.7,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    5.73,
+    9.61,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    9.61,
+    12.95,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    12.95,
+    16.12,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ],
+   [
+    16.12,
+    16.12,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ },
+ {
+  "seq": "s5-ctrl-32",
+  "n": 5,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "wait": 260,
+  "caps": [
+   [
+    0,
+    3.8,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ],
+   [
+    3.99,
+    8.5,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    9.53,
+    13.41,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    13.41,
+    16.75,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    16.75,
+    19.92,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ]
+  ]
+ },
+ {
+  "seq": "s5-ctrl-2d",
+  "n": 5,
+  "msg": "Titulky vzniknou jen ze slov, která v sekvenci zazní (2 úseky z klipu tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4).",
+  "wait": 269,
+  "caps": [
+   [
+    0.19,
+    4.7,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    5.73,
+    9.61,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    9.61,
+    12.95,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    12.95,
+    16.12,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ],
+   [
+    16.18,
+    17.29,
+    "někdy těšit na viděnou."
+   ]
+  ]
+ }
+]

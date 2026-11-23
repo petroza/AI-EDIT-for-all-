@@ -1280,8 +1280,12 @@ function exportDialog() {
       // MXF = TV → −23 LUFS; zpátky na MP4/MOV vrátit hlasitost, kterou měl dialog předtím (redaktorka + vzhled S2)
       const lo = b.querySelector('#exLoud'), mxf = exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf';
       if (mxf && lo.value !== 'tv') { lo.dataset.before = lo.value; lo.value = 'tv'; } else if (!mxf && lo.dataset.before) { lo.value = lo.dataset.before; delete lo.dataset.before; }
+      // MXF pro TV: titulky zvlášť (.srt), ne vypálené do obrazu (redaktorka S5); zpět na MP4 = vypálit, jako výchozí
+      const burn = b.querySelector('#exBurn'), srt = b.querySelector('#exSrt');
+      if (burn && !burn.disabled) { burn.checked = !mxf; if (mxf && srt) srt.checked = true; }
     };
     fmtInfo();
+    if (exporter.FORMATS[b.querySelector('#exFmt').value].ext === 'mxf' && !b.querySelector('#exBurn').disabled) { b.querySelector('#exBurn').checked = false; b.querySelector('#exSrt').checked = true; }
     b.querySelector('#exBrowse').onclick = async () => {
       const r = await ipcRenderer.invoke('dialog', 'save', { title: 'Export', defaultPath: b.querySelector('#exOut').value, filters: [{ name: exporter.FORMATS[b.querySelector('#exFmt').value].label, extensions: [exporter.FORMATS[b.querySelector('#exFmt').value].ext] }] });
       if (!r.canceled && r.filePath) b.querySelector('#exOut').value = r.filePath;
@@ -1768,7 +1772,8 @@ function makeCaptions(s, words, hl, fill) {
   const caps = CL.layout(ws, s, st, CL.contentEnd(s) || undefined);
   // titulek nesmí přesahovat do dalšího klipu (kolo 5, B1: konec titulku se natahoval do začátku sousedního výroku)
   const atr = s.tracks.audio.filter((x) => !x.muted).find((x) => x.clips.length);
-  if (atr) for (const c of caps) { const cl = atr.clips.find((k) => c.start >= k.start - 0.01 && c.start < k.start + (k.out - k.in)); if (cl) c.end = Math.min(c.end, cl.start + (cl.out - cl.in)); }
+  // titulek začínající přesně na střihu patří k DALŠÍMU klipu (kontrolor S5: 16,12 < 16,1200000000001 → nulová délka a poslední věta bez titulku)
+  if (atr) for (const c of caps) { const cl = atr.clips.find((k) => c.start >= k.start - 0.01 && c.start < k.start + (k.out - k.in) - 0.01); if (cl) c.end = Math.max(Math.min(c.end, cl.start + (cl.out - cl.in)), Math.min(c.end, c.start + 0.3)); }
   if (!caps.length) return 0;
   app.edit(fill ? 'Add Captions from Transcript' : 'Captions from Transcript', () => {
     s.captionStyle = st;

@@ -1,0 +1,8 @@
+﻿
+Whisper A1: 142 slov, A2 (b-roll, -12 dB): 34 slov
+titulku: 16
+slova titulku: v reci A1 128, jen v A2 0 [], nenalezena 3 [('jí', 35.53), ('potřebuju', 39.414), ('moderátorku', 45.92)
+]
+slova A1 bez titulku v case: 1 [('jako', 35.16)]
+
+

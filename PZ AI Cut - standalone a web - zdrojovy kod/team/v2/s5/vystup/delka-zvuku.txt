@@ -1,0 +1,9 @@
+﻿vystup-s5-eofL.mp4                 obraz 174 sn. = 6.960 s | zvuk 6.976 s | rozdil +16 ms
+vystup-s5-eofOver.mp4              obraz 74 sn. = 2.960 s | zvuk 2.976 s | rozdil +16 ms
+vystup-s5-eofMulti.mp4             obraz 264 sn. = 10.560 s | zvuk 10.552 s | rozdil -8 ms
+vystup-s5-eofMulti.mxf             obraz 264 sn. = 10.560 s | zvuk 10.560 s | rozdil +0 ms
+vystup-s5-eofV.mp4                 obraz 100 sn. = 4.000 s | zvuk 4.000 s | rozdil +0 ms
+vystup-s5-start0.mp4               obraz 175 sn. = 7.000 s | zvuk 7.000 s | rozdil +0 ms
+vystup-s5-multi.mp4                obraz 1252 sn. = 50.080 s | zvuk 50.060 s | rozdil -20 ms
+vystup-s5-multi1080-xdcam.mxf      obraz 1252 sn. = 50.080 s | zvuk 50.080 s | rozdil +0 ms
+vystup-s5-pcm-mix.mov              obraz 1252 sn. = 50.080 s | zvuk 50.080 s | rozdil +0 ms

@@ -134,8 +134,22 @@ function extractRange(seq, s, e) {
     clearRange(seq, kind, ti, s, e);
     removed += Math.max(0, before - tr.clips.length);
   });
-  // titulky v úseku pryč, zbytek posunout
-  seq.captions = (seq.captions || []).filter((c) => !(c.start >= s - EPS && c.end <= e + EPS));
+  // titulky v úseku pryč, přesahující přes hranu úseku se rozdělí podle slov (redaktorka S5: po ripple delete zůstal
+  // v titulku smazaný text „Ani doma, ani mámě.“ a překrýval další titulek), zbytek posunout
+  const caps = [];
+  for (const c of seq.captions || []) {
+    if (c.start >= s - EPS && c.end <= e + EPS) continue;
+    if (c.end <= s + EPS || c.start >= e - EPS) { caps.push(c); continue; }
+    const words = String(c.text).split(/\s+/).filter(Boolean);
+    const ws = Array.isArray(c.ws) && c.ws.length === words.length ? c.ws : null;
+    if (!ws) { if (c.start < s) caps.push(Object.assign({}, c, { end: s })); else caps.push(Object.assign({}, c, { start: e })); continue; }
+    const a = [], b = [];
+    words.forEach((w, i) => { if (ws[i] < s - EPS) a.push(i); else if (ws[i] >= e - EPS) b.push(i); });
+    const part = (idx, st, en) => ({ ...c, start: st, end: en, text: idx.map((i) => words[i]).join(' '), ws: idx.map((i) => ws[i]) });
+    if (a.length) caps.push(part(a, c.start, Math.min(c.end, s)));
+    if (b.length) caps.push(part(b, Math.max(c.start, e), c.end));
+  }
+  seq.captions = caps.filter((c) => c.end - c.start > 0.04);
   shiftAfter(seq, e, -(e - s));
   return removed;
 }
@@ -171,9 +185,11 @@ function removeClips(seq, ids, ripple) {
   });
   if (ripple && n && e > s) {
     const h = half(seq);
-    let allEmpty = true;
-    eachTrack(seq, (tr) => { if (!tr.locked && !trackEmptyIn(tr, s, e, h)) allEmpty = false; });
-    if (allEmpty) shiftAfter(seq, e, -(e - s));
+    let touchedEmpty = true;
+    eachTrack(seq, (tr, kind, ti) => { if (touched.has(kind + ti) && !trackEmptyIn(tr, s, e, h)) touchedEmpty = false; });
+    // smazaný úsek je na svých stopách prázdný → vyjmout ho ze všech stop (b-roll na V2, hudba, titulky), aby se nic
+    // nerozjelo (redaktorka S5: posunulo se jen V1/A1, V2, hudba i 16 titulků zůstaly a titulky šly o 1,27 s pozdě)
+    if (touchedEmpty) extractRange(seq, s, e);
     else {
       eachTrack(seq, (tr, kind, ti) => {
         if (!touched.has(kind + ti) || !trackEmptyIn(tr, s, e, h)) return;
@@ -367,6 +383,12 @@ function applyTransitionAt(seq, at, type, dur, tracks, mediaDuration = () => Inf
       out.applied++;
       return;
     }
+    // prolínačka bez souseda na vyšší stopě (b-roll na V2) = prolnutí do toho, co je ve stopě pod ní – jako Premiere
+    // (redaktorka S5: hlásilo „Prolínačka použita“, ale klip se zatmíval do černé)
+    if (type === 'cross' && ti > 0) {
+      if (R && !L && topBelow(seq, ti, R.start + h)) { R.vIn = { type: 'cross', dur: Math.min(dur, R.out - R.in), under: true }; out.applied++; return; }
+      if (L && !R && topBelow(seq, ti, clipEnd(L) - h)) { L.vOut = { type: 'cross', dur: Math.min(dur, L.out - L.in), under: true }; out.applied++; return; }
+    }
     const t = type === 'cross' ? 'dipBlack' : type; // prolínačka bez souseda = roztmívání z černé
     if (L && R) {
       const d = Math.min(dur, (L.out - L.in), (R.out - R.in));
@@ -376,6 +398,36 @@ function applyTransitionAt(seq, at, type, dur, tracks, mediaDuration = () => Inf
     else L.vOut = { type: t, dur: Math.min(dur, L.out - L.in) };
     out.applied++;
   });
+  return out;
+}
+
+/** Nejvyšší viditelný klip na video stopách POD stopou ti v čase t (nebo null). */
+function topBelow(seq, ti, t) {
+  for (let k = ti - 1; k >= 0; k--) {
+    const tr = seq.tracks.video[k];
+    if (tr.muted) continue;
+    const c = tr.clips.find((x) => !x.disabled && x.start <= t && clipEnd(x) > t);
+    if (c) return c;
+  }
+  return null;
+}
+/** Oblasti Cross Dissolve na video stopě ti: [{a, b, L, R, d}] – L se prolíná do R. Na střihu (vIn 'cross' se sousedem na stopě,
+ *  vystředěné), nebo do/ze stopy pod ní (under: vIn = klip se objeví přes spodní stopu, vOut = klip zmizí do spodní stopy). */
+function crossRegionsOf(seq, ti) {
+  const track = seq.tracks.video[ti], out = [], h = 0.5 / (seq.fps || 25);
+  for (const c of track.clips) {
+    if (c.disabled) continue;
+    if (c.vIn && c.vIn.type === 'cross') {
+      const L = track.clips.find((x) => !x.disabled && Math.abs(clipEnd(x) - c.start) < h);
+      const d = c.vIn.dur;
+      if (L) out.push({ a: c.start - d / 2, b: c.start + d / 2, L, R: c, d });
+      else if (c.vIn.under) { const below = topBelow(seq, ti, c.start + h); if (below) out.push({ a: c.start, b: c.start + d, L: below, R: c, d }); }
+    }
+    if (c.vOut && c.vOut.type === 'cross' && c.vOut.under) {
+      const d = c.vOut.dur, below = topBelow(seq, ti, clipEnd(c) - h);
+      if (below) out.push({ a: clipEnd(c) - d, b: clipEnd(c), L: c, R: below, d });
+    }
+  }
   return out;
 }
 
@@ -491,7 +543,7 @@ function uncaptionedRanges(seq) {
     .filter((r) => !caps.some((k) => Math.min(k.end, r.end) - Math.max(k.start, r.start) > 0.1));
 }
 
-module.exports = {
+module.exports = { topBelow, crossRegionsOf,
   fd, snapT, findClip, linked, splitClip, razor, clearRange, placeClip, shiftAfter, insertSpace, extractRange,
   liftRange, removeClips, rippleDeleteGap, editFromSource, moveClips, trimEdge, editPoints, prevEdit, nextEdit,
   rippleTrimToPlayhead, setLinked, addAudioFades, eachTrack, rollEdit, slipClip, clipsFrom,

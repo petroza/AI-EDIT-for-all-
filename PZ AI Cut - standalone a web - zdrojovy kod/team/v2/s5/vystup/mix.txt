@@ -1,0 +1,23 @@
+﻿== zesileni a posun po klipech (solo exporty)
+  A1   0.00- 29.80 tncz-TIT_2026- zadano  +0.0 dB | namereno  -0.01 dB | posun +0.00 ms (r=1.000)
+  A1  29.80- 45.92 tncz-TIT_2026- zadano  +0.0 dB | namereno  -0.01 dB | posun +0.00 ms (r=1.000)
+  A1  45.92- 50.08 tncz-TIT_2026- zadano  +0.0 dB | namereno  -0.01 dB | posun +0.00 ms (r=1.000)
+  A2   8.00- 12.00 vyrez-5min.mp4 zadano -12.0 dB | namereno -12.01 dB | posun +0.00 ms (r=1.000)
+  A2  27.00- 33.00 vyrez-5min.mp4 zadano -12.0 dB | namereno -12.01 dB | posun +0.00 ms (r=1.000)
+  A2  40.00- 43.00 vyrez-5min.mp4 zadano -12.0 dB | namereno -12.01 dB | posun +0.00 ms (r=1.000)
+  A3   0.00- 50.08 mus_stem.wav   zadano -18.0 dB | namereno -18.06 dB | posun +0.00 ms (r=1.000)
+== linearita mixu: RMS mixu -28.4 dBFS, RMS (mix - soucet solo) -57.7 dBFS -> 29.3 dB pod mixem
+  A1 v mixu: RMS -29.3 dBFS (50.1 s)
+  A2 v mixu: RMS -41.4 dBFS (13.0 s)
+  A3 v mixu: RMS -36.0 dBFS (50.1 s)
+== cvaknuti na hranach (pomer skok/p99,5; > 1,5 = slysitelne)
+    0.00 s: mix 0.00 | A1 0.00 A2 0.00 A3 0.00
+    8.00 s: mix 0.23 | A1 0.25 A2 0.01 A3 0.02
+   12.00 s: mix 0.41 | A1 0.34 A2 1.16 A3 0.05
+   27.00 s: mix 0.36 | A1 0.03 A2 0.48 A3 0.50
+   29.80 s: mix 0.06 | A1 0.00 A2 0.14 A3 0.13
+   33.00 s: mix 0.43 | A1 0.40 A2 2.59 A3 0.08
+   40.00 s: mix 0.26 | A1 0.12 A2 0.55 A3 0.54
+   43.00 s: mix 0.08 | A1 0.12 A2 0.01 A3 0.04
+   45.92 s: mix 0.04 | A1 0.00 A2 0.00 A3 0.19
+   50.08 s: mix 0.11 | A1 0.00 A2 0.00 A3 0.11

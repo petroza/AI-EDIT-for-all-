@@ -1,0 +1,11 @@
+﻿vystup-s5-multi-bez.mp4: 1252 snimku, strihy 8.00 12.00 33.00 33.56 40.00 40.28 46.48 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', np.int64(7))]
+vystup-s5-multi916-bez.mp4: 1252 snimku, strihy 8.00 12.00 27.00 33.00 33.56 40.00 40.28 43.00 46.52 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', np.int64(7))]
+vystup-s5-multi11.mp4: 1252 snimku, strihy 8.00 12.00 27.00 33.00 33.56 40.00 40.28 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', np.int64(7))]
+vystup-s5-multi1080-xdcam.mxf: 1252 snimku, strihy 8.00 12.00 33.00 33.56 40.00 40.28 46.48 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', np.int64(7))]
+vystup-s5-eofMulti.mp4: 264 snimku, strihy 5.60 6.56 7.04 7.28 7.56 | kratke zabery (<13 sn.): [('6.56', np.int64(12)), ('7.04', np.int64(6)), ('7.28', np.int64(7))]
+vystup-s5-eofMulti916.mp4: 264 snimku, strihy 5.60 6.56 6.84 7.04 7.28 7.52 7.56 | kratke zabery (<13 sn.): [('6.56', np.int64(7)), ('6.84', np.int64(5)), ('7.04', np.int64(6)), ('7.28', np.int64(6)), ('7.52', np.int64(1))]
+vystup-s5-eofL.mp4: 174 snimku, strihy 1.88 2.96 3.44 3.68 | kratke zabery (<13 sn.): [('2.96', np.int64(12)), ('3.44', np.int64(6))]
+vystup-s5-eofV.mp4: 100 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s5-eofOver.mp4: 74 snimku, strihy  | kratke zabery (<13 sn.): zadne
+vystup-s5-start0.mp4: 175 snimku, strihy 1.60 1.68 3.12 4.00 | kratke zabery (<13 sn.): [('1.60', np.int64(2))]
+vystup-s5-start0916.mp4: 175 snimku, strihy 1.60 1.64 1.68 1.88 2.88 3.12 3.64 3.88 4.00 | kratke zabery (<13 sn.): [('1.60', np.int64(1)), ('1.64', np.int64(1)), ('1.68', np.int64(5)), ('2.88', np.int64(6)), ('3.64', np.int64(6)), ('3.88', np.int64(3))]

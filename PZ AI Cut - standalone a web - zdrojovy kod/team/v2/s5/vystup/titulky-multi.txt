@@ -1,0 +1,17 @@
+﻿
+Whisper A1: 142 slov, A2 (b-roll, -12 dB): 34 slov
+A2 slova: prostě[7.7] to[8.1] nejde[8.2] ty[8.7] musíš[8.7] vlastně[9.1] pokračovat[9.3] dál[9.8] jako[10.1] v[10.5] to
+m[10.6] svým[10.7] životě[10.9] a[11.4] hlavně[11.5] mě[11.9] se[27.0] vlastně[27.2] měnila[27.7] tahleta[28.3] pozice[
+28.7] takže[29.8] velmi[30.6] zajímavý[32.0] období[32.5] jsme[32.9] vlastně[40.1] vůbec[40.4] neměli[40.8] možnost[41.
+2] se[42.0] na[42.1] to[42.6] připravit[42.6]
+titulku: 12
+  ! titulek s nulovou delkou 45.92-45.92 "A pak jsem začala dělat / moderátorku v rádiu."
+slova titulku: v reci A1 121, jen v A2 0 [], nenalezena 10 [('jí', 35.53), ('potřebuju', 39.414), ('a', 45.92), ('pak',
+ 45.92), ('jsem', 45.92), ('začala', 45.92), ('dělat', 45.92), ('moderátorku', 45.92), ('v', 45.92), ('rádiu', 45.92)]
+slova A1 bez titulku v case: 15 [('jako', np.float64(35.16)), ('to', np.float64(46.22)), ('tak', np.float64(46.38)), ('
+hezky', np.float64(46.42)), ('jako', np.float64(46.84)), ('prolínalo', np.float64(46.84)), ('jo', np.float64(47.42)), (
+'a', np.float64(47.54)), ('pak', np.float64(47.6)), ('jsem', np.float64(47.7)), ('začala', np.float64(47.78)), ('dělat'
+, np.float64(48.0)), ('moderátorkovou', np.float64(48.18)), ('v', np.float64(48.9)), ('rádiu', np.float64(49.12))]
+titulek viditelny (maska) v usecich: 0.20-26.36 26.40-29.80 30.00-34.52 35.56-45.92
+
+
