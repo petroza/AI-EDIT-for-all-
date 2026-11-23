@@ -54,7 +54,9 @@ if (process.argv.includes('--ai')) {
   } catch (e) { /* bez záznamu */ }
 }
 const size = opt('--size', '1920x1080');
-const env = Object.assign({}, process.env, { APPDATA: appdata, LOCALAPPDATA: local, PZ_WINDOW_SIZE: size, PZ_USERDATA: path.join(appdata, 'electron') });
+// PZ_WORKER_APPDATA: sdílený Worker přepisu se spouští a oslovuje vždy se skutečným profilem (token) – izolovaná instance
+// jinak spustila Worker s tokenem z dočasného profilu a ten pak odmítal Premiere i ostatní instance (S14)
+const env = Object.assign({}, process.env, { APPDATA: appdata, LOCALAPPDATA: local, PZ_WINDOW_SIZE: size, PZ_USERDATA: path.join(appdata, 'electron'), PZ_WORKER_APPDATA: process.env.APPDATA });
 const p = spawn(ELECTRON, ['.', `--remote-debugging-port=${port}`], { cwd: path.join(__dirname, '..'), env, detached: true, stdio: 'ignore' });
 p.unref();
 

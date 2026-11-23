@@ -52,7 +52,10 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   if (!aiRoot || !fs.existsSync(path.join(aiRoot, 'worker', 'server.py'))) return null; // bez MY Premiere MCP přepis není
   let conf = {}; try { conf = JSON.parse(fs.readFileSync(path.join(aiRoot, 'config.json'), 'utf8')); } catch (e) { /* výchozí */ }
   const PORT = (conf.worker && conf.worker.port) || 7881;
-  const TOKEN_FILE = path.join(process.env.APPDATA || aiRoot, 'MYpremiereMCP', 'token.txt'); // bez APPDATA (Mac) jako Worker: kořen MCP
+  // bez APPDATA (Mac) jako Worker: kořen MCP; PZ_WORKER_APPDATA = skutečný profil u izolované testovací instance (S14:
+  // Worker spuštěný z ní měl token z dočasného profilu a všem ostatním vracel 401)
+  const WAPP = process.env.PZ_WORKER_APPDATA || process.env.APPDATA;
+  const TOKEN_FILE = path.join(WAPP || aiRoot, 'MYpremiereMCP', 'token.txt');
   const token = () => { try { return fs.readFileSync(TOKEN_FILE, 'utf8').trim(); } catch (e) { return ''; } };
   const files = new Map();
   const fileOf = (p) => {
@@ -84,7 +87,8 @@ function install({ app, aiRoot, ffmpeg, LL }) {
       const py = cands.find((x) => fs.existsSync(x));
       if (!py) throw new Error(LL('MY Premiere MCP is not installed (no Python) – run its installer', 'MY Premiere MCP není nainstalovaný (chybí Python) – spusť jeho instalaci'));
       if (onProgress) onProgress(0, LL('starting the speech model', 'spouštím model řeči'));
-      spawn(py, [path.join(aiRoot, 'worker', 'server.py')], { cwd: aiRoot, detached: true, stdio: 'ignore', windowsHide: true }).unref();
+      spawn(py, [path.join(aiRoot, 'worker', 'server.py')], { cwd: aiRoot, detached: true, stdio: 'ignore', windowsHide: true,
+        env: process.env.PZ_WORKER_APPDATA ? Object.assign({}, process.env, { APPDATA: process.env.PZ_WORKER_APPDATA }) : process.env }).unref();
       for (let i = 0; i < 90; i++) { await new Promise((r) => setTimeout(r, 1000)); try { await wf('/health', null, 2000); return; } catch (e) { /* startuje */ } }
       throw new Error(LL('the transcription Worker did not start in 90 s (see cache/worker.log)', 'Worker přepisu se nespustil do 90 s (viz cache/worker.log)'));
     })().finally(() => { starting = null; });
