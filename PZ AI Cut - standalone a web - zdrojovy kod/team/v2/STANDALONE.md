@@ -59,3 +59,12 @@ Rozdíly proti webu:
 - Úklid krajů: zbytek cizího záběru na kraji samostatného klipu ve V2+ se odstřihne (vidět je stopa pod ním).
 - Titulek začínající přesně na střihu patří k dalšímu klipu (dřív nulová délka posledního titulku).
 - Export MXF: titulky výchozí jako .srt zvlášť, ne vypálené. Sestřih do konce souboru už most nezasekne (limit dekodéru).
+
+## Od kola S9 (noc po 3:00, commity 70047c0 … 0c5bb1b)
+- Široký záběr přetažený (Projekt/Zdroj → časová osa) do sekvence na výšku: výřez podle obličeje jen pro vložené klipy;
+  vložení i výřez vrátí jedno Ctrl+Z (i první vložení do prázdné sekvence 9:16).
+- Upoutávka přes MCP `plan_edit_local` + `build`: hranice úderů se ověřují zvukem už při výběru – upoutávka nemá spadnout
+  pod ~80 % cíle a `edges` mají být prázdné; úder „…a proto…“ nesmí stát za pozdějším úderem; poděkování/pozdravy nejsou úder.
+- Začátek úseku z MCP bez úlomku předchozího slova (#22 po „a tak.“ začíná v pauze, ne v „k“).
+- Jednořádkové titulky 9:16 rozdělené podle skutečné doby zobrazení (nejkratší ~0,2 s místo 0,1 s; rychlá řeč dál pod 0,7 s).
+- Chyby mostu pro AI česky (i při anglickém rozhraní), `import_media` neexistujícího souboru = chyba, `reason` plánu bez azbuky.
