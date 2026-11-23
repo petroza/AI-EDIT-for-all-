@@ -48,8 +48,23 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
   úklidu krajů rozpojovaly** (žiletka, Shift+Delete i ořez působily jen na obraz – teď se zvuk rozřízne spolu s obrazem a
   zůstane propojený, export čte navazující kusy vcelku, ověřeno vzorek po vzorku), 4 snímky celku s výřezem na stůl na konci
   prvního vložení do 9:16, předvybrané MXF s −14 LUFS, text toastu u selhaného přepisu.
+- **Dopoledne 23. 11. (kola S10, S11 – Redaktorka, Kontrolor, Vzhled, nově Střihač z Premiere, AI tok)**:
+  - Nadpis nahoře jde vypnout/zapnout (okno Text v obraze → Zobrazit), text zůstane uložený.
+  - Obraz a zvuk zůstávají propojené i po výřezu / Auto Reframe / úklidu krajů (zvuk se rozřízne spolu s obrazem); titulky,
+    export i MCP `add_captions` berou navazující kusy zvuku jako jeden úsek (žádné vypadlé ani zdvojené slovo).
+  - Zopakovaný začátek/konec klipu (`holdIn` / `hold`) místo samostatných klipů – zbytek cizího záběru pod řečí na krajích
+    sekvence už nebliká a po úpravách nic nezůstává na ose.
+  - Jako Premiere: Ctrl+Shift+D skutečné prolnutí zvuku (Constant Power), Ctrl+tažení = vložení, Alt+tažení = kopie, Solo
+    v exportu, Match Frame s In/Out klipu.
+  - Auto Reframe dělí klip přesně na snímku, kde export ukáže nový záběr (dřív 1 snímek s výřezem předchozího záběru).
+  - Výběr z Přepisu nezačne/neskončí slovem jiného mluvčího; tlačítko „Začátek na další pauzu“.
+  - Kontroly: Kontrolor S11 – zvuk 41 exportů bitově shodný s S10, 0 osiřelých kusů zvuku; AI tok S11 – upoutávky
+    16 / 19 / 26 s (cíl 15 / 20 / 30), všechny hranice čisté, Hermes 0× CUDA error.
 
 ## Otevřené
+- Upoutávky (Hermes): moderátorka někdy až 48 % délky, odpověď bez své otázky, zdůvodnění plánu nesedí na vybrané věty,
+  upoutávka z panelu 24 s místo 20 s – obsahová kontrola bez modelu jen částečná.
+- Karta Titulky v AI panelu ukazuje u 9:16 „40 znaků“ (okno Text v obraze 20 zn.); hlavička „Claude připojen“ i při Hermes.
 - Upoutávka/úlomek „k“ – opraveno po 3:00 (výše); v Premiere znovu ověřit `scripts/test-highlight.mjs` (Premiere zavřené).
 - Zopakované snímky na konci sekvence jsou vidět jako drobné cuknutí úst; zbytek 6–12 snímků pod řečí na konci zůstává.
 - Upoutávka přes MCP: drobná nejednoznačnost zájmen mezi údery (pravidlo pokrývá jen spojky na začátku úderu).
