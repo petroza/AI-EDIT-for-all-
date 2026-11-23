@@ -6,7 +6,7 @@
   --head: #1f1f1f;
   --line: #3a3a3a;
   --text: #d6d6d6;
-  --dim: #8e8e8e;
+  --dim: #9a9a9a; /* 4,5:1 i na #2a2a2a (S14 Přístupnost: #8e8e8e = 4,38:1) */
   --accent: #2d8ceb;
   --accent2: #4aa3ff;
   --ph: #4aa3ff;
@@ -521,3 +521,17 @@ ol.guide li span { color: #c9c9d2; }
 /* Začátek na další pauzu (Přepis, redaktorka S11) */
 .tr-flow .tr-fix { margin-left: 8px; padding: 1px 8px; font-size: 11px; background: #4a3a1c; color: #fde68a; border: 1px solid #a16207; border-radius: 2px; cursor: pointer; }
 .tr-flow .tr-fix:hover { background: #5b4721; }
+
+/* ---- přístupnost (S14): viditelný fokus z klávesnice, kontextové menu, vysoký kontrast Windows ---- */
+button:focus-visible, [role=button]:focus-visible, [tabindex]:not(.panel):focus-visible, a:focus-visible, summary:focus-visible,
+input[type=checkbox]:focus-visible, input[type=radio]:focus-visible, input[type=range]:focus-visible {
+  outline: 2px solid #4aa3ff; outline-offset: 1px;
+}
+input:not([type=checkbox]):not([type=radio]):not([type=range]):focus-visible, select:focus-visible, textarea:focus-visible { outline: 1px solid #4aa3ff; outline-offset: 0; }
+.proj-list:focus-visible { outline: 2px solid #4aa3ff; outline-offset: -2px; }
+.ctx-menu > div:focus { outline: none; background: var(--accent); color: #fff; }
+.ctx-menu > div:focus .k { color: #e6f0ff; }
+@media (forced-colors: active) {
+  .on, .sel, .active, [aria-pressed="true"], [aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  button:focus-visible, [tabindex]:focus-visible { outline: 2px solid Highlight; }
+}

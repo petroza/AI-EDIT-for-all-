@@ -130,12 +130,12 @@
       <iframe id="aiFrame" title="AI panel"></iframe>
     </aside>
   </main>
-  <footer id="statusbar"><span id="status">Ready</span><span class="spacer"></span><span id="statusRight"></span></footer>
+  <footer id="statusbar"><span id="status" role="status" aria-live="polite">Ready</span><span class="spacer"></span><span id="statusRight"></span></footer>
 </div>
 
 <div id="ctxMenu" class="ctx-menu"></div>
 <div id="modal" class="modal"><div class="modal-box" id="modalBox"></div></div>
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="boot.js"></script>
 </body>

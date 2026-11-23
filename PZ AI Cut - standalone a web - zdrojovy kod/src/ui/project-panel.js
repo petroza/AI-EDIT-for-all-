@@ -40,6 +40,7 @@ function createProjectPanel(app) {
     if (list.classList.contains('icons')) {
       h = renderIcons(q, p);
       list.innerHTML = h || emptyHtml();
+      ariaSync();
       count.textContent = `${p.media.length + p.sequences.length} items`;
       paintAsr();
       return;
@@ -67,6 +68,7 @@ function createProjectPanel(app) {
         ${th}<div class="meta"><div class="nm">${esc(m.name)}</div><div class="info">${info}<span class="asr-info" data-mid="${m.id}"></span></div>${prog}<span class="asr-prog row" data-mid="${m.id}"><i></i></span></div></div>`;
     }
     list.innerHTML = h || emptyHtml();
+      ariaSync();
     count.textContent = `${p.media.length + p.sequences.length} items`;
     paintAsr();
   }
@@ -75,6 +77,57 @@ function createProjectPanel(app) {
     return cs ? '<div class="dim proj-empty" style="padding:14px;line-height:1.6">Projekt je prázdný.<br>Přetáhni sem video z Průzkumníka nebo klikni na <b>Importovat</b>.</div>'
       : '<div class="dim proj-empty" style="padding:14px;line-height:1.6">The project is empty.<br>Drag video files here from Explorer or click <b>Import</b>.</div>';
   }
+  // přístupnost (S14): seznam pro čtečku + ovládání klávesnicí jako panel Projekt v Premiere
+  function ariaSync() {
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-label', window.TN && window.TN.lang === 'cs' ? 'Projekt' : 'Project');
+    let act = '';
+    list.querySelectorAll('.pi').forEach((x) => {
+      x.setAttribute('role', 'option');
+      x.id = 'pi-' + x.dataset.type + '-' + x.dataset.id;
+      const on = x.classList.contains('sel');
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (on) act = x.id;
+    });
+    if (act) list.setAttribute('aria-activedescendant', act); else list.removeAttribute('aria-activedescendant');
+  }
+  function selectEl(el) {
+    if (!el) return;
+    selected = { type: el.dataset.type, id: el.dataset.id };
+    list.querySelectorAll('.pi').forEach((x) => x.classList.toggle('sel', x === el));
+    ariaSync();
+    el.scrollIntoView({ block: 'nearest' });
+    if (app.transcript && !app.source.media) app.transcript.render();
+  }
+  function openEl(el) {
+    if (el.dataset.type === 'seq') app.openSequence(el.dataset.id);
+    else { const m = app.project.mediaById(el.dataset.id); if (m) app.openSource(m); }
+  }
+  list.addEventListener('keydown', (ev) => {
+    if (ev.ctrlKey || ev.altKey) return;
+    const items = [...list.querySelectorAll('.pi')];
+    if (!items.length) return;
+    const cur = items.findIndex((x) => x.classList.contains('sel'));
+    let el = null;
+    const tile = list.querySelector('.pi.tile');
+    const perRow = tile ? Math.max(1, Math.round(list.clientWidth / Math.max(1, tile.offsetWidth))) : 1;
+    if (ev.key === 'ArrowDown') el = items[Math.min(items.length - 1, cur < 0 ? 0 : cur + perRow)];
+    else if (ev.key === 'ArrowUp') el = items[Math.max(0, cur < 0 ? 0 : cur - perRow)];
+    else if (ev.key === 'ArrowRight') el = items[Math.min(items.length - 1, cur + 1)];
+    else if (ev.key === 'ArrowLeft') el = items[Math.max(0, cur - 1)];
+    else if (ev.key === 'Home') el = items[0];
+    else if (ev.key === 'End') el = items[items.length - 1];
+    else if (ev.key === 'Enter' && cur >= 0) { ev.preventDefault(); ev.stopPropagation(); openEl(items[cur]); return; }
+    else if ((ev.key === 'ContextMenu' || (ev.shiftKey && ev.key === 'F10')) && cur >= 0) {
+      ev.preventDefault(); ev.stopPropagation();
+      const r = items[cur].getBoundingClientRect();
+      app.contextMenu(r.left + 20, r.top + r.height / 2, items[cur].dataset.type === 'seq' ? 'projSeq' : 'projMedia');
+      return;
+    } else return;
+    ev.preventDefault(); ev.stopPropagation();
+    selectEl(el);
+  });
+
   /** Stav přepisu u klipů (štítek na dlaždici, text v seznamu, průběh) – jen přepsat texty, bez nového vykreslení. */
   function paintAsr() {
     const a = window.__pzASR;
@@ -124,13 +177,13 @@ function createProjectPanel(app) {
     const el = ev.target.closest('.pi');
     selected = el ? { type: el.dataset.type, id: el.dataset.id } : null;
     list.querySelectorAll('.pi').forEach((x) => x.classList.toggle('sel', x === el));
+    ariaSync();
     if (app.transcript && !app.source.media) app.transcript.render();
   });
   list.addEventListener('dblclick', (ev) => {
     const el = ev.target.closest('.pi');
     if (!el) { app.cmd('import'); return; }
-    if (el.dataset.type === 'seq') app.openSequence(el.dataset.id);
-    else { const m = app.project.mediaById(el.dataset.id); if (m) app.openSource(m); }
+    openEl(el);
   });
   list.addEventListener('dragstart', (ev) => {
     const el = ev.target.closest('.pi');

@@ -31,7 +31,7 @@ const CS = {
   'Clear In and Out': 'Smazat In a Out', 'Mark Clip': 'Označit klip', 'Mark Selection': 'Označit výběr', 'Add Marker': 'Přidat značku',
   'Go to Next Marker': 'Na další značku', 'Clear Selected Marker': 'Smazat značku', 'Clear All Markers': 'Smazat všechny značky',
   'Window': 'Okno', 'AI Panel': 'AI panel', 'AI panel': 'AI panel', 'Maximize Frame': 'Maximalizovat panel', 'Full Screen': 'Celá obrazovka',
-  'Reload': 'Načíst znovu', 'Developer Tools': 'Vývojářské nástroje', 'Help': 'Nápověda', 'Install ffmpeg': 'Nainstalovat ffmpeg', 'AI not installed': 'AI není nainstalovaná', 'Open Application Folder': 'Otevřít složku aplikace',
+  'Reload': 'Načíst znovu', 'Developer Tools': 'Vývojářské nástroje', 'Help': 'Nápověda', 'Install ffmpeg': 'Nainstalovat ffmpeg', 'Panel: Project / Source / Timeline / Program': 'Panel: Projekt / Zdroj / Časová osa / Program', 'Context menu (Project panel)': 'Kontextová nabídka (panel Projekt)', 'AI not installed': 'AI není nainstalovaná', 'Open Application Folder': 'Otevřít složku aplikace',
   'Language': 'Jazyk',
   // ---------- horní lišta, monitory, projekt
   'Bridge for the AI panel (MCP server)': 'Most pro AI panel (MCP server)', 'Export Media (Ctrl+M)': 'Exportovat média (Ctrl+M)',

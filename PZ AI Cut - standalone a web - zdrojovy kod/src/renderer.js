@@ -274,6 +274,7 @@ const app = {
       ctx.appendChild(d);
     }
     ctx.style.display = 'block';
+    menuA11y(ctx);
     const r = ctx.getBoundingClientRect();
     ctx.style.left = Math.min(x, window.innerWidth - r.width - 4) + 'px';
     ctx.style.top = Math.min(y, window.innerHeight - r.height - 4) + 'px';
@@ -667,6 +668,14 @@ const commands = {
   newProject: () => newProject(),
   toggleAi: (arg) => toggleAi(arg === true ? true : undefined),
   help: () => helpDialog(),
+  focusPanelKey: (name) => {
+    app.focusPanel(name);
+    if (name === 'project' && app.transcript && $('projList').offsetParent === null) app.transcript.show('project');
+    const el = name === 'project' ? $('projList') : document.querySelector(`.panel[data-panel="${name}"]`);
+    if (el) { if (!el.hasAttribute('tabindex')) el.tabIndex = -1; el.focus({ preventScroll: true }); }
+    const n = { project: ['Project', 'Projekt'], source: ['Source', 'Zdroj'], timeline: ['Timeline', 'Časová osa'], program: ['Program', 'Program'] }[name];
+    app.status(TN.lang === 'cs' ? 'Panel: ' + n[1] : 'Panel: ' + n[0]);
+  },
   installFfmpeg: () => installFfmpeg(),
   socialGuide: () => socialGuide(),
   reframe916: () => reframeTo(9, 16, 1080, 1920),
@@ -978,6 +987,8 @@ const KEYMAP = [
   ['Shift+KeyR', 'reverseMatchFrame'], ['Shift+KeyA', 'setTool', 'trackback'],
   ['Ctrl+KeyW', 'closeSequence'], ['Ctrl+Alt+KeyS', 'saveCopy'], ['Ctrl+KeyQ', 'quit'],
   ['Ctrl+KeyF', 'find'], ['F2', 'editCaptionHere'],
+  // fokus panelu z klávesnice jako v Premiere (S14 Přístupnost: šlo jen myší)
+  ['Shift+Digit1', 'focusPanelKey', 'project'], ['Shift+Digit2', 'focusPanelKey', 'source'], ['Shift+Digit3', 'focusPanelKey', 'timeline'], ['Shift+Digit4', 'focusPanelKey', 'program'],
   ['Equal', 'zoomIn'], ['NumpadAdd', 'zoomIn'], ['Minus', 'zoomOut'], ['NumpadSubtract', 'zoomOut'], ['Backslash', 'zoomFit'],
 ];
 const keyIndex = new Map(KEYMAP.map(([k, c, a]) => [k, [c, a]]));
@@ -986,10 +997,13 @@ const keyIndex = new Map(KEYMAP.map(([k, c, a]) => [k, [c, a]]));
 function handleKey(ev) {
   const tag = (ev.target && ev.target.tagName || '').toLowerCase();
   // Esc zavře dialog i s kurzorem v textovém poli (vzhled S2: Export a Nová sekvence se Esc nezavřely)
-  if (ev.key === 'Escape' && tag === 'input' && $('modal').classList.contains('show') && !$('modal').dataset.busy && !(Date.now() - (+$('modal').dataset.pickEnd || 0) < 1500)) { closeModal(); return true; }
+  if (ev.key === 'Escape' && (tag === 'input' || tag === 'select' || tag === 'textarea') && $('modal').classList.contains('show') && !$('modal').dataset.busy && !(Date.now() - (+$('modal').dataset.pickEnd || 0) < 1500)) { closeModal(); return true; }
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return false;
   // Esc ze systémového okna uložení (zrušení) nesmí zavřít i dialog Export (redaktor-4) – chvíli po zrušení se ignoruje
   if ($('modal').classList.contains('show')) { if (ev.key === 'Escape' && !$('modal').dataset.busy && !(Date.now() - (+$('modal').dataset.pickEnd || 0) < 1500)) closeModal(); return false; }
+  // mezerník/Enter na tlačítku vybraném z klávesnice ho stiskne, nespustí přehrávání (S14 Přístupnost)
+  if ((ev.code === 'Space' || ev.key === 'Enter') && !ev.ctrlKey && !ev.altKey && ev.target && ev.target.closest
+    && ev.target.closest('button,[role=button],[role=tab],[role=menuitem],a[href],summary') && ev.target.matches(':focus-visible')) return false;
   const combo = (ev.ctrlKey ? 'Ctrl+' : '') + (ev.altKey ? 'Alt+' : '') + (ev.shiftKey ? 'Shift+' : '') + ev.code;
   let hit = keyIndex.get(combo);
   if (!hit && !ev.ctrlKey && !ev.altKey && (ev.key === ',' || ev.key === '.')) hit = keyIndex.get(ev.key === ',' ? 'Comma' : 'Period');
@@ -1003,7 +1017,31 @@ window.addEventListener('keydown', (ev) => { if (handleKey(ev)) ev.preventDefaul
 
 /* ======================================================= kontextové menu */
 const ctx = $('ctxMenu');
-function hideContextMenu() { ctx.style.display = 'none'; }
+function hideContextMenu() {
+  const had = ctx.contains(document.activeElement);
+  ctx.style.display = 'none';
+  if (had && menuReturn && menuReturn.isConnected) menuReturn.focus({ preventScroll: true });
+}
+// kontextové menu z klávesnice (S14 Přístupnost: šlo jen myší) – šipky, Enter, Esc, fokus zpět
+let menuReturn = null;
+function menuA11y(m) {
+  m.setAttribute('role', 'menu');
+  if (!m.contains(document.activeElement)) menuReturn = document.activeElement;
+  const items = [...m.children].filter((d) => d.tagName === 'DIV');
+  items.forEach((d) => { d.setAttribute('role', 'menuitem'); d.tabIndex = -1; if (d.classList.contains('dis')) d.setAttribute('aria-disabled', 'true'); });
+  const first = items.find((d) => !d.classList.contains('dis'));
+  if (first) setTimeout(() => first.focus({ preventScroll: true }), 0);
+}
+ctx.addEventListener('keydown', (ev) => {
+  const items = [...ctx.children].filter((d) => d.tagName === 'DIV' && !d.classList.contains('dis'));
+  const i = items.indexOf(document.activeElement);
+  if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') { const n = items.length; if (n) items[(i + (ev.key === 'ArrowDown' ? 1 : -1) + n) % n].focus(); }
+  else if (ev.key === 'Home' || ev.key === 'End') { if (items.length) items[ev.key === 'Home' ? 0 : items.length - 1].focus(); }
+  else if ((ev.key === 'Enter' || ev.key === ' ') && i >= 0) items[i].click();
+  else if (ev.key === 'Escape' || ev.key === 'Tab') hideContextMenu();
+  else return;
+  ev.preventDefault(); ev.stopPropagation();
+});
 window.addEventListener('mousedown', (ev) => { if (!ctx.contains(ev.target)) hideContextMenu(); });
 function showContextMenu(x, y, kind) {
   const s = app.seq();
@@ -1071,14 +1109,43 @@ function showContextMenu(x, y, kind) {
     ctx.appendChild(d);
   }
   ctx.style.display = 'block';
+  menuA11y(ctx);
   const r = ctx.getBoundingClientRect();
   ctx.style.left = Math.min(x, window.innerWidth - r.width - 4) + 'px';
   ctx.style.top = Math.min(y, window.innerHeight - r.height - 4) + 'px';
 }
 
 /* ======================================================= modální okna */
+let modalReturn = null;
+/** Pole bez přístupného názvu dostanou název ze sousedního popisku (S14 Přístupnost: textbox "" ve stromu). */
+function labelFields(box) {
+  box.querySelectorAll('input:not([type=hidden]),select,textarea,button').forEach((f) => {
+    if (f.getAttribute('aria-label') || f.getAttribute('aria-labelledby') || (f.labels && f.labels.length && f.labels[0].textContent.trim() && f.labels[0].querySelectorAll('input,select,textarea').length < 2)) return;
+    if (f.tagName === 'BUTTON') { if (!f.textContent.trim() || f.textContent.trim() === '…') f.setAttribute('aria-label', f.title || (TN.lang === 'cs' ? 'Vybrat…' : 'Browse…')); return; }
+    let t = '';
+    const prev = f.previousElementSibling;
+    if (prev && !/^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(prev.tagName)) t = prev.textContent.trim();
+    if (!t && f.parentElement) {
+      const lab = [...f.parentElement.children].find((c) => c !== f && /^(LABEL|SPAN|DIV|B)$/.test(c.tagName) && !c.querySelector('input,select,textarea') && c.textContent.trim());
+      if (lab) t = lab.textContent.trim();
+    }
+    if (!t) t = f.title || f.placeholder || '';
+    if (t) f.setAttribute('aria-label', t.slice(0, 80));
+  });
+}
+function modalFocusables() {
+  return [...$('modalBox').querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])')]
+    .filter((e) => !e.disabled && e.offsetParent !== null);
+}
 function openModal(html, onReady) {
+  if (!$('modal').classList.contains('show')) modalReturn = document.activeElement;
   $('modalBox').innerHTML = html;
+  // přístupnost (S14): dialog pro čtečku s názvem z nadpisu
+  $('modalBox').setAttribute('role', 'dialog');
+  $('modalBox').setAttribute('aria-modal', 'true');
+  const h2 = $('modalBox').querySelector('h2');
+  if (h2) { h2.id = 'modalTitle'; $('modalBox').setAttribute('aria-labelledby', 'modalTitle'); } else $('modalBox').removeAttribute('aria-labelledby');
+  const box = $('modalBox'); setTimeout(() => labelFields(box), 0); // až po českém překladu popisků (MutationObserver)
   // pevná šířka (data-w u nadpisu): dialog se nemění podle délky textu a tlačítka neuskakují (redaktorka S2, Export)
   const wEl = $('modalBox').querySelector('[data-w]');
   $('modalBox').style.width = wEl ? Math.min(window.innerWidth - 40, +wEl.dataset.w) + 'px' : '';
@@ -1088,7 +1155,28 @@ function openModal(html, onReady) {
   if (first) setTimeout(() => { first.focus({ preventScroll: true }); $('modalBox').scrollTop = 0; }, 10);
   if (onReady) onReady($('modalBox'));
 }
-function closeModal() { $('modal').classList.remove('show'); $('modalBox').innerHTML = ''; }
+function closeModal() {
+  $('modal').classList.remove('show'); $('modalBox').innerHTML = '';
+  // fokus zpět na prvek, který dialog otevřel (S14 Přístupnost: skončil na BODY)
+  const r = modalReturn; modalReturn = null;
+  if (r && r.isConnected && r !== document.body) { try { r.focus({ preventScroll: true }); } catch (e) { /* skrytý */ } }
+}
+// past fokusu: Tab nesmí z otevřeného dialogu utéct do aplikace (S14 Přístupnost: Enter za dialogem otevřel jiné okno)
+document.addEventListener('keydown', (ev) => {
+  if (!$('modal').classList.contains('show')) return;
+  const box = $('modalBox');
+  if (ev.key === 'Tab') {
+    const f = modalFocusables();
+    if (!f.length) { ev.preventDefault(); return; }
+    const i = f.indexOf(document.activeElement);
+    if (ev.shiftKey && (i <= 0)) { ev.preventDefault(); f[f.length - 1].focus(); }
+    else if (!ev.shiftKey && (i === -1 || i === f.length - 1)) { ev.preventDefault(); f[0].focus(); }
+  } else if (!box.contains(ev.target) && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); ev.stopPropagation(); }
+}, true);
+document.addEventListener('focusin', (ev) => {
+  if (!$('modal').classList.contains('show') || $('modal').contains(ev.target)) return;
+  const f = modalFocusables(); if (f.length) f[0].focus({ preventScroll: true });
+});
 $('modal').addEventListener('mousedown', (ev) => { if (ev.target === $('modal') && !$('modal').dataset.busy) closeModal(); });
 
 function gainDialog() {
@@ -1337,7 +1425,7 @@ function helpDialog() {
     'Marks and Editing': ['I O|Mark In / Mark Out', 'Shift+I / O|Go to In / Out', 'X|Mark Clip', '/|Mark Selection', 'Ctrl+Shift+X|Clear In and Out', ',|Insert', '.|Overwrite', ';|Lift', "'|Extract", 'M|Add Marker', 'Ctrl+Alt+M|Clear Marker (Shift = all)', 'F|Match Frame', 'Shift+R|Reverse Match Frame'],
     'Timeline': ['Ctrl+K|Add Edit (targeted tracks)', 'Ctrl+Shift+K|Add Edit to All Tracks', 'Q / W|Ripple Trim Previous / Next Edit to Playhead', 'Shift+Q / Shift+W|Extend Previous / Next Edit to Playhead', 'E|Extend Selected Edit to Playhead', 'Delete|Clear (gap = close it)', 'Shift+Delete, Alt+Backspace|Ripple Delete', 'D|Select Clip at Playhead', 'Ctrl+↑ ↓|Select Previous / Next Clip', 'Alt+← →|Nudge 1 frame (Shift = 5)', 'Alt+↑ ↓|Nudge to track above / below', 'Ctrl+Alt+← →|Slip 1 frame (Shift = 5)', 'Ctrl+X / C / V|Cut / Copy / Paste', 'Ctrl+Shift+V|Paste Insert', 'Ctrl+L|Link / Unlink', 'Shift+E|Enable', 'G|Audio Gain', '[ ]|Clip volume −/+ 1 dB (Shift = 6 dB)', 'Ctrl+D|Cross Dissolve', 'Ctrl+Shift+D|Audio Crossfade', 'Shift+D|Default Transitions', 'Ctrl+0 / Ctrl+9|Toggle all video / audio track targets', 'S|Snap'],
     'Tools': ['V|Selection', 'A / Shift+A|Track Select Forward / Backward', 'B|Ripple Edit', 'N|Rolling Edit', 'C|Razor (Shift+click = all tracks)', 'Y|Slip', 'H|Hand', 'Z|Zoom (Alt = out)', 'Ctrl+drag edge|Ripple Edit with Selection Tool', 'Alt+click|Video or audio only'],
-    'View and File': ['= / −|Zoom In / Out', '\\|Zoom to Sequence', 'Ctrl+= / Ctrl+−|Video track height', 'Alt+= / Alt+−|Audio track height', 'Shift+= / Shift+−|Expand / Minimize all tracks', '`|Maximize panel', 'Ctrl+Shift+0 / 1|Program: Fit / 100 %', 'Ctrl+Z / Ctrl+Shift+Z|Undo / Redo', 'Ctrl+S|Save', 'Ctrl+Alt+S|Save a Copy', 'Ctrl+I|Import', 'Ctrl+N|New Sequence', 'Ctrl+F|Search the transcript', 'F2|Fix the caption at the playhead', 'Ctrl+W|Close Sequence', 'Ctrl+M|Export Media', 'Ctrl+Shift+E|Export Frame', 'F4|AI Panel'],
+    'View and File': ['= / −|Zoom In / Out', '\\|Zoom to Sequence', 'Ctrl+= / Ctrl+−|Video track height', 'Alt+= / Alt+−|Audio track height', 'Shift+= / Shift+−|Expand / Minimize all tracks', '`|Maximize panel', 'Ctrl+Shift+0 / 1|Program: Fit / 100 %', 'Ctrl+Z / Ctrl+Shift+Z|Undo / Redo', 'Ctrl+S|Save', 'Ctrl+Alt+S|Save a Copy', 'Ctrl+I|Import', 'Ctrl+N|New Sequence', 'Ctrl+F|Search the transcript', 'F2|Fix the caption at the playhead', 'Shift+1 / 2 / 3 / 4|Panel: Project / Source / Timeline / Program', 'Shift+F10|Context menu (Project panel)', 'Ctrl+W|Close Sequence', 'Ctrl+M|Export Media', 'Ctrl+Shift+E|Export Frame', 'F4|AI Panel'],
   };
   openModal(`<h2>Keyboard Shortcuts (Premiere Pro defaults)</h2><p class="hint"><a href="#" id="hGuide">${TN.lang === 'cs' ? 'Nový v programu? Jak na video pro sítě →' : 'New here? How to make a social video →'}</a></p><div class="keys">${Object.entries(groups).map(([g, l]) =>
     `<h3>${g}</h3>` + l.map((x) => { const i = x.lastIndexOf('|'); const d = x.slice(i + 1); let k = x.slice(0, i); if (TN.lang === 'cs') k = k.replace(/Space/g, 'Mezerník').replace(/drag edge/g, 'tažení okraje').replace(/drag/g, 'tažení').replace(/click/g, 'klik'); return `<div><span>${d}</span><kbd>${k}</kbd></div>`; }).join('')).join('')}</div>

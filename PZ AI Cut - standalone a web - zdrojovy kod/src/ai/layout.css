@@ -154,7 +154,7 @@ body.pz-layout {
 .flag { flex: none; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
 
 /* hranatý vzhled jako zbytek aplikace (2–3 px), bez žlutého focus rámečku na záložkách */
-.pz-tab:focus, .pz-tab:focus-visible { outline: none; }
+.pz-tab:focus { outline: none; } .pz-tab:focus-visible { outline: 2px solid #a78bfa; outline-offset: -2px; } /* klávesnice (S14 Přístupnost) */
 .pz-tab.on::after { left: 0; right: 0; border-radius: 0; }
 .pz-seqbar > * { white-space: nowrap; } .pz-seqbar #srcName { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 /* nízké okno (notebook 1366×768, 1280×720 – vzhled S3: tlačítko Spustit pod okrajem): bez úvodního nadpisu, menší karty */
