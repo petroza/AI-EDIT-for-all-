@@ -379,6 +379,7 @@ function createApi(project, hooks = {}) {
     const res = project.edit('Auto Reframe Sequence', () => {
       seq.id = require('./util').uuid();
       seq.name = project.uniqueSeqName(a.name || `${src.name} ${num}x${den}`);
+      E.relinkAV(seq); // kusy obrazu po rozříznutí na střihu kamery propojit s jejich zvukem (kontrolor S10 #2)
       project.addSequence(seq);
       return { sequenceID: seq.id, name: seq.name, width: W, height: H, reframedFrom: `${src.width}x${src.height}`, scale: 100,
         cameraSplits: splits, shots, facesFound: faced };

@@ -306,8 +306,8 @@ window.__pzASR = {
     const tr = s.tracks.audio.filter((x) => !x.muted).find((x) => x.clips.length);
     const words = [], pending = [];
     if (!tr) return { words, pending };
-    for (const c of tr.clips) {
-      if (c.disabled) continue;
+    // navazující kusy téhož zdroje jako jeden úsek (kontrolor S10); todo (přesné titulky) obsahuje původní klipy
+    for (const c of require('../../src/core/edit').audioRuns(tr.clips)) {
       const m = p.mediaById(c.mediaId);
       if (!m) continue;
       let t = await T.loadForMedia(m);
@@ -315,7 +315,7 @@ window.__pzASR = {
       t = withFixes(m, t);
       if (!t) { if (!pending.includes(m)) pending.push(m); continue; }
       let tt = t, exact = null;
-      if (precise && todo.includes(c)) {
+      if (precise && c.clips.some((k) => todo.includes(k))) {
         // přesně jen zvuk klipu [In, Out] (kolo 5): s okrajem 1,5 s Whisper rozpočítal první větu od začátku okna a „A zjistilo se to“
         // vypadlo před In. Titulky = co přesný model v klipu slyší (jako rozhodčí test/edges.js), opravy z titulků platí i tady.
         const f = vfs.getFile(m.path);

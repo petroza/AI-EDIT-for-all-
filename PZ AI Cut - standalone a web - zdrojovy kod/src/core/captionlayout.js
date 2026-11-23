@@ -173,7 +173,7 @@ function layout(words, seq, st, limitEnd) {
   //    titulek se na konci klipu uřízne a řeč za střihem by zůstala bez titulku (kontrolor S3: „prostě. Ale my / nepotřebujeme“).
   const span = (ws) => ws[ws.length - 1].e - ws[0].s;
   const atr = seq && seq.tracks && (seq.tracks.audio || []).filter((x) => !x.muted).find((x) => x.clips.length);
-  const cuts = atr ? atr.clips.filter((k) => !k.disabled).map((k) => k.start).filter((t) => t > 0.01) : [];
+  const cuts = atr ? require('./edit').audioRuns(atr.clips).map((k) => k.start).filter((t) => t > 0.01) : [];
   const cutBetween = (a, b) => cuts.some((t) => t > a.ws[a.ws.length - 1].s + 0.01 && t <= b.ws[0].s + 0.01);
   for (let i = 1; i < merged.length; i++) {
     const c = merged[i], prev = merged[i - 1];

@@ -196,8 +196,7 @@ function install({ app, aiRoot, ffmpeg, LL }) {
       const tr = s.tracks.audio.filter((x) => !x.muted).find((x) => x.clips.length);
       const words = [], pending = [];
       if (!tr) return { words, pending };
-      for (const c of tr.clips) {
-        if (c.disabled) continue;
+      for (const c of require('../core/edit').audioRuns(tr.clips)) { // navazující kusy téhož zdroje jako jeden úsek (kontrolor S10)
         const m = p.mediaById(c.mediaId);
         if (!m) continue;
         const t = withFixes(m, await T.loadForMedia(m));

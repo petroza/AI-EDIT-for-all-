@@ -33,6 +33,64 @@ function linked(seq, clip) {
   return out;
 }
 
+/** Obraz rozříznutý výřezem / úklidem krajů se odpojil (linkId null), zvuk si nechal propojení na obraz, který už neexistuje
+ *  („osiřelý“) – žiletka, Shift+Delete i ořez pak působily jen na obraz (redaktorka S9: černá díra se zvukem). Jako v Premiere:
+ *  osiřelý zvuk téhož zdroje se stejným časováním (start − in) se rozřízne na začátcích kusů obrazu uvnitř něj a každý kus
+ *  obrazu se propojí se svým zvukem (všechny zvukové stopy). Zvuk, který rozpojil uživatel (linkId null), zůstane netknutý.
+ *  Kraje posunuté úklidem (o pár snímků) zůstanou propojené s posunem. Export čte navazující kusy zvuku vcelku. */
+function relinkAV(seq) {
+  const fd = 1 / (seq.fps || 25);
+  const off = (c) => c.start - c.in;
+  const vids = [];
+  seq.tracks.video.forEach((tr) => tr.clips.forEach((v) => { if (!v.linkId) vids.push(v); }));
+  if (!vids.length) return 0;
+  const vLinks = () => new Set(seq.tracks.video.flatMap((tr) => tr.clips.map((c) => c.linkId).filter(Boolean)));
+  let have = vLinks();
+  const orphan = (a) => a.linkId && !have.has(a.linkId);
+  const same = (a, v) => a.mediaId === v.mediaId && Math.abs(off(a) - off(v)) < fd / 2;
+  for (const atr of seq.tracks.audio) {
+    if (atr.locked) continue;
+    for (const v of vids) {
+      // jen kde na sebe navazují dva kusy obrazu téhož záběru (rozříznutí na střihu kamery) – ne na začátku obrazu
+      // posunutém úklidem krajů (J-střih: vznikl osiřelý kousek zvuku se začátkem slova, kontrolor S10 #3)
+      const cont = vids.some((u) => u !== v && same(u, v) && Math.abs(clipEnd(u) - v.start) < fd / 2);
+      if (!cont) continue;
+      const a = atr.clips.find((x) => orphan(x) && same(x, v) && v.start > x.start + fd / 2 && v.start < clipEnd(x) - fd / 2);
+      if (a) splitClip(seq, atr, a, v.start);
+    }
+  }
+  have = vLinks();
+  let n = 0;
+  for (const v of vids) {
+    const ve = clipEnd(v), group = [];
+    for (const atr of seq.tracks.audio) {
+      let best = null, bestOv = 0;
+      for (const a of atr.clips) {
+        if (!orphan(a) || !same(a, v)) continue;
+        const ov = Math.min(ve, clipEnd(a)) - Math.max(v.start, a.start);
+        if (ov > bestOv) { best = a; bestOv = ov; }
+      }
+      if (best && bestOv > 0.5 * Math.min(ve - v.start, clipEnd(best) - best.start)) group.push(best);
+    }
+    if (group.length) { const l = uid('l'); v.linkId = l; for (const a of group) a.linkId = l; have.add(l); n++; }
+  }
+  return n;
+}
+
+/** Navazující kusy zvuku téhož zdroje (žiletka, zvuk rozříznutý spolu s obrazem po výřezu / úklidu krajů) jako jeden úsek:
+ *  [{mediaId, start, in, out, clips}] – pro titulky (slova a „střih“ jen tam, kde se zvuk opravdu mění; kontrolor S10:
+ *  titulky se lámaly na rozříznutém zvuku – zdvojené slovo, řeč bez titulku). */
+function audioRuns(clips) {
+  const out = [];
+  for (const c of [...clips].filter((x) => !x.disabled).sort((a, b) => a.start - b.start)) {
+    const r = out[out.length - 1];
+    if (r && r.mediaId === c.mediaId && Math.abs(r.start + (r.out - r.in) - c.start) < 1e-3 && Math.abs(r.out - c.in) < 1e-3) {
+      r.out = c.out; r.clips.push(c);
+    } else out.push({ mediaId: c.mediaId, start: c.start, in: c.in, out: c.out, clips: [c] });
+  }
+  return out;
+}
+
 /** Rozdělí klip v čase t; vrátí pravou část (nebo null, když t neleží uvnitř). */
 function splitClip(seq, track, clip, t, linkMap) {
   const h = half(seq);
@@ -596,7 +654,7 @@ function uncaptionedRanges(seq) {
     .filter((r) => !caps.some((k) => Math.min(k.end, r.end) - Math.max(k.start, r.start) > 0.1));
 }
 
-module.exports = { rippleCaptions, topBelow, crossRegionsOf,
+module.exports = { relinkAV, audioRuns, rippleCaptions, topBelow, crossRegionsOf,
   fd, snapT, findClip, linked, splitClip, razor, clearRange, placeClip, shiftAfter, insertSpace, extractRange,
   liftRange, removeClips, rippleDeleteGap, editFromSource, moveClips, trimEdge, editPoints, prevEdit, nextEdit,
   rippleTrimToPlayhead, setLinked, addAudioFades, eachTrack, rollEdit, slipClip, clipsFrom,
