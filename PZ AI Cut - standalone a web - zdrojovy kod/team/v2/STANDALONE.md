@@ -51,3 +51,11 @@ Rozdíly proti webu:
   čitelné chyby importu, titulky se neslučují přes střih, konec sekvence bez probliknutí (prodloužení do pauzy / zopakované snímky),
   upoutávka: úder se spojkou jen za svou předchozí větou, moderátor max 1 úder; add_captions lines/charsPerLine ve standalone,
   timecode i na časové ose, AI panel na nízkém okně, drobnosti vzhledu S3.
+
+## Od kola S6 (commit 99fd961 a předchozí)
+- Shift+Delete (ripple delete) klipu: když je úsek na stopách smazaného klipu po smazání prázdný, vyjme se ze VŠECH odemčených stop
+  (jako Extract) – b-roll na V2 nad ním se zkrátí, hudba a titulky se posunou; titulky přes hranu se rozdělí podle slov.
+- Ctrl+D na kraji klipu ve V2+ bez souseda = prolnutí do stopy pod ním (export i náhled), dřív stmívačka do černé.
+- Úklid krajů: zbytek cizího záběru na kraji samostatného klipu ve V2+ se odstřihne (vidět je stopa pod ním).
+- Titulek začínající přesně na střihu patří k dalšímu klipu (dřív nulová délka posledního titulku).
+- Export MXF: titulky výchozí jako .srt zvlášť, ne vypálené. Sestřih do konce souboru už most nezasekne (limit dekodéru).

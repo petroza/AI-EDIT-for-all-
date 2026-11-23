@@ -1,0 +1,67 @@
+vystup-s6-rd1-bez.mp4 (s6-rd1 1280x720): 1226 snimku
+  sn    0- 199 (  0.00-  8.00 s) ocekavano V1: chyba k ocekavane median 0.5 max 0.6 | k jine vrstve median - | jas 114-118
+  sn  200- 273 (  8.00- 10.96 s) ocekavano V2: chyba k ocekavane median 2.1 max 8.6 | k jine vrstve median 5.4 | jas 116-118
+  sn  274- 648 ( 10.96- 25.96 s) ocekavano V1: chyba k ocekavane median 0.5 max 0.6 | k jine vrstve median - | jas 115-119
+  sn  649- 798 ( 25.96- 31.96 s) ocekavano V2: chyba k ocekavane median 0.5 max 0.5 | k jine vrstve median 47.4 | jas 116-118
+  sn  799- 973 ( 31.96- 38.96 s) ocekavano V1: chyba k ocekavane median 0.5 max 0.6 | k jine vrstve median - | jas 103-118
+  sn  974-1048 ( 38.96- 41.96 s) ocekavano V2: chyba k ocekavane median 0.5 max 0.6 | k jine vrstve median 8.4 | jas 103-118
+  sn 1049-1225 ( 41.96- 49.04 s) ocekavano V1: chyba k ocekavane median 0.6 max 107.8 | k jine vrstve median - | jas 9-117
+  snimky, kde ocekavana vrstva nesedi (chyba > 12 nebo jina vrstva blize): 58
+    sn 200 (8.00 s) ocek. V2 chyby [0.5, 8.6, None] jas 118
+    sn 201 (8.04 s) ocek. V2 chyby [0.9, 8.3, None] jas 117
+    sn 202 (8.08 s) ocek. V2 chyby [1.2, 7.9, None] jas 117
+    sn 203 (8.12 s) ocek. V2 chyby [1.5, 7.6, None] jas 117
+    sn 204 (8.16 s) ocek. V2 chyby [1.8, 7.2, None] jas 117
+    sn 205 (8.20 s) ocek. V2 chyby [2.0, 6.6, None] jas 117
+    sn 206 (8.24 s) ocek. V2 chyby [2.3, 6.2, None] jas 117
+    sn 207 (8.28 s) ocek. V2 chyby [2.6, 5.9, None] jas 117
+    sn 208 (8.32 s) ocek. V2 chyby [2.9, 5.5, None] jas 117
+    sn 209 (8.36 s) ocek. V2 chyby [3.0, 5.0, None] jas 117
+    sn 210 (8.40 s) ocek. V2 chyby [3.3, 4.7, None] jas 117
+    sn 211 (8.44 s) ocek. V2 chyby [3.6, 4.4, None] jas 117
+    sn 212 (8.48 s) ocek. V2 chyby [3.9, 4.2, None] jas 117
+    sn 262 (10.48 s) ocek. V2 chyby [4.3, 4.6, None] jas 116
+    sn 263 (10.52 s) ocek. V2 chyby [4.0, 5.0, None] jas 116
+    sn 264 (10.56 s) ocek. V2 chyby [3.7, 5.4, None] jas 116
+    sn 265 (10.60 s) ocek. V2 chyby [3.4, 5.7, None] jas 116
+    sn 266 (10.64 s) ocek. V2 chyby [3.1, 6.0, None] jas 116
+    sn 267 (10.68 s) ocek. V2 chyby [2.8, 6.3, None] jas 116
+    sn 268 (10.72 s) ocek. V2 chyby [2.4, 6.6, None] jas 116
+    sn 269 (10.76 s) ocek. V2 chyby [2.1, 7.0, None] jas 116
+    sn 270 (10.80 s) ocek. V2 chyby [1.8, 7.4, None] jas 116
+    sn 271 (10.84 s) ocek. V2 chyby [1.5, 7.8, None] jas 116
+    sn 272 (10.88 s) ocek. V2 chyby [1.2, 8.0, None] jas 116
+    sn 273 (10.92 s) ocek. V2 chyby [1.0, 8.2, None] jas 116
+    sn 1117 (44.68 s) ocek. V1 chyby [13.4, None, None] jas 112
+    sn 1118 (44.72 s) ocek. V1 chyby [15.3, None, None] jas 111
+    sn 1119 (44.76 s) ocek. V1 chyby [17.1, None, None] jas 111
+    sn 1120 (44.80 s) ocek. V1 chyby [18.9, None, None] jas 110
+    sn 1121 (44.84 s) ocek. V1 chyby [20.8, None, None] jas 110
+    sn 1122 (44.88 s) ocek. V1 chyby [24.2, None, None] jas 109
+    sn 1123 (44.92 s) ocek. V1 chyby [22.5, None, None] jas 109
+    sn 1124 (44.96 s) ocek. V1 chyby [20.6, None, None] jas 109
+    sn 1125 (45.00 s) ocek. V1 chyby [18.7, None, None] jas 108
+    sn 1126 (45.04 s) ocek. V1 chyby [16.7, None, None] jas 107
+    sn 1127 (45.08 s) ocek. V1 chyby [14.9, None, None] jas 107
+    sn 1128 (45.12 s) ocek. V1 chyby [13.0, None, None] jas 107
+    sn 1205 (48.20 s) ocek. V1 chyby [13.2, None, None] jas 96
+    sn 1206 (48.24 s) ocek. V1 chyby [18.0, None, None] jas 91
+    sn 1207 (48.28 s) ocek. V1 chyby [21.9, None, None] jas 87
+    sn 1208 (48.32 s) ocek. V1 chyby [26.4, None, None] jas 83
+    sn 1209 (48.36 s) ocek. V1 chyby [30.6, None, None] jas 79
+    sn 1210 (48.40 s) ocek. V1 chyby [35.3, None, None] jas 74
+    sn 1211 (48.44 s) ocek. V1 chyby [42.1, None, None] jas 74
+    sn 1212 (48.48 s) ocek. V1 chyby [46.5, None, None] jas 70
+    sn 1213 (48.52 s) ocek. V1 chyby [51.4, None, None] jas 65
+    sn 1214 (48.56 s) ocek. V1 chyby [56.0, None, None] jas 60
+    sn 1215 (48.60 s) ocek. V1 chyby [60.9, None, None] jas 55
+    sn 1216 (48.64 s) ocek. V1 chyby [65.6, None, None] jas 51
+    sn 1217 (48.68 s) ocek. V1 chyby [70.2, None, None] jas 46
+    sn 1218 (48.72 s) ocek. V1 chyby [74.9, None, None] jas 42
+    sn 1219 (48.76 s) ocek. V1 chyby [79.4, None, None] jas 37
+    sn 1220 (48.80 s) ocek. V1 chyby [84.1, None, None] jas 32
+    sn 1221 (48.84 s) ocek. V1 chyby [88.8, None, None] jas 28
+    sn 1222 (48.88 s) ocek. V1 chyby [93.6, None, None] jas 23
+    sn 1223 (48.92 s) ocek. V1 chyby [98.4, None, None] jas 18
+    sn 1224 (48.96 s) ocek. V1 chyby [103.1, None, None] jas 13
+    sn 1225 (49.00 s) ocek. V1 chyby [107.8, None, None] jas 9

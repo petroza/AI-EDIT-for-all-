@@ -175,6 +175,7 @@ const RULES = [
   [/^Cannot write to the folder (.+) – choose another place to save\.$/, 'Do složky $1 nejde zapisovat – vyber jiné místo pro uložení.'],
   [/^The cut is in the middle of the word “(.+)” – move it into a pause \(Q \/ W, or drag the edit\)\.$/, 'Střih je uprostřed slova „$1“ – posuň ho do pauzy (Q / W nebo tažením střihu).'],
   [/^The file (.+) already exists\.$/, 'Soubor $1 už existuje.'],
+  [/^The gap stays open: another clip lies across it \(B-roll, music\)\. To remove the part from all tracks use Extract \(I and O around it, then '\)\.$/, 'Mezera zůstala: přes ni leží jiný klip (b-roll, hudba). Úsek ze všech stop vyjmeš přes Extract (I a O kolem něj, pak \').'],
   [/^Media relinked: (.+)$/, 'Médium znovu připojeno: $1'],
   [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)')],
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],

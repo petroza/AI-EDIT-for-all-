@@ -1,0 +1,40 @@
+obraz: M 1252 sn, R 849 sn, ocekavano R = M - 403 = 849
+   0.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   1.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   2.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   3.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   4.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   5.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   6.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   7.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   8.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+   9.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  10.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  11.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  12.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  13.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  14.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  15.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  16.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  17.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  18.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  19.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  20.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  21.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  22.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  23.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  24.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  25.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  26.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  27.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  28.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  29.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.6 max 3.1
+  30.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.6 max 2.6
+  31.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  32.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+  33.00 s: nejlepsi posun +0 sn, chyba pri 0 median 0.0 max 0.0
+obraz souhrn: useku 1 s 34, s posunem 0: 34, max chyba pri posunu 0: 3.1
+zvuk a1 : oken 32, posun ms min 0.00 max 0.00, rozdil proti puvodni (posunute) max -201.2 dB pod signalem (median -209.9)
+a2 chybi
+a3 chybi
+mix chybi

@@ -1,0 +1,81 @@
+vystup-s6-rd1-bez.mp4 (s6-rd1 1280x720) sn 197-276
+  sn 197 7.88 s: jen V1, chyba 0.6, jas 118
+  sn 198 7.92 s: jen V1, chyba 0.6, jas 118
+  sn 199 7.96 s: jen V1, chyba 0.6, jas 118
+  sn 200 8.00 s: alfa V2 0.001 zbytek 0.5 | chyba k V1 0.5 k V2 8.6 | jas 118 (V1 118 V2 118) krok -
+  sn 201 8.04 s: alfa V2 0.040 zbytek 0.7 | chyba k V1 0.9 k V2 8.3 | jas 117 (V1 118 V2 118) krok +0.039
+  sn 202 8.08 s: alfa V2 0.080 zbytek 0.8 | chyba k V1 1.2 k V2 7.9 | jas 117 (V1 118 V2 118) krok +0.040
+  sn 203 8.12 s: alfa V2 0.118 zbytek 0.7 | chyba k V1 1.5 k V2 7.6 | jas 117 (V1 118 V2 118) krok +0.038
+  sn 204 8.16 s: alfa V2 0.157 zbytek 0.8 | chyba k V1 1.8 k V2 7.2 | jas 117 (V1 118 V2 118) krok +0.039
+  sn 205 8.20 s: alfa V2 0.198 zbytek 0.7 | chyba k V1 2.0 k V2 6.6 | jas 117 (V1 118 V2 118) krok +0.040
+  sn 206 8.24 s: alfa V2 0.239 zbytek 0.8 | chyba k V1 2.3 k V2 6.2 | jas 117 (V1 118 V2 117) krok +0.041
+  sn 207 8.28 s: alfa V2 0.279 zbytek 0.8 | chyba k V1 2.6 k V2 5.9 | jas 117 (V1 118 V2 117) krok +0.040
+  sn 208 8.32 s: alfa V2 0.321 zbytek 0.8 | chyba k V1 2.9 k V2 5.5 | jas 117 (V1 118 V2 117) krok +0.042
+  sn 209 8.36 s: alfa V2 0.362 zbytek 0.7 | chyba k V1 3.0 k V2 5.0 | jas 117 (V1 118 V2 117) krok +0.041
+  sn 210 8.40 s: alfa V2 0.402 zbytek 0.7 | chyba k V1 3.3 k V2 4.7 | jas 117 (V1 118 V2 117) krok +0.040
+  sn 211 8.44 s: alfa V2 0.441 zbytek 0.7 | chyba k V1 3.6 k V2 4.4 | jas 117 (V1 118 V2 117) krok +0.039
+  sn 212 8.48 s: alfa V2 0.480 zbytek 0.8 | chyba k V1 3.9 k V2 4.2 | jas 117 (V1 118 V2 117) krok +0.038
+  sn 213 8.52 s: alfa V2 0.520 zbytek 0.7 | chyba k V1 4.0 k V2 3.7 | jas 117 (V1 117 V2 117) krok +0.041
+  sn 214 8.56 s: alfa V2 0.562 zbytek 0.7 | chyba k V1 4.2 k V2 3.3 | jas 117 (V1 117 V2 117) krok +0.042
+  sn 215 8.60 s: alfa V2 0.599 zbytek 0.7 | chyba k V1 4.3 k V2 3.0 | jas 117 (V1 117 V2 117) krok +0.037
+  sn 216 8.64 s: alfa V2 0.636 zbytek 0.8 | chyba k V1 4.5 k V2 2.8 | jas 116 (V1 117 V2 117) krok +0.037
+  sn 217 8.68 s: alfa V2 0.679 zbytek 0.7 | chyba k V1 4.7 k V2 2.5 | jas 117 (V1 117 V2 117) krok +0.043
+  sn 218 8.72 s: alfa V2 0.717 zbytek 0.7 | chyba k V1 5.0 k V2 2.3 | jas 117 (V1 117 V2 117) krok +0.038
+  sn 219 8.76 s: alfa V2 0.758 zbytek 0.7 | chyba k V1 5.3 k V2 2.0 | jas 117 (V1 117 V2 118) krok +0.041
+  sn 220 8.80 s: alfa V2 0.795 zbytek 0.7 | chyba k V1 5.6 k V2 1.8 | jas 117 (V1 117 V2 118) krok +0.037
+  sn 221 8.84 s: alfa V2 0.836 zbytek 0.7 | chyba k V1 5.9 k V2 1.6 | jas 117 (V1 117 V2 118) krok +0.042
+  sn 222 8.88 s: alfa V2 0.876 zbytek 0.8 | chyba k V1 6.2 k V2 1.3 | jas 117 (V1 117 V2 118) krok +0.040
+  sn 223 8.92 s: alfa V2 0.915 zbytek 0.8 | chyba k V1 6.5 k V2 1.1 | jas 117 (V1 117 V2 118) krok +0.039
+  sn 224 8.96 s: alfa V2 0.951 zbytek 0.8 | chyba k V1 6.8 k V2 1.0 | jas 117 (V1 117 V2 118) krok +0.036
+  sn 225 9.00 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 7.3 k V2 0.5 | jas 118 (V1 117 V2 118) krok +0.047
+  sn 226 9.04 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 7.4 k V2 0.5 | jas 118 (V1 117 V2 118) krok +0.000
+  sn 227 9.08 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 7.4 k V2 0.5 | jas 118 (V1 117 V2 118) krok +0.001
+  sn 228 9.12 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 7.3 k V2 0.5 | jas 118 (V1 117 V2 118) krok -0.001
+  sn 229 9.16 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 7.2 k V2 0.5 | jas 118 (V1 117 V2 118) krok +0.001
+  sn 230 9.20 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 7.2 k V2 0.5 | jas 118 (V1 117 V2 118) krok -0.001
+  sn 231 9.24 s: alfa V2 0.997 zbytek 0.5 | chyba k V1 7.3 k V2 0.5 | jas 118 (V1 117 V2 118) krok -0.001
+  sn 232 9.28 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 7.5 k V2 0.5 | jas 118 (V1 117 V2 118) krok +0.002
+  sn 233 9.32 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 7.6 k V2 0.5 | jas 118 (V1 117 V2 119) krok +0.000
+  sn 234 9.36 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 7.8 k V2 0.5 | jas 118 (V1 118 V2 119) krok -0.001
+  sn 235 9.40 s: alfa V2 0.997 zbytek 0.5 | chyba k V1 8.1 k V2 0.5 | jas 118 (V1 118 V2 119) krok -0.001
+  sn 236 9.44 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 8.3 k V2 0.5 | jas 118 (V1 118 V2 119) krok +0.000
+  sn 237 9.48 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 8.4 k V2 0.5 | jas 118 (V1 118 V2 119) krok +0.001
+  sn 238 9.52 s: alfa V2 1.000 zbytek 0.5 | chyba k V1 8.5 k V2 0.5 | jas 118 (V1 118 V2 119) krok +0.001
+  sn 239 9.56 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 8.5 k V2 0.5 | jas 118 (V1 118 V2 119) krok -0.001
+  sn 240 9.60 s: alfa V2 0.998 zbytek 0.5 | chyba k V1 8.4 k V2 0.5 | jas 118 (V1 118 V2 119) krok -0.001
+  sn 241 9.64 s: alfa V2 0.996 zbytek 0.5 | chyba k V1 6.1 k V2 0.5 | jas 118 (V1 116 V2 118) krok -0.003
+  sn 242 9.68 s: alfa V2 0.999 zbytek 0.5 | chyba k V1 6.1 k V2 0.5 | jas 118 (V1 116 V2 118) krok +0.003
+  sn 243 9.72 s: alfa V2 0.994 zbytek 0.5 | chyba k V1 6.1 k V2 0.5 | jas 118 (V1 116 V2 118) krok -0.005
+  sn 244 9.76 s: alfa V2 0.994 zbytek 0.5 | chyba k V1 6.2 k V2 0.5 | jas 118 (V1 116 V2 118) krok +0.001
+  sn 245 9.80 s: alfa V2 0.996 zbytek 0.5 | chyba k V1 6.3 k V2 0.5 | jas 118 (V1 115 V2 118) krok +0.001
+  sn 246 9.84 s: alfa V2 0.997 zbytek 0.5 | chyba k V1 6.5 k V2 0.5 | jas 118 (V1 115 V2 118) krok +0.001
+  sn 247 9.88 s: alfa V2 0.995 zbytek 0.5 | chyba k V1 6.6 k V2 0.5 | jas 118 (V1 115 V2 118) krok -0.002
+  sn 248 9.92 s: alfa V2 0.996 zbytek 0.5 | chyba k V1 6.7 k V2 0.5 | jas 118 (V1 115 V2 118) krok +0.001
+  sn 249 9.96 s: alfa V2 0.995 zbytek 0.5 | chyba k V1 6.8 k V2 0.5 | jas 118 (V1 115 V2 118) krok -0.001
+  sn 250 10.00 s: alfa V2 0.955 zbytek 0.7 | chyba k V1 6.5 k V2 0.8 | jas 117 (V1 115 V2 118) krok -0.040
+  sn 251 10.04 s: alfa V2 0.914 zbytek 0.7 | chyba k V1 6.1 k V2 1.0 | jas 117 (V1 116 V2 118) krok -0.041
+  sn 252 10.08 s: alfa V2 0.877 zbytek 0.6 | chyba k V1 5.8 k V2 1.2 | jas 117 (V1 116 V2 118) krok -0.037
+  sn 253 10.12 s: alfa V2 0.839 zbytek 0.7 | chyba k V1 5.6 k V2 1.5 | jas 117 (V1 117 V2 118) krok -0.038
+  sn 254 10.16 s: alfa V2 0.800 zbytek 0.7 | chyba k V1 5.4 k V2 1.7 | jas 117 (V1 117 V2 118) krok -0.038
+  sn 255 10.20 s: alfa V2 0.760 zbytek 0.7 | chyba k V1 5.4 k V2 2.0 | jas 117 (V1 117 V2 118) krok -0.041
+  sn 256 10.24 s: alfa V2 0.721 zbytek 0.7 | chyba k V1 5.4 k V2 2.3 | jas 117 (V1 117 V2 118) krok -0.039
+  sn 257 10.28 s: alfa V2 0.678 zbytek 0.8 | chyba k V1 5.3 k V2 2.7 | jas 117 (V1 117 V2 118) krok -0.042
+  sn 258 10.32 s: alfa V2 0.639 zbytek 0.7 | chyba k V1 5.2 k V2 3.1 | jas 117 (V1 117 V2 118) krok -0.039
+  sn 259 10.36 s: alfa V2 0.599 zbytek 0.7 | chyba k V1 5.0 k V2 3.5 | jas 117 (V1 116 V2 118) krok -0.040
+  sn 260 10.40 s: alfa V2 0.558 zbytek 0.7 | chyba k V1 4.8 k V2 3.8 | jas 117 (V1 116 V2 118) krok -0.041
+  sn 261 10.44 s: alfa V2 0.516 zbytek 0.8 | chyba k V1 4.6 k V2 4.3 | jas 116 (V1 116 V2 118) krok -0.042
+  sn 262 10.48 s: alfa V2 0.478 zbytek 0.7 | chyba k V1 4.3 k V2 4.6 | jas 116 (V1 116 V2 118) krok -0.038
+  sn 263 10.52 s: alfa V2 0.436 zbytek 0.7 | chyba k V1 4.0 k V2 5.0 | jas 116 (V1 116 V2 118) krok -0.041
+  sn 264 10.56 s: alfa V2 0.398 zbytek 0.7 | chyba k V1 3.7 k V2 5.4 | jas 116 (V1 116 V2 118) krok -0.038
+  sn 265 10.60 s: alfa V2 0.358 zbytek 0.8 | chyba k V1 3.4 k V2 5.7 | jas 116 (V1 116 V2 118) krok -0.040
+  sn 266 10.64 s: alfa V2 0.318 zbytek 0.7 | chyba k V1 3.1 k V2 6.0 | jas 116 (V1 116 V2 118) krok -0.040
+  sn 267 10.68 s: alfa V2 0.278 zbytek 0.7 | chyba k V1 2.8 k V2 6.3 | jas 116 (V1 116 V2 118) krok -0.041
+  sn 268 10.72 s: alfa V2 0.238 zbytek 0.7 | chyba k V1 2.4 k V2 6.6 | jas 116 (V1 116 V2 118) krok -0.040
+  sn 269 10.76 s: alfa V2 0.197 zbytek 0.8 | chyba k V1 2.1 k V2 7.0 | jas 116 (V1 116 V2 118) krok -0.040
+  sn 270 10.80 s: alfa V2 0.158 zbytek 0.7 | chyba k V1 1.8 k V2 7.4 | jas 116 (V1 116 V2 118) krok -0.039
+  sn 271 10.84 s: alfa V2 0.118 zbytek 0.8 | chyba k V1 1.5 k V2 7.8 | jas 116 (V1 116 V2 118) krok -0.041
+  sn 272 10.88 s: alfa V2 0.079 zbytek 0.8 | chyba k V1 1.2 k V2 8.0 | jas 116 (V1 116 V2 118) krok -0.038
+  sn 273 10.92 s: alfa V2 0.040 zbytek 0.8 | chyba k V1 1.0 k V2 8.2 | jas 116 (V1 116 V2 118) krok -0.039
+  sn 274 10.96 s: jen V1, chyba 0.5, jas 116
+  sn 275 11.00 s: jen V1, chyba 0.6, jas 117
+  sn 276 11.04 s: jen V1, chyba 0.5, jas 117

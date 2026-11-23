@@ -1,0 +1,535 @@
+{
+ "rd1_before": {
+  "dur": 50.08,
+  "video": [
+   [
+    [
+     0,
+     29.8,
+     1544.4,
+     "",
+     ""
+    ],
+    [
+     29.8,
+     45.92,
+     1596,
+     "cross1",
+     ""
+    ],
+    [
+     45.92,
+     50.08,
+     749.52,
+     "cross1",
+     "dipBlack1"
+    ]
+   ],
+   [
+    [
+     8,
+     12,
+     30,
+     "cross1U",
+     "cross1U"
+    ],
+    [
+     27,
+     33,
+     200,
+     "",
+     ""
+    ],
+    [
+     40,
+     43,
+     120,
+     "",
+     ""
+    ]
+   ],
+   []
+  ],
+  "audio": [
+   [
+    [
+     0,
+     29.8,
+     1544.4,
+     0,
+     0.08,
+     0.08
+    ],
+    [
+     29.8,
+     45.92,
+     1596,
+     0,
+     0.08,
+     0.08
+    ],
+    [
+     45.92,
+     50.08,
+     749.52,
+     0,
+     0.08,
+     0.08
+    ]
+   ],
+   [
+    [
+     8,
+     12,
+     30,
+     -12,
+     0,
+     0
+    ],
+    [
+     27,
+     33,
+     200,
+     -12,
+     0,
+     0
+    ],
+    [
+     40,
+     43,
+     120,
+     -12,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     50.08,
+     0,
+     -18,
+     0,
+     0
+    ]
+   ]
+  ],
+  "caps": [
+   [
+    0.19,
+    5.058,
+    "Bych jako doporučila všem, kdo / přichází nebo přišli do styku s někým,"
+   ],
+   [
+    5.058,
+    9.666,
+    "komu se tohle stalo, / tak neříkat tyhle fádní věci,"
+   ],
+   [
+    9.666,
+    14.414,
+    "často zahojí, je teď líp, / tak to mělo být, tohle fakt nepomáhá."
+   ],
+   [
+    14.414,
+    18.165,
+    "Prostě my ani nepotřebujeme nic slyšet, / my potřebujeme jenom toho člověka,"
+   ],
+   [
+    18.165,
+    22.254,
+    "aby s náma byl, aby, když se třeba / dlouho neozýváme, aby zavolal a řekl,"
+   ],
+   [
+    22.254,
+    26.355,
+    "já jedu za tebou, já ti vezu jídlo, / nebo prostě pojď, kouknem se na film."
+   ],
+   [
+    26.384,
+    29.8,
+    "Jenom ta přítomnost toho člověka / chytne vás za ruku, něco. prostě."
+   ],
+   [
+    29.99,
+    34.5,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    35.53,
+    39.414,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    39.414,
+    42.745,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    42.745,
+    45.92,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ],
+   [
+    45.92,
+    49.87,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ },
+ "rd1_sel": 2,
+ "rd1": {
+  "dur": 49.04,
+  "video": [
+   [
+    [
+     0,
+     9.64,
+     1544.4,
+     "",
+     ""
+    ],
+    [
+     9.64,
+     28.76,
+     1555.08,
+     "",
+     ""
+    ],
+    [
+     28.76,
+     44.88,
+     1596,
+     "cross1",
+     ""
+    ],
+    [
+     44.88,
+     49.04,
+     749.52,
+     "cross1",
+     "dipBlack1"
+    ]
+   ],
+   [
+    [
+     8,
+     9.64,
+     30,
+     "cross1U",
+     ""
+    ],
+    [
+     9.64,
+     10.96,
+     32.68,
+     "",
+     "cross1U"
+    ],
+    [
+     25.96,
+     31.96,
+     200,
+     "",
+     ""
+    ],
+    [
+     38.96,
+     41.96,
+     120,
+     "",
+     ""
+    ]
+   ],
+   []
+  ],
+  "audio": [
+   [
+    [
+     0,
+     9.64,
+     1544.4,
+     0,
+     0.08,
+     0
+    ],
+    [
+     9.64,
+     28.76,
+     1555.08,
+     0,
+     0,
+     0.08
+    ],
+    [
+     28.76,
+     44.88,
+     1596,
+     0,
+     0.08,
+     0.08
+    ],
+    [
+     44.88,
+     49.04,
+     749.52,
+     0,
+     0.08,
+     0.08
+    ]
+   ],
+   [
+    [
+     8,
+     9.64,
+     30,
+     -12,
+     0,
+     0
+    ],
+    [
+     9.64,
+     10.96,
+     32.68,
+     -12,
+     0,
+     0
+    ],
+    [
+     25.96,
+     31.96,
+     200,
+     -12,
+     0,
+     0
+    ],
+    [
+     38.96,
+     41.96,
+     120,
+     -12,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     9.64,
+     0,
+     -18,
+     0,
+     0
+    ],
+    [
+     9.64,
+     49.04,
+     10.68,
+     -18,
+     0,
+     0
+    ]
+   ]
+  ],
+  "caps": [
+   [
+    0.19,
+    5.058,
+    "Bych jako doporučila všem, kdo / přichází nebo přišli do styku s někým,"
+   ],
+   [
+    5.058,
+    9.64,
+    "komu se tohle stalo, tak neříkat tyhle fádní věci,"
+   ],
+   [
+    9.64,
+    13.374,
+    "je teď líp, tak to mělo být, tohle fakt nepomáhá."
+   ],
+   [
+    13.374,
+    17.125,
+    "Prostě my ani nepotřebujeme nic slyšet, / my potřebujeme jenom toho člověka,"
+   ],
+   [
+    17.125,
+    21.214,
+    "aby s náma byl, aby, když se třeba / dlouho neozýváme, aby zavolal a řekl,"
+   ],
+   [
+    21.214,
+    25.315,
+    "já jedu za tebou, já ti vezu jídlo, / nebo prostě pojď, kouknem se na film."
+   ],
+   [
+    25.344,
+    28.76,
+    "Jenom ta přítomnost toho člověka / chytne vás za ruku, něco. prostě."
+   ],
+   [
+    28.95,
+    33.46,
+    "Ale my nepotřebujeme prostě někoho, aby / nám říkal takový ty chlácholivý věci."
+   ],
+   [
+    34.49,
+    38.374,
+    "Jí už je teď dobře. / To nepotřebujeme slyšet."
+   ],
+   [
+    38.374,
+    41.705,
+    "Já potřebuju slyšet něco / jako máma byla skvělá,"
+   ],
+   [
+    41.705,
+    44.88,
+    "tak jim i chybí a jsem tady / pro tebe, kdyby cokoliv."
+   ],
+   [
+    44.88,
+    48.83,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ },
+ "rd2_sel": 2,
+ "rd2": {
+  "dur": 33.96,
+  "video": [
+   [
+    [
+     0,
+     29.8,
+     1544.4,
+     "",
+     ""
+    ],
+    [
+     29.8,
+     33.96,
+     749.52,
+     "cross1",
+     "dipBlack1"
+    ]
+   ],
+   [
+    [
+     8,
+     12,
+     30,
+     "cross1U",
+     "cross1U"
+    ],
+    [
+     27,
+     29.8,
+     200,
+     "",
+     ""
+    ]
+   ],
+   []
+  ],
+  "audio": [
+   [
+    [
+     0,
+     29.8,
+     1544.4,
+     0,
+     0.08,
+     0.08
+    ],
+    [
+     29.8,
+     33.96,
+     749.52,
+     0,
+     0.08,
+     0.08
+    ]
+   ],
+   [
+    [
+     8,
+     12,
+     30,
+     -12,
+     0,
+     0
+    ],
+    [
+     27,
+     29.8,
+     200,
+     -12,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     29.8,
+     0,
+     -18,
+     0,
+     0
+    ],
+    [
+     29.8,
+     33.96,
+     45.92,
+     -18,
+     0,
+     0
+    ]
+   ]
+  ],
+  "caps": [
+   [
+    0.19,
+    5.058,
+    "Bych jako doporučila všem, kdo / přichází nebo přišli do styku s někým,"
+   ],
+   [
+    5.058,
+    9.666,
+    "komu se tohle stalo, / tak neříkat tyhle fádní věci,"
+   ],
+   [
+    9.666,
+    14.414,
+    "často zahojí, je teď líp, / tak to mělo být, tohle fakt nepomáhá."
+   ],
+   [
+    14.414,
+    18.165,
+    "Prostě my ani nepotřebujeme nic slyšet, / my potřebujeme jenom toho člověka,"
+   ],
+   [
+    18.165,
+    22.254,
+    "aby s náma byl, aby, když se třeba / dlouho neozýváme, aby zavolal a řekl,"
+   ],
+   [
+    22.254,
+    26.355,
+    "já jedu za tebou, já ti vezu jídlo, / nebo prostě pojď, kouknem se na film."
+   ],
+   [
+    26.384,
+    29.8,
+    "Jenom ta přítomnost toho člověka / chytne vás za ruku, něco. prostě."
+   ],
+   [
+    29.8,
+    33.75,
+    "A pak jsem začala dělat / moderátorku v rádiu."
+   ]
+  ]
+ },
+ "status": "Připraveno"
+}

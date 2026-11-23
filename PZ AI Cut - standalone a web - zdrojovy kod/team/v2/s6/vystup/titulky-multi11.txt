@@ -1,0 +1,6 @@
+Whisper A1: 140 slov, A2 (b-roll, -12 dB): 34 slov
+A2 slova: prostě[7.7] to[8.1] nejde[8.2] ty[8.7] musíš[8.7] vlastně[9.1] pokračovat[9.3] dál[9.8] jako[10.1] v[10.5] tom[10.6] svým[10.7] životě[10.9] a[11.4] hlavně[11.5] mě[11.9] se[27.0] vlastně[27.2] měnila[27.7] tahleta[28.3] pozice[28.7] takže[29.8] velmi[30.6] zajímavý[32.0] období[32.5] jsme[32.9] vlastně[40.1] vůbec[40.4] neměli[40.8] možnost[41.2] se[42.0] na[42.1] to[42.6] připravit[42.6]
+titulku: 16
+slova titulku: v reci A1 130, jen v A2 0 [], nenalezena 1 [('jí', 35.53)]
+slova A1 bez titulku v case: 1 [('jako', 35.16)]
+titulek viditelny (maska) v usecich: 0.20-29.88 30.00-34.56 35.56-49.92

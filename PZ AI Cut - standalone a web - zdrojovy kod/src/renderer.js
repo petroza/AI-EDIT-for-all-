@@ -467,7 +467,10 @@ const commands = {
   rippleDelete() {
     const s = app.seq(); if (!s) return;
     if (app.gapSel) return commands.delete();
-    if (app.sel.size) app.edit('Ripple Delete', () => E.removeClips(s, [...app.sel], true));
+    if (app.sel.size) {
+      app.edit('Ripple Delete', () => E.removeClips(s, [...app.sel], true));
+      if (E.removeClips.blocked) app.toast('The gap stays open: another clip lies across it (B-roll, music). To remove the part from all tracks use Extract (I and O around it, then \').', true);
+    }
   },
   selectAll() { const s = app.seq(); if (!s) return; E.eachTrack(s, (t) => t.clips.forEach((c) => app.sel.add(c.id))); app.timeline.render(); },
   deselect() { app.sel.clear(); app.gapSel = null; app.timeline.render(); },
@@ -644,7 +647,9 @@ function inOutEdit(ripple) {
   const s = app.seq(); if (!s) return;
   if (s.inPoint === null && s.outPoint === null) { app.toast('Set an In point (I) and an Out point (O) in the sequence.'); return; }
   const a = s.inPoint ?? 0, b = s.outPoint ?? seqDuration(s);
-  app.edit(ripple ? 'Extract' : 'Lift', () => { if (ripple) E.extractRange(s, a, b); else E.liftRange(s, a, b); s.inPoint = null; s.outPoint = null; });
+  // Lift jen z cílových stop (Track Targeting v hlavičce, jako Premiere – redaktorka S6); Extract ze všech, ať se nic nerozjede
+  const tracks = []; E.eachTrack(s, (t, kind, ti) => { if (t.trackTarget !== false) tracks.push({ kind, track: ti }); });
+  app.edit(ripple ? 'Extract' : 'Lift', () => { if (ripple) E.extractRange(s, a, b); else E.liftRange(s, a, b, tracks); s.inPoint = null; s.outPoint = null; });
   app.setPlayhead(a);
 }
 // Panel nástrojů jako v Premiere (svisle mezi Projektem a timeline)

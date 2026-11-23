@@ -1,0 +1,9 @@
+vystup-s6-multi-bez.mp4: 1252 snimku, strihy 33.00 33.56 40.00 40.28 46.48 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', 7)]
+vystup-s6-multiES-bez.mp4: 1252 snimku, strihy 33.00 33.56 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
+vystup-s6-multi916-bez.mp4: 1252 snimku, strihy 27.00 33.00 33.56 40.00 40.28 43.00 46.52 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', 7)]
+vystup-s6-multi11-bez.mp4: 1252 snimku, strihy 27.00 33.00 33.56 40.00 40.28 43.00 46.52 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', 7)]
+vystup-s6-multi1080-xdcam.mxf: 1252 snimku, strihy 33.00 33.56 40.00 40.28 46.48 47.68 49.48 | kratke zabery (<13 sn.): [('40.00', 7)]
+vystup-s6-rd1-bez.mp4: 1226 snimku, strihy 31.96 32.52 38.96 39.24 45.44 46.64 48.44 | kratke zabery (<13 sn.): [('38.96', 7)]
+vystup-s6-rd2-bez.mp4: 849 snimku, strihy 29.80 30.36 31.56 33.36 | kratke zabery (<13 sn.): zadne
+vystup-s6-ctrl23-bez.mp4: 507 snimku, strihy 3.76 16.12 16.68 17.88 19.68 | kratke zabery (<13 sn.): zadne
+vystup-s6-multiES916-bez.mp4: 1252 snimku, strihy 27.00 33.00 33.56 43.00 46.52 47.68 49.48 | kratke zabery (<13 sn.): zadne

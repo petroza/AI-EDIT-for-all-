@@ -1,0 +1,8 @@
+vystup-s6-multi916-bez.mp4: 1252 snimku, prvni pts 0.000, posledni 50.020 (pravidelne 50.040), nepravidelnych kroku 1 [(1162, 46.46, 0.02)]
+vystup-s6-multi11-bez.mp4: 1252 snimku, prvni pts 0.000, posledni 50.020 (pravidelne 50.040), nepravidelnych kroku 1 [(1162, 46.46, 0.02)]
+vystup-s6-multi-bez.mp4: 1252 snimku, prvni pts 0.000, posledni 50.040 (pravidelne 50.040), nepravidelnych kroku 0 []
+vystup-s6-multi916.mp4: 1252 snimku, prvni pts 0.000, posledni 50.040 (pravidelne 50.040), nepravidelnych kroku 0 []
+vystup-s6-rd1-bez.mp4: 1226 snimku, prvni pts 0.000, posledni 49.000 (pravidelne 49.000), nepravidelnych kroku 0 []
+vystup-s6-rd2-bez.mp4: 849 snimku, prvni pts 0.000, posledni 33.920 (pravidelne 33.920), nepravidelnych kroku 0 []
+vystup-s6-multiES916-bez.mp4: 1252 snimku, prvni pts 0.000, posledni 50.020 (pravidelne 50.040), nepravidelnych kroku 1 [(1162, 46.46, 0.02)]
+vystup-s6-multi1080-xdcam.mxf: 1252 snimku, prvni pts 0.000, posledni 50.040 (pravidelne 50.040), nepravidelnych kroku 0 []

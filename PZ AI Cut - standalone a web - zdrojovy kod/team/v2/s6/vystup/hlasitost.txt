@@ -1,0 +1,10 @@
+vystup-s6-multi.mp4:  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s6-multi916.mp4:  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s6-multi11.mp4:  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s6-rd1.mp4:  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s6-rd2.mp4:  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s6-rd916.mp4:  I: -13.9 LUFS  Peak: -1.4 dBFS 
+vystup-s6-ctrl23.mp4:  I: -14.1 LUFS  Peak: -1.5 dBFS 
+vystup-s6-multi1080-xdcam.mxf (A1+A2 mono -> stereo):  I: -22.9 LUFS  Peak: -7.9 dBFS 
+vystup-s6-multi1080-dnxhr.mxf (A1+A2 mono -> stereo):  I: -22.9 LUFS  Peak: -7.9 dBFS 
+vystup-s6-multi720-dnxhr.mxf (A1+A2 mono -> stereo):  I: -22.9 LUFS  Peak: -7.9 dBFS 

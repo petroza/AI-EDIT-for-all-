@@ -1,0 +1,9 @@
+7.96 jas monitoru 124.2 {"t":7.96,"vids":[["1","tncz-TIT_202",1552.36]],"dip":["0","rgb(0, 0, 0)"]}
+8.04 jas monitoru 124.1 {"t":8.04,"vids":[["1","tncz-TIT_202",1552.44],["0.04","vyrez-5min.m",30.04]],"dip":["0","rgb(0, 0, 0)"]}
+8.48 jas monitoru 124.1 {"t":8.48,"vids":[["1","tncz-TIT_202",1552.88],["0.48","vyrez-5min.m",30.48]],"dip":["0","rgb(0, 0, 0)"]}
+8.96 jas monitoru 124.5 {"t":8.96,"vids":[["1","tncz-TIT_202",1553.36],["0.96","vyrez-5min.m",30.96]],"dip":["0","rgb(0, 0, 0)"]}
+9.04 jas monitoru 124.4 {"t":9.04,"vids":[["1","vyrez-5min.m",31.04]],"dip":["0","rgb(0, 0, 0)"]}
+11.04 jas monitoru 124.3 {"t":11.04,"vids":[["0.04","tncz-TIT_202",1555.44],["1","vyrez-5min.m",33.04]],"dip":["0","rgb(0, 0, 0)"]}
+11.48 jas monitoru 123.6 {"t":11.48,"vids":[["0.48","tncz-TIT_202",1555.88],["1","vyrez-5min.m",33.48]],"dip":["0","rgb(0, 0, 0)"]}
+11.96 jas monitoru 123.2 {"t":11.96,"vids":[["0.96","tncz-TIT_202",1556.36],["1","vyrez-5min.m",33.96]],"dip":["0","rgb(0, 0, 0)"]}
+12.04 jas monitoru 123.7 {"t":12.04,"vids":[["1","tncz-TIT_202",1556.44]],"dip":["0","rgb(0, 0, 0)"]}

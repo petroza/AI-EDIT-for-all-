@@ -1,0 +1,15 @@
+1080dnxhr-kon.txt                  prechod sn 276-299 (24 sn) | krok 0.036..0.048 | max zbytek 1.5 | jas 115-117, max skok jasu 1
+1080dnxhr-zac.txt                  prechod sn 201-224 (24 sn) | krok 0.038..0.043 | max zbytek 1.5 | jas 116-117, max skok jasu 1
+1080xdcam-kon.txt                  prechod sn 276-299 (24 sn) | krok 0.036..0.046 | max zbytek 1.5 | jas 115-117, max skok jasu 1
+1080xdcam-zac.txt                  prechod sn 201-224 (24 sn) | krok 0.038..0.043 | max zbytek 1.5 | jas 116-117, max skok jasu 1
+11-kon.txt                         prechod sn 276-299 (24 sn) | krok 0.036..0.043 | max zbytek 2.3 | jas 136-140, max skok jasu 1
+11-zac.txt                         prechod sn 201-224 (24 sn) | krok 0.034..0.044 | max zbytek 2.3 | jas 138-140, max skok jasu 1
+169-kon.txt                        prechod sn 276-299 (24 sn) | krok 0.037..0.043 | max zbytek 0.8 | jas 116-118, max skok jasu 1
+169-zac.txt                        prechod sn 201-224 (24 sn) | krok 0.036..0.047 | max zbytek 0.8 | jas 116-118, max skok jasu 1
+169tit-kon.txt                     prechod sn 276-299 (24 sn) | krok 0.029..0.043 | max zbytek 0.8 | jas 116-118, max skok jasu 1
+169tit-zac.txt                     prechod sn 201-224 (24 sn) | krok 0.034..0.044 | max zbytek 0.8 | jas 117-118, max skok jasu 1
+720dnxhr-kon.txt                   prechod sn 276-299 (24 sn) | krok 0.037..0.047 | max zbytek 0.9 | jas 115-118, max skok jasu 1
+720dnxhr-zac.txt                   prechod sn 201-224 (24 sn) | krok 0.038..0.044 | max zbytek 1.0 | jas 116-118, max skok jasu 1
+916-kon.txt                        prechod sn 276-299 (24 sn) | krok 0.039..0.045 | max zbytek 1.7 | jas 141-148, max skok jasu 1
+916-zac.txt                        prechod sn 201-224 (24 sn) | krok 0.037..0.045 | max zbytek 1.8 | jas 144-148, max skok jasu 1
+rd1.txt                            prechod sn 201-273 (48 sn) | krok 0.036..0.047 | max zbytek 0.8 | jas 116-118, max skok jasu 1
