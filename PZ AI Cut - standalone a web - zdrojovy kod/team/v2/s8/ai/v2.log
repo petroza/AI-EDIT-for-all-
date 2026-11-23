@@ -1,0 +1,12 @@
+
+=== add_captions (1.5 s)
+{"cues":12,"srt":"O:\\AI STRIH ALL app\\MY Premiere MCP - plugin do Premiere - zdrojovy kod\\cache\\transcripts\\captions\\AI-S8_vyrok_mama.23da97e4.srt","sequence":"AI-S8 vyrok mama","sample":["Když přijde rodina o člověka jako je","máma? Co všechno se v tu chvíli,","nevím, zbortí, změní,"]}
+
+=== reframe_sequence (13.0 s)
+{"sequenceID":"301f86d2-6bd5-4c0c-b6f7-a9366fd452fe","name":"AI-S8 vyrok mama 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":3,"shots":6,"facesFound":6,"summary":"Vytvořena sekvence „AI-S8 vyrok mama 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %, střihy kamery: 3)."}
+
+=== export_sequence (5.0 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s8-vyrok-916.mp4","format":"h264","sizeMB":19.318,"duration":28.6,"captionsBurned":true,"srt":true,"loudness":"social"}
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead.

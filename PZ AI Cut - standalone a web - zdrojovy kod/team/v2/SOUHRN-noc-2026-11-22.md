@@ -32,6 +32,9 @@ Reporty: `team/v2/s1` … `team/v2/s4`. Commity f29957c … 0af7646 (plus ranní
   náhledy klipů na časové ose ze začátku klipu, znovupřipojené médium se hned přehraje.
 
 ## Otevřené
+- `plan_edit_local` s `build` (upoutávka 20 s): kontrola slyšitelných hranic po stavbě postupně vyřadí 6 nejlepších úderů
+  (#40, #95, #218, #220, #72), takže z návrhu 17 s (bez build) zbude 6,5 s. Otázka moderátorky bez své odpovědi už nevznikne
+  (dřív #12 + cizí #52). Ladit `edgeWarnings` / výběr kandidátů s Premiere + `scripts/test-highlight.mjs`.
 - Úlomek slova na začátku úseku z MCP (`refine_edges`: ticho 15 ms bere i uzávěr „k“) – ladit s Premiere + test-highlight.
 - Zopakované snímky na konci sekvence jsou vidět jako drobné cuknutí úst; zbytek 6–12 snímků pod řečí na konci zůstává.
 - Jednořádkové titulky 9:16 v rychlé řeči: 7 ze 46 kratších než 0,7 s (nejkratší 0,46 s).

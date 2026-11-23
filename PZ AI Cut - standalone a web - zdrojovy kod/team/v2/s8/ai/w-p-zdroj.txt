@@ -1,0 +1,2 @@
+t=1231.16: ty[1229.46-1230.14 p0.17] naší[1230.14-1230.44 p0.98] rodiny.[1230.44-1230.90 p1.00]
+   RMS 20ms od 1230.96: [np.float32(-53.5), np.float32(-45.2), np.float32(-42.4), np.float32(-38.2), np.float32(-35.2), np.float32(-36.0), np.float32(-36.8), np.float32(-44.0), np.float32(-57.9), np.float32(-63.5), np.float32(-62.7), np.float32(-46.9), np.float32(-40.7), np.float32(-55.5), np.float32(-38.8), np.float32(-34.4), np.float32(-32.0), np.float32(-32.1), np.float32(-33.1), np.float32(-34.3)]

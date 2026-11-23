@@ -1,0 +1,27 @@
+
+=== import_media (0.1 s)
+[{"path":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-novy-70s.mp4","name":"ai-s4-novy-70s.mp4","nodeId":"mmwsl4o6c3o2qn1a"}]
+
+=== transcribe_media (1.5 s)
+Přepis: O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s4-novy-70s.mp4
+Délka 00:01:10.02 · jazyk cs · 13 vět · 223 slov · large-v3/cuda · z cache
+Soubor: O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\cache\transcripts\ai-s4-novy-70s.mp4.99f5f35e2ebf.json
+#1 00:00:00.00–00:00:03.72 Dva cesta vedla takhle úplně od začátku a teď jsi moderátorka.
+#2 00:00:03.72–00:00:05.02 To je taky úplně jiná disciplína.
+#3 00:00:07.18–00:00:11.08 Možná, co to pro tebe znamenalo a co pro tebe znamená snídaně s novou, když se řekne.
+#4 00:00:11.12–00:00:13.68 Protože pro mě to je domov, je to základ, je to začátek.
+#5 00:00:13.90–00:00:18.36 Nevím, jak jsi to cítila. Protože už jsi tady byla součást toho života a té rodiny.
+#6 00:00:18.46–00:00:21.84 Protože ať chceš nebo nechceš, což možná diváci neví, ty tady žiješ.
+#7 00:00:21.84–00:00:24.88 Tady odžiješ jako kus života a není to tak, že člověk přijde do práce.
+#8 00:00:25.42–00:00:32.04 v osm a v pět skončí, protože máš přípravu doma, pak seš tady dýl, mezi tím natáčíš, nedá se to podle mě vůbec jako...
+#9 00:00:32.04–00:00:51.08 Tak jako ten moderátorský post pro mě bylo něco, kam jsem hodně dlouhou dobu si myslím ani jako nedohlédla, že jsem si říkal, že to je fakt hodně jako pro mě nedosažitelný, že si myslím, že vlastně téměř každá jako slečna nebo kdokoliv prostě sem přijde dělat reportéra, tak vlastně ten jeho sen je ve finále potom jako...
+#10 00:00:51.76–00:00:54.80 moderovat nějaký pořad nebo prostě něco moderovat.
+#11 00:00:54.82–00:01:00.54 Myslím si, že to tak zkrátka je a každý k tomu směřuje, protože to je vlastně potom ta odměna, že jo.
+#12 00:01:00.64–00:01:08.50 Ale já jsem dlouhou dobu jako tam ani nekoukala, protože vlastně ve víkendu jsem byla čtyři roky a najednou magazín Víkend končil.
+#13 00:01:08.66–00:01:09.94 Oni ho zrušili.
+
+=== build_sequence_from_transcript (5.4 s)
+{"sequenceID":"85a46759-c34c-4603-8056-c83b24fcb470","name":"AI-S8 konec souboru","duration":1.48,"segments":1,"warnings":[],"audioFades":0,"summary":"Vytvořena sekvence „AI-S8 konec souboru“ (00:00:01.48) z 1 úseků.","ranges":["00:01:08.54–00:01:10.02 věty 13"]}
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S8 konec souboru"}

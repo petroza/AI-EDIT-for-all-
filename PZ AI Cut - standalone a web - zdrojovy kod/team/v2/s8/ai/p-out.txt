@@ -1,0 +1,18 @@
+› Upoutávka ve stylu zpravodajství: krátké silné údery, hák hned na začátku, napětí na konec, bez moderátora.
+⚙ cílová délka 20 s
+⚙ lokální model (hermes), cílová délka 20 s – kredity se nečerpají
+⚙ zdroj z aktivní sekvence „AI-S8 vyrok mama": tncz-TIT_2026-11-20_TALK-TALK_S_BARBOROU_SIMKOVOU-B240845.mp4.mp4
+⚙ přepis (z cache, pokud už existuje)
+⚙ osnova + výběr vět lokálním modelem (u dlouhého videa to trvá minuty)
+   30 % LLM hodnotí údery 1–15 z 57
+   54 % LLM hodnotí údery 31–45 z 57
+   75 % LLM kontroluje kontext úderů
+✔ vybráno 3 vět, odhad 14 s
+✔ hotovo: sekvence „STRIH HERMES 20s 02:28:03" (Vytvořena sekvence „STRIH HERMES 20s 02:28:03“ (00:00:15.44) z 2 úseků.)
+ℹ vynechány věty moderátora / jiných mluvčích (90) · plán 6 s
+🎞 ⚠ 00:20:25.69: střih obrazu 0.26 s po začátku klipu, uvnitř řeči – obraz jen bleskne
+ℹ plán složen znovu bez vět se slyšitelnou hranicí: #220, #218
+ℹ upoutávka z úderů (53 kandidátů) – Cílem je vytvořit dynamický příběhový oblouk: od šokujícího zjištění o rychlosti nemoci, přes bezmoc rodiny, až po otevřenou otázku, která nechá diváka v napětí. U2 (5s) je silný hák – 'za tři týdny byla pryč' okamžitě vytváří kontext tragédie. U3 (4s) navazuje logicky na U2, protože 'neměli možnost se připravit' je přímým důsledkem rychlosti popsané v U2. U8 (5s) dodává emocionální váhu – 'máma byla tmel'. Aby upoutávka splnila podmínku 'napětí na konec' a 'neprozradila rozuzlení', musíme zakončit otázkou nebo výzvou, která směřuje k řešení nebo dalšímu vývoji. Žádný z dostupných úderů není j
+Jak dopadl střih „STRIH HERMES 20s 02:28:03“? 👍👎▶ Otevřít⬇ Export MP4
+⚙ 9:16: Auto Reframe podle obličeje – „STRIH HERMES 20s 02:28:03“
+✔ STRIH HERMES 20s 02:28:03 9x16 (1080×1920, střihy kamery: 2)

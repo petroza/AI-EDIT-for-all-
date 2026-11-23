@@ -1,0 +1,30 @@
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead.
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead.
+
+=== import_media (0.0 s)
+[{"path":"C:/Users/Petr/Downloads/neexistuje-s8.mp4","error":"Project item not found: C:/Users/Petr/Downloads/neexistuje-s8.mp4"}]
+
+=== transcribe_media (0.0 s) ERROR
+Soubor neexistuje: C:/Users/Petr/Downloads/neexistuje-s8.mp4
+
+=== build_sequence_from_transcript (0.0 s) ERROR
+Pro C:/Users/Petr/Downloads/neexistuje-s8.mp4 ještě neexistuje přepis. Nejdřív zavolej transcribe_media.
+
+=== plan_edit_local (1.4 s) ERROR
+plan_edit selhal: RuntimeError: Pro C:/Users/Petr/Downloads/neexistuje-s8.mp4 neexistuje přepis – nejdřív transcribe.
+
+=== get_sequence (0.0 s) ERROR
+Střihový program (getSequence): Sequence not found: neni takova
+
+=== export_sequence (0.0 s) ERROR
+Střihový program (exportSequence): Cannot write to the folder C:/Program Files – choose another place to save.
+
+=== reframe_sequence (0.8 s) ERROR
+Střihový program (reframeSequence): “AI-S8 vyrok mama 9x16” is 1080×1920 – reframe to 9:16 only from a wider sequence; open the original landscape (16:9) one
+
+=== premiere_status (0.0 s)
+{"app":"TNSTRIH","version":"0.1.0","build":"PZ AI Cut Standalone","project":{"name":"Untitled","path":""},"activeSequence":"AI-S8 70s upoutavka"}

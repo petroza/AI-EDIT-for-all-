@@ -1,0 +1,9 @@
+
+=== export_sequence (0.8 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s8-upoutavka-mcp-169.mp4","format":"h264","sizeMB":3.181,"duration":10.72,"captionsBurned":false,"srt":false,"loudness":"off"}
+
+=== reframe_sequence (1.9 s)
+{"sequenceID":"deae5125-5aa4-46d3-897e-36e958311cbc","name":"AI-S8 upoutavka MCP 9x16","width":1080,"height":1920,"reframedFrom":"1280x720","scale":100,"cameraSplits":0,"shots":2,"facesFound":2,"summary":"Vytvořena sekvence „AI-S8 upoutavka MCP 9x16“ 1080×1920 (Auto Reframe podle obličeje, měřítko 100 %)."}
+
+=== export_sequence (1.8 s)
+{"result":"No Error","output":"O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s8-upoutavka-mcp-916.mp4","format":"h264","sizeMB":9.229,"duration":10.72,"captionsBurned":false,"srt":false,"loudness":"social"}

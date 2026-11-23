@@ -1,0 +1,29 @@
+
+=== transcribe_media (13.6 s)
+Přepis: O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/ai-s8-novy-45s.mp4
+Délka 00:00:45.01 · jazyk cs · 7 vět · 152 slov · large-v3/cuda · 12.5 s
+Soubor: O:\AI STRIH ALL app\MY Premiere MCP - plugin do Premiere - zdrojovy kod\cache\transcripts\ai-s8-novy-45s.mp4.d4bc44df9f3c.json
+#1 00:00:00.00–00:00:03.72 Dva cesta vedla takhle úplně od začátku a teď jsi moderátorka.
+#2 00:00:03.72–00:00:05.02 To je taky úplně jiná disciplína.
+#3 00:00:07.18–00:00:11.08 Možná, co to pro tebe znamenalo a co pro tebe znamená snídaně s novou, když se řekne.
+#4 00:00:11.12–00:00:13.68 Protože pro mě to je domov, je to základ, je to začátek.
+#5 00:00:13.90–00:00:24.88 Nevím, jak jsi to cítila, protože už jsi tady byla součást toho života a té rodiny, protože ať chceš nebo nechceš, což možná diváci neví, ty tady žiješ, tady odžiješ jako kus života a není to tak, že člověk přijde do práce.
+#6 00:00:25.42–00:00:32.02 v 8 a v 5 končí, protože máš přípravu doma, pak seš tady dýl, mezi tím natáčíš, nedá se to podle mě vůbec jako...
+#7 00:00:32.02–00:00:44.96 Tak jako ten moderátorský post pro mě bylo něco, kam jsem hodně dlouhou dobu si myslím ani jako nedohlédla, že jsem si říkal, že to je fakt hodně jako pro mě nedosažitelný, že si myslím, že vlastně téměř každá jako...
+
+=== plan_edit_local (9.1 s)
+Návrh (hermes): 1 vět, 11 s (cíl 15 s). K zadání se v materiálu našlo jen 11 s vhodného obsahu (cíl 15 s).
+VYBRÁNO (v pořadí střihu):
+#5 [?] 11.0s Nevím, jak jsi to cítila, protože už jsi tady byla součást toho života a té rodiny, protože ať chceš nebo nechceš, což možná diváci neví, ty tady žiješ, tady odžiješ jako kus života a není to tak, že člověk přijde do práce.
+Zkontroluj návaznost, zadání a vyváženost; případně vyměň věty za náhradníky nebo dohledej jiné (get_transcript fromId/toId), pak build_sequence_from_transcript. Řádek s ↳ je pokračování předchozí věty (jedno souvětí) – vyhazuj ho jen spolu s ní, jinak souvětí skončí uprostřed.
+
+=== plan_edit_local (51.7 s)
+Návrh (hermes): 17 vět, 114 s (cíl 120 s).
+Teze (co má střih divákovi předat): Bára Šimková ukazuje, že práce a aktivní podpora ostatních (iniciativa My pořád žijeme) jsou klíčovými nástroji pro zvládnutí hluboké osobní ztráty a transformaci bolesti do smysluplného života.
+VYBRÁNO – redakčně složeno jako celek (vstup → jádro → pointa na konci), v pořadí střihu:
+#194 [Barbora Šimková] 13.4s Prostě to nejde. Ty musíš vlastně pokračovat dál jako v tom svým životě a hlavně furt vlastně myslíš jako na to, že přece ta máma by nechtěla, abych já jako skončila ten život, aby jako tím, že ona už tady není, abych já jako přestala myslet na sebe.
+#214 [Barbora Šimková] 10.5s To byl někdo, kdo držel celou rodinu pohromadě a kdo svolával nás všechny na obědy, svátky, narozeniny.
+#222 [Barbora Šimková] 7.0s Já jsem se rozcházela s přítelem tehdy po pěti letech, do toho byla nemocná máma a do toho mě se vlastně měnila tahleta pozice.
+#223 [Barbora Šimková] 6.3s Takže velmi zajímavý období a myslím si, že...
+↳ #224 [Barbora Šimková] 18.1s mě jako strašně sformovalo, že vlastně jako to, co se stalo, tak ti dá takovou jako bombu, takovou ránu a vlastně ty spadneš úplně fakt jako na dno a to, jak se zvedneš, tak potom tě jako sformuje podle mě už jako navždycky, protože prostě jakoby ten člověk, který byl před tímhle vším, tak už jako není, není.
+#228 [Barbora Šimková] 8.0s Jako musím říct, že v tomhle období mě taky hodně tady v práci vycházeli vstříc, vlastně mi mi hodně říkali, nemusíš chodi

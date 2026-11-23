@@ -1463,14 +1463,37 @@ def _plan_story(instruction: str, target: float, segs: dict[int, dict], chapters
 _CONJ_START = re.compile(r"(a|ale|i|aby|a pak|a najednou|a tak|a proto|takže)\b", re.I)
 
 
+def _teaser_host(cands: list, instruction: str):
+    """Moderátor/ka = mluvčí s nejkratší řečí mezi kandidáty (aspoň 2 mluvčí). None, když zadání moderátora výslovně chce
+    („bez moderátorky“ ho naopak vylučuje – revize #14)."""
+    if re.search(r"moder", instruction, re.I) and not re.search(r"\bbez\s+moder", instruction, re.I):
+        return None
+    spk: dict = {}
+    for c in cands:
+        for u in c["units"]:
+            if u.get("spk"):
+                spk[u["spk"]] = spk.get(u["spk"], 0.0) + (u["e"] - u["s"])
+    return min(spk, key=lambda k: spk[k]) if len(spk) >= 2 else None
+
+
+def _teaser_bad_spare(c: dict, text, host) -> bool:
+    """Náhradník, který server vkládá po vyřazení úderu kvůli hranici, nesmí být otázka ani úder moderátora (AI tok S8)."""
+    return text(c).strip().endswith("?") or (host is not None and c["units"][0].get("spk") == host)
+
+
 def _teaser_guard(order: list, cands: list, top: list, instruction: str, target: float, text, key) -> list:
-    """Kontrola složené upoutávky bez modelu (AI tok S3 – Hermes pravidla v zadání ignoroval):
+    """Kontrola složené upoutávky bez modelu (AI tok S3/S4/S8 – Hermes pravidla v zadání ignoroval):
     1) úder začínající spojkou („A najednou byl pryč.“) bez vlastního podmětu divák vztáhne k předchozímu úderu
        („…věci s ním.“ → zemřel respondent, ne máma). Když před ním ve střihu nestojí jeho původní předchozí věta,
        nahradí se delší variantou, která ji obsahuje, jinak vypadne;
-    2) moderátor/ka (mluvčí s nejkratší řečí) nejvýš jedním úderem, když zadání moderátora výslovně nechce."""
+    2) otázka (končí „?“) jen se svou odpovědí (úder, který v rozhovoru následuje hned po ní); jinak vypadne, a když
+       by zbyl jediný úder, nahradí ji nejlepší úder hosta;
+    3) moderátor/ka nejvýš jedním úderem, když zadání moderátora výslovně nechce; délka se doplní údery hosta tam,
+       kam časově patří (mezi údery nebo za poslední)."""
     first = lambda c: c["units"][0]["id"]  # noqa: E731
     last = lambda c: c["units"][-1]["id"]  # noqa: E731
+    st0 = lambda c: c["units"][0]["s"]  # noqa: E731
+    host = _teaser_host(cands, instruction)
     out: list = []
     for c in order:
         prev = out[-1] if out else None
@@ -1484,40 +1507,41 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
                 continue
         out.append(c)
     order = out or order
-    # otázka (končí „?“) musí mít za sebou svou odpověď – úder, který v rozhovoru následuje hned po ní (AI tok S4: otázka
-    # na hereckou dráhu + odpověď o posílání životopisu z jiné části rozhovoru)
     fixed: list = []
     for i, c in enumerate(order):
         nxt = order[i + 1] if i + 1 < len(order) else None
-        if text(c).strip().endswith("?") and not (nxt and 0 < first(nxt) - last(c) <= 2) and len(order) > 2:
-            continue
+        if text(c).strip().endswith("?") and not (nxt and 0 < first(nxt) - last(c) <= 2):
+            # nejdřív dohledat skutečnou odpověď (úder hned po otázce v rozhovoru) a dát ji za otázku (AI tok S8)
+            ans = [x for x in cands if 0 < first(x) - last(c) <= 2 and x["units"][0].get("spk") != c["units"][0].get("spk")
+                   and not any(key(x) & key(y) for y in order)]
+            if ans:
+                fixed.extend([c, min(ans, key=lambda x: (first(x), x["dur"]))])
+                continue
+            alt = [x for x in top if x not in order and not _teaser_bad_spare(x, text, host)
+                   and not _CONJ_START.match(text(x).strip()) and not any(key(x) & key(y) for y in order)]
+            if alt and len(order) - 1 < 2:
+                fixed.append(alt[0])  # top je seřazené podle hodnocení modelu
+                continue
+            if len(order) > 1:
+                continue  # otázka s cizí odpovědí zavádí – radši kratší upoutávka (AI tok S8)
         fixed.append(c)
-    order = fixed or order
-    # „bez moderátorky“ = omezit taky; jen výslovné přání moderátora omezení vypne (revize #14)
-    if not re.search(r"moder", instruction, re.I) or re.search(r"\bbez\s+moder", instruction, re.I):
-        spk: dict = {}
-        for c in cands:
-            for u in c["units"]:
-                if u.get("spk"):
-                    spk[u["spk"]] = spk.get(u["spk"], 0.0) + (u["e"] - u["s"])
-        if len(spk) >= 2:
-            host = min(spk, key=lambda k: spk[k])
-            for c in [c for c in order if c["units"][0].get("spk") == host][1:]:
-                if len(order) > 2:
-                    order.remove(c)
-            # doplnit délku hostem – jen tam, kam časově patří
-            st0 = lambda c: c["units"][0]["s"]  # noqa: E731
-            for c in top:
-                if sum(x["dur"] for x in order) >= 0.85 * target:
-                    break
-                if c in order or c["units"][0].get("spk") == host or any(key(c) & key(y) for y in order) \
-                        or _CONJ_START.match(text(c).strip()) or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
-                    continue
-                slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
-                if slot is None and order and st0(c) > st0(order[-1]):
-                    slot = len(order)  # za poslední úder, když zazněl později (AI tok S4: upoutávka jen 10,7 s z 20)
-                if slot is not None:
-                    order.insert(slot, c)
+    if fixed != order:
+        order = sorted(fixed, key=st0)
+    if host is not None:
+        for c in [c for c in order if c["units"][0].get("spk") == host][1:]:
+            if len(order) > 2:
+                order.remove(c)
+    for c in top:
+        if sum(x["dur"] for x in order) >= 0.85 * target:
+            break
+        if c in order or _teaser_bad_spare(c, text, host) or any(key(c) & key(y) for y in order) \
+                or _CONJ_START.match(text(c).strip()) or sum(x["dur"] for x in order) + c["dur"] > 1.15 * target:
+            continue
+        slot = next((i for i in range(1, len(order)) if st0(order[i - 1]) < st0(c) < st0(order[i])), None)
+        if slot is None and order and st0(c) > st0(order[-1]):
+            slot = len(order)  # za poslední úder, když zazněl později (AI tok S4: upoutávka jen 10,7 s z 20)
+        if slot is not None:
+            order.insert(slot, c)
     return order
 
 
@@ -1651,7 +1675,7 @@ def _plan_teaser(instruction: str, target: float, segs: dict[int, dict], exclude
         "mode": "teaser", "passages": len(cands), "reason": r.get("uvaha"), "distorted": distorted,
         # náhradní údery (nejlépe hodnocené mimo upoutávku): server je vloží, když kvůli slyšitelné hranici vyřadí úder
         "spares": [{"picks": _teaser_picks(c), "dur": c["dur"], "ids": sorted({u["id"] for u in c["units"]})}
-                   for c in top if c not in order][:6],
+                   for c in top if c not in order and not _teaser_bad_spare(c, text, _teaser_host(cands, instruction))][:6],
         "ranked": [[round(sc, 1), text(c)[:60], c["dur"]] for sc, c in rated[:8]],
         "editorial": [], "thesis": None, "keyChapters": [], "offTopic": [], "topics": [], "balanceTopics": False,
         "general": False, "topicSec": {}, "addedForQuestionAnswer": [], "fixedFragments": [],
