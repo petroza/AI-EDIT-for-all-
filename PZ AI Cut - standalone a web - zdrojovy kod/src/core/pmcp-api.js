@@ -24,8 +24,12 @@ function createApi(project, hooks = {}) {
   async function resolveMedia(key, autoImport = true) {
     const k = String(key);
     let m = project.mediaById(k) || project.mediaByPath(k) || project.media.find((x) => x.name === k);
-    if (!m && autoImport && fs.existsSync(k)) m = await importer.importPath(project, k);
+    // AI smí sama importovat jen místní soubor – síťový server / URL by se kontaktoval bez souhlasu (S15 Bezpečnost)
+    const local = require('./sanitize').isLocalPath(k) || !!media.WEB;
+    if (!m && autoImport && local && fs.existsSync(k)) m = await importer.importPath(project, k);
+    if (!m && autoImport && !local && /[\\/:]/.test(k)) throw new Error('Only local files can be imported automatically – import network media in the app first (File → Import): ' + k);
     if (!m) throw new Error('Project item not found: ' + k);
+    if (m.uncBlocked) throw new Error('Media offline (network server not confirmed): ' + m.name);
     if (!m.duration) m = await importer.importPath(project, m.path);
     return m;
   }
@@ -293,7 +297,17 @@ function createApi(project, hooks = {}) {
 
   api.exportSequence = async (a) => {
     const seq = getSeq(a.sequence);
-    const output = String(a.output);
+    let output = exporter.outputPathFor({ output: String(a.output), format: a.format });
+    // AI exportuje jen na místní disk – zápis na \\server by poslal přihlašovací hash (S15 Bezpečnost); síťovou složku
+    // zvolí uživatel sám v okně Export
+    if (!media.WEB && !require('./sanitize').isLocalPath(output)) throw new Error(`Invalid output file name: ${output}`);
+    // AI nepřepíše existující soubor (S15 Bezpečnost: export_sequence potichu přepsal libovolné video) – nové jméno „(1)“,
+    // přepsat jen s výslovným overwrite: true
+    if (!media.WEB && !a.overwrite && fs.existsSync(output)) {
+      const ext = path.extname(output), base = output.slice(0, output.length - ext.length);
+      let i = 1; while (fs.existsSync(`${base} (${i})${ext}`)) i++;
+      output = `${base} (${i})${ext}`;
+    }
     if (hooks.beforeExport) hooks.beforeExport(seq, output);
     // výchozí jako dialog Export (AI tok S2: přes MCP vyšlo 9:16 bez titulků a −30 LUFS): titulky vypálit, když jsou;
     // hlasitost na výšku/čtverec pro sítě −14, MXF pro TV −23, jinak beze změny

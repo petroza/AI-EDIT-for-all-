@@ -46,6 +46,32 @@ function clean(v, key, depth) {
   return undefined; // funkce, symboly…
 }
 
+// cesty médií se kontrolují jen v desktopu (Electron); web má místo cest klíče úložiště prohlížeče (žádná síť)
+const CHECK_PATHS = typeof process !== 'undefined' && !!(process.versions && process.versions.electron || (process.env && process.env.PZ_CHECK_PATHS));
+
+/** Místní soubor: C:\… nebo \\?\C:\… (bez „..“), bez řídicích znaků. Vše ostatní (\\server, //server, URL, file:,
+ *  concat:, \\.\…, relativní cesta) není místní soubor. */
+function isLocalPath(p) {
+  p = String(p || '');
+  if (!p || /[\u0000-\u001f\u007f]/.test(p)) return false;
+  if (/^[A-Za-z]:[\\/]/.test(p)) return !/^[A-Za-z]:[\\/].*[\\/]\.\.?[\\/]+(unc|globalroot|device)[\\/]/i.test(p);
+  if (/^\\\\\?\\[A-Za-z]:\\/.test(p)) return !/\\\.\.?(\\|$)/.test(p);
+  return false;
+}
+/** Síťový server z cesty (pro dotaz Připojit), null = žádný. Zápisy, kterými Windows sahá na síť: \\server\, //server/,
+ *  /\server\, \\?\UNC\server\, \\.\UNC\, \??\UNC\, \\?\GLOBALROOT\Device\Mup\server\, file://server/ (revize S14, S15). */
+function netHost(q) {
+  let s = String(q || '').replace(/\//g, '\\');
+  s = s.replace(/^file:\\*(?=[^\\])/i, '\\\\').replace(/^file:(\\\\)/i, '$1');
+  if (/^file:\\{3}[a-z]:/i.test(s)) return null;
+  if (!/^\\\\|^\\\?\?\\/.test(s)) return null;
+  if (/^\\\\[?.]\\[a-z]:(\\|$)/i.test(s)) return null;
+  let m = /^\\(?:\\[?.]|\?\?)\\unc\\([^\\]+)/i.exec(s);
+  if (!m) m = /\\device\\(?:mup|lanmanredirector|webdavredirector)\\(?:;[^\\]*\\)?([^\\]+)/i.exec(s);
+  if (!m) m = /^\\\\([^\\?.][^\\]*)/.exec(s);
+  return m && !/[\u0000-\u001f]/.test(m[1]) ? m[1].toLowerCase() : null;
+}
+
 /** Vyčištěná kopie dat projektu (nic nemění na vstupu). */
 function sanitizeProject(data) {
   const d = clean(data && typeof data === 'object' ? data : {}, '', 0) || {};
@@ -70,7 +96,18 @@ function sanitizeProject(data) {
   // pole otevřelo projekt bez záložky)
   if (!Array.isArray(d.openSequenceIds)) delete d.openSequenceIds;
   else d.openSequenceIds = d.openSequenceIds.filter((x) => typeof x === 'string' && SAFE_ID.test(x));
-  for (const m of d.media) delete m.uncBlocked; // stav dotazu na síťový server se neukládá
+  // média mimo místní disk (síťový server, URL, zařízení, protokol ffmpeg) se z projektu NIKDY neotvírají samovolně:
+  // Windows by při pouhém ověření existence / náhledu poslal přihlašovací hash NTLM, ffmpeg by stahoval z URL.
+  // Rozhoduje se tady – každé načtení projektu (soubor, záloha, obnova) jde přes sanitizeProject, a až PO vyčištění
+  // řídicích znaků (S15 Bezpečnost: značka z renderer.js se tu mazala a „\u0001\\server“ prošlo kontrolou na syrových datech).
+  // Renderer pak u serverů, kterým uživatel důvěřuje, blokaci zruší a médium ověří.
+  for (const m of d.media) {
+    delete m.uncBlocked;
+    if (!CHECK_PATHS) continue;
+    const p = typeof m.path === 'string' ? m.path : '';
+    if (!isLocalPath(p)) { m.uncBlocked = netHost(p) || '\\'; m.missing = true; m.playable = false; }
+    if (m.proxy !== undefined && !(typeof m.proxy === 'string' && isLocalPath(m.proxy))) delete m.proxy;
+  }
   if (d.asrFixes && typeof d.asrFixes !== 'object') d.asrFixes = {};
   return d;
 }
@@ -80,4 +117,4 @@ function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
-module.exports = { sanitizeProject, esc };
+module.exports = { sanitizeProject, esc, isLocalPath, netHost };

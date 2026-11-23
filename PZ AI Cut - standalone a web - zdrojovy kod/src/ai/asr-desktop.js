@@ -60,6 +60,9 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   const files = new Map();
   const fileOf = (p) => {
     if (!p) return null;
+    // nepotvrzený síťový server / cesta mimo disk – nesahat (S15 Bezpečnost: statSync při překreslení Přepisu = hash NTLM)
+    const mm = app.project && app.project.mediaByPath ? app.project.mediaByPath(p) : null;
+    if (mm ? mm.uncBlocked : !require('../core/sanitize').isLocalPath(p)) return null;
     const f0 = files.get(p);
     // soubor přepsaný na stejné cestě (nový export stejného jména) = nový objekt, starý deskriptor zavřít (revize #12)
     if (f0) { try { const st = fs.statSync(p); if (st.size === f0.size && Math.round(st.mtimeMs) === f0.lastModified) return f0; } catch (e) { return null; } try { if (f0.fd !== null) fs.closeSync(f0.fd); } catch (e) { /* zavřený */ } }

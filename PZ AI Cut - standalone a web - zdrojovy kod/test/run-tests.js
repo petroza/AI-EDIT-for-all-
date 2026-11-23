@@ -451,6 +451,27 @@ function seqWith(...ranges) {
     assert.deepStrictEqual(p.openSequenceIds, ['s1']);
     assert.ok(!('uncBlocked' in p.media[0]));
   });
+  await t('média mimo místní disk z projektu jsou offline a zablokovaná (S15 Bezpečnost – i řídicí znaky, file:, URL)', () => {
+    process.env.PZ_CHECK_PATHS = '1';
+    delete require.cache[require.resolve('../src/core/sanitize')];
+    const SAN = require('../src/core/sanitize');
+    const B = '\\';
+    const net = [B + B + 'srv' + B + 'a.mp4', '//srv/a.mp4', '/' + B + 'srv' + B + 'a.mp4', B + B + '?' + B + 'UNC' + B + 'srv' + B + 'a.mp4',
+      B + '??' + B + 'UNC' + B + 'srv' + B + 'a', B + B + '?' + B + 'GLOBALROOT' + B + 'Device' + B + 'Mup' + B + 'srv' + B + 'a',
+      '\u0001' + B + B + 'srv' + B + 'a.mp4', 'file:' + B + B + 'srv' + B + 'a.mp4', 'file://srv/a.mp4', 'http://srv/a.mp4', 'concat:a|b',
+      'subfile:,,start,0,end,0,:' + B + B + 'srv' + B + 'a', B + B + '.' + B + 'C:' + B + '..' + B + 'UNC' + B + 'srv' + B + 'a', 'C:' + B + 'x' + B + '..' + B + 'UNC' + B + 'srv' + B + 'a', 'a.mp4'];
+    const local = ['C:' + B + 'Videos' + B + 'a.mp4', 'O:/AI/a.mp4', B + B + '?' + B + 'C:' + B + 'Videos' + B + 'a.mp4'];
+    const d = SAN.sanitizeProject({ media: [...net, ...local].map((p, i) => ({ id: 'm' + i, path: p, playable: true, missing: false, proxy: B + B + 'srv' + B + 'p.mp4' })), sequences: [] });
+    for (let i = 0; i < net.length; i++) {
+      const m = d.media[i];
+      assert.ok(m.uncBlocked && m.missing === true && m.playable === false && !('proxy' in m), 'nezablokováno: ' + JSON.stringify(net[i]));
+    }
+    for (let i = 0; i < local.length; i++) assert.ok(!d.media[net.length + i].uncBlocked, 'místní zablokováno: ' + local[i]);
+    assert.strictEqual(d.media[0].uncBlocked, 'srv');
+    assert.strictEqual(d.media[6].uncBlocked, 'srv'); // řídicí znak se odstranil a teprve pak rozhodlo
+    delete process.env.PZ_CHECK_PATHS;
+    delete require.cache[require.resolve('../src/core/sanitize')];
+  });
   await t('export nepřepíše zdroj ani bez přípony / přes jiný zápis cesty (revize S14)', async () => {
     const os = require('os');
     const ex = require('../src/core/exporter');

@@ -421,4 +421,5 @@ if (self.AudioEncoder) {
     .then((r) => { if (!r.supported) exportsObj.audioLabel = 'Opus 160 kb/s – no AAC encoder on this computer (Windows N: install the Media Feature Pack)'; })
     .catch(() => {});
 }
-Object.assign(exportsObj, { exportSequence, captionsSrt, FORMATS, LOUDNESS, videoSegments: () => [], videoFilter: () => '' });
+// web ukládá přes okno prohlížeče – jméno se jen předá dál (pmcp-api.exportSequence volá outputPathFor i na webu)
+Object.assign(exportsObj, { exportSequence, captionsSrt, FORMATS, LOUDNESS, videoSegments: () => [], videoFilter: () => '', outputPathFor: (o) => String(o.output || '') });

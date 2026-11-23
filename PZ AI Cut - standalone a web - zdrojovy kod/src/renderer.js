@@ -121,8 +121,28 @@ const app = {
   _waveLoading: new Set(),
 
   async importPaths(paths) {
+    // import může přijít i od AI (most MCP) – mimo místní disk jen po potvrzení serveru, URL / protokoly ffmpeg nikdy
+    // (S15 Bezpečnost: cesta http://… → ffmpeg poslal GET na cizí server)
+    if (!media.WEB) {
+      const SAN = require('./core/sanitize');
+      const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
+      const ask = new Set();
+      const ok = [];
+      for (const p of paths) {
+        if (SAN.isLocalPath(p)) { ok.push(p); continue; }
+        const h = SAN.netHost(p);
+        if (!h) { app.toast(LL(`Cannot import ${p} – only files on a disk or a network share can be imported.`, `Nejde importovat ${p} – importovat jde jen soubor na disku nebo ve sdílené síťové složce.`), true); continue; }
+        if (!trusted.has(h)) ask.add(h);
+        ok.push(p);
+      }
+      if (ask.size) {
+        const allowed = await askNetworkHosts([...ask], true);
+        paths = ok.filter((p) => { const h = SAN.netHost(p); return !h || trusted.has(h) || allowed; });
+      } else paths = ok;
+      if (!paths.length) return [];
+    }
     // média přesunutá / přejmenovaná za běhu označit jako offline – import z nového místa je pak znovu připojí (pád a obnova S12)
-    if (!media.WEB) for (const m of project.media) if (!m.missing && m.path && !fs.existsSync(m.path)) m.missing = true;
+    if (!media.WEB) for (const m of project.media) if (!m.missing && !m.uncBlocked && m.path && !fs.existsSync(m.path)) m.missing = true;
     const out = [], bad = [];
     for (const p of paths) {
       app.status('Importing: ' + U.baseName(p));
@@ -1263,6 +1283,7 @@ if (!media.WEB) {
     try { await Promise.race([RF.detector(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000))]); } catch (e) { return viaApi(); }
     try {
       return await RF.reframeCopy(app, src, num, den, W, H, (m) => {
+        if (m.uncBlocked || m.missing) return null; // offline / nepotvrzený síťový server (S15)
         if (!files.has(m.path)) files.set(m.path, new RF.FsFile(importer.playPath(m) || m.path));
         return files.get(m.path);
       }, (text) => app.status(i18n.tr ? i18n.tr(text) : text));
@@ -1508,8 +1529,13 @@ function exportDialog() {
     b.querySelector('#exNo').onclick = () => { if (signal) { signal.cancelled = true; if (signal.kill) signal.kill(); } else closeModal(); };
     b.querySelector('#exGo').onclick = async () => {
       b.querySelector('#exMsg').style.color = '';
-      const out = b.querySelector('#exOut').value.trim();
+      let out = b.querySelector('#exOut').value.trim();
       if (!out) return;
+      // skutečný cíl i s příponou formátu (S15 Bezpečnost: jméno bez přípony přepsalo existující soubor bez dotazu)
+      if (!media.WEB) {
+        try { out = exporter.outputPathFor({ output: out, format: b.querySelector('#exFmt').value }); } catch (e) { b.querySelector('#exMsg').textContent = '✖ ' + e.message; b.querySelector('#exMsg').style.color = 'var(--danger, #e5484d)'; return; }
+        b.querySelector('#exOut').value = out;
+      }
       // existující soubor nepřepsat bez dotazu (redaktorka S4)
       if (!media.WEB && fs.existsSync(out)) {
         const q = await ipcRenderer.invoke('dialog', 'message', { type: 'question', buttons: ['Replace', 'Cancel'], defaultId: 1, cancelId: 1, noLink: true, message: `The file ${path.basename(out)} already exists.`, detail: 'Do you want to replace it?' });
@@ -1619,18 +1645,6 @@ function writeProject(p) {
     throw new Error(`Cannot save the project to ${p} – the file is read-only or the folder is not writable. Save it elsewhere (File → Save As).`);
   }
 }
-/** Síťový server z cesty, null = místní soubor. Všechny zápisy, kterými Windows sahá na síť: \\server\, //server/,
- *  /\server\, \\?\UNC\server\, \\.\UNC\, \??\UNC\, \\?\GLOBALROOT\Device\Mup\server\ (revize S14: obejití uncHost).
- *  '\\' = jiné zařízení / neznámý zápis – nikdy nepřipojovat. */
-function netHost(q) {
-  const s = String(q || '').replace(/\//g, '\\');
-  if (!/^\\\\|^\\\?\?\\/.test(s)) return null; // C:\…, \cesta na aktuálním disku, relativní
-  if (/^\\\\[?.]\\[a-z]:(\\|$)/i.test(s)) return null; // \\?\C:\ dlouhá místní cesta
-  let m = /^\\(?:\\[?.]|\?\?)\\unc\\([^\\]+)/i.exec(s);
-  if (!m) m = /\\device\\(?:mup|lanmanredirector|webdavredirector)\\(?:;[^\\]*\\)?([^\\]+)/i.exec(s);
-  if (!m) m = /^\\\\([^\\?.][^\\]*)/.exec(s);
-  return m ? m[1].toLowerCase() : '\\';
-}
 function loadProjectFile(p, asUntitled, data0) {
   let data = data0;
   if (!data) {
@@ -1641,23 +1655,21 @@ function loadProjectFile(p, asUntitled, data0) {
   // souboru (náhled, průběh zvuku, <video>) připojil a poslal přihlašovací hash. Rozhoduje se PŘED project.load – načtení
   // hned spouští náhledy (revize S14: ochrana S13 přišla až po nich). Náhledové kopie jen z vlastní cache; média na
   // serveru, kterému uživatel ještě nedůvěřoval, zůstanou offline, dokud připojení nepotvrdí.
-  const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
-  const askHosts = new Set();
-  for (const m of data.media) {
-    if (!m || typeof m !== 'object') continue;
-    delete m.uncBlocked; // stav se neukládá – vždy znovu podle aktuální důvěry (revize S14: médium zůstalo trvale offline)
-    if (m.proxy && !(typeof m.proxy === 'string' && path.resolve(m.proxy).toLowerCase().startsWith(path.resolve(media.CACHE).toLowerCase()))) delete m.proxy;
-    const h = netHost(m.path);
-    if (h && !trusted.has(h)) {
-      m.uncBlocked = true; m.missing = true; m.playable = false;
-      if (h !== '\\') askHosts.add(h);
-    }
-  }
   require('./ui/captionstyle').discardCaptionStyle();
   app.source.close();
   app.waves.clear();
   project.load(data, asUntitled ? null : p);
   if (asUntitled) { project.dirty = true; }
+  // sanitize (project.load) označil média mimo místní disk jako offline (uncBlocked = server, '\\' = nikdy) – servery,
+  // kterým uživatel důvěřuje, se odblokují a ověří v relink; ostatní čekají na dotaz
+  const trusted = new Set((settings.trustedHosts || []).map((h) => String(h).toLowerCase()));
+  const askHosts = new Set();
+  for (const m of project.media) {
+    if (m.proxy && !path.resolve(m.proxy).toLowerCase().startsWith(path.resolve(media.CACHE).toLowerCase())) delete m.proxy;
+    if (!m.uncBlocked) continue;
+    if (m.uncBlocked !== '\\' && trusted.has(m.uncBlocked)) { delete m.uncBlocked; continue; }
+    if (m.uncBlocked !== '\\') askHosts.add(m.uncBlocked);
+  }
   if (askHosts.size && !media.WEB) setTimeout(() => askNetworkHosts([...askHosts]), 300);
   importer.relink(project);
   for (const m of project.media) { loadThumb(m); }
@@ -1668,21 +1680,25 @@ function loadProjectFile(p, asUntitled, data0) {
   if (miss.length && !media.WEB) setTimeout(() => { app.toast(`Media offline: ${miss.map((m) => m.name).join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`, true); if (app.program && app.program.ui) app.program.ui(); }, 400);
 }
 /** Dotaz na připojení k síťovým serverům z projektu (bezpečnost S13). */
-async function askNetworkHosts(hosts) {
+async function askNetworkHosts(hosts, forImport) {
   const cs = TN.lang === 'cs';
+  const list = hosts.map((h) => '\\\\' + h).join(', ');
   const r = await ipcRenderer.invoke('dialog', 'message', {
-    type: 'question', noLink: true, defaultId: 0, cancelId: 1,
+    type: 'question', noLink: true, defaultId: forImport ? 1 : 0, cancelId: 1,
     buttons: cs ? ['Připojit', 'Nepřipojovat'] : ['Connect', 'Do not connect'],
-    message: cs ? `Projekt odkazuje na média na síti: ${hosts.map((h) => '\\\\' + h).join(', ')}` : `The project uses media on the network: ${hosts.map((h) => '\\\\' + h).join(', ')}`,
-    detail: cs ? 'Připoj se jen k serverům, které znáš (třeba redakční disk). U projektu z neznámého zdroje zvol Nepřipojovat – média zůstanou offline.'
-      : 'Only connect to servers you know (e.g. the newsroom drive). For a project from an unknown source choose Do not connect – the media stay offline.',
+    message: forImport ? (cs ? `Importovat média ze sítě: ${list}?` : `Import media from the network: ${list}?`)
+      : (cs ? `Projekt odkazuje na média na síti: ${list}` : `The project uses media on the network: ${list}`),
+    detail: cs ? 'Připoj se jen k serverům, které znáš (třeba redakční disk). U projektu nebo zadání z neznámého zdroje zvol Nepřipojovat – média zůstanou offline.'
+      : 'Only connect to servers you know (e.g. the newsroom drive). For a project or task from an unknown source choose Do not connect – the media stay offline.',
   }).catch(() => ({ response: 1 }));
-  if (r.response !== 0) { app.toast(cs ? 'Média na síti zůstala offline.' : 'Network media stay offline.'); return; }
+  if (r.response !== 0) { app.toast(cs ? 'Média na síti zůstala offline.' : 'Network media stay offline.'); return false; }
   settings.trustedHosts = [...new Set([...(settings.trustedHosts || []), ...hosts])]; saveSettings();
-  for (const m of project.media) if (m.uncBlocked) delete m.uncBlocked;
+  if (forImport) return true;
+  for (const m of project.media) if (m.uncBlocked && hosts.includes(m.uncBlocked)) delete m.uncBlocked;
   importer.relink(project);
   for (const m of project.media) loadThumb(m);
   app.projectPanel.render(); app.timeline.render(); if (app.program && app.program.ui) app.program.ui();
+  return true;
 }
 async function openProjectDialog() {
   if (!(await confirmDiscard())) return;

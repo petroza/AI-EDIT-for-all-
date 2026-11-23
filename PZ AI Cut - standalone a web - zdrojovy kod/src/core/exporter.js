@@ -6,6 +6,7 @@
 // mezerách), smíchání, volitelně srovnání hlasitosti (EBU R128 loudnorm).
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { run, FFMPEG, CACHE, cfg } = require('./media');
 const { clipEnd, holdOf, holdInOf, vSrc } = require('./model');
 const { dbToGain, uid } = require('./util');
@@ -196,6 +197,10 @@ const ACTIVE = new Set(); // výstupy právě běžících exportů
  *  export do „…\rozhovor“ bez přípony přepsal rozhovor.mp4). */
 function outputPathFor(opts) {
   const o = String(opts.output || '');
+  // dvojtečka jen za písmenem disku (\\?\C:\ i C:\) – jinak alternativní datový proud „a.mp4:x“ nebo protokol ffmpeg
+  // „file:“ (S15 Bezpečnost: surová chyba EINVAL / zápis mimo kontrolu zdroje)
+  const bare = o.replace(/^\\\\\?\\/, '');
+  if (!o || /[\u0000-\u001f]/.test(o) || bare.slice(2).includes(':') || /^[a-z]{2,}:/i.test(bare)) throw new Error(`Invalid output file name: ${o}`);
   const fmt = FORMATS[opts.format] ? opts.format : (/\.mov$/i.test(o) ? 'prores_hq' : /\.mxf$/i.test(o) ? 'xdcam' : 'h264');
   const ext = FORMATS[fmt].ext;
   if (new RegExp('\\.' + ext + '$', 'i').test(o)) return o;
@@ -206,6 +211,9 @@ function outputPathFor(opts) {
 function sameFile(a, b) {
   if (!a || !b) return false;
   if (path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase()) return true;
+  // stat jen na místním disku – síťová cesta zablokovaného média by se připojila (hash NTLM)
+  const SAN = require('./sanitize');
+  if (!SAN.isLocalPath(a) || !SAN.isLocalPath(b)) return false;
   try {
     const x = fs.statSync(a, { bigint: true }), y = fs.statSync(b, { bigint: true });
     return x.ino !== 0n && x.ino === y.ino && x.dev === y.dev;
@@ -222,7 +230,10 @@ async function exportSequence(project, seq0, opts) {
   // export do dočasného souboru, cíl až po dokončení; při chybě / zrušení / pádu nezůstane pod cílovým jménem nepřehratelný
   // soubor a pracovní složka se smaže (pád a obnova S12: rozbité MP4 + 210 MB v cache na každý pokus)
   const ext = path.extname(final);
-  const part = final.slice(0, final.length - ext.length) + '.pzpart' + ext;
+  // dočasné jméno jedinečné a nové – „out.pzpart.mp4“ mohl být zdroj a export do out.mp4 ho smazal (S15 Bezpečnost)
+  let part;
+  do { part = final.slice(0, final.length - ext.length) + '.pzpart-' + crypto.randomBytes(4).toString('hex') + ext; }
+  while (fs.existsSync(part) || fs.existsSync(part.replace(/\.[^.]+$/, '.srt')));
   const works = [];
   let kept = false;
   try {
@@ -233,7 +244,7 @@ async function exportSequence(project, seq0, opts) {
       if (!/EPERM|EBUSY|EACCES/.test(e.code || e.message)) throw e;
       // cíl je otevřený v jiném programu – hotový export uložit vedle, ne zahodit
       const base = final.slice(0, final.length - ext.length);
-      let i = 1; while (fs.existsSync(`${base} (${i})${ext}`)) i++;
+      let i = 1; while (fs.existsSync(`${base} (${i})${ext}`) || project.media.some((m) => m && sameFile(m.path, `${base} (${i})${ext}`))) i++;
       out = `${base} (${i})${ext}`;
       fs.renameSync(part, out);
       kept = true;
@@ -539,4 +550,4 @@ async function exportSnapshot(project, seq, opts) {
   return { output, format: fmt, sizeMB: Math.round(st.size / 1048576 * 1000) / 1000, duration: Math.round((re - rs) * 1000) / 1000 };
 }
 
-module.exports = { xdcamOk, exportSequence, cleanStaleExports, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };
+module.exports = { xdcamOk, exportSequence, outputPathFor, cleanStaleExports, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };
