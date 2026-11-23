@@ -1,0 +1,21 @@
+A1 kusy multi916: [(0, 29.8), (29.8, 33.56), (33.56, 45.92), (45.92, 46.48), (46.48, 47.68), (47.68, 49.48), (49.48, 50.08)]
+titulky prevzate z 16:9 (reflow): 27, titulky dialogem po reframu: 28
+  po reframu 29.00-29.80 (0.80 s) něco. prostě. <- na hranici kusu zvuku [29.8]
+  po reframu 32.71-33.56 (0.85 s) takový ty / chlácholivý věci. <- na hranici kusu zvuku [33.56]
+  po reframu 44.05-45.92 (1.87 s) tady pro tebe, / kdyby cokoliv. <- na hranici kusu zvuku [45.92]
+  po reframu 45.92-46.48 (0.56 s) A pak jsem / začala dělat <- na hranici kusu zvuku [45.92, 46.48]
+  po reframu 49.18-49.48 (0.30 s) rádiu. <- na hranici kusu zvuku [49.48]
+== s10-multi916
+   31.05-32.71 (1.66 s) prostě někoho, / aby nám říkal
+   32.71-34.55 (1.84 s) takový ty / chlácholivý věci.
+   44.05-45.92 (1.87 s) tady pro tebe, / kdyby cokoliv.
+   45.92-48.20 (2.28 s) A pak jsem / začala dělat
+   48.20-49.92 (1.72 s) moderátorku / v rádiu.
+== s10-multi916-cc
+   31.05-32.71 (1.66 s) prostě někoho, / aby nám říkal
+   32.71-33.56 (0.85 s) takový ty / chlácholivý věci.
+   44.05-45.92 (1.87 s) tady pro tebe, / kdyby cokoliv.
+   45.92-46.48 (0.56 s) A pak jsem / začala dělat
+   48.20-49.18 (0.98 s) moderátorku / v rádiu.
+   49.18-49.48 (0.30 s) rádiu.
+[["A",749.52,749.86],["pak",749.86,751.24],["jsem",751.24,751.36],["začala",751.36,751.6],["dělat",751.6,751.8],["moderátorku",751.8,752.42],["v",752.42,752.7],["rádiu.",752.7,753.32],["takový",1598.91,1599.47],["ty",1599.47,1599.55],["chlácholivý",1599.55,1600.15],["věci.",1600.15,1600.55]]

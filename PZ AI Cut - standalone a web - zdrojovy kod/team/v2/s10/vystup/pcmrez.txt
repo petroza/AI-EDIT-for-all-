@@ -1,0 +1,6 @@
+vzorku 2204160 2204160
+rez 5.00: posun +0 vz., max |export - 0,9988*ref| v kusu 9.60e-06 (-100 dBFS), cvak 0.09
+rez 12.36: posun +0 vz., max |export - 0,9988*ref| v kusu 1.33e-05 (-98 dBFS), cvak 0.07
+rez 20.52: posun +0 vz., max |export - 0,9988*ref| v kusu 1.13e-05 (-99 dBFS), cvak 0.06
+rez 29.80: posun +0 vz., max |export - 0,9988*ref| v kusu 3.30e-04 (-70 dBFS), cvak 0.00
+rez 38.04: posun +0 vz., max |export - 0,9988*ref| v kusu 4.82e-04 (-66 dBFS), cvak 0.04

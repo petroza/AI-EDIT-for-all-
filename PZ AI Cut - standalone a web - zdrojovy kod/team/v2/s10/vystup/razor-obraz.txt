@@ -1,0 +1,3 @@
+vystup-s10-razor.mp4 vs vystup-s10-sim.mp4: snimku 1148/1148 | horni 75 %: prumer 0.44 max 0.68 (sn. 276) | spodni pas: prumer 0.45 max 0.80, snimku s chybou >3: 0
+vystup-s10-razor916.mp4 vs vystup-s10-sim916.mp4: snimku 1148/1148 | horni 75 %: prumer 0.31 max 0.72 (sn. 570) | spodni pas: prumer 0.37 max 0.75, snimku s chybou >3: 0
+vystup-s10-razormulti.mp4 vs vystup-s10-multi.mp4: snimku 1252/1252 | horni 75 %: prumer 0.07 max 0.44 (sn. 1074) | spodni pas: prumer 0.07 max 0.47, snimku s chybou >3: 0

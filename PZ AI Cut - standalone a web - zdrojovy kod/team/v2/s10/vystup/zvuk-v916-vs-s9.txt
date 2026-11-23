@@ -1,0 +1,2 @@
+v916-bez zvuk S10 vs S9: zisk mimo 19,9-23,1 s = 1.0045 (+0.039 dB)
+okna 0,1 s s rozdilem > -26 dB (po srovnani zisku): [20.0, 20.1, 20.2]

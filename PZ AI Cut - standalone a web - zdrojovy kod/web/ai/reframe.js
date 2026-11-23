@@ -8,7 +8,7 @@
  *   4) clip.posX tak, aby obličej byl uprostřed výřezu */
 const { VideoSource } = require('../engine/decode');
 const E = require('../../src/core/edit');
-const { clipEnd } = require('../../src/core/model');
+const { clipEnd, holdOf } = require('../../src/core/model');
 
 const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
 const MODEL = 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
@@ -340,7 +340,8 @@ async function edgeFragments(plan, seq) {
     }
     const L = sh[sh.length - 1];
     const d1 = Math.round((L.out - L.in) * fps) / fps;
-    if (d1 > 0 && d1 < MIN_SHOT && !((e.lead || e.head) && sh.length < 3)) {
+    // konec už má zopakované snímky (hold) – zbytek ve zdroji tam je, ale vidět není
+    if (d1 > 0 && d1 < MIN_SHOT && !holdOf(e.clip) && !((e.lead || e.head) && sh.length < 3)) {
       const end = clipEnd(e.clip);
       const next = plan.find((q) => q !== e && q.track === e.track && Math.abs(q.clip.start - end) < tol);
       const lipsT = d1 <= 5.5 / fps || !e.file ? true : await quietHead(e.file, e.clip.out - d1 - 0.03, d1);
@@ -537,16 +538,10 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
       if (e.cutHead) { for (const x of [e.clip, ...linkedA(e.clip)]) { x.in += e.cutHead.d; x.start += e.cutHead.d; } }
       if (e.cutTail) { for (const x of [e.clip, ...linkedA(e.clip)]) x.out -= e.cutTail.d; }
       if (e.footRepeat) {
-        const { d } = e.footRepeat, c = e.clip;
-        // klip zůstane propojený se svým zvukem (obraz končí o d dřív – jako L-střih; redaktorka S9: rozpojený obraz a zvuk
-        // – žiletka, Shift+Delete i ořez pak působily jen na obraz); zopakovaný kousek je jen obraz, bez propojení
-        c.out -= d;
-        const { uid } = require('../../src/core/util');
-        // kopie bez přechodu na začátku; konec (vOut / fadeOut) přejde z původního klipu na kopii (revize #15)
-        const rep = Object.assign({}, c, { id: uid('c'), in: c.out - d, out: c.out, start: clipEnd(c), rep: true, vIn: null, fadeIn: 0, linkId: null });
-        c.vOut = null; c.fadeOut = 0;
-        e.track.clips.push(rep);
-        e.track.clips.sort((x, y) => x.start - y.start);
+        // posledních d s obrazu = znovu předchozích d s (vlastnost klipu „hold“, ne samostatný klip – redaktorka S10: kopie
+        // zůstávala na ose po smazání / zkrácení klipu); klip zůstává jeden a propojený se svým zvukem
+        const c = e.clip;
+        c.hold = { d: e.footRepeat.d, out: c.out };
       }
       if (e.lead) { const { prev, d } = e.lead; prev.clip.out += d; prev.clip.linkId = null; e.clip.in += d; e.clip.start += d; e.clip.linkId = null; }
       if (e.tail) { const { next, d } = e.tail; next.clip.in -= d; next.clip.start -= d; next.clip.linkId = null; e.clip.out -= d; e.clip.linkId = null; }

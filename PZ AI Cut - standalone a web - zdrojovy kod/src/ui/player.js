@@ -4,7 +4,7 @@
 // i nad 0 dB, prolnutí). Hodiny = performance.now(), prvky se k nim jen dorovnávají.
 const CL = require('../core/captionlayout');
 const { pathToFileURL } = require('url');
-const { clipEnd } = require('../core/model');
+const { clipEnd, holdOf, vSrc } = require('../core/model');
 const { dbToGain } = require('../core/util');
 const importer = require('../core/importer');
 
@@ -206,8 +206,13 @@ class SeqPlayer {
         keep.add(el);
         shown = el;
         this.layout(el, vc, seq);
-        const want = Math.min(vc.out - 0.02, vc.in + (t - vc.start));
-        if (this.rate > 0) {
+        const want = Math.min(vc.out - 0.02, vSrc(vc, t));
+        const inHold = holdOf(vc) && t >= clipEnd(vc) - holdOf(vc) - 1e-6;
+        if (this.rate > 0 && inHold) {
+          // zopakovaný konec (≤ 5 snímků): přehrávání by skok o 0,1–0,2 s zpět nedorovnalo – snímky přesně, bez přehrávání
+          if (!el.paused) el.pause();
+          if (Math.abs(el.currentTime - want) > 0.02) el.currentTime = want;
+        } else if (this.rate > 0) {
           el.playbackRate = Math.min(4, this.rate);
           if (el.paused) { if (Math.abs(el.currentTime - want) > 0.04) el.currentTime = want; el.play().catch(() => {}); }
           // dorovnání skokem jen mimo poslední ~0,35 s klipu – skok těsně před střihem obraz zamrazí (zbytek klipu by stál)
@@ -233,7 +238,7 @@ class SeqPlayer {
     if (cr) {
       const { L, R, a, d } = cr;
       const p = Math.max(0, Math.min(1, (t - a) / d));
-      const pair = [[L, L.in + (t - L.start)], [R, R.in + (t - R.start)]];
+      const pair = [[L, vSrc(L, t)], [R, vSrc(R, t)]];
       for (const [c, want0] of pair) {
         const el = this.elementFor(c, 'video');
         if (!el) continue;
@@ -355,7 +360,7 @@ class SeqPlayer {
   updateStill(seq, t, vc, el, cr) {
     const hide = () => { this.stillKey = ''; this.still.style.display = 'none'; };
     if (!this.stillProvider || !vc || !el || cr || Math.abs(this.rate) > 1.01) { hide(); return; }
-    const src = vc.in + (t - vc.start);
+    const src = vSrc(vc, t);
     if (this.stillNeeded && this.stillNeeded(vc, src) === false) { hide(); return; }
     const fps = seq.fps || 25;
     const geo = el.style.left + el.style.top + el.style.width + el.style.height;

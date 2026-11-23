@@ -296,7 +296,7 @@ async function exportSequence(project, seq, opts) {
     }
     return sources.get(clip.id);
   };
-  const frameOf = async (clip, tSeq) => (await srcFor(clip)).frameAt(clip.in + (tSeq - clip.start));
+  const frameOf = async (clip, tSeq) => (await srcFor(clip)).frameAt(require('../src/core/model').vSrc(clip, tSeq));
 
   // hlasitost: první průchod (měření)
   let gain = 1;

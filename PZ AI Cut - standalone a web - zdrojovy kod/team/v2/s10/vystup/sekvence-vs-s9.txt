@@ -1,0 +1,28 @@
+s10-a            titulky LISI (6 -> 5) | stopy LISI: A1 4->5 klipu | styl shodny
+s10-a916         titulky LISI (10 -> 10) | stopy LISI: A1 4->5 klipu | styl shodny
+s10-a11          titulky LISI (6 -> 6) | stopy LISI: A1 4->5 klipu | styl shodny
+s10-sim          titulky shodne 11 | stopy shodne | styl shodny
+s10-sim916       titulky shodne 25 | stopy shodne | styl shodny
+s10-sim11        titulky shodne 15 | stopy shodne | styl shodny
+s10-k219         titulky shodne 1 | stopy shodne | styl shodny
+s10-k219916      titulky shodne 1 | stopy shodne | styl shodny
+s10-k21911       titulky shodne 1 | stopy shodne | styl shodny
+x-old-s10-a1080  (v S9 neni)
+x-old-s10-sim1080 (v S9 neni)
+s10-a1080        titulky LISI (6 -> 5) | stopy LISI: A1 4->5 klipu | styl shodny
+s10-sim1080      titulky shodne 11 | stopy shodne | styl shodny
+s10-multi        titulky shodne 12 | stopy shodne | styl shodny
+s10-multi1080    titulky shodne 12 | stopy shodne | styl shodny
+s10-multi916     titulky shodne 27 | stopy LISI: A1 3->7 klipu | styl shodny
+s10-multi11      titulky shodne 16 | stopy LISI: A1 3->7 klipu | styl shodny
+s10-v916         titulky LISI (28 -> 28) | stopy LISI: V2 2->1 klipu, A1 3->5 klipu, A2 1->1 klipu | styl shodny
+   S9 {'start': 2.91, 'end': 4.7, 'text': 'takový ty\nchlácholivý vìci.'} | S10 {'start': 2.91, 'end': 3.76, 'text': 'takový ty\nchlácholivý vìci.'}
+   S9 {'start': 46.25, 'end': 47.531, 'text': 'Takže to pøišlo\núplnì,'} | S10 {'start': 45.95, 'end': 46.6, 'text': 'Takže to pøišlo\núplnì,'}
+   S9 {'start': 47.531, 'end': 48.274, 'text': 'jak my jsme\nse rozvìdìli,'} | S10 {'start': 47.33, 'end': 48.13, 'text': 'jak my jsme\nse rozvìdìli,'}
+   S9 {'start': 48.274, 'end': 50.3, 'text': 'že je nemocná a za\ntøi týdny byla pryè.'} | S10 {'start': 48.13, 'end': 50.3, 'text': 'že je nemocná a za\ntøi týdny byla pryè.'}
+s10-drop916b     titulky shodne 0 | stopy shodne | styl shodny
+s10-v916-stred   titulky LISI (28 -> 28) | stopy LISI: V2 2->1 klipu, A1 3->5 klipu, A2 1->1 klipu | styl shodny
+s10-razor        (v S9 neni)
+s10-razor916     (v S9 neni)
+s10-razormulti   (v S9 neni)
+s10-razor-g      (v S9 neni)

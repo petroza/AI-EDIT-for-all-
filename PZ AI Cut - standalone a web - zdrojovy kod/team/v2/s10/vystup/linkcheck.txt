@@ -1,0 +1,22 @@
+s10-a            V1 4 kusu (rep 0) | V1 2.76-7.52 zvuk 2.76-7.24 (kraje +0/-7 sn.) | osirele zvuky: ['A1 7.24-7.52'] | zvuk bez propojeni: -
+s10-a916         V1 7 kusu (rep 0) | V1 0.00-1.36 bez propojeni; V1 1.36-2.76 bez propojeni; V1 2.76-3.48 bez propojeni; V1 3.48-7.52 bez propojeni; V1 12.72-15.12 bez propojeni; V1 15.12-16.00 bez propojeni | osirele zvuky: ['A1 0.00-2.76', 'A1 2.76-7.24', 'A1 7.24-7.52', 'A1 12.72-16.00'] | zvuk bez propojeni: -
+s10-a11          V1 7 kusu (rep 0) | V1 0.00-1.36 bez propojeni; V1 1.36-2.76 bez propojeni; V1 2.76-3.48 bez propojeni; V1 3.48-7.52 bez propojeni; V1 12.72-15.12 bez propojeni; V1 15.12-16.00 bez propojeni | osirele zvuky: ['A1 0.00-2.76', 'A1 2.76-7.24', 'A1 7.24-7.52', 'A1 12.72-16.00'] | zvuk bez propojeni: -
+s10-sim          V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-sim916       V1 3 kusu (rep 0) | V1 29.80-33.56 bez propojeni; V1 33.56-45.92 bez propojeni | osirele zvuky: ['A1 29.80-45.92'] | zvuk bez propojeni: -
+s10-sim11        V1 3 kusu (rep 0) | V1 29.80-33.56 bez propojeni; V1 33.56-45.92 bez propojeni | osirele zvuky: ['A1 29.80-45.92'] | zvuk bez propojeni: -
+s10-k219         V1 2 kusu (rep 1) | V1 0.00-1.36 zvuk 0.00-1.52 (kraje +0/+4 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s10-k219916      V1 2 kusu (rep 1) | V1 0.00-1.36 zvuk 0.00-1.52 (kraje +0/+4 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s10-k21911       V1 2 kusu (rep 1) | V1 0.00-1.36 zvuk 0.00-1.52 (kraje +0/+4 sn.) | osirele zvuky: - | zvuk bez propojeni: -
+s10-a1080        V1 4 kusu (rep 0) | V1 2.76-7.52 zvuk 2.76-7.24 (kraje +0/-7 sn.) | osirele zvuky: ['A1 7.24-7.52'] | zvuk bez propojeni: -
+s10-sim1080      V1 2 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-multi        V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-multi1080    V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-multi916     V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-multi11      V1 7 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-v916         V1 5 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-drop916b     V1 3 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-v916-stred   V1 5 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-razor        V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-razor916     V1 7 kusu (rep 0) | V1 29.80-33.56 bez propojeni; V1 33.56-38.04 bez propojeni; V1 38.04-45.92 bez propojeni | osirele zvuky: ['A1 29.80-38.04', 'A1 38.04-45.92'] | zvuk bez propojeni: -
+s10-razormulti   V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -
+s10-razor-g      V1 6 kusu (rep 0) | OK | osirele zvuky: - | zvuk bez propojeni: -

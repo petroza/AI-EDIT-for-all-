@@ -1,0 +1,22 @@
+a.mp4 stream 0 : paketu S9 400 S10 400 , odlisnych 142 (paket 176-317)
+a.mp4 stream 1 : paketu S9 750 S10 750 , odlisnych 0 
+a11.mp4 stream 0 : paketu S9 400 S10 400 , odlisnych 58 (paket 176-233)
+a11.mp4 stream 1 : paketu S9 750 S10 750 , odlisnych 0 
+a916.mp4 stream 0 : paketu S9 400 S10 400 , odlisnych 58 (paket 176-233)
+a916.mp4 stream 1 : paketu S9 750 S10 750 , odlisnych 0 
+a1080-xdcam.mxf stream 0 : paketu S9 400 S10 400 , odlisnych 0 
+a1080-xdcam.mxf stream 1 : paketu S9 400 S10 400 , odlisnych 0 
+a1080-xdcam.mxf stream 2 : paketu S9 400 S10 400 , odlisnych 0 
+sim1080-xdcam.mxf stream 0 : paketu S9 1148 S10 1148 , odlisnych 0 
+sim1080-xdcam.mxf stream 1 : paketu S9 1148 S10 1148 , odlisnych 0 
+sim1080-xdcam.mxf stream 2 : paketu S9 1148 S10 1148 , odlisnych 0 
+sim-dnxhr.mxf stream 0 : paketu S9 1148 S10 1148 , odlisnych 0 
+sim-dnxhr.mxf stream 1 : paketu S9 1148 S10 1148 , odlisnych 0 
+sim-dnxhr.mxf stream 2 : paketu S9 1148 S10 1148 , odlisnych 0 
+multi1080-xdcam.mxf stream 0 : paketu S9 1252 S10 1252 , odlisnych 0 
+multi1080-xdcam.mxf stream 1 : paketu S9 1252 S10 1252 , odlisnych 0 
+multi1080-xdcam.mxf stream 2 : paketu S9 1252 S10 1252 , odlisnych 0 
+v916.mp4 stream 0 : paketu S9 1259 S10 1259 , odlisnych 202 (paket 85-1258)
+v916.mp4 stream 1 : paketu S9 2359 S10 2359 , odlisnych 2358 (paket 0-2358)
+v916-bez.mp4 stream 0 : paketu S9 1259 S10 1259 , odlisnych 14 (paket 493-506)
+v916-bez.mp4 stream 1 : paketu S9 2359 S10 2359 , odlisnych 2358 (paket 0-2358)

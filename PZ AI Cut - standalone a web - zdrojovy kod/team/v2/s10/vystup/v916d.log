@@ -1,0 +1,53 @@
+{
+ "hned": "[[20,120,123]]",
+ "toasts": [
+  "Na kraji klipu bylo opraveno pár snímků jiného záběru kamery (Ctrl+Z vrátí)."
+ ],
+ "histAdded": [
+  "Overwrite",
+  "Clean up camera-cut leftovers"
+ ],
+ "v1a1Same": true,
+ "V2": [
+  [
+   20.28,
+   23,
+   120.28,
+   "cover",
+   0.2856518086827935,
+   "lmwsoq2wuzbvjn6x"
+  ]
+ ],
+ "A2": [
+  [
+   20.28,
+   23,
+   120.28,
+   "lmwsoq2wuzbvjn6x"
+  ]
+ ],
+ "V1": 5,
+ "A1": 5,
+ "K": [
+  [
+   "prazdna",
+   54
+  ],
+  [
+   "vlozeni 1596",
+   55
+  ],
+  [
+   "vlozeni 1544.4",
+   56
+  ],
+  [
+   "vlozeni 114.88",
+   57
+  ],
+  [
+   "b-roll V2",
+   59
+  ]
+ ]
+}

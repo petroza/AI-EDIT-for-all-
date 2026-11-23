@@ -1,0 +1,5 @@
+vystup-s9-v916-bez.mp4 vs vystup-s10-v916-bez.mp4: snimku 1259/1259 | horni 75 %: prumer 0.32 max 58.04 (sn. 505) | spodni pas: prumer 0.60 max 107.47, snimku s chybou >3: 7
+vystup-s9-v916.mp4 vs vystup-s10-v916.mp4: snimku 1259/1259 | horni 75 %: prumer 0.44 max 55.23 (sn. 505) | spodni pas: prumer 0.63 max 107.60, snimku s chybou >3: 7
+vystup-s9-a.mp4 vs vystup-s10-a.mp4: snimku 400/400 | horni 75 %: prumer 0.05 max 0.31 (sn. 233) | spodni pas: prumer 2.50 max 8.05, snimku s chybou >3: 126
+vystup-s9-a916.mp4 vs vystup-s10-a916.mp4: snimku 400/400 | horni 75 %: prumer 0.07 max 2.96 (sn. 188) | spodni pas: prumer 0.03 max 0.32, snimku s chybou >3: 0
+vystup-s9-a11.mp4 vs vystup-s10-a11.mp4: snimku 400/400 | horni 75 %: prumer 0.03 max 0.32 (sn. 233) | spodni pas: prumer 0.10 max 7.14, snimku s chybou >3: 5

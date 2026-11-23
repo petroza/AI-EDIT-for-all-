@@ -1,0 +1,7 @@
+vystup-s10-v916.mp4 |  I: -14.1 LUFS  Peak: -1.5 dBFS 
+vystup-s10-v916-bez.mp4 |  I: -14.1 LUFS  Peak: -1.5 dBFS 
+vystup-s10-a.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s10-a916.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s10-razor.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s10-razor916.mp4 |  I: -13.9 LUFS  Peak: -1.5 dBFS 
+vystup-s10-razormulti.mp4 |  I: -13.9 LUFS  Peak: -1.4 dBFS 

@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { run, FFMPEG, CACHE, cfg } = require('./media');
-const { clipEnd } = require('./model');
+const { clipEnd, holdOf, vSrc } = require('./model');
 const { dbToGain, uid } = require('./util');
 /** XDCAM HD422 jen ve standardních variantách (kontrolor S1: 1280×720 25p prošlo, vysílání ho nezná). */
 const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 29.97, 50].includes(seq.fps))
@@ -101,6 +101,7 @@ function videoSegments(seq, rs, re) {
     t.clips.forEach((c) => {
       if (c.disabled) return;
       pts.add(c.start); pts.add(clipEnd(c));
+      if (holdOf(c)) pts.add(clipEnd(c) - holdOf(c));
       if (c.vIn && c.vIn.type !== 'cross') pts.add(c.start + c.vIn.dur);
       if (c.vOut) pts.add(clipEnd(c) - c.vOut.dur);
     });
@@ -119,7 +120,9 @@ function videoSegments(seq, rs, re) {
       if (!cross) top = tracks[ti].clips.find((c) => !c.disabled && c.start <= mid && clipEnd(c) > mid) || null;
     }
     const last = segs[segs.length - 1];
-    if (last && ((top && last.clip === top) || (cross && last.cross === cross))) last.b = b;
+    // stejný klip navazuje – jeden úsek; ne přes začátek zopakovaného konce (hold: zdroj tam skočí zpět)
+    const holdAt = top && holdOf(top) ? clipEnd(top) - holdOf(top) : null;
+    if (last && ((top && last.clip === top && !(holdAt !== null && Math.abs(a - holdAt) < 1e-4)) || (cross && last.cross === cross))) last.b = b;
     else segs.push({ a, b, clip: top, cross });
   }
   return segs;
@@ -226,7 +229,7 @@ async function exportSequence(project, seq, opts) {
     if (s.cross) {
       const { L, R, d } = s.cross;
       const mL = mediaOf(L), mR = mediaOf(R);
-      const srcL = L.in + (s.a - L.start), srcR = Math.max(0, R.in + (s.a - R.start));
+      const srcL = vSrc(L, s.a), srcR = Math.max(0, vSrc(R, s.a));
       const off = (s.a - s.cross.a).toFixed(4), D = d.toFixed(4);
       const p = `clip((T+${off})/${D},0,1)`;
       const pL = preroll(srcL), pR = preroll(srcR);
@@ -238,7 +241,7 @@ async function exportSequence(project, seq, opts) {
       await ff(['-f', 'lavfi', '-i', `color=c=black:s=${seq.width}x${seq.height}:r=${fps}`, '-vf', `format=${V.pix}`, '-frames:v', String(frames), ...segOut, file]);
     } else {
       const m = mediaOf(s.clip);
-      const src = s.clip.in + (s.a - s.clip.start);
+      const src = vSrc(s.clip, s.a);
       const p = preroll(src);
       const vf = p.trim + [videoFilter(seq, m, s.clip, V.pix), ...dipFilters(s.clip, s.a, s.b)].join(',');
       await ff(['-ss', p.pre, '-i', m.path, '-frames:v', String(frames), '-vf', vf, ...segOut, file]);

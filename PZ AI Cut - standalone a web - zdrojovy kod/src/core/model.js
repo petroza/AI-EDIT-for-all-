@@ -31,6 +31,12 @@ function newSequence(opts = {}) {
 }
 
 function clipEnd(c) { return c.start + (c.out - c.in); }
+/** „Zopakovaný konec“ klipu (úklid krajů: zbytek cizího záběru na konci sekvence pod řečí): posledních d s obrazu ukáže znovu
+ *  předchozích d s zdroje. Vlastnost klipu, ne samostatný klip (redaktorka S10: kopie zůstávala na ose po smazání / zkrácení
+ *  klipu). Platí, jen dokud se konec klipu nezměnil (hold.out) – žiletka, ořez, Q/W i posun zdroje ji tím samy zruší. */
+function holdOf(c) { return c && c.hold && Math.abs(c.hold.out - c.out) < 1e-6 ? c.hold.d : 0; }
+/** Čas ve zdroji pro OBRAZ klipu v čase sekvence t (zvuk vždy c.in + (t − c.start)). */
+function vSrc(c, t) { const h = holdOf(c); return c.in + (t - c.start) - (h && t >= clipEnd(c) - h - 1e-6 ? h : 0); }
 function clipDur(c) { return c.out - c.in; }
 
 function seqDuration(seq) {
@@ -242,4 +248,4 @@ class Project {
   }
 }
 
-module.exports = { Project, newSequence, newTrack, newClip, clipEnd, clipDur, seqDuration, allClips, sortTrack, r3, EPS };
+module.exports = { Project, newSequence, newTrack, newClip, clipEnd, holdOf, vSrc, clipDur, seqDuration, allClips, sortTrack, r3, EPS };

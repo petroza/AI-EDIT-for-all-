@@ -1,0 +1,8 @@
+vystup-s10-v916-bez.mp4: 1259 snimku, strihy 3.76 20.28 45.88 46.60 | kratke zabery (<13 sn.): zadne
+vystup-s10-v916.mp4: 1259 snimku, strihy 3.76 20.28 45.88 46.60 | kratke zabery (<13 sn.): zadne
+vystup-s9-v916-bez.mp4: 1259 snimku, strihy 3.76 20.00 20.28 45.88 46.60 | kratke zabery (<13 sn.): [('20.00', np.int64(7))]
+vystup-s10-a.mp4: 400 snimku, strihy 1.36 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s10-a916.mp4: 400 snimku, strihy 1.36 2.76 3.48 7.52 12.72 15.12 | kratke zabery (<13 sn.): zadne
+vystup-s10-razor.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s10-razor916.mp4: 1148 snimku, strihy 29.80 33.56 | kratke zabery (<13 sn.): zadne
+vystup-s10-razormulti.mp4: 1252 snimku, strihy 33.00 33.56 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne

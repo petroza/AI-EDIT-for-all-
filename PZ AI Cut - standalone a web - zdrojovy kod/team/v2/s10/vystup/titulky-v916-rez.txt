@@ -1,0 +1,45 @@
+== v916 1.5 6.5
+  S9  A1 kusy: [(0, 16.08)]
+    S9  1.25-2.91 (1.66 s) prostě někoho, / aby nám říkal
+    S9  2.91-4.70 (1.79 s) takový ty / chlácholivý věci.
+    S9  5.73-7.32 (1.59 s) Jí už je / teď dobře.
+  S10 A1 kusy: [(0, 3.76), (3.76, 16.08)]
+    S10 1.25-2.91 (1.66 s) prostě někoho, / aby nám říkal
+    S10 2.91-3.76 (0.85 s) takový ty / chlácholivý věci.
+    S10 5.73-7.32 (1.59 s) Jí už je / teď dobře.
+== v916 44.5 50.4
+  S9  A1 kusy: [(16.08, 45.88), (45.88, 50.36)]
+    S9  43.58-45.08 (1.50 s) člověka chytne / vás za ruku,
+    S9  45.08-45.88 (0.80 s) něco. prostě.
+    S9  46.25-47.53 (1.28 s) Takže to přišlo / úplně,
+    S9  47.53-48.27 (0.74 s) jak my jsme / se rozvěděli,
+    S9  48.27-50.30 (2.03 s) že je nemocná a za / tři týdny byla pryč.
+  S10 A1 kusy: [(16.08, 45.88), (45.88, 46.6), (46.6, 50.36)]
+    S10 43.58-45.08 (1.50 s) člověka chytne / vás za ruku,
+    S10 45.08-45.88 (0.80 s) něco. prostě.
+    S10 45.95-46.60 (0.65 s) Takže to přišlo / úplně,
+    S10 47.33-48.13 (0.80 s) jak my jsme / se rozvěděli,
+    S10 48.13-50.30 (2.17 s) že je nemocná a za / tři týdny byla pryč.
+== a 6.5 13
+  S9  A1 kusy: [(2.76, 7.24), (7.24, 12.72), (12.72, 16.0)]
+    S9  5.15-7.18 (2.03 s) že je nemocná a za tři / týdny byla pryč.
+    S9  7.36-8.84 (1.48 s) Všechno, naprosto všechno,
+    S9  8.84-12.53 (3.69 s) protože moje máma byla / tmel té naší rodiny.
+    S9  12.93-16.00 (3.07 s) a byla to ta nejtěžší / věc v mým životě.
+  S10 A1 kusy: [(2.76, 7.24), (7.24, 7.52), (7.52, 12.72), (12.72, 16.0)]
+    S10 5.15-7.18 (2.03 s) že je nemocná a za tři / týdny byla pryč.
+    S10 7.52-12.53 (5.01 s) Všechno, naprosto všechno, protože / moje máma byla tmel té naší rodiny.
+    S10 12.93-16.00 (3.07 s) a byla to ta nejtěžší / věc v mým životě.
+== a916 6.5 13
+  S9  A1 kusy: [(2.76, 7.24), (7.24, 12.72), (12.72, 16.0)]
+    S9  5.15-7.18 (2.03 s) že je nemocná a za / tři týdny byla pryč.
+    S9  7.36-8.84 (1.48 s) Všechno, / naprosto všechno,
+    S9  8.84-10.26 (1.42 s) protože moje / máma byla
+    S9  10.26-12.53 (2.27 s) tmel té / naší rodiny.
+    S9  12.93-14.82 (1.88 s) a byla to / ta nejtěžší
+  S10 A1 kusy: [(2.76, 7.24), (7.24, 7.52), (7.52, 12.72), (12.72, 16.0)]
+    S10 5.15-7.18 (2.03 s) že je nemocná a za / tři týdny byla pryč.
+    S10 7.52-8.84 (1.32 s) Všechno, / naprosto všechno,
+    S10 8.84-10.26 (1.42 s) protože moje / máma byla
+    S10 10.26-12.53 (2.27 s) tmel té / naší rodiny.
+    S10 12.93-14.82 (1.88 s) a byla to / ta nejtěžší

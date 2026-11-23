@@ -1,0 +1,16 @@
+razor.mp4 vs sim.mp4 lisi se
+razor916.mp4 vs sim916.mp4 lisi se
+razormulti.mp4 vs multi.mp4 lisi se
+razormulti-pcm.mov = pcm-mix.mov BITOVE SHODNE
+razor-g.mp4 vs sim.mp4 lisi se
+razor.mp4 vs sim.mp4 stream 0 : paketu 1148 / 1148 , odlisnych 850 (107-1147)
+razor.mp4 vs sim.mp4 stream 1 : paketu 2149 / 2149 , odlisnych 0 
+razor916.mp4 vs sim916.mp4 stream 0 : paketu 1148 / 1148 , odlisnych 774 (107-1128)
+razor916.mp4 vs sim916.mp4 stream 1 : paketu 2149 / 2149 , odlisnych 0 
+razormulti.mp4 vs multi.mp4 stream 0 : paketu 1252 / 1252 , odlisnych 268 (233-1074)
+razormulti.mp4 vs multi.mp4 stream 1 : paketu 2347 / 2347 , odlisnych 0 
+razor-g.mp4 vs sim.mp4 stream 0 : paketu 1148 / 1148 , odlisnych 850 (107-1147)
+razor-g.mp4 vs sim.mp4 stream 1 : paketu 2149 / 2149 , odlisnych 1951 (187-2148)
+razor-pcm.mov = sim-pcm.mov BITOVE SHODNE
+razor916-pcm.mov = sim916-pcm.mov BITOVE SHODNE
+razor-g-pcm.mov vs sim-pcm.mov lisi se
