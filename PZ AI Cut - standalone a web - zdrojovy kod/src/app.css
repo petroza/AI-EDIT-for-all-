@@ -92,7 +92,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .safe-zones .z-right { right: 0; width: 16%; top: 42%; height: 36%; }
 .safe-zones .z-bottom { left: 0; right: 0; bottom: 0; height: 22%; }
 .safe-zones b { position: absolute; left: 4%; bottom: 23%; font: 700 2.2cqh "Segoe UI", sans-serif; color: rgba(255,170,175,.95); -webkit-text-stroke: 0; }
-.mon-bar .safe-btn { height: 20px; padding: 0 7px; margin-left: 6px; background: #26252f; color: #bbb; border: 1px solid #3a3846; border-radius: 2px; cursor: pointer; font: 600 11px "Segoe UI", sans-serif; display: none; }
+.mon-bar .safe-btn { white-space: nowrap; flex: none; height: 20px; padding: 0 7px; margin-left: 6px; background: #26252f; color: #bbb; border: 1px solid #3a3846; border-radius: 2px; cursor: pointer; font: 600 11px "Segoe UI", sans-serif; display: none; }
 .mon-bar .safe-btn.show { display: inline-block; }
 .mon-bar .safe-btn.on { background: #5b2330; border-color: #b4475a; color: #fff; }
 .caption-overlay.editable span { pointer-events: auto; cursor: text; }
@@ -513,3 +513,6 @@ ol.guide li span { color: #c9c9d2; }
 /* přepínač Zobrazit u nadpisu nahoře; vypnutý nadpis ztlumený (text zůstává) */
 .capstyle .cs-tg { display: inline-flex; align-items: center; gap: 5px; font-weight: 500; font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--text, #ddd); cursor: pointer; }
 .capstyle .cs-off { opacity: .45; }
+
+/* nepropojený klip: přeškrtnutý řetěz (vzhled S11: plný řetěz četl jako „propojeno“) */
+.clip .cl b.unl { text-decoration: line-through; text-decoration-thickness: 2px; opacity: .85; }

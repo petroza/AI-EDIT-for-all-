@@ -77,6 +77,31 @@ function relinkAV(seq) {
   return n;
 }
 
+/** Prolnutí zvuku na střihu (Ctrl+Shift+D, jako Constant Power v Premiere): pravý klip má xIn = délka prolnutí; platí jen se
+ *  sousedem na stopě, který končí přesně na jeho začátku. Oba klipy znějí přes střih: levý d/2 za svůj konec, pravý d/2 před
+ *  svůj začátek (rezerva zdroje), hlasitost cos / sin – bez propadu (střihač z Premiere S11: dřív zeslabení obou konců = −20 dB). */
+function xfIn(tr, c) {
+  if (!(c.xIn > 0) || c.disabled) return 0;
+  return tr.clips.some((x) => x !== c && !x.disabled && Math.abs(clipEnd(x) - c.start) < 1e-3) ? c.xIn : 0;
+}
+function xfOut(tr, c) {
+  const r = tr.clips.find((x) => x !== c && !x.disabled && x.xIn > 0 && Math.abs(x.start - clipEnd(c)) < 1e-3);
+  return r ? r.xIn : 0;
+}
+/** Rozsah, kde klip zní, i s rezervou prolnutí: [start − xIn/2, konec + xOut/2). */
+function audioSpan(tr, c) { return [c.start - xfIn(tr, c) / 2, clipEnd(c) + xfOut(tr, c) / 2]; }
+/** Násobek hlasitosti klipu v čase t (prolnutí cos/sin, roztmívání z ticha fadeIn/fadeOut); 0 mimo rozsah. Bez gainDb. */
+function audioGainAt(tr, c, t) {
+  const di = xfIn(tr, c), dout = xfOut(tr, c), s0 = c.start, e = clipEnd(c);
+  if (t < s0 - di / 2 || t >= e + dout / 2) return 0;
+  let g = 1;
+  if (di && t < s0 + di / 2) g *= Math.sin((Math.PI / 2) * Math.min(1, Math.max(0, (t - (s0 - di / 2)) / di)));
+  else if (!di && c.fadeIn > 0 && t - s0 < c.fadeIn) g *= Math.max(0, (t - s0) / c.fadeIn);
+  if (dout && t >= e - dout / 2) g *= Math.cos((Math.PI / 2) * Math.min(1, Math.max(0, (t - (e - dout / 2)) / dout)));
+  else if (!dout && c.fadeOut > 0 && e - t < c.fadeOut) g *= Math.max(0, (e - t) / c.fadeOut);
+  return g;
+}
+
 /** Navazující kusy zvuku téhož zdroje (žiletka, zvuk rozříznutý spolu s obrazem po výřezu / úklidu krajů) jako jeden úsek:
  *  [{mediaId, start, in, out, clips}] – pro titulky (slova a „střih“ jen tam, kde se zvuk opravdu mění; kontrolor S10:
  *  titulky se lámaly na rozříznutém zvuku – zdvojené slovo, řeč bez titulku). */
@@ -100,7 +125,7 @@ function splitClip(seq, track, clip, t, linkMap) {
   clip.out = cut;
   right.start = t;
   right.in = cut;
-  right.fadeIn = 0;
+  right.fadeIn = 0; right.xIn = 0;
   clip.fadeOut = 0;
   right.vIn = null;   // přechod obrazu zůstává na vnějších krajích, ne na novém řezu
   clip.vOut = null;
@@ -139,7 +164,7 @@ function clearRange(seq, kind, ti, s, e) {
     if (cs < s - h && ce > e + h) {
       const right = splitClip(seq, tr, c, e);
       c.out = c.in + (s - cs);
-      if (right) right.fadeIn = 0;
+      if (right) { right.fadeIn = 0; right.xIn = 0; }
       continue;
     }
     if (cs < s - h) { c.out = c.in + (s - cs); c.fadeOut = 0; c.vOut = null; continue; }
@@ -147,7 +172,7 @@ function clearRange(seq, kind, ti, s, e) {
     const cut = e - cs;
     c.in += cut;
     c.start = e;
-    c.fadeIn = 0;
+    c.fadeIn = 0; c.xIn = 0;
     c.vIn = null;
   }
   sortTrack(tr);
@@ -342,8 +367,8 @@ function editFromSource(seq, media, srcIn, srcOut, at, mode, targets = {}) {
 }
 
 /** Přesun klipů o dt (a o dTrack stop u klipů typu `kind`); cíl se přepíše jako v Premiere. */
-function moveClips(seq, ids, dt, dTrack = 0, kindOfTrackMove = null) {
-  const items = [];
+function moveClips(seq, ids, dt, dTrack = 0, kindOfTrackMove = null, opts = {}) {
+  let items = [];
   for (const id of ids) {
     const f = findClip(seq, id);
     if (f) items.push(f);
@@ -353,7 +378,21 @@ function moveClips(seq, ids, dt, dTrack = 0, kindOfTrackMove = null) {
   const minStart = Math.min(...items.map((x) => x.clip.start));
   if (minStart + dt < 0) dt = -minStart;
   dt = snapT(seq, dt);
-  for (const it of items) it.trackObj.clips.splice(it.trackObj.clips.indexOf(it.clip), 1);
+  // Alt+tažení = kopie (jako Premiere): originály zůstanou, kopie dostanou nová id a nové propojení (střihač z Premiere S11)
+  if (opts.copy) {
+    const lm = new Map();
+    items = items.map((it) => {
+      const c = Object.assign({}, it.clip, { id: uid('c') });
+      if (c.linkId) { if (!lm.has(c.linkId)) lm.set(c.linkId, uid('l')); c.linkId = lm.get(c.linkId); }
+      return Object.assign({}, it, { clip: c });
+    });
+  } else for (const it of items) it.trackObj.clips.splice(it.trackObj.clips.indexOf(it.clip), 1);
+  // Ctrl+tažení = vložení (jako Premiere): vše za místem puštění na odemčených stopách se posune o délku přesouvaných
+  // klipů, nic se nepřepíše (dřív přepsání – klip pod ním zmizel bez varování; střihač z Premiere S11)
+  if (opts.insert) {
+    const maxEnd = Math.max(...items.map((x) => clipEnd(x.clip)));
+    insertSpace(seq, minStart + dt, maxEnd - minStart);
+  }
   for (const it of items) {
     let ti = it.track;
     if (dTrack && it.kind === kindOfTrackMove) ti = Math.max(0, Math.min(seq.tracks[it.kind].length - 1, ti + dTrack));
@@ -392,7 +431,7 @@ function trimEdge(seq, id, edge, t, opts = {}) {
     if (Math.abs(delta) < EPS) return 0;
     if (opts.ripple) {
       const oldEnd = Math.max(...group.map(clipEnd)), st0 = Math.min(...group.map((c) => c.start));
-      for (const c of group) { c.in += delta; c.fadeIn = 0; }
+      for (const c of group) { c.in += delta; c.fadeIn = 0; c.xIn = 0; }
       // začátek zůstává, zbytek se posune o -delta; titulky klipu jdou s ním (zkrácení = odstřižená slova pryč)
       if (!onSpeech(seq, group)) shiftAfter(seq, oldEnd, -delta, { except: new Set(group.map((c) => c.id)) }); // b-roll / hudba: titulky jen za koncem (revize #7)
       else {
@@ -404,7 +443,7 @@ function trimEdge(seq, id, edge, t, opts = {}) {
         shiftAfter(seq, oldEnd, -delta, { except: new Set(group.map((c) => c.id)), noCaps: true });
       }
     } else {
-      for (const c of group) { c.in += delta; c.start += delta; c.fadeIn = 0; }
+      for (const c of group) { c.in += delta; c.start += delta; c.fadeIn = 0; c.xIn = 0; }
     }
   } else {
     delta = t - clipEnd(f.clip);
@@ -449,7 +488,7 @@ function rollEdit(seq, leftId, rightId, d, opts = {}) {
   }
   d = snapT(seq, d);
   if (Math.abs(d) < EPS) return 0;
-  for (const [a, b] of pairs) { a.out += d; b.in += d; b.start += d; a.fadeOut = 0; b.fadeIn = 0; }
+  for (const [a, b] of pairs) { a.out += d; b.in += d; b.start += d; a.fadeOut = 0; b.fadeIn = 0; b.xIn = 0; }
   return d;
 }
 
@@ -654,7 +693,7 @@ function uncaptionedRanges(seq) {
     .filter((r) => !caps.some((k) => Math.min(k.end, r.end) - Math.max(k.start, r.start) > 0.1));
 }
 
-module.exports = { relinkAV, audioRuns, rippleCaptions, topBelow, crossRegionsOf,
+module.exports = { xfIn, xfOut, audioSpan, audioGainAt, relinkAV, audioRuns, rippleCaptions, topBelow, crossRegionsOf,
   fd, snapT, findClip, linked, splitClip, razor, clearRange, placeClip, shiftAfter, insertSpace, extractRange,
   liftRange, removeClips, rippleDeleteGap, editFromSource, moveClips, trimEdge, editPoints, prevEdit, nextEdit,
   rippleTrimToPlayhead, setLinked, addAudioFades, eachTrack, rollEdit, slipClip, clipsFrom,

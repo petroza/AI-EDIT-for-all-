@@ -35,7 +35,7 @@
     'Worker: neběží (spustí se při první úloze)': 'Worker: not running (starts with the first task)',
     'Claude čeká na zadání': 'Claude is waiting for a task', 'Claude připojen': 'Claude connected',
     '👍 díky, uloženo': '👍 thanks, saved', '👎 uloženo – napiš klidně do zadání, co bylo špatně, a spusť znovu': '👎 saved – write what was wrong into the task and run it again',
-    '▶ Otevřít': '▶ Open', 'žádná aktivní sekvence – otevři sekvenci s klipem': 'no active sequence – open a sequence with a clip',
+    '▶ Otevřít': '▶ Open', 'žádná': 'none', 'žádná aktivní sekvence – otevři sekvenci s klipem': 'no active sequence – open a sequence with a clip',
     'žádná aktivní sekvence – otevři sekvenci na timeline': 'no active sequence – open a sequence in the timeline',
     'Ze které sekvence se bude stříhat (aktivní ve Střihátku)': 'The sequence the edit will use (active in the editor)',
     'Titulky do aktivní sekvence': 'Captions for the active sequence', '■ úloha zastavena': '■ task stopped',

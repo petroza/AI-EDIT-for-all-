@@ -173,5 +173,8 @@ body.pz-layout {
 @media (max-height: 640px) {
   .pz-pane { gap: 6px !important; padding-top: 8px !important; }
   .pz-qcard { height: 36px !important; }
-  #prompt { min-height: 48px !important; height: 56px !important; }
+  /* mikrofon v rohu pole nesmí ležet přes text (vzhled S11: „sestřih“ pod ikonou) */
+  /* mikrofon nahoru vedle nadpisu Zadání – v nízkém poli ležel přes text (vzhled S11: „sestřih“ pod ikonou) */
+  #prompt { min-height: 48px !important; height: 60px !important; padding-right: 30px !important; }
+  .pz-mic { top: -2px; bottom: auto; left: auto; right: 0; }
 }

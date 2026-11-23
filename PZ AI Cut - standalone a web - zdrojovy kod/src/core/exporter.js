@@ -9,6 +9,7 @@ const path = require('path');
 const { run, FFMPEG, CACHE, cfg } = require('./media');
 const { clipEnd, holdOf, vSrc } = require('./model');
 const { dbToGain, uid } = require('./util');
+const E = require('./edit');
 /** XDCAM HD422 jen ve standardních variantách (kontrolor S1: 1280×720 25p prošlo, vysílání ho nezná). */
 const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 29.97, 50].includes(seq.fps))
   || (seq.width === 1280 && seq.height === 720 && [50, 59.94].includes(seq.fps));
@@ -212,7 +213,9 @@ async function exportSequence(project, seq, opts) {
   try { const probe = path.join(path.dirname(output), '.pz-write-test-' + process.pid); fs.writeFileSync(probe, ''); fs.unlinkSync(probe); }
   catch (e) { throw new Error(`Cannot write to the folder ${path.dirname(output)} – choose another place to save.`); }
   const vsegs = videoSegments(seq, rs, re);
-  const audioTracks = seq.tracks.audio.filter((t) => !t.muted && t.clips.some((c) => clipEnd(c) > rs && c.start < re));
+  // Solo jako v náhledu: když je některá stopa sólo, exportují se jen sólové (střihač z Premiere S11: export solo ignoroval)
+  const solo = seq.tracks.audio.some((t) => t.solo);
+  const audioTracks = seq.tracks.audio.filter((t) => !t.muted && (!solo || t.solo) && t.clips.some((c) => clipEnd(c) > rs && c.start < re));
   const totalUnits = vsegs.length + audioTracks.reduce((a, t) => a + t.clips.length + 1, 0) + 2;
   let done = 0;
   const tick = (msg) => { done++; if (opts.onProgress) opts.onProgress(Math.min(0.99, done / totalUnits), msg); };
@@ -267,12 +270,28 @@ async function exportSequence(project, seq, opts) {
       // zaokrouhlení začátku kusu (-ss) může na řezu uprostřed řeči lupnout
       const lp = pieces[pieces.length - 1], lc = lp && (lp.endClip || lp.clip);
       if (lc && Math.abs(lp.b - a) < 1e-4 && lc.mediaId === c.mediaId && (lc.gainDb || 0) === (c.gainDb || 0)
-        && !(lc.fadeOut > 0) && !(c.fadeIn > 0) && Math.abs((lc.in + (lp.b - lc.start)) - (c.in + (a - c.start))) < 1e-3) {
+        && !(lc.fadeOut > 0) && !(c.fadeIn > 0) && !E.xfIn(t, c) && Math.abs((lc.in + (lp.b - lc.start)) - (c.in + (a - c.start))) < 1e-3) {
         lp.b = b; lp.endClip = c;
       } else pieces.push({ clip: c, a, b });
       cursor = b;
     }
     if (re - cursor > 1e-4) pieces.push({ silence: re - cursor });
+    // prolnutí zvuku (Ctrl+Shift+D): na střihu A|B s B.xIn = d vznikne kus [T − d/2, T + d/2), kde znějí oba (A do rezervy za
+    // svým koncem, B z rezervy před začátkem) s průběhem konstantního výkonu; d se zkrátí podle rezervy zdroje a délek klipů
+    for (let i = 1; i < pieces.length; i++) {
+      const P = pieces[i - 1], Q = pieces[i];
+      if (P.silence !== undefined || Q.silence !== undefined || !Q.clip || Math.abs(P.b - Q.a) > 1e-4) continue;
+      const A = P.endClip || P.clip, B = Q.clip, T = Q.a;
+      let d = E.xfIn(t, B);
+      if (!d || Math.abs(clipEnd(A) - T) > 1e-3 || Math.abs(B.start - T) > 1e-3) continue;
+      const mA = mediaOf(A);
+      d = Math.min(d, 2 * Math.max(0, ((mA && mA.duration) || Infinity) - A.out), 2 * B.in, P.b - P.a, Q.b - Q.a);
+      if (d < 2 / fps) continue;
+      const h = d / 2;
+      P.b = T - h; Q.a = T + h;
+      pieces.splice(i, 0, { xf: { A, B, d }, a: T - h, b: T + h });
+      i++;
+    }
     const files = [];
     await pool(pieces, 3, async (p, i) => {
       check();
@@ -282,6 +301,17 @@ async function exportSequence(project, seq, opts) {
       const samples = Math.max(1, Math.round(dur * SR));
       const silence = () => ff(['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`, '-af', `atrim=end_sample=${samples}`, '-c:a', 'pcm_s24le', file]);
       if (p.silence !== undefined) { await silence(); tick('audio'); return; }
+      if (p.xf) {
+        const { A, B, d } = p.xf, mA = mediaOf(A), mB = mediaOf(B);
+        const sA = A.in + (p.a - A.start), sB = Math.max(0, B.in + (p.a - B.start));
+        const pre = (g) => `aresample=${SR},aformat=channel_layouts=stereo,volume=${dbToGain(g).toFixed(4)},apad,atrim=end_sample=${samples}`;
+        const inA = mA.hasAudio ? ['-ss', sA.toFixed(4), '-i', mA.path] : ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`];
+        const inB = mB.hasAudio ? ['-ss', sB.toFixed(4), '-i', mB.path] : ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`];
+        await ff([...inA, ...inB, '-filter_complex',
+          `[0:a]${pre(A.gainDb)},afade=t=out:d=${d.toFixed(4)}:curve=qsin[a];[1:a]${pre(B.gainDb)},afade=t=in:d=${d.toFixed(4)}:curve=qsin[b];` +
+          `[a][b]amix=inputs=2:normalize=0,atrim=end_sample=${samples}[o]`, '-map', '[o]', '-ar', String(SR), '-ac', '2', '-c:a', 'pcm_s24le', file]);
+        tick('audio'); return;
+      }
       const c = p.clip, m = mediaOf(c);
       if (!m.hasAudio) { await silence(); tick('audio'); return; }
       const src = c.in + (p.a - c.start);

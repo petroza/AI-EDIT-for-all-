@@ -217,12 +217,13 @@ function createTimeline(app) {
     const sel = app.sel.has(c.id) ? ' sel' : '';
     const m = app.project.mediaById(c.mediaId);
     const name = (c.name || (m && m.name) || '?').replace(/</g, '&lt;');
-    let inner = `<span class="cl">${c.linkId ? '' : '<b title="unlinked">⛓</b> '}${name}${c.gainDb ? ` <i>${c.gainDb > 0 ? '+' : ''}${c.gainDb} dB</i>` : ''}</span>`;
+    let inner = `<span class="cl">${c.linkId ? '' : `<b class="unl" title="${window.TN && window.TN.lang === 'cs' ? 'Nepropojený klip (obraz a zvuk zvlášť)' : 'Unlinked clip'}">⛓</b> `}${name}${c.gainDb ? ` <i>${c.gainDb > 0 ? '+' : ''}${c.gainDb} dB</i>` : ''}</span>`;
     // „fx“ odznak jako v Premiere – zbarvený, když má klip úpravu (vyplnění snímku, hlasitost, prolnutí)
-    const fxOn = (c.kind === 'video' && (c.fit === 'cover' || (c.scale && c.scale !== 1))) || (c.kind === 'audio' && (c.gainDb || c.fadeIn || c.fadeOut));
+    const fxOn = (c.kind === 'video' && (c.fit === 'cover' || (c.scale && c.scale !== 1))) || (c.kind === 'audio' && (c.gainDb || c.fadeIn || c.fadeOut || c.xIn));
     if (w > 34) inner += `<span class="fx${fxOn ? ' on' : ''}" title="${fxOn ? 'Effects applied' : 'Effects'}">fx</span>`;
     if (c.kind === 'audio') {
       if (c.fadeIn) inner += `<div class="fade in" style="width:${Math.max(3, xOf(c.fadeIn))}px"></div>`;
+      if (c.xIn > 0) inner += `<div class="fade in xf" title="Constant Power" style="width:${Math.max(3, xOf(c.xIn / 2))}px"></div>`;
       if (c.fadeOut) inner += `<div class="fade out" style="width:${Math.max(3, xOf(c.fadeOut))}px"></div>`;
     } else if (m && m.thumb && w > 40 && (app.view || {}).thumbs !== false) {
       inner += `<div class="thumbs" style="width:${Math.min(w - 2, 72)}px;background-image:url('${app.clipThumb ? app.clipThumb(c, m) : m.thumbUrl}')"></div>`;
@@ -671,7 +672,9 @@ function createTimeline(app) {
     }
   });
 
+  let lastUp = {};
   window.addEventListener('mouseup', (ev) => {
+    lastUp = { ctrl: ev.ctrlKey, alt: ev.altKey };
     if (!drag) return;
     const d = drag;
     drag = null;
@@ -692,7 +695,9 @@ function createTimeline(app) {
       return;
     }
     if (d.type === 'move' && d.moved && (Math.abs(d.dt) > 1e-6 || d.dTrack)) {
-      app.edit('Move Clips', () => E.moveClips(s, d.ids, d.dt, d.kind === 'video' ? d.dTrack : d.dTrack, d.kind));
+      // jako Premiere: Ctrl při puštění = vložení s posunem, Alt = kopie
+      const ins = !!lastUp.ctrl, cp = !!lastUp.alt;
+      app.edit(cp ? 'Copy Clips' : ins ? 'Insert Clips' : 'Move Clips', () => E.moveClips(s, d.ids, d.dt, d.kind === 'video' ? d.dTrack : d.dTrack, d.kind, { insert: ins, copy: cp }));
     } else if (d.type === 'trim' && d.moved) {
       app.edit(d.ripple ? 'Ripple Edit' : 'Trim', () => E.trimEdge(s, d.clip.id, d.edge, d.t, {
         ripple: d.ripple, unlinked: d.alt || !app.linkedSel, mediaDuration: (id) => (app.project.mediaById(id) || {}).duration || Infinity,

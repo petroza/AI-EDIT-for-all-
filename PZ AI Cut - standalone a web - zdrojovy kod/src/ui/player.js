@@ -269,20 +269,22 @@ class SeqPlayer {
 
     // zvuk (jen při přehrávání dopředu)
     if (this.rate > 0) {
-      const acs = this.audioAt(seq, t);
-      const next = this.audioAt(seq, Math.min(this.duration(), t + LOOKAHEAD)).filter((c) => !acs.includes(c));
-      for (const c of acs) {
+      // znějící klipy i s rezervou prolnutí (Ctrl+Shift+D) – stejná funkce jako export (edit.audioGainAt)
+      const EC = require('../core/edit');
+      const solo = seq.tracks.audio.some((x) => x.solo);
+      const mixAt = (tt) => { const o = []; for (const tr of seq.tracks.audio) { if (tr.muted || (solo && !tr.solo)) continue; for (const c of tr.clips) { if (c.disabled) continue; const [a, b] = EC.audioSpan(tr, c); if (tt >= a - 1e-6 && tt < b - 1e-6) o.push({ c, tr }); } } return o; };
+      const mix = mixAt(t);
+      const acs = mix.map((x) => x.c);
+      const next = mixAt(Math.min(this.duration(), t + LOOKAHEAD)).map((x) => x.c).filter((c) => !acs.includes(c));
+      for (const { c, tr } of mix) {
         const el = this.elementFor(c, 'audio');
         if (!el) continue;
         keep.add(el);
-        const want = c.in + (t - c.start);
+        const want = Math.max(0, c.in + (t - c.start));
         el.playbackRate = Math.min(4, this.rate);
         if (el.paused) { el.currentTime = want; el.play().catch(() => {}); }
         else if (Math.abs(el.currentTime - want) > 0.15) el.currentTime = want;
-        let g = dbToGain(c.gainDb);
-        const into = t - c.start, left = clipEnd(c) - t;
-        if (c.fadeIn > 0 && into < c.fadeIn) g *= Math.max(0, into / c.fadeIn);
-        if (c.fadeOut > 0 && left < c.fadeOut) g *= Math.max(0, left / c.fadeOut);
+        const g = dbToGain(c.gainDb) * EC.audioGainAt(tr, c, t);
         if (el._gain) el._gain.gain.value = g; else el.volume = Math.min(1, g);
       }
       for (const c of next) {
@@ -290,7 +292,8 @@ class SeqPlayer {
         if (!el) continue;
         keep.add(el);
         if (!el.paused) el.pause();
-        if (Math.abs(el.currentTime - c.in) > 0.05 && !el.seeking) el.currentTime = c.in;
+        const st0 = Math.max(0, c.in - EC.xfIn(seq.tracks.audio.find((tr) => tr.clips.includes(c)) || { clips: [] }, c) / 2);
+        if (Math.abs(el.currentTime - st0) > 0.05 && !el.seeking) el.currentTime = st0;
       }
     }
     this.release(keep);

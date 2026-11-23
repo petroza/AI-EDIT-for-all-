@@ -116,7 +116,7 @@ const CS = {
   'bridge not running (AI panel)': 'most neběží (AI panel)', 'Nudge': 'Posun', 'Nudge Clip Selection': 'Posun výběru', 'Up': 'Nahoru', 'Down': 'Dolů',
   'Extend Edit': 'Protáhnout střih', 'Trim In to Playhead': 'Zkrátit začátek k hlavě', 'Trim Out to Playhead': 'Zkrátit konec k hlavě',
   'Increase Clip Volume': 'Zesílit klip', 'Decrease Clip Volume': 'Zeslabit klip', 'Add Track': 'Přidat stopu', 'Razor': 'Žiletka', 'Rename': 'Přejmenovat',
-  'Move Clips': 'Přesun klipů', 'Duplicate Sequence': 'Duplikovat sekvenci', 'Auto Reframe Sequence': 'Auto Reframe sekvence', 'Set to Fill': 'Vyplnit snímek',
+  'Move Clips': 'Přesun klipů', 'Copy Clips': 'Kopie klipů', 'Insert Clips': 'Vložení klipů', 'Duplicate Sequence': 'Duplikovat sekvenci', 'Auto Reframe Sequence': 'Auto Reframe sekvence', 'Set to Fill': 'Vyplnit snímek',
   'Ripple trim (Q)': 'Zkrácení začátku (Q)', 'Ripple trim (W)': 'Zkrácení konce (W)',
   // ---------- AI panel (ovládání z layout.js; obsah panelu je česky už v originále)
   'Settings': 'Nastavení', 'Assistant': 'Asistent', 'Media': 'Média', 'Soundbite': 'Výrok', 'Teaser': 'Upoutávka', 'Short version': 'Zkrácená verze',
@@ -157,6 +157,7 @@ const CS = {
 
 // dynamické texty: [vzor, náhrada | funkce]
 const RULES = [
+  [/^Audio transitions: (\d+)$/, 'Přechody zvuku: $1'],
   // chyby mostu pro MCP / AI (AI tok S8)
   [/^Project item not found: (.+)$/, 'Položka projektu nenalezena: $1'],
   [/^Sequence not found: (.+)$/, 'Sekvence nenalezena: $1'],

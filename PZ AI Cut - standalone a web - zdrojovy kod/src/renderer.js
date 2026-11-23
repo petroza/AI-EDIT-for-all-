@@ -556,13 +556,52 @@ const commands = {
     app.edit('Set to Fill', () => { for (const id of app.sel) { const f = E.findClip(s, id); if (f && f.kind === 'video') f.clip.fit = f.clip.fit === 'cover' ? 'contain' : 'cover'; } });
   },
   gain() { gainDialog(); },
+  /** Ctrl+Shift+D jako Premiere (Constant Power): střih dvou klipů = prolnutí přes střih (xIn, oba znějí z rezervy zdroje),
+   *  volný kraj = roztmívání z ticha / do ticha. S výběrem oba kraje vybraných zvukových klipů, bez výběru střih nejblíž
+   *  hlavě na cílových zvukových stopách. Délka = délka přechodů (jako video, výchozí 1 s). Střihač z Premiere S11: dřív
+   *  6snímkové zeslabení obou konců všech klipů v okolí = propad −20 dB na střihu. */
   audioFade() {
     const s = app.seq(); if (!s) return;
-    const d = 6 / s.fps;
-    let ids = [...app.sel].map((id) => E.findClip(s, id)).filter((x) => x && x.kind === 'audio').map((x) => x.clip);
-    if (!ids.length) ids = s.tracks.audio.flatMap((t) => t.clips.filter((c) => Math.abs(c.start - s.playhead) < 0.5 || Math.abs(clipEnd(c) - s.playhead) < 0.5));
-    if (!ids.length) { app.status('Select audio clips or park the playhead on an edit point'); return; }
-    app.edit('Apply Audio Transition', () => { for (const c of ids) { c.fadeIn = Math.min(d, (c.out - c.in) / 3); c.fadeOut = Math.min(d, (c.out - c.in) / 3); } });
+    const d0 = app.transDur || 1;
+    const dur = (c) => (project.mediaById(c.mediaId) || {}).duration || Infinity;
+    const edges = [];
+    const sel = [...app.sel].map((id) => E.findClip(s, id)).filter((x) => x && x.kind === 'audio');
+    if (sel.length) for (const f of sel) edges.push({ tr: f.trackObj, c: f.clip, side: 'in' }, { tr: f.trackObj, c: f.clip, side: 'out' });
+    else {
+      for (const tr of s.tracks.audio) {
+        if (tr.locked || tr.trackTarget === false) continue;
+        let best = null;
+        for (const c of tr.clips) for (const side of ['in', 'out']) {
+          if (c.disabled) continue;
+          const dd = Math.abs((side === 'in' ? c.start : clipEnd(c)) - s.playhead);
+          if (!best || dd < best.dd - 1e-6) best = { c, side, dd };
+        }
+        if (best) edges.push({ tr, c: best.c, side: best.side });
+      }
+    }
+    if (!edges.length) { app.status('Select audio clips or park the playhead on an edit point'); return; }
+    let n = 0;
+    app.edit('Apply Audio Transition', () => {
+      const done = new Set();
+      for (const { tr, c, side } of edges) {
+        const nb = side === 'in' ? tr.clips.find((x) => x !== c && !x.disabled && Math.abs(clipEnd(x) - c.start) < 1e-3)
+          : tr.clips.find((x) => x !== c && !x.disabled && Math.abs(x.start - clipEnd(c)) < 1e-3);
+        if (nb) {
+          const A = side === 'in' ? nb : c, B = side === 'in' ? c : nb;
+          if (done.has(B.id)) continue;
+          done.add(B.id);
+          // rezerva zdroje za koncem A a před začátkem B, nejvýš délka kratšího klipu
+          const d = Math.min(d0, 2 * Math.max(0, dur(A) - A.out), 2 * B.in, A.out - A.in, B.out - B.in);
+          if (d >= 2 / s.fps) { B.xIn = d; A.fadeOut = 0; B.fadeIn = 0; n++; }
+          else { const f = Math.min(d0 / 2, (A.out - A.in) / 3, (B.out - B.in) / 3); A.fadeOut = f; B.fadeIn = f; n++; } // bez rezervy zdroje: krátké zeslabení
+        } else {
+          const f = Math.min(d0, (c.out - c.in) / 2);
+          if (side === 'in') c.fadeIn = f; else c.fadeOut = f;
+          n++;
+        }
+      }
+    });
+    app.status(n ? `Audio transitions: ${n}` : 'Select audio clips or park the playhead on an edit point');
   },
   exportFrame() { exportFrame(); },
   // přechody obrazu (Ctrl+D výchozí = Cross Dissolve), u vybraných klipů na jejich nejbližším střihu, jinak u playheadu
@@ -596,7 +635,8 @@ const commands = {
     const c = app.program.player.topVideo(s, s.playhead) || app.program.player.audioAt(s, s.playhead)[0];
     if (!c) return;
     const m = project.mediaById(c.mediaId);
-    if (m) app.openSource(m, { at: c.in + (s.playhead - c.start) });
+    // jako Premiere: ve Zdroji In/Out = hranice klipu, hlava na stejném snímku (střihač z Premiere S11)
+    if (m) app.openSource(m, { at: c.in + (s.playhead - c.start), inPoint: c.in, outPoint: c.out });
   },
   toolSelect() { commands.setTool('select'); },
   toolRazor() { commands.setTool('razor'); },
@@ -1934,7 +1974,7 @@ async function captionsFromTranscript() {
   if (!tr0) { app.toast(LL('The sequence has no clips with sound.', 'Sekvence nemá klipy se zvukem.')); return; }
   const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const names = [...new Set(tr0.clips.map((c) => (project.mediaById(c.mediaId) || {}).name).filter(Boolean))];
-  const nSeg = tr0.clips.filter((c) => !c.disabled).length;
+  const nSeg = E.audioRuns(tr0.clips).length; // navazující kusy téhož zdroje = jeden úsek (vzhled S11: „6 úseků“ místo 3)
   const vertical = s.height > s.width * 1.05, square = Math.abs(s.height - s.width) <= s.width * 0.05;
   const fmtName = vertical ? (s.height / s.width > 1.5 ? LL('vertical 9:16', 'na výšku 9:16') : LL('vertical 4:5', 'na výšku 4:5')) : square ? LL('square 1:1', 'čtverec 1:1') : LL('landscape 16:9', 'na šířku 16:9');
   let hl = !(s.width > s.height * 1.2);

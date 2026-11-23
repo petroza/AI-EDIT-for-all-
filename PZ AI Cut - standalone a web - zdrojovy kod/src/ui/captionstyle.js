@@ -59,7 +59,8 @@ function openCaptionStyle(app, focusTitle) {
     box.querySelector('input[data-t=size]').value = ti.size || 1;
     if (document.activeElement !== titleIn) titleIn.value = ti.text || '';
     const on = box.querySelector('.cs-title-on');
-    on.checked = !ti.off; on.disabled = !String(ti.text || '').trim();
+    const hasT = !!String(ti.text || '').trim();
+    on.checked = hasT && !ti.off; on.disabled = !hasT; on.parentElement.classList.toggle('cs-off', !hasT);
     titleIn.classList.toggle('cs-off', !!ti.off); box.querySelector('input[data-t=size]').closest('.cs-row').classList.toggle('cs-off', !!ti.off);
     box.querySelector('input[data-k=box]').checked = !!st.box;
     box.querySelector('input[data-k=highlight]').checked = !!st.highlight;
@@ -131,7 +132,7 @@ function openCaptionStyle(app, focusTitle) {
   tsz.oninput = () => setTitle('size', Number(tsz.value));
   tsz.onchange = commit;
   // psaní do vypnutého nadpisu ho zase zapne (jinak by nebylo vidět, co se píše)
-  titleIn.oninput = () => { if (ti.off) ti.off = false; setTitle('text', titleIn.value); };
+  titleIn.oninput = () => { if (!begin()) return; ti.off = false; setTitle('text', titleIn.value); };
   titleIn.onchange = commit;
   box.querySelector('.cs-title-on').onchange = (e) => { setTitle('off', !e.target.checked); commit(); };
   titleIn.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); titleIn.blur(); } };

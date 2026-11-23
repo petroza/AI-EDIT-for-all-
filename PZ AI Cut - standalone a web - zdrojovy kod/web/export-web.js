@@ -152,9 +152,11 @@ async function mixBlock(project, seq, t0, n) {
   const solo = seq.tracks.audio.some((t) => t.solo);
   for (const tr of seq.tracks.audio) {
     if (tr.muted || (solo && !tr.solo)) continue;
+    const EC = require('../src/core/edit');
     for (const c of tr.clips) {
       if (c.disabled) continue;
-      const cs = Math.max(c.start, t0), ce = Math.min(clipEnd(c), t1);
+      const [sa, sb] = EC.audioSpan(tr, c); // i rezerva prolnutí (Ctrl+Shift+D)
+      const cs = Math.max(sa, t0, c.start - c.in), ce = Math.min(sb, t1);
       if (ce <= cs) continue;
       const m = project.mediaById(c.mediaId);
       const file = m && vfs.getFile(m.path);
@@ -167,10 +169,7 @@ async function mixBlock(project, seq, t0, n) {
       const g0 = dbToGain(c.gainDb || 0);
       for (let k = 0; k < cnt; k++) {
         const t = cs + k / SR;
-        let g = g0;
-        const into = t - c.start, left = clipEnd(c) - t;
-        if (c.fadeIn > 0 && into < c.fadeIn) g *= Math.max(0, into / c.fadeIn);
-        if (c.fadeOut > 0 && left < c.fadeOut) g *= Math.max(0, left / c.fadeOut);
+        const g = g0 * EC.audioGainAt(tr, c, t);
         const x = k * ratio, i = Math.floor(x), f = x - i;
         const a0 = ch0[i] || 0, a1 = ch0[i + 1] !== undefined ? ch0[i + 1] : a0;
         const b0 = ch1[i] || 0, b1 = ch1[i + 1] !== undefined ? ch1[i + 1] : b0;
