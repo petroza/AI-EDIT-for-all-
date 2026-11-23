@@ -49,6 +49,9 @@ const app = {
 
   status(msg, err) { const el = $('status'); el.textContent = msg || 'Ready'; el.classList.toggle('err', !!err); },
   toast(msg, err) {
+    // důležitá hláška (obnovené změny) drží 9 s – další počká, až dočte (vzhled S7: přepsala ji hláška o offline médiu)
+    if (app._toastHold > Date.now()) { const w = app._toastHold - Date.now() + 100; setTimeout(() => app.toast(msg, err), w); return; }
+    if (/^Recovered|^Obnoven/.test(String(msg))) app._toastHold = Date.now() + 9000;
     const el = $('toast');
     el.textContent = msg;
     el.className = 'toast show' + (err ? ' err' : '');
@@ -149,7 +152,10 @@ const app = {
       relinked.push(old.name);
     }
     if (relinked.length) project.emit('media');
-    if (relinked.length) { app.toast(`Media relinked: ${relinked.join(', ')}`); app.timeline.render(); app.program.refresh(); app.projectPanel.render(); }
+    if (relinked.length) {
+      app.toast(`Media relinked: ${relinked.join(', ')}`); app.timeline.render(); app.program.refresh(); app.projectPanel.render();
+      if (app.source.media) app.source.open(app.source.media); // monitor Zdroj načte nový soubor (vzhled S7: dál „Médium offline“)
+    }
     app.status(`Imported: ${out.filter((x) => !x.error).length}`);
     app.projectPanel.render();
     return out;
@@ -479,7 +485,7 @@ const commands = {
     if (app.gapSel) return commands.delete();
     if (app.sel.size) {
       app.edit('Ripple Delete', () => E.removeClips(s, [...app.sel], true));
-      if (E.removeClips.blocked) app.toast('The gap stays open: another clip lies across it (B-roll, music). To remove the part from all tracks use Extract (I and O around it, then \').', true);
+      if (E.removeClips.blocked) app.toast('The gap stays open: another clip lies across it (B-roll, music). To remove the part from all tracks use Extract (I and O around it, then the apostrophe key).', true);
     }
   },
   selectAll() { const s = app.seq(); if (!s) return; E.eachTrack(s, (t) => t.clips.forEach((c) => app.sel.add(c.id))); app.timeline.render(); },
@@ -1286,7 +1292,7 @@ function exportDialog() {
     {
       const offl = new Set();
       for (const k of ['video', 'audio']) for (const t of s.tracks[k]) for (const c of t.clips) { const m = project.mediaById(c.mediaId); if (m && m.missing) offl.add(m.name); }
-      if (offl.size) { const el = b.querySelector('#exMsg'); el.textContent = `Media offline: ${[...offl].join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`; el.style.color = 'var(--danger, #e5484d)'; }
+      if (offl.size) { const el = b.querySelector('#exMsg'); el.textContent = `Media offline: ${[...offl].join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`; el.style.color = 'var(--danger, #e5484d)'; }
     }
     b.querySelector('#exFmt').onchange = () => {
       fmtInfo();
@@ -1313,7 +1319,7 @@ function exportDialog() {
       if (!out) return;
       // existující soubor nepřepsat bez dotazu (redaktorka S4)
       if (!media.WEB && fs.existsSync(out)) {
-        const q = await ipcRenderer.invoke('dialog', 'message', { type: 'question', buttons: ['Replace', 'Cancel'], defaultId: 1, cancelId: 1, message: `The file ${path.basename(out)} already exists.`, detail: 'Do you want to replace it?' });
+        const q = await ipcRenderer.invoke('dialog', 'message', { type: 'question', buttons: ['Replace', 'Cancel'], defaultId: 1, cancelId: 1, noLink: true, message: `The file ${path.basename(out)} already exists.`, detail: 'Do you want to replace it?' });
         if (q.response !== 0) return;
       }
       settings.lastExportDir = path.dirname(out); settings.encoder = b.querySelector('#exEnc').value;
@@ -1423,7 +1429,7 @@ function loadProjectFile(p, asUntitled, data0) {
   renderTabs();
   updateTitle();
   const miss = project.media.filter((m) => m.missing);
-  if (miss.length && !media.WEB) setTimeout(() => { app.toast(`Media offline: ${miss.map((m) => m.name).join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`, true); if (app.program && app.program.ui) app.program.ui(); }, 400);
+  if (miss.length && !media.WEB) setTimeout(() => { app.toast(`Media offline: ${miss.map((m) => m.name).join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`, true); if (app.program && app.program.ui) app.program.ui(); }, 400);
 }
 async function openProjectDialog() {
   if (!(await confirmDiscard())) return;

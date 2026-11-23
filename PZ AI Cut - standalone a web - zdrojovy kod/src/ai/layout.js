@@ -92,6 +92,8 @@
     var queue = $('queue'); if (queue) A.appendChild(queue);
     function heroState() { var has = out && out.children.length > 0; hero.style.display = has ? 'none' : ''; if (out) out.style.display = has ? '' : 'none'; }
     if (out) new MutationObserver(heroState).observe(out, { childList: true });
+    // nízké okno (výpis je pod Spustit): nový řádek výpisu → posunout panel, ať je vidět (vzhled S7)
+    if (out) new MutationObserver(function () { if (window.innerHeight <= 700 && A.scrollHeight > A.clientHeight) { var r = out.getBoundingClientRect(); if (r.top > window.innerHeight - 40) out.scrollIntoView({ block: 'nearest' }); } }).observe(out, { childList: true });
     heroState();
 
     // karty rychlých akcí – klik na původní tlačítka (vyplní zadání a délku)

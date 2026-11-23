@@ -1,0 +1,21 @@
+01:06:46 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:06:46 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:06:56 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:09 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:07:09 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:09 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:35 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:07:35 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:35 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:58 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:07:58 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:07:58 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:07 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:08:07 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:07 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:14 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:08:14 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:14 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:15 warning: waveform ffmpeg exited with code 4294967294: [in#0 @ 000002bc02a12d00] Error opening input: No such file or directory | Error opening input file C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4. | Error opening input files: No such file or directory
+01:08:15 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4
+01:08:15 log-error: Failed to load resource: net::ERR_FILE_NOT_FOUND file:///C:/Users/Petr/AppData/Local/Temp/pz-s7-ui-media/offline-cs1366.mp4

@@ -204,7 +204,7 @@ async function exportSequence(project, seq, opts) {
     const m = mediaOf(c);
     if (!m || m.missing || !fs.existsSync(m.path)) offline.add(m ? m.name : '?');
   }
-  if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Find it again (File → Import) or remove the clip.`);
+  if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`);
   // zápis do cílové složky ověřit hned (vzhled S3: „Permission denied“ až po 60 % renderu)
   try { const probe = path.join(path.dirname(output), '.pz-write-test-' + process.pid); fs.writeFileSync(probe, ''); fs.unlinkSync(probe); }
   catch (e) { throw new Error(`Cannot write to the folder ${path.dirname(output)} – choose another place to save.`); }

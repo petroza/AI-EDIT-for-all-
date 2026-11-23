@@ -90,10 +90,12 @@ class SeqPlayer {
 
   /* ---------- zásoba prvků ---------- */
   elementFor(clip, kind) {
-    let el = this.pool.find((e) => e._clipId === clip.id && e._kind === kind);
-    if (el) return el;
     const m = this.project.mediaById(clip.mediaId);
     const file = m && importer.playPath(m);
+    let el = this.pool.find((e) => e._clipId === clip.id && e._kind === kind);
+    // prvek klipu se starou cestou (médium znovu připojené na jiný soubor) uvolnit – jinak zůstane černý obraz (vzhled S7)
+    if (el && file && el._url !== pathToFileURL(file).href) { el._clipId = null; el = null; }
+    if (el) return el;
     if (!file) return null;
     const url = pathToFileURL(file).href;
     el = this.pool.find((e) => !e._clipId && e._url === url && e._kind === kind) || this.pool.find((e) => !e._clipId && e._kind === kind && this.pool.length > 10);
