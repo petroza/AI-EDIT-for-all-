@@ -178,7 +178,15 @@ const app = {
     if (s && (!s.zoom || wasEmpty)) app.timeline.zoomFit();
     if (s && wasEmpty) autoFace(s, m);
     // b-roll vložený do V2+ přes jiný obraz: zbytek cizího záběru na jeho kraji odstřihnout hned (kontrolor S6), Ctrl+Z vrátí
-    else if (s && m.hasVideo && window.__pzEdgeShots) {
+    else if (s && m.hasVideo && !app._transcriptInsert && m.width / m.height > s.width / s.height + 0.02 && window.__pzReframeHere) {
+      // širší záběr vložený do sekvence na výšku (b-roll přetažením): výřez podle obličeje jen pro vložené klipy (kontrolor S8)
+      const ids = new Set([...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video'; }));
+      if (ids.size) {
+        const h0 = project.history.length;
+        const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); }; // jedno Ctrl+Z vrátí vložení i výřez
+        window.__pzReframeHere(s, ids).then(() => { merge(); app.program.refresh(); }).catch(() => merge());
+      }
+    } else if (s && m.hasVideo && window.__pzEdgeShots) {
       const ids = [...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video' && f.track > 0; });
       if (ids.length) window.__pzEdgeShots(s, { only: ids }).then((r) => { if (r && r.merged) { app.toast(LL('A few frames of another camera shot at the B-roll edge were trimmed (Ctrl+Z undoes it).', 'Na kraji b-rollu bylo odstřiženo pár snímků jiného záběru kamery (Ctrl+Z vrátí).')); app.timeline.render(); app.program.refresh(); } }).catch(() => {});
     }
@@ -198,7 +206,8 @@ const app = {
     if (mode === 'start') p = { at: 0, where: 'start' };
     if (mode === 'end') { let end = 0; for (const k of ['video', 'audio']) for (const tr of s.tracks[k]) for (const c of tr.clips) end = Math.max(end, c.start + (c.out - c.in)); p = { at: end, where: 'end' }; }
     const before = new Set(s.tracks.video.flatMap((tr) => tr.clips.map((c) => c.id)));
-    app.dropMedia(m, a, b, p.at, true, {});
+    app._transcriptInsert = true; // výřez podle obličeje si řeší vkládání z Přepisu samo (níž), dropMedia ho nespouští
+    try { app.dropMedia(m, a, b, p.at, true, {}); } finally { app._transcriptInsert = false; }
     app.setPlayhead(p.at + (b - a));
     // sekvence na výšku (9:16, 4:5, 1:1) ze širšího záběru: přidaný úsek dostane výřez podle obličeje jako zbytek (kolo 8 –
     // „Přidat na konec“ ve 4:5 nechal středový výřez s prázdným celkem); jinak jen úklid zbytků záběru na krajích
@@ -1761,7 +1770,9 @@ function autoFace(s, m) {
   }
   if (!s || !m || !m.hasVideo || !(s.height > s.width) || !(m.width > m.height) || !window.__pzReframeHere) return;
   app.status(LL('Crop follows the face…', 'Výřez podle obličeje…'));
-  window.__pzReframeHere(s).then(() => { app.status(''); app.program.refresh(); }).catch(() => app.status(''));
+  const h0 = project.history.length; // jedno Ctrl+Z vrátí vložení i výřez (jako přetažení do sekvence na výšku)
+  const merge = () => { if (project.history.length > h0) project.history.splice(h0, project.history.length - h0); };
+  window.__pzReframeHere(s).then(() => { merge(); app.status(''); app.program.refresh(); }).catch(() => { merge(); app.status(''); });
 }
 /** Název projektu pro soubor: „Bez názvu“ v češtině místo Untitled. */
 function projBaseName() { const n = project.name || 'Untitled'; return n === 'Untitled' && TN.lang === 'cs' ? 'Bez názvu' : n; }
