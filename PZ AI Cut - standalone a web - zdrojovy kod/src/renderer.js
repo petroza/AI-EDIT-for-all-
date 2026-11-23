@@ -166,6 +166,11 @@ const app = {
     });
     if (s && (!s.zoom || wasEmpty)) app.timeline.zoomFit();
     if (s && wasEmpty) autoFace(s, m);
+    // b-roll vložený do V2+ přes jiný obraz: zbytek cizího záběru na jeho kraji odstřihnout hned (kontrolor S6), Ctrl+Z vrátí
+    else if (s && m.hasVideo && window.__pzEdgeShots) {
+      const ids = [...app.sel].filter((id) => { const f = E.findClip(s, id); return f && f.kind === 'video' && f.track > 0; });
+      if (ids.length) window.__pzEdgeShots(s, { only: ids }).then((r) => { if (r && r.merged) { app.toast(LL('A few frames of another camera shot at the B-roll edge were trimmed (Ctrl+Z undoes it).', 'Na kraji b-rollu bylo odstřiženo pár snímků jiného záběru kamery (Ctrl+Z vrátí).')); app.timeline.render(); app.program.refresh(); } }).catch(() => {});
+    }
   },
 
   /** Vložení vybraného úseku z Přepisu (kolo 5, B1): jen na hranici klipů – hlava u hranice (±0,5 s) → tam, jinak na konec
@@ -1044,14 +1049,14 @@ if (!media.WEB) {
     });
   } catch (e) { console.warn('still frames', e.message); }
   // zbytky jiného záběru na krajích klipů (16:9 vložení, AI sestřih, Auto Reframe) – jako web (kolo 7/8, kontrolor S1)
-  window.__pzEdgeShots = (s) => {
+  window.__pzEdgeShots = (s, opts) => {
     const RF = require('../web/ai/reframe');
     const files = new Map();
     return RF.fixEdgeShots(app, s, (m) => {
       const p = importer.playPath(m) || m.path;
       if (!files.has(p)) files.set(p, new RF.FsFile(p));
       return files.get(p);
-    });
+    }, () => {}, opts || {});
   };
   window.__pzReframe = async (src, num, den, W, H) => {
     const RF = require('../web/ai/reframe');

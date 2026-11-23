@@ -428,9 +428,26 @@ function syncRepeats(seq) {
     if (q) for (const k of ['posX', 'posY', 'scale', 'fit']) c[k] = q[k];
   }
 }
-async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
+async function fixEdgeShots(app, seq, fileOf, progress = () => {}, opts = {}) {
   const p = app.project;
   syncRepeats(seq); // Auto Reframe ve standalone (ffmpeg + OpenCV) hledá obličej i v zopakovaném kousku
+  const only = opts.only ? new Set(opts.only) : null;
+  // Auto Reframe rozřízne b-roll na V2 na střihu kamery – zbytek kratší než MIN_SHOT na kraji skupiny klipů (vlevo/vpravo
+  // nic na stejné stopě, pod ním spodní stopa) by bleskl s vlastním výřezem (kontrolor S6: 7 snímků, posX 0,752 × 0,286)
+  const fd0 = 1 / (seq.fps || 25), tol0 = 0.5 * fd0;
+  const shortEdge = [];
+  seq.tracks.video.forEach((tr, ti) => {
+    if (ti === 0) return;
+    for (const c of tr.clips) {
+      if (c.out - c.in >= MIN_SHOT || (only && !only.has(c.id))) continue;
+      const prev = tr.clips.find((x) => x !== c && Math.abs(clipEnd(x) - c.start) < tol0);
+      const next = tr.clips.find((x) => x !== c && Math.abs(x.start - clipEnd(c)) < tol0);
+      if ((!prev && next && next.mediaId === c.mediaId) || (!next && prev && prev.mediaId === c.mediaId)) {
+        if (E.topBelow(seq, ti, c.start + tol0)) shortEdge.push({ tr, c });
+      }
+    }
+  });
+  if (shortEdge.length) p.edit('Clean up camera-cut leftovers', () => { for (const { tr, c } of shortEdge) tr.clips = tr.clips.filter((x) => x !== c); });
 
   const plan = [];
   const srcs = new Map();
@@ -438,6 +455,7 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
     for (const track of seq.tracks.video) {
       for (const clip of track.clips) {
         const m = p.mediaById(clip.mediaId);
+        if (only && !only.has(clip.id)) continue;
         if (!m || !m.hasVideo || !m.width || clip.out - clip.in < 2 * MIN_SHOT + 0.2) continue;
         let src = srcs.get(m.id);
         if (!src) { src = await VideoSource.open(fileOf(m)); srcs.set(m.id, src); }
@@ -456,14 +474,15 @@ async function fixEdgeShots(app, seq, fileOf, progress = () => {}) {
   } finally { for (const s of srcs.values()) s.close(); }
   progress('', 1);
   const todo = plan.filter((e) => e.lead || e.tail || e.head || e.foot || e.footExt || e.footRepeat || e.cutHead || e.cutTail);
-  if (!todo.length) return { merged: 0 };
+  if (!todo.length) return { merged: shortEdge.length };
   p.edit('Clean up camera-cut leftovers', () => {
     for (const e of todo) {
       if (e.head) trimSeqHead(seq, e.head.d);
       if (e.foot) trimSeqFoot(seq, e.clip, e.foot.d);
       if (e.footExt) extendSeqFoot(seq, e.clip, e.footExt.ext);
-      if (e.cutHead) { e.clip.in += e.cutHead.d; e.clip.start += e.cutHead.d; e.clip.linkId = null; }
-      if (e.cutTail) { e.clip.out -= e.cutTail.d; e.clip.linkId = null; }
+      const linkedA = (c) => (c.linkId ? seq.tracks.audio.flatMap((t) => t.clips).filter((a) => a.linkId === c.linkId && Math.abs(a.start - c.start) < 0.02 && Math.abs(a.out - c.out) < 0.02) : []);
+      if (e.cutHead) { for (const x of [e.clip, ...linkedA(e.clip)]) { x.in += e.cutHead.d; x.start += e.cutHead.d; } }
+      if (e.cutTail) { for (const x of [e.clip, ...linkedA(e.clip)]) x.out -= e.cutTail.d; }
       if (e.footRepeat) {
         const { d } = e.footRepeat, c = e.clip;
         for (const tr of seq.tracks.audio) for (const a of tr.clips) if (c.linkId && a.linkId === c.linkId) a.linkId = null;
