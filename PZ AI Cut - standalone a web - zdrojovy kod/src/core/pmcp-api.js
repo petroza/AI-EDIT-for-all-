@@ -85,7 +85,7 @@ function createApi(project, hooks = {}) {
     return {
       name: project.name, path: project.path || '',
       sequences: project.sequences.map((s) => ({ name: s.name, sequenceID: s.id, duration: r3(seqDuration(s)) })),
-      activeSequence: a ? { name: a.name, sequenceID: a.id } : null,
+      activeSequence: a ? { name: a.name, sequenceID: a.id, width: a.width, height: a.height } : null,
     };
   };
 
