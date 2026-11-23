@@ -11,8 +11,8 @@ const { clipEnd, holdOf, holdInOf, vSrc } = require('./model');
 const { dbToGain, uid } = require('./util');
 const E = require('./edit');
 /** XDCAM HD422 jen ve standardních variantách (kontrolor S1: 1280×720 25p prošlo, vysílání ho nezná). */
-const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 29.97, 50].includes(seq.fps))
-  || (seq.width === 1280 && seq.height === 720 && [50, 59.94].includes(seq.fps));
+const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 50].includes(seq.fps))
+  || (seq.width === 1280 && seq.height === 720 && seq.fps === 50); // 29,97 / 59,94 ztrácelo snímky a mělo vadný index MXF (formáty S12)
 /** fps jako výraz ffmpeg (29,97 = 30000/1001 – desetinné číslo by se po snímcích rozjíždělo). */
 const fpsExpr = (f) => (Math.abs(f - Math.round(f)) > 0.001 ? `${Math.round(f) * 1000}/1001` : String(Math.round(f)));
 
@@ -47,7 +47,7 @@ function videoCodec(fmt, seq, encoder) {
     };
     case 'xdcam': {
       if (!xdcamOk(seq)) {
-        throw new Error(`XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings).`);
+        throw new Error(`XDCAM HD422 needs 1920×1080 at 25/50 fps or 1280×720 at 50 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings).`);
       }
       return {
         pix: 'yuv422p', seg: 'ts',
@@ -66,6 +66,13 @@ function videoCodec(fmt, seq, encoder) {
   }
 }
 
+/** Vstup obrazu: obrázek ve smyčce (formáty S12: PNG = 1 snímek, JPG pád), jinak hledání s předstihem. */
+function vIn(m, p) { return m.still ? ['-loop', '1', '-framerate', '25', '-i', m.path] : ['-ss', p.pre, '-i', m.path]; }
+/** Zvuk zdroje jako filtr: 2× mono (kamera, MXF) spojit do sterea (formáty S12: 2. stopa zmizela). */
+function aSrc(m, i) { return m.audioStreams >= 2 && m.audioChannels === 1 ? `[${i}:a:0][${i}:a:1]amerge=inputs=2,` : `[${i}:a]`; }
+/** Přesné hledání ve zvuku: rychle na 3 s před, pak dekódováním na vzorek (formáty S12: MP3 15–20 ms ticha na začátku
+ *  kusu, AAC posun 21 ms – kodér má předstih, který hledání na vstupu nezapočítá). */
+function aSeek(src, p) { const pre = Math.max(0, src - 3); return { args: ['-ss', pre.toFixed(4), '-i', p], trim: `atrim=start=${(src - pre).toFixed(6)},asetpts=PTS-STARTPTS,` }; }
 function videoFilter(seq, media, clip, pix = 'yuv420p') {
   const W = seq.width, H = seq.height;
   const iw = media.width || W, ih = media.height || H;
@@ -75,7 +82,8 @@ function videoFilter(seq, media, clip, pix = 'yuv420p') {
   const cw = Math.min(W, sw), ch = Math.min(H, sh);
   const x = Math.round(Math.max(0, (sw - cw) / 2 * (1 + (clip.posX || 0))));
   const y = Math.round(Math.max(0, (sh - ch) / 2 * (1 + (clip.posY || 0))));
-  return `fps=${seq.fps},scale=${sw}:${sh}:flags=bicubic,crop=${cw}:${ch}:${x}:${y},pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=${pix}`;
+  // prokládaný zdroj (1080i): odstranit prokládání (formáty S12: hřebeny v exportu)
+  return `${media.interlaced ? 'bwdif=0:-1:0,' : ''}fps=${seq.fps},scale=${sw}:${sh}:flags=bicubic,crop=${cw}:${ch}:${x}:${y},pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2:black,setsar=1,format=${pix}`;
 }
 
 /** Oblasti Cross Dissolve na stopě: [{a, b, L, R, d}]. */
@@ -242,8 +250,8 @@ async function exportSequence(project, seq, opts) {
       const srcL = vSrc(L, s.a), srcR = Math.max(0, vSrc(R, s.a));
       const off = (s.a - s.cross.a).toFixed(4), D = d.toFixed(4);
       const p = `clip((T+${off})/${D},0,1)`;
-      const pL = preroll(srcL), pR = preroll(srcR);
-      await ff(['-ss', pL.pre, '-i', mL.path, '-ss', pR.pre, '-i', mR.path,
+      const pL = mL.still ? { pre: '0', trim: '' } : preroll(srcL), pR = mR.still ? { pre: '0', trim: '' } : preroll(srcR);
+      await ff([...vIn(mL, pL), ...vIn(mR, pR),
         '-filter_complex', `[0:v]${pL.trim}${videoFilter(seq, mL, L, V.pix)},setpts=PTS-STARTPTS[a];[1:v]${pR.trim}${videoFilter(seq, mR, R, V.pix)},setpts=PTS-STARTPTS[b];` +
           `[a][b]blend=all_expr='A*(1-${p})+B*${p}'[v]`,
         '-map', '[v]', '-frames:v', String(frames), ...segOut, file]);
@@ -252,9 +260,9 @@ async function exportSequence(project, seq, opts) {
     } else {
       const m = mediaOf(s.clip);
       const src = vSrc(s.clip, s.a);
-      const p = preroll(src);
+      const p = m.still ? { pre: '0', trim: '' } : preroll(src);
       const vf = p.trim + [videoFilter(seq, m, s.clip, V.pix), ...dipFilters(s.clip, s.a, s.b)].join(',');
-      await ff(['-ss', p.pre, '-i', m.path, '-frames:v', String(frames), '-vf', vf, ...segOut, file]);
+      await ff([...vIn(m, p), '-frames:v', String(frames), '-vf', vf, ...segOut, file]);
     }
     tick('video');
   });
@@ -312,10 +320,11 @@ async function exportSequence(project, seq, opts) {
         const { A, B, d } = p.xf, mA = mediaOf(A), mB = mediaOf(B);
         const sA = A.in + (p.a - A.start), sB = Math.max(0, B.in + (p.a - B.start));
         const pre = (g) => `aresample=${SR},aformat=channel_layouts=stereo,volume=${dbToGain(g).toFixed(4)},apad,atrim=end_sample=${samples}`;
-        const inA = mA.hasAudio ? ['-ss', sA.toFixed(4), '-i', mA.path] : ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`];
-        const inB = mB.hasAudio ? ['-ss', sB.toFixed(4), '-i', mB.path] : ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`];
+        const kA = mA.hasAudio ? aSeek(sA, mA.path) : { args: ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`], trim: '' };
+        const kB = mB.hasAudio ? aSeek(sB, mB.path) : { args: ['-f', 'lavfi', '-i', `anullsrc=r=${SR}:cl=stereo`], trim: '' };
+        const inA = kA.args, inB = kB.args;
         await ff([...inA, ...inB, '-filter_complex',
-          `[0:a]${pre(A.gainDb)},afade=t=out:d=${d.toFixed(4)}:curve=qsin[a];[1:a]${pre(B.gainDb)},afade=t=in:d=${d.toFixed(4)}:curve=qsin[b];` +
+          `${mA.hasAudio ? aSrc(mA, 0) : '[0:a]'}${kA.trim}${pre(A.gainDb)},afade=t=out:d=${d.toFixed(4)}:curve=qsin[a];${mB.hasAudio ? aSrc(mB, 1) : '[1:a]'}${kB.trim}${pre(B.gainDb)},afade=t=in:d=${d.toFixed(4)}:curve=qsin[b];` +
           `[a][b]amix=inputs=2:normalize=0,atrim=end_sample=${samples}[o]`, '-map', '[o]', '-ar', String(SR), '-ac', '2', '-c:a', 'pcm_s24le', file]);
         tick('audio'); return;
       }
@@ -327,7 +336,8 @@ async function exportSequence(project, seq, opts) {
       const ce = p.endClip || c;
       if (ce.fadeOut > 0 && Math.abs(p.b - clipEnd(ce)) < 1e-3) f.push(`afade=t=out:st=${Math.max(0, dur - ce.fadeOut).toFixed(4)}:d=${ce.fadeOut.toFixed(4)}`);
       f.push('apad', `atrim=end_sample=${samples}`);
-      await ff(['-ss', src.toFixed(4), '-i', m.path, '-vn', '-af', f.join(','), '-ar', String(SR), '-ac', '2', '-c:a', 'pcm_s24le', file]);
+      const sk = aSeek(src, m.path); // dosedání na vzorek uvnitř filtru (-ss za vstupem by se uplatnilo až za atrim délky)
+      await ff([...sk.args, '-vn', '-filter_complex', `${aSrc(m, 0)}${sk.trim}${f.join(',')}[o]`, '-map', '[o]', '-ar', String(SR), '-ac', '2', '-c:a', 'pcm_s24le', file]);
       tick('audio');
     });
     const list = path.join(work, `a${ti}.txt`);
@@ -422,7 +432,7 @@ async function exportSequence(project, seq, opts) {
       const j = JSON.parse(r.err.slice(r.err.lastIndexOf('{'), r.err.lastIndexOf('}') + 1));
       if (isFinite(+j.input_i) && +j.input_i > -70) measured = `:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
     } catch (e) { /* měření selhalo → jednoprůchodově */ }
-    chain.push(`${aIn}loudnorm=${norm}${measured},aresample=${SR}[ln]`); aIn = '[ln]';
+    chain.push(`${aIn}loudnorm=${norm}${measured},aresample=${SR},apad[ln]`); aIn = '[ln]';
   }
   args.push('-map', '0:v');
   if (aIn) {

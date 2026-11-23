@@ -1,0 +1,6652 @@
+{
+ "v25p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v25p-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v25p-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  }
+ },
+ "v2997p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v2997p-h264.mp4",
+   "probe": {
+    "duration": 6.006,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "30000/1001",
+     "avg_frame_rate": "30000/1001",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.006000",
+     "nb_read_frames": "180",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.006000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 29.97002997002997,
+    "frames": 180
+   },
+   "codes": {
+    "n": 180,
+    "unsure": 0,
+    "first": [
+     30,
+     31,
+     32,
+     33,
+     34,
+     35
+    ],
+    "steps": {
+     "1": 178,
+     "61": 1
+    },
+    "runs": [
+     [
+      30,
+      119,
+      90
+     ],
+     [
+      180,
+      269,
+      90
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -91.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v2997p-xdcam.mxf",
+   "probe": {
+    "duration": 5.939271,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "30000/1001",
+     "avg_frame_rate": "30000/1001",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "5.939267",
+     "nb_read_frames": "178",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "5.939271"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "5.939271"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 29.97002997002997,
+    "frames": 178
+   },
+   "codes": {
+    "n": 178,
+    "unsure": 0,
+    "first": [
+     30,
+     31,
+     32,
+     33,
+     34,
+     35
+    ],
+    "steps": {
+     "1": 175,
+     "61": 1,
+     "3": 1
+    },
+    "runs": [
+     [
+      30,
+      119,
+      90
+     ],
+     [
+      180,
+      269,
+      88
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9385
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9385
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  }
+ },
+ "v23976p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v23976p-h264.mp4",
+   "probe": {
+    "duration": 6.006,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "24000/1001",
+     "avg_frame_rate": "24000/1001",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.006000",
+     "nb_read_frames": "144",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.006000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 23.976023976023978,
+    "frames": 144
+   },
+   "codes": {
+    "n": 144,
+    "unsure": 0,
+    "first": [
+     24,
+     25,
+     26,
+     27,
+     28,
+     29
+    ],
+    "steps": {
+     "1": 142,
+     "49": 1
+    },
+    "runs": [
+     [
+      24,
+      95,
+      72
+     ],
+     [
+      144,
+      215,
+      72
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -91.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v23976p-prores_hq.mov",
+   "probe": {
+    "duration": 6.006006,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "2997/125",
+     "avg_frame_rate": "2997/125",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.006006",
+     "nb_read_frames": "144",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "5.912000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 23.976,
+    "frames": 144
+   },
+   "codes": {
+    "n": 144,
+    "unsure": 0,
+    "first": [
+     24,
+     25,
+     26,
+     27,
+     28,
+     29
+    ],
+    "steps": {
+     "1": 142,
+     "49": 1
+    },
+    "runs": [
+     [
+      24,
+      95,
+      72
+     ],
+     [
+      144,
+      215,
+      72
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -91.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1920×1080 23.976 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "v50p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v50p-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "50/1",
+     "avg_frame_rate": "50/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "300",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 50.0,
+    "frames": 300
+   },
+   "codes": {
+    "n": 300,
+    "unsure": 0,
+    "first": [
+     50,
+     51,
+     52,
+     53,
+     54,
+     55
+    ],
+    "steps": {
+     "1": 298,
+     "101": 1
+    },
+    "runs": [
+     [
+      50,
+      199,
+      150
+     ],
+     [
+      300,
+      449,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v50p-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "50/1",
+     "avg_frame_rate": "50/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "300",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 50.0,
+    "frames": 300
+   },
+   "codes": {
+    "n": 300,
+    "unsure": 0,
+    "first": [
+     50,
+     51,
+     52,
+     53,
+     54,
+     55
+    ],
+    "steps": {
+     "1": 298,
+     "101": 1
+    },
+    "runs": [
+     [
+      50,
+      199,
+      150
+     ],
+     [
+      300,
+      449,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  }
+ },
+ "v5994p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v5994p-h264.mp4",
+   "probe": {
+    "duration": 6.006,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "60000/1001",
+     "avg_frame_rate": "60000/1001",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.006000",
+     "nb_read_frames": "360",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.006000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 59.94005994005994,
+    "frames": 360
+   },
+   "codes": {
+    "n": 360,
+    "unsure": 0,
+    "first": [
+     60,
+     61,
+     62,
+     63,
+     64,
+     65
+    ],
+    "steps": {
+     "1": 358,
+     "121": 1
+    },
+    "runs": [
+     [
+      60,
+      239,
+      180
+     ],
+     [
+      360,
+      539,
+      180
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9112
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -91.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v5994p-xdcam.mxf",
+   "probe": {
+    "duration": 5.922583,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "60000/1001",
+     "avg_frame_rate": "60000/1001",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "5.922583",
+     "nb_read_frames": "355",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "5.922583"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "5.922583"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 59.94005994005994,
+    "frames": 355
+   },
+   "codes": {
+    "n": 355,
+    "unsure": 0,
+    "first": [
+     60,
+     61,
+     62,
+     63,
+     64,
+     65
+    ],
+    "steps": {
+     "1": 352,
+     "121": 1,
+     "3": 1
+    },
+    "runs": [
+     [
+      60,
+      239,
+      180
+     ],
+     [
+      360,
+      536,
+      175
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9218
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0022,
+      5.0022,
+      5.9218
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -6.0,
+     -6.0
+    ],
+    "av_ms": null
+   }
+  }
+ },
+ "v30p": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v30p-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "30/1",
+     "avg_frame_rate": "30/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "180",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 30.0,
+    "frames": 180
+   },
+   "codes": {
+    "n": 180,
+    "unsure": 0,
+    "first": [
+     30,
+     31,
+     32,
+     33,
+     34,
+     35
+    ],
+    "steps": {
+     "1": 178,
+     "61": 1
+    },
+    "runs": [
+     [
+      30,
+      119,
+      90
+     ],
+     [
+      180,
+      269,
+      90
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v30p-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "30/1",
+     "avg_frame_rate": "30/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "180",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 30.0,
+    "frames": 180
+   },
+   "codes": {
+    "n": 180,
+    "unsure": 0,
+    "first": [
+     30,
+     31,
+     32,
+     33,
+     34,
+     35
+    ],
+    "steps": {
+     "1": 178,
+     "61": 1
+    },
+    "runs": [
+     [
+      30,
+      119,
+      90
+     ],
+     [
+      180,
+      269,
+      90
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1920×1080 30 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "i25": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-i25-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 150,
+    "first": [
+     51,
+     53,
+     55,
+     57,
+     59,
+     61
+    ],
+    "steps": {
+     "2": 148,
+     "102": 1
+    },
+    "runs": [
+     [
+      51,
+      199,
+      75
+     ],
+     [
+      301,
+      449,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-i25-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 150,
+    "first": [
+     51,
+     53,
+     55,
+     57,
+     59,
+     61
+    ],
+    "steps": {
+     "2": 148,
+     "102": 1
+    },
+    "runs": [
+     [
+      51,
+      199,
+      75
+     ],
+     [
+      301,
+      449,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": null
+   }
+  }
+ },
+ "vfr": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-vfr-h264.mp4",
+   "probe": {
+    "duration": 6.0125,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "355/12",
+     "avg_frame_rate": "4005000/135281",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.012489",
+     "nb_read_frames": "178",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.012500"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 29.583333333333332,
+    "frames": 178
+   },
+   "codes": {
+    "n": 178,
+    "unsure": 0,
+    "first": [
+     29,
+     30,
+     31,
+     32,
+     33,
+     34
+    ],
+    "steps": {
+     "1": 172,
+     "2": 2,
+     "0": 2,
+     "61": 1
+    },
+    "runs": [
+     [
+      29,
+      117,
+      89
+     ],
+     [
+      178,
+      266,
+      89
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0055,
+      5.0055,
+      5.9247
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0055,
+      5.0055,
+      5.9247
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.7,
+     -0.7,
+     -81.5
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     13.3,
+     -7.1,
+     5.8,
+     13.4,
+     -7.0,
+     5.8
+    ],
+    "av_ms": [
+     0.1,
+     -14.1,
+     6.3,
+     -6.6,
+     -14.1,
+     6.3,
+     -87.3
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-vfr-prores_hq.mov",
+   "probe": {
+    "duration": 6.012498,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "5921/200",
+     "avg_frame_rate": "5921/200",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.012498",
+     "nb_read_frames": "178",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "5.925000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 29.605,
+    "frames": 178
+   },
+   "codes": {
+    "n": 178,
+    "unsure": 0,
+    "first": [
+     29,
+     30,
+     31,
+     32,
+     33,
+     34
+    ],
+    "steps": {
+     "1": 172,
+     "2": 2,
+     "0": 2,
+     "61": 1
+    },
+    "runs": [
+     [
+      29,
+      117,
+      89
+     ],
+     [
+      178,
+      266,
+      89
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0055,
+      5.0055,
+      5.9247
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      4.0055,
+      5.0055,
+      5.9247
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.7,
+     -0.7,
+     -81.5
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     13.3,
+     -7.1,
+     5.8,
+     13.4,
+     -7.0,
+     5.9
+    ],
+    "av_ms": [
+     0.1,
+     -14.1,
+     6.3,
+     -6.6,
+     -14.1,
+     6.3,
+     -87.4
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 29.605 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "hevc4k10": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-hevc4k10-h264.mp4",
+   "probe": {
+    "duration": 4.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 3840,
+     "height": 2160,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "4.000000",
+     "nb_read_frames": "100",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "4.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     3840,
+     2160
+    ],
+    "W": 3840,
+    "H": 2160,
+    "fps": 25.0,
+    "frames": 100
+   },
+   "codes": {
+    "n": 100,
+    "unsure": 0,
+    "first": [
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "steps": {
+     "1": 98,
+     "26": 1
+    },
+    "runs": [
+     [
+      13,
+      62,
+      50
+     ],
+     [
+      88,
+      137,
+      50
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.6,
+      "1000": -29.1
+     },
+     "beeps": [
+      0.4992,
+      1.4992,
+      2.4992,
+      3.4992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.6,
+      "1000": -29.1
+     },
+     "beeps": [
+      0.4992,
+      1.4992,
+      2.4992,
+      3.4992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": [
+     19.2,
+     19.2,
+     19.2,
+     19.2
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-hevc4k10-prores_hq.mov",
+   "probe": {
+    "duration": 4.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 3840,
+     "height": 2160,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "4.000000",
+     "nb_read_frames": "100",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "4.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     3840,
+     2160
+    ],
+    "W": 3840,
+    "H": 2160,
+    "fps": 25.0,
+    "frames": 100
+   },
+   "codes": {
+    "n": 100,
+    "unsure": 0,
+    "first": [
+     13,
+     14,
+     15,
+     16,
+     17,
+     18
+    ],
+    "steps": {
+     "1": 98,
+     "26": 1
+    },
+    "runs": [
+     [
+      13,
+      62,
+      50
+     ],
+     [
+      88,
+      137,
+      50
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.6,
+      "1000": -38.1
+     },
+     "beeps": [
+      0.4992,
+      1.4992,
+      2.4992,
+      3.4992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.6,
+      "1000": -38.1
+     },
+     "beeps": [
+      0.4992,
+      1.4992,
+      2.4992,
+      3.4992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.6
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": [
+     19.2,
+     19.2,
+     19.2,
+     19.2
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 3840×2160 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "rot90": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-rot90-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1080,
+     "height": 1920,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "9:16",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1920
+    ],
+    "W": 1080,
+    "H": 1920,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-rot90-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1080,
+     "height": 1920,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "9:16",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1920
+    ],
+    "W": 1080,
+    "H": 1920,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "v916": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v916-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1080,
+     "height": 1920,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "9:16",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1920
+    ],
+    "W": 1080,
+    "H": 1920,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v916-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1080,
+     "height": 1920,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "9:16",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1920
+    ],
+    "W": 1080,
+    "H": 1920,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1920 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "v11": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v11-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1080,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "1:1",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1080
+    ],
+    "W": 1080,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-v11-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1080,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "1:1",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1080,
+     1080
+    ],
+    "W": 1080,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1080×1080 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "anam": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-anam-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1440,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "4:3",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1440,
+     1080
+    ],
+    "W": 1440,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-anam-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1440,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "4:3",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1440,
+     1080
+    ],
+    "W": 1440,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1440×1080 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_mono": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_mono-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_mono-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_51": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_51-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -17.1,
+      "700": -20.1,
+      "1300": -20.1
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "500": -17.0,
+      "700": -20.1,
+      "1700": -20.1
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -6.0
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_51-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -26.1,
+      "700": -29.1,
+      "1300": -29.1
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "500": -26.0,
+      "700": -29.1,
+      "1700": -29.1
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -15.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_2mono": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_2mono-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -13.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "300": -13.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.0
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_2mono-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -22.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "300": -22.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.6
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_441": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_441-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_441-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_96": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_96-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_96-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "a_none": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_none-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    }
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": []
+  },
+  "prores_hq": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-a_none-prores_hq.mov",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "prores",
+     "profile": "HQ",
+     "width": 1280,
+     "height": 720,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p10le",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    }
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "W": 1280,
+    "H": 720,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": []
+  },
+  "xdcam": {
+   "error": "XDCAM HD422 needs 1920×1080 at 25/29.97/50 fps or 1280×720 at 50/59.94 fps (sequence is 1280×720 25 fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings)."
+  }
+ },
+ "au_wav": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_wav-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.2
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_wav-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  }
+ },
+ "au_mp3": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_mp3-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.4
+     },
+     "beeps": [
+      0.0296,
+      0.9992,
+      1.9992,
+      3.0173,
+      3.9992,
+      4.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.4
+     },
+     "beeps": [
+      0.0296,
+      0.9992,
+      1.9992,
+      3.0173,
+      3.9992,
+      4.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -4.8
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     29.6,
+     -0.8,
+     -0.8,
+     17.3,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_mp3-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.4
+     },
+     "beeps": [
+      0.03,
+      0.9992,
+      1.9992,
+      3.0173,
+      3.9992,
+      4.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.4
+     },
+     "beeps": [
+      0.03,
+      0.9992,
+      1.9992,
+      3.0173,
+      3.9992,
+      4.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -13.8
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     30.0,
+     -0.8,
+     -0.8,
+     17.3,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  }
+ },
+ "au_aac": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_aac-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0205,
+      1.0205,
+      2.0206,
+      3.0205,
+      4.0205,
+      5.0205
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0205,
+      1.0205,
+      2.0206,
+      3.0205,
+      4.0205,
+      5.0205
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     20.5,
+     20.5,
+     20.6,
+     20.5,
+     20.5,
+     20.5
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_aac-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0205,
+      1.0205,
+      2.0205,
+      3.0205,
+      4.0205,
+      5.0205
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0205,
+      1.0205,
+      2.0205,
+      3.0205,
+      4.0205,
+      5.0205
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     20.5,
+     20.5,
+     20.5,
+     20.5,
+     20.5,
+     20.5
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  }
+ },
+ "au_m4a": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_m4a-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0,
+      0.9965,
+      1.9965,
+      2.9961,
+      3.9832,
+      4.9832,
+      5.9832
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0,
+      0.9965,
+      1.9965,
+      2.9961,
+      3.9832,
+      4.9832,
+      5.9832
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.3
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.0,
+     -3.5,
+     -3.5,
+     -3.9,
+     -16.8,
+     -16.8,
+     -16.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-au_m4a-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "steps": {
+     "0": 149
+    },
+    "runs": [
+     [
+      0,
+      0,
+      150
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0,
+      0.9965,
+      1.9965,
+      2.996,
+      3.9832,
+      4.9832,
+      5.9832
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0,
+      0.9965,
+      1.9965,
+      2.996,
+      3.9832,
+      4.9832,
+      5.9832
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.4
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.0,
+     -3.5,
+     -3.5,
+     -4.0,
+     -16.8,
+     -16.8,
+     -16.8
+    ],
+    "video_vs_timeline_ms": [],
+    "av_ms": null
+   }
+  }
+ },
+ "img_png": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-img_png-h264.mp4",
+   "probe": {
+    "duration": 0.04,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "0.040000",
+     "nb_read_frames": "1",
+     "rotation": null
+    }
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 1
+   },
+   "codes": {
+    "n": 1,
+    "unsure": 0,
+    "first": [
+     0
+    ],
+    "steps": {},
+    "runs": [
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "audio": []
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-img_png-xdcam.mxf",
+   "probe": {
+    "duration": 0.02,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "50/1",
+     "avg_frame_rate": "0/0",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "0.020000",
+     "nb_read_frames": "1",
+     "rotation": null
+    }
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 50.0,
+    "frames": 1
+   },
+   "codes": {
+    "n": 1,
+    "unsure": 0,
+    "first": [
+     0
+    ],
+    "steps": {},
+    "runs": [
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "audio": []
+  }
+ },
+ "img_jpg": {
+  "h264": {
+   "error": "ffmpeg exited with code 3199971767: [in#0 @ 000002410877fcc0] Error opening input: Invalid data found when processing input\r | Error opening input file C:\\Users\\Petr\\AppData\\Local\\Temp\\pz-s12-formaty\\local\\TN_strihatoko\\cache\\export\\xmwt5nmq7vepsc5e\\video.txt.\r | Error opening input files: Invalid data found when processing input\r"
+  },
+  "xdcam": {
+   "error": "ffmpeg exited with code 3199971767: [in#0 @ 0000012dfe4ffd40] Error opening input: Invalid data found when processing input\r | Error opening input file C:\\Users\\Petr\\AppData\\Local\\Temp\\pz-s12-formaty\\local\\TN_strihatoko\\cache\\export\\xmwt5nmw3dfc235f\\video.txt.\r | Error opening input files: Invalid data found when processing input\r"
+  },
+  "prores_hq": {
+   "error": "ffmpeg exited with code 4294967274: Failed to set value '0:v' for option 'map': Invalid argument\r | Error parsing options for output file O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-img_jpg-prores_hq.mov.\r | Error opening output files: Invalid argument\r"
+  }
+ },
+ "mxf_xdcam": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-mxf_xdcam-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 150,
+    "first": [
+     51,
+     53,
+     55,
+     57,
+     59,
+     61
+    ],
+    "steps": {
+     "2": 148,
+     "102": 1
+    },
+    "runs": [
+     [
+      51,
+      199,
+      75
+     ],
+     [
+      301,
+      449,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -13.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "300": -13.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.1
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": null
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-mxf_xdcam-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 150,
+    "first": [
+     51,
+     53,
+     55,
+     57,
+     59,
+     61
+    ],
+    "steps": {
+     "2": 148,
+     "102": 1
+    },
+    "runs": [
+     [
+      51,
+      199,
+      75
+     ],
+     [
+      301,
+      449,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "300": -22.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "300": -22.6
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.7
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0,
+     -20.0
+    ],
+    "av_ms": null
+   }
+  }
+ },
+ "prores_mov": {
+  "h264": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-prores_mov-h264.mp4",
+   "probe": {
+    "duration": 6.0,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "v": {
+     "codec_name": "h264",
+     "profile": "High",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv420p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 0,
+     "ch": 1,
+     "tones": {
+      "220": -13.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -14.0,
+    -5.2
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  },
+  "xdcam": {
+   "file": "O:/AI STRIH ALL app/PZ AI Cut - standalone a web - zdrojovy kod/web/test-out/formaty-s12-prores_mov-xdcam.mxf",
+   "probe": {
+    "duration": 6.0,
+    "format": "mxf",
+    "v": {
+     "codec_name": "mpeg2video",
+     "profile": "4:2:2",
+     "width": 1920,
+     "height": 1080,
+     "sample_aspect_ratio": "1:1",
+     "display_aspect_ratio": "16:9",
+     "r_frame_rate": "25/1",
+     "avg_frame_rate": "25/1",
+     "pix_fmt": "yuv422p",
+     "field_order": "progressive",
+     "duration": "6.000000",
+     "nb_read_frames": "150",
+     "rotation": null
+    },
+    "a": [
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     },
+     {
+      "codec_name": "pcm_s24le",
+      "sample_rate": "48000",
+      "channels": 1,
+      "channel_layout": null,
+      "duration": "6.000000"
+     }
+    ]
+   },
+   "geom": {
+    "bbox": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "W": 1920,
+    "H": 1080,
+    "fps": 25.0,
+    "frames": 150
+   },
+   "codes": {
+    "n": 150,
+    "unsure": 0,
+    "first": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ],
+    "steps": {
+     "1": 148,
+     "51": 1
+    },
+    "runs": [
+     [
+      25,
+      99,
+      75
+     ],
+     [
+      150,
+      224,
+      75
+     ]
+    ]
+   },
+   "audio": [
+    {
+     "stream": 0,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    },
+    {
+     "stream": 1,
+     "ch": 0,
+     "tones": {
+      "220": -22.5
+     },
+     "beeps": [
+      0.0001,
+      0.9992,
+      1.9992,
+      2.9992,
+      3.9992,
+      4.9992,
+      5.9992
+     ]
+    }
+   ],
+   "ebur128": [
+    -23.0,
+    -14.5
+   ],
+   "sync": {
+    "audio_vs_timeline_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ],
+    "video_vs_timeline_ms": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "av_ms": [
+     0.1,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8,
+     -0.8
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,202 @@
+{
+ "file": "formaty-s12-mix25-h264.mp4",
+ "probe": {
+  "duration": 614.0,
+  "format": "mov,mp4,m4a,3gp,3g2,mj2",
+  "v": {
+   "codec_name": "h264",
+   "profile": "High",
+   "width": 1920,
+   "height": 1080,
+   "sample_aspect_ratio": "1:1",
+   "display_aspect_ratio": "16:9",
+   "r_frame_rate": "25/1",
+   "avg_frame_rate": "25/1",
+   "pix_fmt": "yuv420p",
+   "field_order": "progressive",
+   "duration": "614.000000",
+   "nb_read_frames": "15350",
+   "rotation": null
+  },
+  "a": [
+   {
+    "codec_name": "aac",
+    "sample_rate": "48000",
+    "channels": 2,
+    "channel_layout": "stereo",
+    "duration": "614.000000"
+   }
+  ]
+ },
+ "ebur128": [
+  -14.0,
+  -5.3
+ ],
+ "clips": [
+  {
+   "clip": "v25p.mp4",
+   "od": 0,
+   "do": 2,
+   "snimku": 50,
+   "nejiste": 0,
+   "kroky": {
+    "1": 49
+   },
+   "obraz_minus_osa_ms": {
+    "min": -0.0,
+    "max": 0.0,
+    "prvni": 0.0,
+    "posledni": 0.0
+   },
+   "pipnuti_vs_osa_ms": [
+    0.0,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "clip": "v2997p.mp4",
+   "od": 2,
+   "do": 5,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "1": 59,
+    "2": 15
+   },
+   "obraz_minus_osa_ms": {
+    "min": -12.3,
+    "max": 17.3,
+    "prvni": 1.0,
+    "posledni": 10.6
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    2.0,
+    3.0
+   ]
+  },
+  {
+   "clip": "v50p.mp4",
+   "od": 5,
+   "do": 8,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "2": 74
+   },
+   "obraz_minus_osa_ms": {
+    "min": -0.0,
+    "max": 0.0,
+    "prvni": 0.0,
+    "posledni": 0.0
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "clip": "v23976p.mp4",
+   "od": 8,
+   "do": 11,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "0": 3,
+    "1": 71
+   },
+   "obraz_minus_osa_ms": {
+    "min": -20.2,
+    "max": 20.8,
+    "prvni": 1.0,
+    "posledni": 2.3
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    2.0,
+    3.0
+   ]
+  },
+  {
+   "clip": "vfr.mp4",
+   "od": 11,
+   "do": 14,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "0": 1,
+    "1": 58,
+    "2": 15
+   },
+   "obraz_minus_osa_ms": {
+    "min": -33.3,
+    "max": 13.3,
+    "prvni": 0.0,
+    "posledni": 6.7
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "clip": "long2997.mp4",
+   "od": 14,
+   "do": 614,
+   "snimku": 15000,
+   "nejiste": 0,
+   "kroky": {
+    "1": 12017,
+    "2": 2982
+   },
+   "obraz_minus_osa_ms": {
+    "min": -13.4,
+    "max": 20.0,
+    "prvni": 0.0,
+    "posledni": 6.0
+   },
+   "pipnuti_vs_osa_ms": [
+    -22.1,
+    -22.1,
+    -22.1,
+    "…",
+    -22.1,
+    -22.1,
+    -22.1
+   ],
+   "pipnuti_max_abs_ms": 22.1,
+   "obraz_pri_pipnuti_ms": [
+    1.0,
+    2.0,
+    3.0,
+    "…",
+    -3.6,
+    -2.6,
+    -1.6
+   ]
+  }
+ ]
+}

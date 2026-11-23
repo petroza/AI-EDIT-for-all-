@@ -1358,7 +1358,7 @@ function exportDialog() {
     <div class="btns"><button id="exNo">Close</button><button class="primary" id="exGo">Export</button></div>`, (b) => {
     b.querySelector('#exEnc').value = settings.encoder || cfg.videoEncoder || 'libx264';
     // XDCAM jen pro sekvence, které ten formát má (1920×1080 25/29,97/50; 1280×720 50/59,94) – jinak nabídnout H.264 (redaktorka S1: „XDCAM 1080×1920“)
-    for (const o of b.querySelectorAll('#exFmt option')) if (o.value === 'xdcam' && !exporter.xdcamOk(s)) { o.disabled = true; o.textContent += LL(' – not for this frame size', ' – ne pro tuhle velikost obrazu'); }
+    for (const o of b.querySelectorAll('#exFmt option')) if (o.value === 'xdcam' && !exporter.xdcamOk(s)) { o.disabled = true; o.textContent += LL(' – only 1920×1080 or 1280×720 at 25/50 fps', ' – jen 1920×1080 nebo 1280×720 při 25/50 fps'); }
     const fmt0 = settings.exportFormat || 'h264';
     b.querySelector('#exFmt').value = fmt0 === 'xdcam' && !exporter.xdcamOk(s) ? 'h264' : fmt0;
     // formát pro sítě (9:16, 4:5, 1:1) → rovnou −14 LUFS, pokud si uživatel pro sítě nevybral jinak

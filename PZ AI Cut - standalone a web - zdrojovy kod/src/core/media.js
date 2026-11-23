@@ -56,7 +56,11 @@ function fpsOf(s) {
   const f = b ? a / b : a;
   if (!isFinite(f) || f <= 0 || f > 240) return 25;
   // běžné hodnoty zaokrouhlit (29.97 apod. nechat)
-  for (const k of [23.976, 24, 25, 29.97, 30, 48, 50, 59.94, 60]) if (Math.abs(f - k) < 0.02) return k;
+  const STD = [23.976, 24, 25, 29.97, 30, 48, 50, 59.94, 60];
+  for (const k of STD) if (Math.abs(f - k) < 0.02) return k;
+  // proměnná snímková frekvence (mobil: průměr 29,605) → nejbližší standardní do 4 % (formáty S12)
+  const near = STD.reduce((b, k) => (Math.abs(f - k) < Math.abs(f - b) ? k : b), STD[0]);
+  if (Math.abs(f - near) / near < 0.04) return near;
   return Math.round(f * 1000) / 1000;
 }
 
@@ -68,6 +72,10 @@ async function probe(p) {
   const a = (j.streams || []).find((s) => s.codec_type === 'audio');
   const dur = Number(j.format && j.format.duration) || Number(v && v.duration) || Number(a && a.duration) || 0;
   let width = v ? v.width : 0, height = v ? v.height : 0;
+  // neštvercové pixely (HDV 1440×1080 SAR 4:3, anamorf): rozměr pro střih = zobrazovaný (formáty S12: obraz zmáčknutý)
+  const sarM = v && /^(\d+):(\d+)$/.exec(v.sample_aspect_ratio || '');
+  const sar = sarM && +sarM[1] > 0 && +sarM[2] > 0 ? +sarM[1] / +sarM[2] : 1;
+  if (Math.abs(sar - 1) > 0.01 && sar > 0.2 && sar < 5) width = Math.round(width * sar / 2) * 2;
   const rot = v && ((v.tags && Number(v.tags.rotate)) || ((v.side_data_list || []).find((x) => x.rotation !== undefined) || {}).rotation || 0);
   if (Math.abs(rot) === 90 || Math.abs(rot) === 270) [width, height] = [height, width];
   const info = {
@@ -84,7 +92,14 @@ async function probe(p) {
     audioChannels: a ? a.channels : 0,
     sampleRate: a ? Number(a.sample_rate) : 0,
     size: Number(j.format && j.format.size) || 0,
+    // víc zvukových stop (kamera / MXF: 2× mono) – export i náhled je spojí do sterea (formáty S12: 2. stopa zmizela)
+    audioStreams: (j.streams || []).filter((s) => s.codec_type === 'audio').length,
+    // prokládaný obraz (1080i) – export i náhled odstraní prokládání (formáty S12: hřebeny)
+    interlaced: !!(v && /^(tt|bb|tb|bt)$/.test(v.field_order || '')),
+    // statický obrázek (PNG, JPG…): klip 5 s jako v Premiere, export a náhled ve smyčce (formáty S12: 1 snímek / pád)
+    still: !!(v && /^(png|mjpeg|bmp|gif|webp|tiff|jpegls|ljpeg)$/.test(v.codec_name || '') && !(Number(v.nb_frames) > 1) && dur < 0.5),
   };
+  if (info.still) { info.duration = 5; info.fps = 25; info.hasAudio = false; }
   info.playable = isPlayable(info);
   return info;
 }
@@ -92,6 +107,7 @@ async function probe(p) {
 const PLAY_EXT = /\.(mp4|m4v|mov|webm|mp3|wav|m4a|aac|ogg|oga|flac)$/i;
 function isPlayable(info) {
   if (!PLAY_EXT.test(info.path)) return false;
+  if (info.still || info.interlaced || (info.audioStreams >= 2 && info.audioChannels === 1)) return false; // náhled přes proxy
   if (info.hasVideo) {
     if (!['h264', 'vp8', 'vp9', 'av1'].includes(info.vcodec)) return false;
     if (info.pixFmt && /10|12|422|444/.test(info.pixFmt) && info.vcodec === 'h264') return false;
@@ -105,9 +121,12 @@ async function makeProxy(info, onProgress) {
   const out = path.join(CACHE, 'proxy', hashOf(info.path) + '.mp4');
   if (fs.existsSync(out) && fs.statSync(out).size > 1000) return out;
   const tmp = out + '.part.mp4';
-  const args = ['-y', '-hide_banner', '-i', info.path];
-  if (info.hasVideo) args.push('-map', '0:v:0', '-vf', 'scale=-2:min(720\\,ih)', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-g', '25');
-  if (info.hasAudio) args.push('-map', '0:a:0', '-c:a', 'aac', '-b:a', '160k', '-ac', '2');
+  const args = info.still ? ['-y', '-hide_banner', '-loop', '1', '-framerate', '25', '-t', String(info.duration || 5), '-i', info.path] : ['-y', '-hide_banner', '-i', info.path];
+  // proxy v zobrazovaném rozměru (neštvercové pixely), bez prokládání, 2× mono jako stereo (formáty S12)
+  const vf = `${info.interlaced ? 'bwdif=0:-1:0,' : ''}scale=${info.width && info.height ? `${info.width}:${info.height},scale=` : ''}-2:min(720\\,ih),setsar=1`;
+  if (info.hasVideo) args.push('-map', '0:v:0', '-vf', vf, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-g', '25');
+  if (info.hasAudio && info.audioStreams >= 2 && info.audioChannels === 1) args.push('-filter_complex', '[0:a:0][0:a:1]amerge=inputs=2[pa]', '-map', '[pa]', '-c:a', 'aac', '-b:a', '160k', '-ac', '2');
+  else if (info.hasAudio) args.push('-map', '0:a:0', '-c:a', 'aac', '-b:a', '160k', '-ac', '2');
   args.push('-movflags', '+faststart', '-progress', 'pipe:1', '-nostats', tmp);
   await run(FFMPEG, args, {
     onStdout: (d) => {

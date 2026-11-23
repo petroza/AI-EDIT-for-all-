@@ -1,0 +1,80 @@
+{
+ "file": "formaty-s12-mix25-xdcam-594-614.mxf",
+ "probe": {
+  "duration": 20.0,
+  "format": "mxf",
+  "v": {
+   "codec_name": "mpeg2video",
+   "profile": "4:2:2",
+   "width": 1920,
+   "height": 1080,
+   "sample_aspect_ratio": "1:1",
+   "display_aspect_ratio": "16:9",
+   "r_frame_rate": "25/1",
+   "avg_frame_rate": "25/1",
+   "pix_fmt": "yuv422p",
+   "field_order": "progressive",
+   "duration": "20.000000",
+   "nb_read_frames": "500",
+   "rotation": null
+  },
+  "a": [
+   {
+    "codec_name": "pcm_s24le",
+    "sample_rate": "48000",
+    "channels": 1,
+    "channel_layout": null,
+    "duration": "20.000000"
+   },
+   {
+    "codec_name": "pcm_s24le",
+    "sample_rate": "48000",
+    "channels": 1,
+    "channel_layout": null,
+    "duration": "20.000000"
+   }
+  ]
+ },
+ "ebur128": [
+  -23.0,
+  -14.5
+ ],
+ "clips": [
+  {
+   "clip": "long2997.mp4",
+   "od": 14,
+   "do": 614,
+   "snimku": 500,
+   "nejiste": 0,
+   "kroky": {
+    "1": 400,
+    "2": 99
+   },
+   "obraz_minus_osa_ms": {
+    "min": -0.6,
+    "max": 32.6,
+    "prvni": 12.8,
+    "posledni": 6.0
+   },
+   "pipnuti_vs_osa_ms": [
+    0.1,
+    -0.8,
+    -0.8,
+    "…",
+    -0.8,
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    12.8,
+    13.8,
+    14.8,
+    "…",
+    29.8,
+    30.8,
+    31.8
+   ]
+  }
+ ]
+}

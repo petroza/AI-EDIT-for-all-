@@ -1,0 +1,150 @@
+{
+ "file": "formaty-s12-mix25-xdcam-2-14.mxf",
+ "probe": {
+  "duration": 12.0,
+  "format": "mxf",
+  "v": {
+   "codec_name": "mpeg2video",
+   "profile": "4:2:2",
+   "width": 1920,
+   "height": 1080,
+   "sample_aspect_ratio": "1:1",
+   "display_aspect_ratio": "16:9",
+   "r_frame_rate": "25/1",
+   "avg_frame_rate": "25/1",
+   "pix_fmt": "yuv422p",
+   "field_order": "progressive",
+   "duration": "12.000000",
+   "nb_read_frames": "300",
+   "rotation": null
+  },
+  "a": [
+   {
+    "codec_name": "pcm_s24le",
+    "sample_rate": "48000",
+    "channels": 1,
+    "channel_layout": null,
+    "duration": "12.000000"
+   },
+   {
+    "codec_name": "pcm_s24le",
+    "sample_rate": "48000",
+    "channels": 1,
+    "channel_layout": null,
+    "duration": "12.000000"
+   }
+  ]
+ },
+ "ebur128": [
+  -23.0,
+  -14.5
+ ],
+ "clips": [
+  {
+   "clip": "v2997p.mp4",
+   "od": 2,
+   "do": 5,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "1": 59,
+    "2": 15
+   },
+   "obraz_minus_osa_ms": {
+    "min": -12.3,
+    "max": 17.3,
+    "prvni": 1.0,
+    "posledni": 10.6
+   },
+   "pipnuti_vs_osa_ms": [
+    0.1,
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    1.0,
+    2.0,
+    3.0
+   ]
+  },
+  {
+   "clip": "v50p.mp4",
+   "od": 5,
+   "do": 8,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "2": 74
+   },
+   "obraz_minus_osa_ms": {
+    "min": -0.0,
+    "max": 0.0,
+    "prvni": 0.0,
+    "posledni": 0.0
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "clip": "v23976p.mp4",
+   "od": 8,
+   "do": 11,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "0": 3,
+    "1": 71
+   },
+   "obraz_minus_osa_ms": {
+    "min": -20.2,
+    "max": 20.8,
+    "prvni": 1.0,
+    "posledni": 2.3
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    2.0,
+    3.0
+   ]
+  },
+  {
+   "clip": "vfr.mp4",
+   "od": 11,
+   "do": 14,
+   "snimku": 75,
+   "nejiste": 0,
+   "kroky": {
+    "0": 1,
+    "1": 58,
+    "2": 15
+   },
+   "obraz_minus_osa_ms": {
+    "min": -33.3,
+    "max": 13.3,
+    "prvni": 0.0,
+    "posledni": 6.7
+   },
+   "pipnuti_vs_osa_ms": [
+    -0.8,
+    -0.8
+   ],
+   "pipnuti_max_abs_ms": 0.8,
+   "obraz_pri_pipnuti_ms": [
+    0.0,
+    0.0
+   ]
+  }
+ ]
+}
