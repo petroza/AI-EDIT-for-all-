@@ -68,3 +68,14 @@ Rozdíly proti webu:
 - Začátek úseku z MCP bez úlomku předchozího slova (#22 po „a tak.“ začíná v pauze, ne v „k“).
 - Jednořádkové titulky 9:16 rozdělené podle skutečné doby zobrazení (nejkratší ~0,2 s místo 0,1 s; rychlá řeč dál pod 0,7 s).
 - Chyby mostu pro AI česky (i při anglickém rozhraní), `import_media` neexistujícího souboru = chyba, `reason` plánu bez azbuky.
+
+## Od kola S11 (commity 32dd765 … 1ff0463)
+- **Obraz a zvuk zůstávají propojené** i po výřezu podle obličeje (9:16), Auto Reframe (menu i MCP `reframe_sequence`) a úklidu
+  krajů: zvuk se rozřízne spolu s obrazem na střihu kamery, každý kus obrazu má svůj zvuk; žiletka, Shift+Delete, ořez, Extract
+  působí na obojí. Úklid krajů může nechat kraj obrazu o pár snímků posunutý proti zvuku (L/J-střih) – stále propojené.
+- **Zopakovaný konec** (zbytek cizího záběru na konci sekvence pod řečí) je vlastnost klipu `hold`, ne samostatný klip – po
+  smazání / zkrácení / W nic nezůstane. Export i náhled ukazují zopakované snímky.
+- Export čte navazující kusy zvuku téhož zdroje vcelku; titulky berou navazující kusy jako jeden úsek (žádné zdvojené slovo).
+- **Nadpis nahoře jde vypnout/zapnout**: okno Text v obraze → Nadpis nahoře → přepínač Zobrazit (text zůstane uložený).
+- B-roll na V2 v 9:16 se zase čistí od cizího záběru; první vložení do prázdné 9:16 má po výřezu úklid krajů; předvybrané MXF = −23 LUFS.
+- Testovací instance spouštěj s `--ai` (klíč Workeru pro přepis řeči); AI panel / Claude / Codex / Hermes spouští jen role AI tok.
