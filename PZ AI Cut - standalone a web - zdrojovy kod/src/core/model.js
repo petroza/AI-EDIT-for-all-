@@ -234,6 +234,8 @@ class Project {
     };
   }
   load(data, filePath) {
+    // projekt z disku může přijít z cizí ruky – vyčistit (bezpečnost S12: podvržený .pzcut spustil kód přes HTML)
+    data = require('./sanitize').sanitizeProject(data);
     this.name = (data.name && data.name !== 'Bez názvu') ? data.name : 'Untitled';
     this.path = filePath || null;
     this.media = data.media || [];

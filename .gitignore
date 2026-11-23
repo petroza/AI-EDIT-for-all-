@@ -3,3 +3,7 @@ PZ AI Cut - hotova aplikace pro Windows/
 
 # zip prenosne verze jde do GitHub Releases
 PZ-AI-Cut-portable.zip
+
+# funkční ukázky útoků z bezpečnostních testů – jen lokálně, ne do veřejného repozitáře
+PZ AI Cut - standalone a web - zdrojovy kod/team/v2/s*/shots-bezpecnost/*.js
+PZ AI Cut - standalone a web - zdrojovy kod/team/v2/s*/shots-bezpecnost/*.pzcut*

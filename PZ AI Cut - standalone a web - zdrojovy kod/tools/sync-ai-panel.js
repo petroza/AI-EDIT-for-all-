@@ -41,10 +41,14 @@ function patchMain(js) {
   return '/* VYGENEROVÁNO z MY Premiere MCP panel/main.js (tools/sync-ai-panel.js) – neupravovat ručně */\n' + js;
 }
 
+// stejná CSP jako src/index.html (bezpečnost S12)
+const CSP = `default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: blob: data:; font-src 'self' data:; connect-src 'self' file: data: blob: http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:* https://cdn.jsdelivr.net https://storage.googleapis.com; worker-src 'self' blob:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
 function patchHtml(html) {
   if (!/<script src="main\.js"><\/script>/.test(html)) throw new Error('úprava panelu selhala: index.html bez main.js');
   html = html.replace(/<script src="main\.js"><\/script>/, '<script src="shim.js"></script>\n<script src="main.js"></script>\n<script src="i18n.js"></script>\n<script src="layout.js"></script>');
   html = html.replace(/<\/head>/, '<link rel="stylesheet" href="layout.css">\n</head>');
+  // bezpečnost S12: CSP i v panelu (iframe s Node) – žádné vložené skripty ani obslužné atributy
+  html = html.replace(/<head>/i, () => '<head>\n<meta http-equiv="Content-Security-Policy" content="' + CSP + '">');
   html = html.replace(/ v Premiere/g, ' ve Střihátku').replace(/do Premiere/g, 'do Střihátka');
   return html;
 }

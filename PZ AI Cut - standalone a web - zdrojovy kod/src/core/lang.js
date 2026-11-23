@@ -157,6 +157,7 @@ const CS = {
 
 // dynamické texty: [vzor, náhrada | funkce]
 const RULES = [
+  [/^The output would overwrite the source media (.+) – choose another file name\.$/, 'Výstup by přepsal zdrojové médium $1 – zvol jiný název souboru.'],
   [/^Audio transitions: (\d+)$/, 'Přechody zvuku: $1'],
   // chyby mostu pro MCP / AI (AI tok S8)
   [/^Project item not found: (.+)$/, 'Položka projektu nenalezena: $1'],

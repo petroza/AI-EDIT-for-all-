@@ -165,7 +165,7 @@ function preroll(src) {
 function captionsSrt(seq, rs, re) {
   let n = 0;
   return (seq.captions || []).filter((c) => c.end > rs && c.start < re).map((c) =>
-    `${++n}\n${srtTime(Math.max(0, c.start - rs))} --> ${srtTime(Math.min(re, c.end) - rs)}\n${c.text}\n`).join('\n');
+    `${++n}\n${srtTime(Math.max(0, c.start - rs))} --> ${srtTime(Math.min(re, c.end) - rs)}\n${String(c.text).replace(/\r/g, '').replace(/\n{2,}/g, '\n').trim()}\n`).join('\n');
 }
 
 async function pool(items, limit, fn) {
@@ -212,6 +212,10 @@ async function exportSequence(project, seq, opts) {
     if (!m || m.missing || !fs.existsSync(m.path)) offline.add(m ? m.name : '?');
   }
   if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`);
+  // výstup nesmí přepsat zdrojové médium (bezpečnost S12: export na místo zdroje ho bez varování přepsal re-enkódem)
+  const outN = path.resolve(output).toLowerCase();
+  const src = project.media.find((m) => m && [m.path, m.proxy, m.playPath].some((q) => q && path.resolve(q).toLowerCase() === outN));
+  if (src) throw new Error(`The output would overwrite the source media ${src.name} – choose another file name.`);
   // zápis do cílové složky ověřit hned (vzhled S3: „Permission denied“ až po 60 % renderu)
   try { const probe = path.join(path.dirname(output), '.pz-write-test-' + process.pid); fs.writeFileSync(probe, ''); fs.unlinkSync(probe); }
   catch (e) { throw new Error(`Cannot write to the folder ${path.dirname(output)} – choose another place to save.`); }
@@ -379,7 +383,7 @@ async function exportSequence(project, seq, opts) {
           const a = Math.max(c.start, i ? starts[i] : c.start), b = i + 1 < words.length ? starts[i + 1] : c.end;
           if (b <= rs || a >= re || b - a < 0.01) continue;
           let k = 0;
-          const txt = String(c.text).split('\n').map((line) => line.split(' ').filter(Boolean).map((w) => (k++ === i ? `{\\c${hcol}}${w}{\\c${col}}` : w)).join(' ')).join('\\N');
+          const txt = String(c.text).replace(/[{}]/g, '').split('\n').map((line) => line.split(' ').filter(Boolean).map((w) => (k++ === i ? `{\\c${hcol}}${w}{\\c${col}}` : w)).join(' ')).join('\\N');
           ev.push(`Dialogue: 0,${at(Math.max(0, a - rs))},${at(Math.min(re, b) - rs)},C,,0,0,0,,${txt}`);
         }
       }

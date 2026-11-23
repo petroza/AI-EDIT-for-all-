@@ -397,11 +397,12 @@ project.on((what, detail) => {
   }
 });
 
+const escH = require('./core/sanitize').esc; // escapování do HTML (bezpečnost S12)
 function renderTabs() {
   try { require('./ui/captionstyle').syncTab(app); } catch (e) { /* bez rámu Zdroje */ }
   const el = $('seqTabs');
   el.innerHTML = project.openSequenceIds.map((id) => project.sequences.find((s) => s.id === id)).filter(Boolean).map((s) =>
-    `<div class="seq-tab${s.id === project.activeSequenceId ? ' on' : ''}" data-id="${s.id}" title="${s.name}"><span>${s.name.replace(/</g, '&lt;')}</span><b class="x" data-close="${s.id}">×</b></div>`).join('');
+    `<div class="seq-tab${s.id === project.activeSequenceId ? ' on' : ''}" data-id="${escH(s.id)}" title="${escH(s.name)}"><span>${escH(s.name)}</span><b class="x" data-close="${escH(s.id)}">×</b></div>`).join('');
 }
 $('seqTabs').addEventListener('mousedown', (ev) => {
   const x = ev.target.closest('[data-close]');
@@ -1604,7 +1605,7 @@ async function evalScript(code) {
   const name = JSON.parse(m[1]);
   let args;
   try { args = JSON.parse(JSON.parse(m[2]) || '{}'); } catch (e) { return JSON.stringify({ ok: false, error: 'Invalid arguments' }); }
-  const fn = api[name];
+  const fn = Object.prototype.hasOwnProperty.call(api, name) && typeof api[name] === 'function' ? api[name] : null;
   if (!fn) return JSON.stringify({ ok: false, error: 'Unknown function: ' + name });
   try {
     const result = await fn(args || {});

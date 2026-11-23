@@ -23,6 +23,12 @@ if (cmd === 'stop') {
   try {
     execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \\"Name='electron.exe'\\" | ? { $_.CommandLine -like '*remote-debugging-port=${port}*' } | % { Stop-Process -Id $_.ProcessId -Force -EA SilentlyContinue }"`);
   } catch (e) { /* neběží */ }
+  // kopie tokenu Workeru z profilu pryč (bezpečnost S12: v TEMP zůstávaly desítky kopií)
+  try {
+    const reg = path.join(require('os').tmpdir(), 'pz-standalone-ports.json');
+    const r = JSON.parse(fs.readFileSync(reg, 'utf8'));
+    if (r[port]) { fs.rmSync(path.join(r[port], 'appdata', 'MYpremiereMCP', 'token.txt'), { force: true }); delete r[port]; fs.writeFileSync(reg, JSON.stringify(r)); }
+  } catch (e) { /* bez záznamu */ }
   console.log('stopped ' + port);
   process.exit(0);
 }
@@ -40,6 +46,12 @@ if (process.argv.includes('--ai')) {
   const src = path.join(process.env.APPDATA, 'MYpremiereMCP');
   fs.mkdirSync(path.join(appdata, 'MYpremiereMCP'), { recursive: true });
   for (const f of ['token.txt', 'root.txt']) { try { fs.copyFileSync(path.join(src, f), path.join(appdata, 'MYpremiereMCP', f)); } catch (e) { /* chybí */ } }
+  // zapamatovat profil, ať stop kopii tokenu smaže
+  try {
+    const reg = path.join(require('os').tmpdir(), 'pz-standalone-ports.json');
+    let r = {}; try { r = JSON.parse(fs.readFileSync(reg, 'utf8')); } catch (e) { /* první */ }
+    r[port] = prof; fs.writeFileSync(reg, JSON.stringify(r));
+  } catch (e) { /* bez záznamu */ }
 }
 const size = opt('--size', '1920x1080');
 const env = Object.assign({}, process.env, { APPDATA: appdata, LOCALAPPDATA: local, PZ_WINDOW_SIZE: size, PZ_USERDATA: path.join(appdata, 'electron') });

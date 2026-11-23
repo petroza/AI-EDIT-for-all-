@@ -73,6 +73,25 @@ function createWindow() {
   // testy (test/standalone.js): PZ_WINDOW_SIZE=1366x768 = pevná velikost okna místo maximalizace
   const fixed = /^(\d+)x(\d+)$/.exec(process.env.PZ_WINDOW_SIZE || '');
   if (fixed) { win.setMinimumSize(800, 500); win.setBounds({ x: 30, y: 30, width: +fixed[1], height: +fixed[2] }); } else win.maximize();
+  // Bezpečnost S12: okno má Node (renderer i AI panel ho potřebují) – nesmí se proto nikdy dostat na cizí stránku.
+  // Navigace hlavního okna i rámců jen na soubory aplikace; odkazy http(s) do výchozího prohlížeče; nová okna nikdy.
+  const appDir = path.resolve(__dirname);
+  const isAppUrl = (u) => {
+    try {
+      const x = new URL(u);
+      if (x.protocol === 'about:' && /^about:(blank|srcdoc)$/.test(u)) return true;
+      if (x.protocol !== 'file:') return false;
+      const { fileURLToPath } = require('url');
+      const f = path.resolve(fileURLToPath(x));
+      return f.toLowerCase().startsWith(appDir.toLowerCase() + path.sep);
+    } catch (e) { return false; }
+  };
+  const external = (u) => { if (/^https:\/\//i.test(u)) shell.openExternal(u).catch(() => {}); };
+  win.webContents.on('will-navigate', (e, u) => { if (!isAppUrl(u)) e.preventDefault(); }); // jen zablokovat – cizí skript by jinak otevíral stránky v prohlížeči
+  win.webContents.on('will-frame-navigate', (e) => { if (!e.isMainFrame && !isAppUrl(e.url)) e.preventDefault(); });
+  win.webContents.on('will-redirect', (e, u) => { if (!isAppUrl(u)) e.preventDefault(); });
+  win.webContents.setWindowOpenHandler(({ url }) => { external(url); return { action: 'deny' }; });
+  win.webContents.on('will-attach-webview', (e) => e.preventDefault());
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
   win.on('close', (e) => {
     if (forceClose) return;

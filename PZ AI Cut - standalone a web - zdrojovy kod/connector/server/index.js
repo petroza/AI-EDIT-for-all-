@@ -100,6 +100,9 @@ function send(res, code, body, origin) {
 
 function handle(req, res) {
   const origin = req.headers.origin || '';
+  // Host jen místní (DNS rebinding – bezpečnost S12); Origin jen stránka PZ AI Cut
+  const host = String(req.headers.host || '').replace(/:\d+$/, '').toLowerCase();
+  if (!['127.0.0.1', 'localhost', '[::1]'].includes(host)) { res.writeHead(403); res.end('forbidden'); return; }
   if (!ORIGINS.includes(origin)) { res.writeHead(403); res.end('forbidden'); return; }
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {

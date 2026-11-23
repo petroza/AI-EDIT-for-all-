@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- Bezpečnost S12: žádné vložené skripty ani obslužné atributy (onerror=…) – i kdyby se někde zapomnělo escapovat -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: blob: data:; font-src 'self' data:; connect-src 'self' file: data: blob: http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:* https://cdn.jsdelivr.net https://storage.googleapis.com; worker-src 'self' blob:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>PZ AI Cut Standalone</title>
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="premiere-look.css">
@@ -135,6 +137,6 @@
 <div id="modal" class="modal"><div class="modal-box" id="modalBox"></div></div>
 <div id="toast" class="toast"></div>
 
-<script>require('./renderer.js');</script>
+<script src="boot.js"></script>
 </body>
 </html>

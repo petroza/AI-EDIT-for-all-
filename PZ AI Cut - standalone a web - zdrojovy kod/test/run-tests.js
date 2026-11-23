@@ -428,6 +428,23 @@ function seqWith(...ranges) {
     p.redo();
     assert.strictEqual(p.asrFixes.m1[0].text, 'x');
   });
+  await t('bezpečnost: projekt z cizí ruky se při načtení vyčistí (S12 – podvržený .pzcut spustil kód)', () => {
+    const raw = JSON.parse('{"__proto__":{"polluted":1},"name":"P","media":[{"id":"m1","name":"<img src=x onerror=alert(1)>","width":"1920\\" onmouseover=x","thumbUrl":"javascript:x","thumb":"C:/x\'.png","path":"C:/a.mp4"},{"id":"bad\\"><img>","name":"x"}],'
+      + '"sequences":[{"id":"s1\\"><img>","name":"x"},{"id":"s2","name":"<b>","fps":"25","markers":[{"time":1,"type":"Comment","name":"n"}],'
+      + '"tracks":{"video":[{"clips":[{"id":"c1","mediaId":"m1","gainDb":"<script>","vIn":{"type":"<x>","dur":1},"vOut":{"type":"dipBlack","dur":"1"},"start":0,"in":0,"out":2,"constructor":{"x":1}}]}]}}],'
+      + '"openSequenceIds":["s2","x\\"y"]}');
+    const p = new Project();
+    p.load(raw, null);
+    assert.strictEqual(({}).polluted, undefined);
+    assert.strictEqual(p.media.length, 1); assert.strictEqual(p.media[0].width, 0); assert.ok(!('thumbUrl' in p.media[0]) && !('thumb' in p.media[0]));
+    assert.strictEqual(p.sequences.length, 1); assert.strictEqual(p.sequences[0].fps, 25);
+    const c = p.sequences[0].tracks.video[0].clips[0];
+    assert.strictEqual(c.gainDb, 0); assert.strictEqual(c.vIn, null); assert.strictEqual(c.vOut.type, 'dipBlack'); assert.strictEqual(c.vOut.dur, 1);
+    assert.ok(!Object.prototype.hasOwnProperty.call(c, 'constructor'));
+    assert.strictEqual(p.sequences[0].markers[0].type, 'Comment');
+    assert.deepStrictEqual(p.openSequenceIds, ['s2']);
+    assert.strictEqual(require('../src/core/sanitize').esc('"<a>\'&'), '&quot;&lt;a&gt;&#39;&amp;');
+  });
   console.log(`\n${ok} prošlo, ${fail} selhalo`);
   process.exit(fail ? 1 : 0);
 })();

@@ -11,6 +11,13 @@ const ALLOW = [path.join(process.env.USERPROFILE || 'C:\\', 'Downloads'), 'O:\\S
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.png': 'image/png', '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.json': 'application/json' };
 
 http.createServer((req, res) => {
+  // vývojový server: jen místní Host (DNS rebinding) a zápis jen ze stejné stránky (bezpečnost S12)
+  const host = String(req.headers.host || '').replace(/:\d+$/, '').toLowerCase();
+  if (!['127.0.0.1', 'localhost', '[::1]'].includes(host)) { res.writeHead(403); res.end('forbidden'); return; }
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    const o = req.headers.origin;
+    if (o && !/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(o)) { res.writeHead(403); res.end('forbidden'); return; }
+  }
   const u = new URL(req.url, 'http://x');
   let file;
   if (u.pathname === '/devsave' && req.method === 'POST') {

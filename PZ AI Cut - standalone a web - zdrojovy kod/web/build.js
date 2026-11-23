@@ -128,7 +128,9 @@ req(${entry});
 
   // stránka: index.html z desktopu + webové doplňky
   let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
-  html = html.replace(/<script>\s*require\('\.\/renderer\.js'\);?\s*<\/script>/, '<script src="app.js?v=' + Date.now().toString(36) + '"></script>');
+  // desktop: <script src="boot.js"> (CSP bez vložených skriptů); web: svazek app.js. Desktopová CSP (file:, Node) do webu nepatří
+  html = html.replace(/<script src="boot\.js"><\/script>|<script>\s*require\('\.\/renderer\.js'\);?\s*<\/script>/, '<script src="app.js?v=' + Date.now().toString(36) + '"></script>');
+  html = html.replace(/<!-- Bezpečnost S12[^\n]*-->\n<meta http-equiv="Content-Security-Policy"[^>]*>\n/, '');
   html = html.replace('<title>PZ AI Cut Standalone</title>', '<title>PZ AI Cut Web</title>\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<link rel="icon" href="icon.png">\n<meta name="description" content="PZ AI Cut – online video editor. Your media and projects stay on your computer.">');
   html = html.replace('<link rel="stylesheet" href="premiere-look.css">', '<link rel="stylesheet" href="premiere-look.css">\n<link rel="stylesheet" href="web.css">');
   html = html.replace('PZ AI Cut <i>Standalone</i></span>', 'PZ AI Cut <i>Web</i></span>\n    <nav id="menubar" class="menubar"></nav>');

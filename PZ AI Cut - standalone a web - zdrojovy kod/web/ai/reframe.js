@@ -18,6 +18,20 @@ const AW = 1280; // šířka, na kterou se snímky zmenší pro analýzu
 function importModule(url) {
   const electron = typeof process !== 'undefined' && process.versions && process.versions.electron;
   if (!electron) return import(/* webpackIgnore: true */ url);
+  // desktop: MediaPipe přes pevný modul src/mp-loader.mjs (CSP bez vložených skriptů – bezpečnost S12)
+  if (url === MP + '/vision_bundle.mjs') {
+    if (window.__pzMediaPipe) return Promise.resolve(window.__pzMediaPipe);
+    return new Promise((resolve, reject) => {
+      const done = () => { window.removeEventListener('pz-mediapipe', done); resolve(window.__pzMediaPipe); };
+      window.addEventListener('pz-mediapipe', done);
+      const s = document.createElement('script');
+      s.type = 'module';
+      s.src = 'mp-loader.mjs';
+      s.onerror = () => reject(new Error('Cannot load ' + url));
+      setTimeout(() => { if (!window.__pzMediaPipe) reject(new Error('Loading ' + url + ' timed out')); }, 60000);
+      document.head.appendChild(s);
+    });
+  }
   return new Promise((resolve, reject) => {
     const key = '__pzImport' + Math.random().toString(36).slice(2);
     window[key] = { resolve, reject };
