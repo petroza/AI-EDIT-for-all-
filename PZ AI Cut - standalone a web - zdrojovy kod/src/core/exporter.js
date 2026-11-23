@@ -195,8 +195,42 @@ const ACTIVE = new Set(); // výstupy právě běžících exportů
 async function exportSequence(project, seq0, opts) {
   const key = path.resolve(String(opts.output || '')).toLowerCase();
   if (ACTIVE.has(key)) throw new Error('This file is already being exported – wait until it finishes or choose another name.');
+  // výstup nesmí přepsat zdrojové médium (bezpečnost S12)
+  const src = project.media.find((m) => m && [m.path, m.proxy, m.playPath].some((q) => q && path.resolve(q).toLowerCase() === key));
+  if (src) throw new Error(`The output would overwrite the source media ${src.name} – choose another file name.`);
   ACTIVE.add(key);
-  try { return await exportSnapshot(project, JSON.parse(JSON.stringify(seq0)), opts); } finally { ACTIVE.delete(key); }
+  // export do dočasného souboru, cíl až po dokončení; při chybě / zrušení / pádu nezůstane pod cílovým jménem nepřehratelný
+  // soubor a pracovní složka se smaže (pád a obnova S12: rozbité MP4 + 210 MB v cache na každý pokus)
+  const final = String(opts.output);
+  const ext = path.extname(final);
+  const part = final.slice(0, final.length - ext.length) + '.pzpart' + ext;
+  const works = [];
+  try {
+    const r = await exportSnapshot(project, JSON.parse(JSON.stringify(seq0)), Object.assign({}, opts, { output: part, _onWork: (w) => works.push(w) }));
+    try { if (fs.existsSync(final)) fs.unlinkSync(final); } catch (e) { /* přepíše rename */ }
+    fs.renameSync(part, final);
+    const srtP = part.replace(/\.[^.]+$/, '.srt'), srtF = final.replace(/\.[^.]+$/, '.srt');
+    if (fs.existsSync(srtP)) { try { if (fs.existsSync(srtF)) fs.unlinkSync(srtF); } catch (e) { /* */ } fs.renameSync(srtP, srtF); }
+    return Object.assign(r, { output: final });
+  } catch (e) {
+    for (const f of [part, part.replace(/\.[^.]+$/, '.srt')]) { try { fs.rmSync(f, { force: true }); } catch (x) { /* */ } }
+    // zrušení: ffmpeg ukončený zvenku hlásí „exited with code null“ – srozumitelně
+    if (opts.signal && opts.signal.cancelled) throw new Error('Export cancelled.');
+    throw e;
+  } finally {
+    ACTIVE.delete(key);
+    for (const w of works) { try { fs.rmSync(w, { recursive: true, force: true }); } catch (e) { /* */ } }
+  }
+}
+/** Pozůstatky exportů z dřívějška (pád aplikace během exportu) – pracovní složky starší než 6 h. */
+function cleanStaleExports() {
+  try {
+    const dir = path.join(CACHE, 'export');
+    for (const d of fs.readdirSync(dir)) {
+      const p = path.join(dir, d);
+      try { if (Date.now() - fs.statSync(p).mtimeMs > 6 * 3600e3) fs.rmSync(p, { recursive: true, force: true }); } catch (e) { /* */ }
+    }
+  } catch (e) { /* bez složky */ }
 }
 exportSequence.active = () => ACTIVE.size;
 async function exportSnapshot(project, seq, opts) {
@@ -220,6 +254,7 @@ async function exportSnapshot(project, seq, opts) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   const work = path.join(CACHE, 'export', uid('x'));
   fs.mkdirSync(work, { recursive: true });
+  if (opts._onWork) opts._onWork(work);
   const procs = new Set();
   const track = (p) => { procs.add(p); p.on('close', () => procs.delete(p)); };
   if (opts.signal) opts.signal.kill = () => { for (const p of procs) try { p.kill(); } catch (e) {} };
@@ -239,10 +274,6 @@ async function exportSnapshot(project, seq, opts) {
     if (!m || m.missing || !fs.existsSync(m.path)) { offline.add(m ? m.name : '?'); if (m && !m.missing) m.missing = true; } // přejmenované za běhu (zátěž S12)
   }
   if (offline.size) throw new Error(`Media offline: ${[...offline].join(', ')} – the file was moved or renamed. Import it from its new place (File → Import) and the clips reconnect.`);
-  // výstup nesmí přepsat zdrojové médium (bezpečnost S12: export na místo zdroje ho bez varování přepsal re-enkódem)
-  const outN = path.resolve(output).toLowerCase();
-  const src = project.media.find((m) => m && [m.path, m.proxy, m.playPath].some((q) => q && path.resolve(q).toLowerCase() === outN));
-  if (src) throw new Error(`The output would overwrite the source media ${src.name} – choose another file name.`);
   // zápis do cílové složky ověřit hned (vzhled S3: „Permission denied“ až po 60 % renderu)
   try { const probe = path.join(path.dirname(output), '.pz-write-test-' + process.pid); fs.writeFileSync(probe, ''); fs.unlinkSync(probe); }
   catch (e) { throw new Error(`Cannot write to the folder ${path.dirname(output)} – choose another place to save.`); }
@@ -479,4 +510,4 @@ async function exportSnapshot(project, seq, opts) {
   return { output, format: fmt, sizeMB: Math.round(st.size / 1048576 * 1000) / 1000, duration: Math.round((re - rs) * 1000) / 1000 };
 }
 
-module.exports = { xdcamOk, exportSequence, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };
+module.exports = { xdcamOk, exportSequence, cleanStaleExports, videoSegments, videoFilter, captionsSrt, FORMATS, LOUDNESS };

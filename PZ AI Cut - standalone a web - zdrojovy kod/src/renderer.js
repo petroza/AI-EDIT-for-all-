@@ -116,6 +116,8 @@ const app = {
   _waveLoading: new Set(),
 
   async importPaths(paths) {
+    // média přesunutá / přejmenovaná za běhu označit jako offline – import z nového místa je pak znovu připojí (pád a obnova S12)
+    if (!media.WEB) for (const m of project.media) if (!m.missing && m.path && !fs.existsSync(m.path)) m.missing = true;
     const out = [], bad = [];
     for (const p of paths) {
       app.status('Importing: ' + U.baseName(p));
@@ -679,7 +681,10 @@ const commands = {
 function runCmd(name, arg) {
   const f = commands[name];
   if (!f) { console.warn('unknown command', name); return; }
-  try { f(arg); } catch (e) { app.toast(e.message, true); console.error(e); }
+  try {
+    const r = f(arg);
+    if (r && typeof r.catch === 'function') r.catch((e) => { app.toast(e.message, true); console.error(e); }); // pád a obnova S12
+  } catch (e) { app.toast(e.message, true); console.error(e); }
 }
 ipcRenderer.on('cmd', (_e, name, arg) => runCmd(name, arg));
 
@@ -1504,11 +1509,21 @@ async function saveProject(as) {
 }
 function writeProject(p) {
   const tmp = p + '.tmp';
-  fs.writeFileSync(tmp, JSON.stringify(project.toJSON(), null, 1), 'utf8');
-  fs.renameSync(tmp, p);
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(project.toJSON(), null, 1), 'utf8');
+    fs.renameSync(tmp, p);
+  } catch (e) {
+    try { fs.rmSync(tmp, { force: true }); } catch (x) { /* */ }
+    // pád a obnova S12: soubor jen pro čtení / složka bez práva zápisu – dřív žádná hláška, jen „*“ a .tmp
+    throw new Error(`Cannot save the project to ${p} – the file is read-only or the folder is not writable. Save it elsewhere (File → Save As).`);
+  }
 }
 function loadProjectFile(p, asUntitled, data0) {
-  const data = data0 || JSON.parse(fs.readFileSync(p, 'utf8'));
+  let data = data0;
+  if (!data) {
+    try { data = JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { throw new Error(`${U.baseName(p)} is not a readable project file (damaged or unfinished).`); }
+  }
+  if (!data || typeof data !== 'object' || !Array.isArray(data.sequences) || !Array.isArray(data.media)) throw new Error(`${U.baseName(p)} is not a ${BRAND.SHORT_NAME} project.`);
   require('./ui/captionstyle').discardCaptionStyle();
   app.source.close();
   app.waves.clear();
@@ -2112,10 +2127,23 @@ async function captionsFromTranscript() {
     // záloha neuložených změn uloženého projektu (novější než projekt) → otevřít projekt se změnami, označený jako neuložený
     let rec = null;
     try { if (!media.WEB && settings.lastProject && fs.existsSync(AUTOSAVE)) { const j = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); if (j.autosaveOf && fs.existsSync(j.autosaveOf) && path.resolve(j.autosaveOf).toLowerCase() === path.resolve(settings.lastProject).toLowerCase() && fs.statSync(AUTOSAVE).mtimeMs > fs.statSync(j.autosaveOf).mtimeMs) rec = j; } } catch (e) { rec = null; }
+    let auto = null, autoBad = false;
+    if (!media.WEB && fs.existsSync(AUTOSAVE)) { try { auto = JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')); } catch (e) { autoBad = true; } }
+    if (autoBad) {
+      // poškozená záloha: odložit stranou (nepřepsat), srozumitelně
+      try { fs.renameSync(AUTOSAVE, AUTOSAVE.replace(/\.tnproj$/, '.damaged-' + Date.now() + '.tnproj')); } catch (e) { /* */ }
+      app.toast('The auto-save file is damaged – it was set aside, nothing was recovered.', true);
+    }
     if (rec) { loadProjectFile(settings.lastProject, false, rec); project.dirty = true; updateTitle(); app.toast('Recovered unsaved changes from the auto-save. Save them with Ctrl+S, or close without saving to discard them.'); }
-    else if (settings.lastProject && fs.existsSync(settings.lastProject)) loadProjectFile(settings.lastProject);
-    else if (fs.existsSync(AUTOSAVE) && !(JSON.parse(fs.readFileSync(AUTOSAVE, 'utf8')).autosaveOf)) { loadProjectFile(AUTOSAVE, true); app.toast('Recovered an unsaved project from the auto-save.'); }
+    else if (auto && auto.autosaveOf && !fs.existsSync(auto.autosaveOf)) {
+      // projekt přesunutý / na odpojeném disku: neuložená práce ze zálohy jako nový projekt (dřív se tiše ztratila a další
+      // automatické uložení ji přepsalo – pád a obnova S12)
+      loadProjectFile(AUTOSAVE, true, auto);
+      app.toast(`Recovered unsaved changes, but the project ${U.baseName(auto.autosaveOf)} was not found (moved or on a disconnected drive) – they are open as a new project. Save them with Ctrl+S.`);
+    } else if (settings.lastProject && fs.existsSync(settings.lastProject)) loadProjectFile(settings.lastProject);
+    else if (auto && !auto.autosaveOf) { loadProjectFile(AUTOSAVE, true, auto); app.toast('Recovered an unsaved project from the auto-save.'); }
   } catch (e) { app.toast('Cannot open the last project: ' + e.message, true); }
+  if (!media.WEB) exporter.cleanStaleExports();
   app.projectPanel.render();
   renderTabs();
   app.timeline.restoreView();

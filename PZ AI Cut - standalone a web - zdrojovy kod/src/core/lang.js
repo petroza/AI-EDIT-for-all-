@@ -157,6 +157,11 @@ const CS = {
 
 // dynamické texty: [vzor, náhrada | funkce]
 const RULES = [
+  [/^Cannot save the project to (.+) – the file is read-only or the folder is not writable\. Save it elsewhere \(File → Save As\)\.$/, 'Projekt nejde uložit do $1 – soubor je jen pro čtení nebo do složky nejde zapisovat. Ulož ho jinam (Soubor → Uložit jako).'],
+  [/^(.+) is not a readable project file \(damaged or unfinished\)\.$/, '$1 není čitelný soubor projektu (poškozený nebo nedokončený).'],
+  [/^(.+) is not a (.+) project\.$/, '$1 není projekt $2.'],
+  [/^The auto-save file is damaged – it was set aside, nothing was recovered\.$/, 'Automatická záloha je poškozená – odložil jsem ji stranou, nic se neobnovilo.'],
+  [/^Recovered unsaved changes, but the project (.+) was not found \(moved or on a disconnected drive\) – they are open as a new project\. Save them with Ctrl\+S\.$/, 'Obnoveny neuložené změny, ale projekt $1 se nenašel (přesunutý nebo na odpojeném disku) – jsou otevřené jako nový projekt. Ulož je přes Ctrl+S.'],
   [/^This file is already being exported – wait until it finishes or choose another name\.$/, 'Do tohoto souboru se už exportuje – počkej na dokončení nebo zvol jiný název.'],
   [/^There is nothing to export between In and Out\.$/, 'Mezi In a Out není nic k exportu.'],
   [/^A file is open in another program or not accessible – close it and export again\.$/, 'Soubor je otevřený v jiném programu nebo k němu není přístup – zavři ho a exportuj znovu.'],

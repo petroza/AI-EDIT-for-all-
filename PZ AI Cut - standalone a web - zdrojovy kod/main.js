@@ -27,6 +27,10 @@ app.setName(APP_NAME);
 // testovací instance (test/standalone.js): vlastní úložiště okna (localStorage, IndexedDB s přepisy) – Electron jinak bere skutečnou
 // složku AppData uživatele i při přesměrovaném APPDATA a test by sahal do nastavení a mezipaměti jeho aplikace
 if (process.env.PZ_USERDATA) app.setPath('userData', process.env.PZ_USERDATA);
+// jedna instance: dvě okna sdílela jednu automatickou zálohu a stejný projekt bez varování (pád a obnova S12);
+// druhé spuštění jen přenese okno dopředu (zámek patří k userData – izolované testovací instance běží dál souběžně)
+const PRIMARY = app.requestSingleInstanceLock();
+app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 // vlastní identita na liště úloh Windows (ikona a seskupení oken PZ AI Cut, ne Electron)
 if (process.platform === 'win32') app.setAppUserModelId('cz.pz.aicut.standalone');
 
@@ -99,6 +103,21 @@ function createWindow() {
     send('beforeClose');
   });
   win.on('closed', () => { win = null; });
+  // pád okna (rendereru): dřív prázdné okno, které nešlo zavřít křížkem – jen přes Správce úloh (pád a obnova S12)
+  win.webContents.on('render-process-gone', async (_e, d) => {
+    if (!win || (d && d.reason === 'clean-exit')) return;
+    forceClose = true;
+    const cs = LANG === 'cs';
+    const r = await dialog.showMessageBox(win, {
+      type: 'error', noLink: true, defaultId: 0, cancelId: 1,
+      buttons: cs ? ['Znovu načíst', 'Zavřít'] : ['Reload', 'Close'],
+      message: cs ? 'Okno aplikace spadlo.' : 'The app window crashed.',
+      detail: cs ? 'Neuložená práce je v automatické záloze (nejvýš 1 minuta stará) – po znovunačtení se nabídne obnova.'
+        : 'Unsaved work is in the auto-save (at most 1 minute old) – it is offered after reloading.',
+    }).catch(() => ({ response: 1 }));
+    if (!win) return;
+    if (r.response === 0) { forceClose = false; win.reload(); } else win.close();
+  });
 }
 
 ipcMain.handle('dialog', async (_e, kind, opts) => {
@@ -114,6 +133,7 @@ ipcMain.on('setLang', (_e, l) => { const n = l === 'cs' ? 'cs' : 'en'; if (n !==
 ipcMain.on('setTitle', (_e, t) => { if (win) win.setTitle(t); });
 
 app.whenReady().then(() => {
+  if (!PRIMARY) { app.quit(); return; }
   try { syncAiPanel(); } catch (e) { console.error('AI panel:', e.message); }
   buildMenu();
   createWindow();

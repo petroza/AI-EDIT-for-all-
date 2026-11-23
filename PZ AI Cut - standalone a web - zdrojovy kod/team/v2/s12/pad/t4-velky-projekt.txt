@@ -1,0 +1,7 @@
+Velký projekt: 300 000 titulků, JSON 48 MB (autosave) / 59 MB (.pzcut s odsazením)
+Ctrl+S: 171 ms (JSON.stringify 81 ms) – blokuje okno
+Zabití při Ctrl+S (hlídač čekal na vznik proj3-big.pzcut.tmp, pak zabil renderer 30772 + main 39848):
+  {"killedAt":"2026-11-23T10:59:02.250Z","sizeSeen":59165376,"sizeAfter":59165376}
+  proj3-big.pzcut md5 e0fe17fe189d83be78df7f540d9688d8 beze změny (OK), zůstal proj3-big.pzcut.tmp 59 165 376 B (nový stav, nikdo ho neuklidí ani nenabídne)
+Zabití při autosave (hlídač na vznik autosave.tnproj, kill renderer 21776 + main 54120):
+  {"killedAt":"2026-11-23T11:00:15.232Z","sizeSeen":0,"sizeAfter":47764551} – zápis v jádře doběhl, JSON platný, obnova po startu OK

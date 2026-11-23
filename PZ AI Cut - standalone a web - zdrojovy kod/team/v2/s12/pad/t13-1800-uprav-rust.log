@@ -1,0 +1,9 @@
+# 1800 úprav (střih/značka/titulek/Zpět/Znovu/zesílení/nadpis/oprava přepisu) bez pauz, sekvence 5 min, měřeno v rendereru (bez GC)
+{"edits":0,"sec":0,"rssMB":155,"dom":801,"hist":0,"histMB":0,"projKB":4,"autosaveMs":1}
+{"edits":300,"sec":3,"rssMB":265,"dom":1312,"hist":121,"histMB":2.58,"projKB":42,"autosaveMs":1}
+{"edits":600,"sec":9,"rssMB":419,"dom":1805,"hist":200,"histMB":9.21,"projKB":79,"autosaveMs":1}
+{"edits":900,"sec":17,"rssMB":557,"dom":2315,"hist":200,"histMB":16.74,"projKB":117,"autosaveMs":1}
+{"edits":1200,"sec":27,"rssMB":690,"dom":2811,"hist":200,"histMB":24.17,"projKB":154,"autosaveMs":1}
+{"edits":1500,"sec":40,"rssMB":793,"dom":3314,"hist":200,"histMB":31.65,"projKB":191,"autosaveMs":2}
+{"edits":1800,"sec":58,"rssMB":865,"dom":3796,"hist":200,"histMB":38.91,"projKB":227,"autosaveMs":2}
+# po GC (CDP HeapProfiler.collectGarbage) hned potom: heap 87,9 MB, RSS 409 MB, 352 klipů, 181 značek

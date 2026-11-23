@@ -1,0 +1,269 @@
+{
+ "app": "PZ AI Cut Standalone",
+ "version": 1,
+ "name": "Untitled",
+ "media": [
+  {
+   "id": "mmwt5bg6mv4hgv1",
+   "path": "C:/Users/Petr/AppData/Local/Temp/pz-s12-pad/work/media-a.mp4",
+   "name": "media-a.mp4",
+   "duration": 300,
+   "hasVideo": true,
+   "hasAudio": true,
+   "width": 1280,
+   "height": 720,
+   "fps": 25,
+   "vcodec": "h264",
+   "pixFmt": "yuv420p",
+   "acodec": "aac",
+   "audioChannels": 2,
+   "sampleRate": 48000,
+   "size": 25834146,
+   "playable": true,
+   "srcPos": 0,
+   "thumb": "C:\\Users\\Petr\\AppData\\Local\\Temp\\pz-s12-pad\\local\\TN_strihatoko\\cache\\thumbs\\1f21e22ba2a874fb_20_192.jpg",
+   "thumbUrl": "file:///C:/Users/Petr/AppData/Local/Temp/pz-s12-pad/local/TN_strihatoko/cache/thumbs/1f21e22ba2a874fb_20_192.jpg"
+  }
+ ],
+ "sequences": [
+  {
+   "id": "da59e86a-bad8-4ef6-b5ff-7215d91bc38c",
+   "name": "S12 test",
+   "width": 1280,
+   "height": 720,
+   "fps": 25,
+   "tracks": {
+    "video": [
+     {
+      "clips": [
+       {
+        "id": "cmwt5bhddmmpgo3",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "video",
+        "start": 0,
+        "in": 10,
+        "out": 20,
+        "linkId": "lmwt5bhddbaq982",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       },
+       {
+        "id": "cmwt5bhdd23e7l6",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "video",
+        "start": 10,
+        "in": 40,
+        "out": 52,
+        "linkId": "lmwt5bhddwaq4l5",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       },
+       {
+        "id": "cmwt5bhdd26a8g9",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "video",
+        "start": 22,
+        "in": 100,
+        "out": 108,
+        "linkId": "lmwt5bhddlfday8",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       }
+      ],
+      "muted": false,
+      "locked": false,
+      "target": true
+     },
+     {
+      "clips": [],
+      "muted": false,
+      "locked": false,
+      "target": false
+     },
+     {
+      "clips": [],
+      "muted": false,
+      "locked": false,
+      "target": false
+     }
+    ],
+    "audio": [
+     {
+      "clips": [
+       {
+        "id": "cmwt5bhddvrskn4",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "audio",
+        "start": 0,
+        "in": 10,
+        "out": 20,
+        "linkId": "lmwt5bhddbaq982",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       },
+       {
+        "id": "cmwt5bhddfbb777",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "audio",
+        "start": 10,
+        "in": 40,
+        "out": 52,
+        "linkId": "lmwt5bhddwaq4l5",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       },
+       {
+        "id": "cmwt5bhddswu8da",
+        "mediaId": "mmwt5bg6mv4hgv1",
+        "name": "media-a.mp4",
+        "kind": "audio",
+        "start": 22,
+        "in": 100,
+        "out": 108,
+        "linkId": "lmwt5bhddlfday8",
+        "gainDb": 0,
+        "fadeIn": 0,
+        "fadeOut": 0,
+        "fit": "contain",
+        "scale": 1,
+        "posX": 0,
+        "posY": 0,
+        "disabled": false
+       }
+      ],
+      "muted": false,
+      "locked": false,
+      "target": true
+     },
+     {
+      "clips": [],
+      "muted": false,
+      "locked": false,
+      "target": false
+     },
+     {
+      "clips": [],
+      "muted": false,
+      "locked": false,
+      "target": false
+     }
+    ]
+   },
+   "markers": [
+    {
+     "id": "kmwt5bhsj27y64b",
+     "time": 2,
+     "duration": 0,
+     "name": "Znacka A",
+     "comment": "",
+     "color": 0
+    },
+    {
+     "id": "kmwt5bhsjgswp6c",
+     "time": 15,
+     "duration": 0,
+     "name": "Znacka B",
+     "comment": "",
+     "color": 0
+    }
+   ],
+   "captions": [
+    {
+     "start": 0.5,
+     "end": 2.55,
+     "text": "První titulek testu",
+     "ws": [
+      0.5,
+      1.07,
+      1.83
+     ]
+    },
+    {
+     "start": 3,
+     "end": 5.05,
+     "text": "Druhý titulek testu",
+     "ws": [
+      3,
+      3.57,
+      4.33
+     ]
+    },
+    {
+     "start": 6,
+     "end": 8.55,
+     "text": "Třetí titulek testu",
+     "ws": [
+      6,
+      6.72,
+      7.68
+     ]
+    }
+   ],
+   "inPoint": null,
+   "outPoint": null,
+   "playhead": 0,
+   "zoom": 10.066666666666666,
+   "scroll": 0,
+   "captionStyle": {
+    "lines": 1,
+    "maxChars": 40,
+    "size": 1,
+    "pos": 5,
+    "color": "#ffffff",
+    "box": false
+   },
+   "title": {
+    "text": "Nadpis S12 ulozeny",
+    "size": 1
+   }
+  }
+ ],
+ "activeSequenceId": "da59e86a-bad8-4ef6-b5ff-7215d91bc38c",
+ "openSequenceIds": [
+  "da59e86a-bad8-4ef6-b5ff-7215d91bc38c"
+ ],
+ "asrFixes": {
+  "mmwt5bg6mv4hgv1": [
+   {
+    "s": 11,
+    "e": 12.5,
+    "text": "OPRAVA-ULOZENA"
+   }
+  ]
+ }
+}

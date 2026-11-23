@@ -1,0 +1,9 @@
+{"round":0,"edits":0,"ms":0,"heapMB":87.9,"dom":3796,"hist":200,"fut":0,"clips":352,"markers":181,"caps":4,"rssMB":409}
+{"round":1,"edits":600,"ms":27713,"heapMB":84.8,"dom":3765,"hist":192,"fut":1,"clips":348,"markers":180,"caps":4,"rssMB":445}
+{"round":2,"edits":1200,"ms":28324,"heapMB":84.9,"dom":3762,"hist":191,"fut":1,"clips":348,"markers":179,"caps":4,"rssMB":441}
+{"round":3,"edits":1800,"ms":28652,"heapMB":83.9,"dom":3755,"hist":189,"fut":1,"clips":347,"markers":179,"caps":4,"rssMB":449}
+{"round":4,"edits":2400,"ms":27444,"heapMB":82.7,"dom":3738,"hist":186,"fut":1,"clips":345,"markers":178,"caps":4,"rssMB":446}
+{"round":5,"edits":3000,"ms":41457,"heapMB":80,"dom":3714,"hist":180,"fut":1,"clips":342,"markers":177,"caps":4,"rssMB":442}
+{"round":6,"edits":3600,"ms":42580,"heapMB":79.2,"dom":3704,"hist":178,"fut":1,"clips":341,"markers":176,"caps":4,"rssMB":450}
+
+[exited with code 0]
