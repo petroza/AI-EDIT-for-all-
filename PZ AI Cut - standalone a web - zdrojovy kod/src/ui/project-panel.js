@@ -61,7 +61,7 @@ function createProjectPanel(app) {
       if (m.hasVideo) info += ` · ${m.width}×${m.height} · ${m.fps} fps`;
       else if (m.hasAudio) info += ' · audio';
       let prog = '';
-      if (!m.playable && !m.proxy && !m.proxyError) prog = `<div class="prog" title="Creating a playback proxy"><i style="width:${Math.round((m.proxyProgress || 0) * 100)}%"></i></div>`;
+      if (!m.playable && !m.proxy && !m.proxyError && !m.missing) prog = `<div class="prog" title="Creating a playback proxy"><i style="width:${Math.round((m.proxyProgress || 0) * 100)}%"></i></div>`;
       if (m.proxyError) info += ' · ✖ proxy';
       if (m.missing) info += window.TN && window.TN.lang === 'cs' ? ' · médium offline' : ' · media offline';
       h += `<div class="pi${sel}${m.missing ? ' missing' : ''}" data-type="media" data-id="${m.id}" draggable="true" title="${esc(m.path)}">

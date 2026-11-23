@@ -205,7 +205,11 @@ function createSource(app) {
     const fps = media.fps || 25;
     offl.classList.toggle('show', !!media.missing);
     if (media.missing) offl.textContent = (window.TN && window.TN.lang === 'cs' ? 'Médium offline: ' : 'Media Offline: ') + media.name;
-    title.textContent = media.name + (media.proxy && !media.playable ? ' · proxy' : '') + (!media.playable && !media.proxy ? ' · creating proxy…' : '');
+    // offline médium (i nepotvrzený síťový server) proxy nevytváří – dřív anglicky „creating proxy…“ (regrese S14)
+    const csT = window.TN && window.TN.lang === 'cs';
+    title.textContent = media.name + (media.proxy && !media.playable && !media.missing ? ' · proxy' : '')
+      + (!media.playable && !media.proxy && !media.missing ? (csT ? ' · vytváří se proxy…' : ' · creating proxy…') : '')
+      + (media.missing ? (csT ? ' · médium offline' : ' · media offline') : '');
     if (!tc.querySelector('input')) tc.textContent = timecode(player.time, fps);
     const a = media.srcIn ?? null, b = media.srcOut ?? null;
     dur.textContent = timecode((b !== null ? b : media.duration) - (a || 0), fps);
