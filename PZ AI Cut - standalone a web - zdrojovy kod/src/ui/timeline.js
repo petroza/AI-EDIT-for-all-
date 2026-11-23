@@ -225,7 +225,7 @@ function createTimeline(app) {
       if (c.fadeIn) inner += `<div class="fade in" style="width:${Math.max(3, xOf(c.fadeIn))}px"></div>`;
       if (c.fadeOut) inner += `<div class="fade out" style="width:${Math.max(3, xOf(c.fadeOut))}px"></div>`;
     } else if (m && m.thumb && w > 40 && (app.view || {}).thumbs !== false) {
-      inner += `<div class="thumbs" style="width:${Math.min(w - 2, 72)}px;background-image:url('${m.thumbUrl}')"></div>`;
+      inner += `<div class="thumbs" style="width:${Math.min(w - 2, 72)}px;background-image:url('${app.clipThumb ? app.clipThumb(c, m) : m.thumbUrl}')"></div>`;
     }
     const vis = c.kind === 'audio' && (app.view || {}).waves !== false && left + w > viewL && left < viewR;
     if (m && m.missing) inner = `<span class="cl"><b class="offl">${window.TN && window.TN.lang === 'cs' ? 'Médium offline' : 'Media Offline'}</b> ${name}</span>`;

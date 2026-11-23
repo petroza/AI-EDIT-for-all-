@@ -176,6 +176,7 @@ const RULES = [
   [/^The cut is in the middle of the word “(.+)” – move it into a pause \(Q \/ W, or drag the edit\)\.$/, 'Střih je uprostřed slova „$1“ – posuň ho do pauzy (Q / W nebo tažením střihu).'],
   [/^The file (.+) already exists\.$/, 'Soubor $1 už existuje.'],
   [/^The gap stays open: another clip lies across it \(B-roll, music\)\. To remove the part from all tracks use Extract \(I and O around it, then the apostrophe key\)\.$/, 'Mezera zůstala: přes ni leží jiný klip (b-roll, hudba). Úsek ze všech stop vyjmeš přes Extract (I a O kolem něj, pak klávesa apostrof).'],
+  [/^The crop could not follow the face here – edit in 16:9 and use Sequence → Auto Reframe\.$/, 'Výřez podle obličeje se tu nepodařil – stříhej v 16:9 a použij Sekvence → Auto Reframe.'],
   [/^Media relinked: (.+)$/, 'Médium znovu připojeno: $1'],
   [/^Cannot import: (.+)$/, (m, a) => 'Nejde importovat: ' + a.replace(/\(damaged or unsupported file\)/g, '(poškozený nebo nepodporovaný soubor)')],
   [/^File not found: (.+)$/, 'Soubor nenalezen: $1'], [/^(.+): File not found: (.+)$/, '$1: soubor nenalezen: $2'],

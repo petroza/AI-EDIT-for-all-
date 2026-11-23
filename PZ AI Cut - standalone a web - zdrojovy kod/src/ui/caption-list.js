@@ -31,7 +31,9 @@ function createCaptionList(app) {
     const s = seq();
     if (!s || s.id !== seqId) { seqId = s && s.id; fixedBase = app.project.history.filter((h) => h.label === 'Edit Caption').length; note = ''; focusI = -1; }
     const caps = (s && s.captions) || [];
-    const k = [cs(), s && s.id, caps.length, caps.map((c) => c.text + c.start.toFixed(2)).join('|'), editing && editing.i].join('#');
+    // i počet zvukových klipů: po vložení (Ctrl+V) do prázdné sekvence se jinak držel text „nemá klipy se zvukem“ (redaktorka S7)
+    const nAudio = s ? s.tracks.audio.reduce((n, t) => n + t.clips.length, 0) : 0;
+    const k = [cs(), s && s.id, caps.length, nAudio, caps.map((c) => c.text + c.start.toFixed(2)).join('|'), editing && editing.i].join('#');
     if (undoBtn && app.project.history.length !== delHist) { undoBtn = false; note = ''; key = ''; }
     if (k === key && !force) { paintPlay(); return; }
     key = k;

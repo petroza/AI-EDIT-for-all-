@@ -334,6 +334,20 @@ app.captionList = require('./ui/caption-list').createCaptionList(app);
 app.transcript = require('./ui/transcript-panel').createTranscriptPanel(app);
 
 /* ======================================================= náhledy, proxy, události */
+/** Náhled klipu na časové ose ze začátku klipu, ne první snímek souboru (redaktorka S7: u 28min rozhovoru všude znělka TALK). */
+const clipThumbs = new Map(); // médium@čas -> url | 'pending'
+app.clipThumb = (c, m) => {
+  if (media.WEB || !m || m.missing || !m.hasVideo) return m && m.thumbUrl;
+  const t = Math.round((c.in + Math.min(1, (c.out - c.in) / 3)) * 2) / 2;
+  const k = m.id + '@' + t, v = clipThumbs.get(k);
+  if (v && v !== 'pending') return v;
+  if (!v) {
+    clipThumbs.set(k, 'pending');
+    media.thumbnail(m.path, t, 144).then((f) => { clipThumbs.set(k, pathToFileURL(f).href); clearTimeout(app._thumbT); app._thumbT = setTimeout(() => app.timeline.render(), 150); })
+      .catch(() => clipThumbs.set(k, m.thumbUrl || ''));
+  }
+  return m.thumbUrl;
+};
 function loadThumb(m) {
   if (!m.hasVideo || m.missing) return;
   if (m.thumb && fs.existsSync(m.thumb)) { m.thumbUrl = pathToFileURL(m.thumb).href; return; }
@@ -1069,6 +1083,22 @@ if (!media.WEB) {
       return files.get(p);
     }, () => {}, opts || {});
   };
+  // výřez podle obličeje přímo v sekvenci na výšku (vkládání z Přepisu, Auto Reframe na stejný formát) – jako web;
+  // redaktorka S7: v sekvenci 9:16 založené dialogem se další klipy jen ořízly na střed (v celku jen stůl)
+  window.__pzReframeHere = async (s, only) => {
+    const RF = require('../web/ai/reframe');
+    try { await Promise.race([RF.detector(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000))]); } catch (e) {
+      app.toast(LL('The crop could not follow the face here – edit in 16:9 and use Sequence → Auto Reframe.', 'Výřez podle obličeje se tu nepodařil – stříhej v 16:9 a použij Sekvence → Auto Reframe.'), true);
+      throw e;
+    }
+    app.edit('Set to Fill', () => { for (const tr of s.tracks.video) for (const c of tr.clips) { if (only && !only.has(c.id)) continue; c.fit = 'cover'; c.scale = 1; c.posX = 0; c.posY = 0; } });
+    const files = new Map();
+    return RF.reframeSequence(app, s, (m) => {
+      const p = importer.playPath(m) || m.path;
+      if (!files.has(p)) files.set(p, new RF.FsFile(p));
+      return files.get(p);
+    }, (text) => app.status(i18n.tr ? i18n.tr(text) : text), only || null);
+  };
   window.__pzReframe = async (src, num, den, W, H) => {
     const RF = require('../web/ai/reframe');
     const files = new Map();
@@ -1186,7 +1216,7 @@ function renameSeq(sq) {
 function duplicateSeq(sq) {
   app.edit('Duplicate Sequence', () => {
     const c = JSON.parse(JSON.stringify(sq));
-    c.id = U.uuid(); c.name = project.uniqueSeqName(sq.name + ' Copy');
+    c.id = U.uuid(); c.name = project.uniqueSeqName(sq.name + (TN.lang === 'cs' ? ' kopie' : ' Copy'));
     E.eachTrack(c, (t) => t.clips.forEach((x) => { x.id = U.uid('c'); }));
     project.addSequence(c);
   });
