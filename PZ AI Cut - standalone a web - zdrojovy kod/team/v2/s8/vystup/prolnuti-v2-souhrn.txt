@@ -1,0 +1,6 @@
+1080xdcam-kon.txt                  prechod sn 276-299 (24 sn) | krok 0.037..0.044 | max zbytek 1.4 | jas 115-117, max skok jasu 1
+1080xdcam-zac.txt                  prechod sn 201-224 (24 sn) | krok 0.037..0.044 | max zbytek 1.5 | jas 116-117, max skok jasu 1
+169-kon.txt                        prechod sn 276-299 (24 sn) | krok 0.029..0.043 | max zbytek 0.8 | jas 116-118, max skok jasu 1
+169-zac.txt                        prechod sn 201-224 (24 sn) | krok 0.034..0.044 | max zbytek 0.8 | jas 117-118, max skok jasu 1
+916-kon.txt                        prechod sn 276-299 (24 sn) | krok 0.038..0.043 | max zbytek 1.7 | jas 142-147, max skok jasu 1
+916-zac.txt                        prechod sn 201-224 (24 sn) | krok 0.036..0.044 | max zbytek 1.8 | jas 144-148, max skok jasu 1

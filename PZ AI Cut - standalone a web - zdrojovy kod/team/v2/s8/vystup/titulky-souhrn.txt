@@ -7,3 +7,4 @@ s8-sim11     15 titulku | <0,7 s: 0 [] | pres strih: zadny | v titulku neslyseno
 s8-k219       1 titulku | <0,7 s: 0 [] | pres strih: zadny | v titulku neslyseno: nic | slyseno bez titulku: [('A', -0.5)]
 s8-k219916    1 titulku | <0,7 s: 0 [] | pres strih: zadny | v titulku neslyseno: nic | slyseno bez titulku: [('A', -0.5)]
 s8-k21911     1 titulku | <0,7 s: 0 [] | pres strih: zadny | v titulku neslyseno: nic | slyseno bez titulku: [('A', -0.5)]
+s8-v916      28 titulku | <0,7 s: 0 [] | pres strih: zadny | v titulku neslyseno: [(5.73, 'jí'), (9.61, 'potřebuju'), (20.14, 'komu'), (20.14, 'se'), (20.14, 'tohle'), (20.14, 'stalo'), (22.18, 'tak'), (47.53, 'jak')] | slyseno bez titulku: [('jako', 4.68), ('ji', 5.3), ('jako', 7.16), ('potřebuji', 9.9), ('možnostce', 20.94), ('na', 22.24), ('to,', 22.56), ('jako', 47.34)]

@@ -1,5 +1,5 @@
 # S8: A/V sync exportu proti zdroji po klipech V1/A1 (zobecneny sync_snimky.py + sync_zvuk.py z S3 pro oba zdroje).
-# Obraz: jen 16:9 (contain), pas 10-55 % vysky, posun -2..+2 snimky. Zdroj: VYSTUPNI -ss (dekodovani od zacatku; input -ss u 28min zdroje vraci jiny zaber - overeno S8, dbg-sim-*.png).
+# Obraz: jen 16:9 (contain), pas 10-55 % vysky, posun -2..+2 snimky. Zdroj: VYSTUPNI -ss (dekodovani od zacatku; input -ss u 28min zdroje vraci jiny zaber - overeno S8, shots-vystup/dbg-sim-*.png).
 # Zvuk: krizova korelace okna 2 s od +0,3 s klipu, +-120 ms. python sync2.py <export> <sekvence> [jen_zvuk]
 import sys, os, json, subprocess, numpy as np
 here = os.path.dirname(os.path.abspath(__file__))

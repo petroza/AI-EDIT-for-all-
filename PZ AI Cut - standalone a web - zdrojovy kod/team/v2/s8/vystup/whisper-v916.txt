@@ -1,0 +1,5 @@
+v916 Ale my nepotřebujeme prostě někoho, aby nám říkal takový ty chlácholivý věci, jako ji už je teď dobře, jako to nepotřebujeme slyšet. Já potřebuji slyšet něco, jako máma byla skvělá, tak jim i chybí a jsem tady pro tebe, kdyby cokoliv. Bych jako doporučila všem, kdo přichází, nebo přišli do styku s někým možnostce na to, neříkat tyhle fádní věci, často zahojí, je teď líp, tak to mělo být, Tohle fakt nepomáhá. Prostě my ani nepotřebujeme nic slyšet. My potřebujeme jenom toho člověka, aby s náma byl. Aby, když se třeba dlouho neozýváme, aby zavolal a řekl, já jedu za tebou, já ti vezu jídlo nebo prostě pojď, kouknem se na film. Jenom ta přítomnost toho člověka chytne vás za ruku. Něco prostě. Takže to přišlo úplně, jako my jsme se rozvěděli, že je nemocná a za tři týdny byla pryč.
+   cut 0.00: Ale[-0.50-0.56 0.39] my[0.56-0.68 0.53]
+   cut 16.08: cokoliv[15.40-16.04 1.00] bych[16.04-16.58 0.66] jako[16.58-16.70 0.91]
+   cut 45.88: prostě.[45.46-45.90 0.93] Takže[45.90-46.46 0.92] to[46.46-46.56 0.97]
+   cut 50.36: byla[49.74-49.90 0.93] přeč.[49.90-50.30 0.71]

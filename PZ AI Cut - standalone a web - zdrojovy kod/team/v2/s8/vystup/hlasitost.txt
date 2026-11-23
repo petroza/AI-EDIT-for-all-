@@ -14,3 +14,4 @@ vystup-s8-multi.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS
 vystup-s8-multi916.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS 
 vystup-s8-multi11.mp4 |  I: -13.9 LUFS Peak: -1.4 dBFS 
 vystup-s8-multi1080-xdcam.mxf (A1+A2 mono -> stereo) |  I: -22.9 LUFS Peak: -7.9 dBFS 
+vystup-s8-v916.mp4 |  I: -14.1 LUFS Peak: -1.5 dBFS 

@@ -15,3 +15,5 @@ vystup-s8-multi916.mp4: 1252 snimku, strihy 27.00 33.00 33.56 43.00 46.48 47.68 
 vystup-s8-multi11.mp4: 1252 snimku, strihy 27.00 33.00 33.56 40.28 43.00 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
 vystup-s8-multi1080-xdcam.mxf: 1252 snimku, strihy 33.00 33.56 46.48 47.68 49.48 | kratke zabery (<13 sn.): zadne
 vystup-s8-rx1-bez.mp4: 1226 snimku, strihy 31.96 32.52 45.44 46.64 48.44 | kratke zabery (<13 sn.): zadne
+vystup-s8-v916.mp4: 1259 snimku, strihy 3.76 20.28 23.00 45.88 46.60 | kratke zabery (<13 sn.): zadne
+vystup-s8-v916-bez.mp4: 1259 snimku, strihy 3.76 20.28 23.00 45.88 46.60 | kratke zabery (<13 sn.): zadne
