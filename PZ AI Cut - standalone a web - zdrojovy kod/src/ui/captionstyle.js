@@ -22,7 +22,7 @@ function openCaptionStyle(app, focusTitle) {
   box.setAttribute('data-keep', '1');
   box.innerHTML = `
     <div class="cs-head"><b>${L('Text on video', 'Text v obraze')}</b><span class="cs-seq"></span><button class="cs-x" title="${L('Close', 'Zavřít')}">×</button></div>
-    <div class="cs-sec">${L('Headline at the top', 'Nadpis nahoře')}</div>
+    <div class="cs-sec cs-sec-cap">${L('Headline at the top', 'Nadpis nahoře')}<label class="cs-tg" title="${L('Show or hide the headline in the picture (the text stays saved)', 'Zobrazit nebo skrýt nadpis v obraze (text zůstane uložený)')}"><input type="checkbox" class="cs-title-on"> ${L('Show', 'Zobrazit')}</label></div>
     <input type="text" class="cs-title" maxlength="90" autocomplete="off" placeholder="${L('E.g. Mayor: The bridge will be ready in summer', 'Např. Starostka: Most bude hotový v létě')}">
     <div class="cs-row"><span>${L('Headline size', 'Velikost nadpisu')}</span><input type="range" data-t="size" min="0.6" max="1.6" step="0.05"><em data-o="tsize"></em></div>
     <div class="cs-sec cs-sec-cap">${L('Captions', 'Titulky')}${window.__pzASR ? `<button class="cs-mk-small" style="display:none">${L('Create again from transcript…', 'Vytvořit znovu z přepisu…')}</button>` : ''}</div>
@@ -58,6 +58,9 @@ function openCaptionStyle(app, focusTitle) {
     box.querySelectorAll('input[type=range][data-k]').forEach((i) => { i.value = st[i.dataset.k]; });
     box.querySelector('input[data-t=size]').value = ti.size || 1;
     if (document.activeElement !== titleIn) titleIn.value = ti.text || '';
+    const on = box.querySelector('.cs-title-on');
+    on.checked = !ti.off; on.disabled = !String(ti.text || '').trim();
+    titleIn.classList.toggle('cs-off', !!ti.off); box.querySelector('input[data-t=size]').closest('.cs-row').classList.toggle('cs-off', !!ti.off);
     box.querySelector('input[data-k=box]').checked = !!st.box;
     box.querySelector('input[data-k=highlight]').checked = !!st.highlight;
     box.querySelector('[data-o=maxChars]').textContent = st.maxChars + L(' ch', ' zn.');
@@ -73,7 +76,7 @@ function openCaptionStyle(app, focusTitle) {
   // živý náhled bez kroku Zpět; commit() pak uloží jeden krok
   function live(k) {
     if (k === 'title') {
-      if (String(ti.text || '').trim()) s.title = { text: ti.text, size: ti.size || 1 }; else delete s.title;
+      if (String(ti.text || '').trim()) s.title = Object.assign({ text: ti.text, size: ti.size || 1 }, ti.off ? { off: true } : {}); else delete s.title;
     } else {
       s.captionStyle = Object.assign({}, st);
       if (LAYOUT.has(k) && (s.captions || []).length) {
@@ -127,8 +130,10 @@ function openCaptionStyle(app, focusTitle) {
   const tsz = box.querySelector('input[data-t=size]');
   tsz.oninput = () => setTitle('size', Number(tsz.value));
   tsz.onchange = commit;
-  titleIn.oninput = () => setTitle('text', titleIn.value);
+  // psaní do vypnutého nadpisu ho zase zapne (jinak by nebylo vidět, co se píše)
+  titleIn.oninput = () => { if (ti.off) ti.off = false; setTitle('text', titleIn.value); };
   titleIn.onchange = commit;
+  box.querySelector('.cs-title-on').onchange = (e) => { setTitle('off', !e.target.checked); commit(); };
   titleIn.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); titleIn.blur(); } };
   box.querySelector('input[data-k=box]').onchange = (e) => { set('box', e.target.checked); commit(); };
   // zvýraznění: žlutá k bílému písmu, jinak bílá

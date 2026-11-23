@@ -281,7 +281,8 @@ const TITLE = { tall: { top: 12, frac: 0.042 }, portrait: { top: 6, frac: 0.044 
 const TITLE_WIDTH = 0.84;
 function titleOf(seq) {
   const t = seq && seq.title;
-  if (!t || !String(t.text || '').trim()) return null;
+  // vypnutý nadpis (přepínač Zobrazit v okně Text v obraze) zůstává uložený, jen se nekreslí v náhledu ani v exportu
+  if (!t || t.off || !String(t.text || '').trim()) return null;
   const d = TITLE[shapeOf(seq.width, seq.height)];
   return { text: String(t.text).replace(/\s+/g, ' ').trim(), top: t.top != null ? t.top : d.top, frac: d.frac * (t.size || 1) };
 }
