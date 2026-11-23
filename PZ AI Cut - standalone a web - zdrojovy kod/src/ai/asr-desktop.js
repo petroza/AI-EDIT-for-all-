@@ -52,12 +52,15 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   if (!aiRoot || !fs.existsSync(path.join(aiRoot, 'worker', 'server.py'))) return null; // bez MY Premiere MCP přepis není
   let conf = {}; try { conf = JSON.parse(fs.readFileSync(path.join(aiRoot, 'config.json'), 'utf8')); } catch (e) { /* výchozí */ }
   const PORT = (conf.worker && conf.worker.port) || 7881;
-  const TOKEN_FILE = path.join(process.env.APPDATA || '', 'MYpremiereMCP', 'token.txt');
+  const TOKEN_FILE = path.join(process.env.APPDATA || aiRoot, 'MYpremiereMCP', 'token.txt'); // bez APPDATA (Mac) jako Worker: kořen MCP
   const token = () => { try { return fs.readFileSync(TOKEN_FILE, 'utf8').trim(); } catch (e) { return ''; } };
   const files = new Map();
   const fileOf = (p) => {
     if (!p) return null;
-    if (!files.has(p)) { try { files.set(p, new DFile(p, ffmpeg)); } catch (e) { return null; } }
+    const f0 = files.get(p);
+    // soubor přepsaný na stejné cestě (nový export stejného jména) = nový objekt, starý deskriptor zavřít (revize #12)
+    if (f0) { try { const st = fs.statSync(p); if (st.size === f0.size && Math.round(st.mtimeMs) === f0.lastModified) return f0; } catch (e) { return null; } try { if (f0.fd !== null) fs.closeSync(f0.fd); } catch (e) { /* zavřený */ } }
+    try { files.set(p, new DFile(p, ffmpeg)); } catch (e) { files.delete(p); return null; }
     return files.get(p);
   };
   // Node http (ne fetch): Worker odmítá požadavky s hlavičkou Origin, kterou by poslal prohlížeč
@@ -77,7 +80,7 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   async function ensureWorker(onProgress) {
     try { await wf('/health', null, 4000); return; } catch (e) { /* spustit */ }
     starting = starting || (async () => {
-      const cands = [conf.worker && conf.worker.python, '.venv/Scripts/python.exe', 'tools/python311/python.exe'].filter(Boolean).map((x) => path.resolve(aiRoot, x));
+      const cands = [conf.worker && conf.worker.python, '.venv/Scripts/python.exe', '.venv/bin/python', 'tools/python311/python.exe'].filter(Boolean).map((x) => path.resolve(aiRoot, x));
       const py = cands.find((x) => fs.existsSync(x));
       if (!py) throw new Error(LL('MY Premiere MCP is not installed (no Python) – run its installer', 'MY Premiere MCP není nainstalovaný (chybí Python) – spusť jeho instalaci'));
       if (onProgress) onProgress(0, LL('starting the speech model', 'spouštím model řeči'));
@@ -96,7 +99,10 @@ function install({ app, aiRoot, ffmpeg, LL }) {
       for (;;) {
         if (job.status === 'done') break;
         if (job.status === 'error') throw new Error(job.error || 'transcription failed');
-        if (job.status === 'cancelled' || isStopped()) { const e = new Error('Transcription stopped'); e.name = 'AbortError'; throw e; }
+        if (job.status === 'cancelled' || isStopped()) {
+          if (job.status !== 'cancelled') wf('/jobs/' + job.id + '/cancel', {}).catch(() => {}); // Zastavit během startu Workeru (revize #11)
+          const e = new Error('Transcription stopped'); e.name = 'AbortError'; throw e;
+        }
         if (onProgress) onProgress(Math.max(0.001, Math.min(0.99, job.progress || 0)), job.status === 'queued' ? LL('waiting for the Worker', 'čeká na Worker') : `${Math.round((job.progress || 0) * 100)} %`);
         await new Promise((r) => setTimeout(r, 1000));
         job = await wf('/jobs/' + job.id, null, 60000);

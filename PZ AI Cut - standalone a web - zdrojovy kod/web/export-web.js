@@ -28,13 +28,9 @@ function crossAt(seq, t) {
   const v = seq.tracks.video;
   for (let ti = v.length - 1; ti >= 0; ti--) {
     if (v[ti].muted) continue;
-    for (const R of v[ti].clips) {
-      if (!R.vIn || R.vIn.type !== 'cross' || R.disabled) continue;
-      const d = R.vIn.dur, a = R.start - d / 2;
-      if (t < a || t >= a + d) continue;
-      const L = v[ti].clips.find((c) => Math.abs(clipEnd(c) - R.start) < 0.5 / (seq.fps || 25));
-      if (L) return { L, R, a, d };
-    }
+    // stejné oblasti jako desktopový export a náhled (src/core/edit.js crossRegionsOf) – i prolnutí do stopy pod klipem
+    const r = require('../src/core/edit').crossRegionsOf(seq, ti).find((x) => t >= x.a && t < x.b);
+    if (r) return { L: r.L, R: r.R, a: r.a, d: r.d };
     if (v[ti].clips.some((x) => !x.disabled && x.start <= t && clipEnd(x) > t)) return null;
   }
   return null;
@@ -358,7 +354,7 @@ async function exportSequence(project, seq, opts) {
           // Dip to Black / White
           let dipA = 0, col = '#000';
           if (vc.vIn && vc.vIn.type !== 'cross' && t - vc.start < vc.vIn.dur) { dipA = 1 - (t - vc.start) / vc.vIn.dur; col = vc.vIn.type === 'dipWhite' ? '#fff' : '#000'; }
-          if (vc.vOut && clipEnd(vc) - t < vc.vOut.dur) { const a2 = 1 - (clipEnd(vc) - t) / vc.vOut.dur; if (a2 > dipA) { dipA = a2; col = vc.vOut.type === 'dipWhite' ? '#fff' : '#000'; } }
+          if (vc.vOut && vc.vOut.type !== 'cross' && clipEnd(vc) - t < vc.vOut.dur) { const a2 = 1 - (clipEnd(vc) - t) / vc.vOut.dur; if (a2 > dipA) { dipA = a2; col = vc.vOut.type === 'dipWhite' ? '#fff' : '#000'; } }
           if (dipA > 0) { ctx.globalAlpha = Math.min(1, dipA); ctx.fillStyle = col; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
         }
       }

@@ -1493,7 +1493,8 @@ def _teaser_guard(order: list, cands: list, top: list, instruction: str, target:
             continue
         fixed.append(c)
     order = fixed or order
-    if not re.search(r"moder", instruction, re.I):
+    # „bez moderátorky“ = omezit taky; jen výslovné přání moderátora omezení vypne (revize #14)
+    if not re.search(r"moder", instruction, re.I) or re.search(r"\bbez\s+moder", instruction, re.I):
         spk: dict = {}
         for c in cands:
             for u in c["units"]:

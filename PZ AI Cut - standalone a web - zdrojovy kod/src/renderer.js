@@ -134,17 +134,22 @@ const app = {
     const relinked = [];
     for (const nm of out) {
       if (!nm || nm.error || nm.missing) continue;
-      const old = project.media.find((x) => x !== nm && x.missing && Math.abs((x.duration || 0) - (nm.duration || 0)) < 0.06
-        && (x.width || 0) === (nm.width || 0) && (x.height || 0) === (nm.height || 0) && !!x.hasAudio === !!nm.hasAudio);
-      if (!old) continue;
-      app.edit('Relink Media', () => {
-        for (const s of project.sequences) for (const k of ['video', 'audio']) for (const tr of s.tracks[k]) for (const c of tr.clips) if (c.mediaId === old.id) c.mediaId = nm.id;
-        if (project.asrFixes && project.asrFixes[old.id]) { project.asrFixes[nm.id] = project.asrFixes[old.id]; delete project.asrFixes[old.id]; }
-        project.media = project.media.filter((x) => x !== old);
-      });
-      relinked.push(nm.name);
+      // zvuk bez obrazu (rozměry 0×0) jen se stejným názvem; víc kandidátů = nehádat (revize #19)
+      const cands = project.media.filter((x) => x !== nm && x.missing && Math.abs((x.duration || 0) - (nm.duration || 0)) < 0.06
+        && (x.width || 0) === (nm.width || 0) && (x.height || 0) === (nm.height || 0) && !!x.hasAudio === !!nm.hasAudio
+        && (nm.hasVideo || U.baseName(x.path).toLowerCase() === U.baseName(nm.path).toLowerCase()));
+      if (cands.length !== 1) continue;
+      const old = cands[0];
+      // jako Link Media v Premiere: chybějící položka se přesměruje na nový soubor (id, klipy i opravy přepisu zůstanou),
+      // duplicitní nová položka zmizí – Zpět pak nemá co rozbít (revize #2: klipy ukazovaly na smazané médium)
+      const keep = { id: old.id };
+      Object.assign(old, nm, keep, { missing: false });
+      project.media = project.media.filter((x) => x !== nm);
+      loadThumb(old); app.loadWave(old.id);
+      relinked.push(old.name);
     }
-    if (relinked.length) { app.toast(`Media relinked: ${relinked.join(', ')}`); app.timeline.render(); app.program.refresh(); }
+    if (relinked.length) project.emit('media');
+    if (relinked.length) { app.toast(`Media relinked: ${relinked.join(', ')}`); app.timeline.render(); app.program.refresh(); app.projectPanel.render(); }
     app.status(`Imported: ${out.filter((x) => !x.error).length}`);
     app.projectPanel.render();
     return out;
@@ -1272,7 +1277,7 @@ function exportDialog() {
     const fmtInfo = () => {
       const k = b.querySelector('#exFmt').value, F = exporter.FORMATS[k];
       const out = b.querySelector('#exOut');
-      out.value = out.value.replace(/.[^.\/]+$/, '') + '.' + F.ext;
+      out.value = out.value.replace(/\.[^.\\/]+$/, '') + '.' + F.ext;
       const a = exporter.audioLabel ? exporter.audioLabel : F.audio === 'aac' ? 'AAC 256 kb/s' : F.audio === 'pcm' ? 'PCM 24-bit 48 kHz' : '2× mono PCM 24-bit 48 kHz';
       b.querySelector('#exInfo').textContent = `${s.width}×${s.height} · ${s.fps} fps · ${a}`;
       // skrýt, ale nechat místo – jinak se dialog zmenší a tlačítko Exportovat uskočí pod kurzorem (redaktorka S1)
@@ -1491,7 +1496,7 @@ const api = createApi(project, {
   save: () => (project.path ? (writeProject(project.path), project.dirty = false, updateTitle(), project.path) : saveProject(false)),
   exportProgress: (p, msg) => app.status(`Export ${Math.round(p * 100)} % ${msg || ''}`),
   progress: (msg) => app.status(msg),
-  edgeShots: (s) => (window.__pzEdgeShots ? window.__pzEdgeShots(s) : null),
+  edgeShots: (s, opts) => (window.__pzEdgeShots ? window.__pzEdgeShots(s, opts) : null),
 });
 app.api = api;
 

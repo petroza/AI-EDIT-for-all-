@@ -117,6 +117,11 @@ function shiftAfter(seq, t, delta, opts = {}) {
   for (const m of seq.markers || []) if (m.time >= t - h) m.time = Math.max(0, m.time + delta);
 }
 
+/** Trimuje se klip na řečové stopě (první nemutovaná zvuková stopa s klipy)? Jen pak se titulky ořezávají s ním. */
+function onSpeech(seq, group) {
+  const ti = seq.tracks.audio.findIndex((t) => !t.muted && t.clips.some((c) => !c.disabled));
+  return ti >= 0 && group.some((c) => seq.tracks.audio[ti].clips.includes(c));
+}
 /** Slova titulků v úseku [s, e) pryč bez posunu (smazaný výrok, mezera zůstává). */
 function liftCaptions(seq, s, e) {
   const caps = [];
@@ -124,7 +129,7 @@ function liftCaptions(seq, s, e) {
     if (c.end <= s + EPS || c.start >= e - EPS) { caps.push(c); continue; }
     const words = String(c.text).split(/\s+/).filter(Boolean);
     const ws = Array.isArray(c.ws) && c.ws.length === words.length ? c.ws : null;
-    if (!ws) { if (c.start < s - 0.3) caps.push(Object.assign({}, c, { end: s })); else if (c.end > e + 0.3) caps.push(Object.assign({}, c, { start: e })); continue; }
+    if (!ws) { if (c.start < s - 0.3) caps.push(Object.assign({}, c, { end: s })); if (c.end > e + 0.3) caps.push(Object.assign({}, c, { start: e })); continue; }
     const a = [], b = [];
     words.forEach((w, i) => { if (ws[i] < s - EPS) a.push(i); else if (ws[i] >= e - EPS) b.push(i); });
     if (a.length) caps.push({ ...c, end: Math.min(c.end, s), text: a.map((i) => words[i]).join(' '), ws: a.map((i) => ws[i]) });
@@ -194,7 +199,10 @@ function trackEmptyIn(tr, s, e, h) {
 function removeClips(seq, ids, ripple) {
   const set = new Set(ids);
   const removedSpan = new Map();
-  const removedAudio = new Map(); // id -> index zvukové stopy (řeč)
+  const removedAudio = new Map(); // id -> index zvukové stopy
+  removeClips.blocked = 0;
+  // řečová stopa = první nemutovaná zvuková stopa s klipy (z ní se dělají titulky) – zjistit PŘED mazáním
+  const speechTi = seq.tracks.audio.findIndex((t) => !t.muted && t.clips.some((c) => !c.disabled));
   let s = Infinity, e = -Infinity, n = 0;
   const touched = new Set();
   eachTrack(seq, (tr, kind, ti) => {
@@ -211,7 +219,7 @@ function removeClips(seq, ids, ripple) {
   });
   // titulky smazaných výroků: kde po smazání nezní žádný zvukový klip, slova titulků pryč (redaktorka S6: zůstaly nad černou)
   for (const [id, [a, b]] of removedSpan) {
-    if (!removedAudio.has(id)) continue;
+    if (!removedAudio.has(id) || removedAudio.get(id) !== speechTi) continue; // b-roll / hudba na jiné stopě titulky nemaže (revize #1)
     const tr = seq.tracks.audio[removedAudio.get(id)]; // jen stopa, odkud zvuk zmizel – hudba na jiné stopě titulky nedrží
     const covered = tr && tr.clips.some((c) => !c.disabled && c.start < b - 0.01 && clipEnd(c) > a + 0.01);
     if (!covered) liftCaptions(seq, a, b);
@@ -227,7 +235,6 @@ function removeClips(seq, ids, ripple) {
     spans.sort((x, y) => x[0] - y[0]);
     const merged = [];
     for (const [a, b] of spans) { const l = merged[merged.length - 1]; if (l && a <= l[1] + h) l[1] = Math.max(l[1], b); else merged.push([a, b]); }
-    removeClips.blocked = 0;
     for (const [a, b] of merged.reverse()) {
       let empty = true;
       eachTrack(seq, (tr) => { if (!tr.locked && !trackEmptyIn(tr, a, b, h)) empty = false; });
@@ -329,9 +336,15 @@ function trimEdge(seq, id, edge, t, opts = {}) {
       const oldEnd = Math.max(...group.map(clipEnd)), st0 = Math.min(...group.map((c) => c.start));
       for (const c of group) { c.in += delta; c.fadeIn = 0; }
       // začátek zůstává, zbytek se posune o -delta; titulky klipu jdou s ním (zkrácení = odstřižená slova pryč)
-      if (delta > 0) rippleCaptions(seq, st0, st0 + delta);
-      else for (const cp of seq.captions || []) if (cp.start >= st0 - EPS) { cp.start -= delta; cp.end -= delta; if (Array.isArray(cp.ws)) cp.ws = cp.ws.map((x) => x - delta); }
-      shiftAfter(seq, oldEnd, -delta, { except: new Set(group.map((c) => c.id)), noCaps: true });
+      if (!onSpeech(seq, group)) shiftAfter(seq, oldEnd, -delta, { except: new Set(group.map((c) => c.id)) }); // b-roll / hudba: titulky jen za koncem (revize #7)
+      else {
+        if (delta > 0) rippleCaptions(seq, st0, st0 + delta);
+        else {
+          for (const cp of seq.captions || []) if (cp.start >= st0 - EPS) { cp.start -= delta; cp.end -= delta; if (Array.isArray(cp.ws)) cp.ws = cp.ws.map((x) => x - delta); }
+          for (const m of seq.markers || []) if (m.time >= st0 - EPS) m.time -= delta; // revize #8
+        }
+        shiftAfter(seq, oldEnd, -delta, { except: new Set(group.map((c) => c.id)), noCaps: true });
+      }
     } else {
       for (const c of group) { c.in += delta; c.start += delta; c.fadeIn = 0; }
     }
@@ -350,7 +363,7 @@ function trimEdge(seq, id, edge, t, opts = {}) {
     if (Math.abs(delta) < EPS) return 0;
     const oldEnd = Math.max(...group.map(clipEnd));
     for (const c of group) { c.out += delta; c.fadeOut = 0; }
-    if (opts.ripple && delta < 0) { rippleCaptions(seq, oldEnd + delta, oldEnd); shiftAfter(seq, oldEnd, delta, { except: new Set(group.map((c) => c.id)), noCaps: true }); }
+    if (opts.ripple && delta < 0 && onSpeech(seq, group)) { rippleCaptions(seq, oldEnd + delta, oldEnd); shiftAfter(seq, oldEnd, delta, { except: new Set(group.map((c) => c.id)), noCaps: true }); }
     else if (opts.ripple) shiftAfter(seq, oldEnd, delta, { except: new Set(group.map((c) => c.id)) });
   }
   for (const c of group) sortTrack(findClip(seq, c.id).trackObj);

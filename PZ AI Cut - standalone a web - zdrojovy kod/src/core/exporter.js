@@ -200,7 +200,7 @@ async function exportSequence(project, seq, opts) {
   // chybějící média předem (jinak export spadl uprostřed na chybě ffmpeg bez vysvětlení)
   const offline = new Set();
   for (const k of ['video', 'audio']) for (const t of seq.tracks[k]) for (const c of t.clips) {
-    if (c.disabled || clipEnd(c) <= rs || c.start >= re || (k === 'audio' && t.muted)) continue;
+    if (c.disabled || clipEnd(c) <= rs || c.start >= re || t.muted) continue;
     const m = mediaOf(c);
     if (!m || m.missing || !fs.existsSync(m.path)) offline.add(m ? m.name : '?');
   }

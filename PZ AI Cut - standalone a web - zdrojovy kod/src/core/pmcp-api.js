@@ -180,7 +180,8 @@ function createApi(project, hooks = {}) {
     if (!hooks.edgeShots || !res || !res.sequenceID) return;
     try {
       // nejvýš 20 s – úklid krajů je navíc, sekvence platí i bez něj; most nesmí čekat (AI tok S4: zaseknutí na 10 min)
-      const r = await Promise.race([hooks.edgeShots(getSeq(res.sequenceID)), new Promise((ok) => setTimeout(() => ok(null), 20000))]);
+      const signal = { cancelled: false };
+      const r = await Promise.race([hooks.edgeShots(getSeq(res.sequenceID), { signal }), new Promise((ok) => setTimeout(() => { signal.cancelled = true; ok(null); }, 20000))]);
       if (r && r.merged) res.edgeShotsFixed = r.merged;
     } catch (e) { /* bez opravy krajů – sekvence platí */ }
   }
@@ -263,7 +264,8 @@ function createApi(project, hooks = {}) {
         if (!clip) throw new Error('Clip not found: ' + JSON.stringify(c));
         return clip.id;
       });
-      return { removed: E.removeClips(seq, ids, !!a.ripple) };
+      const removed = E.removeClips(seq, ids, !!a.ripple);
+      return a.ripple && E.removeClips.blocked ? { removed, gapsLeftOpen: E.removeClips.blocked, note: 'Gap not closed: another clip (B-roll, music) lies across it. Use remove_timeline_ranges to cut the range from all tracks.' } : { removed };
     });
   };
 
@@ -300,9 +302,9 @@ function createApi(project, hooks = {}) {
     const loud = a.loudness || (mxf ? 'tv' : seq.width / seq.height < 1.06 ? 'social' : 'off');
     const r = await exporter.exportSequence(project, seq, {
       output, range: a.range === 'inout' || a.range === 'workarea' ? 'inout' : 'all', format: a.format,
-      burnCaptions: a.burnCaptions !== undefined ? !!a.burnCaptions : hasCaps, srtSidecar: !!a.srt, loudness: loud, onProgress: hooks.exportProgress,
+      burnCaptions: a.burnCaptions !== undefined ? !!a.burnCaptions : hasCaps && !mxf, srtSidecar: a.srt !== undefined ? !!a.srt : hasCaps && mxf, loudness: loud, onProgress: hooks.exportProgress,
     });
-    return { result: 'No Error', output: r.output, format: r.format, sizeMB: r.sizeMB, duration: r.duration, captionsBurned: a.burnCaptions !== undefined ? !!a.burnCaptions && hasCaps : hasCaps, loudness: loud };
+    return { result: 'No Error', output: r.output, format: r.format, sizeMB: r.sizeMB, duration: r.duration, captionsBurned: a.burnCaptions !== undefined ? !!a.burnCaptions && hasCaps : hasCaps && !mxf, srt: a.srt !== undefined ? !!a.srt && hasCaps : hasCaps && mxf, loudness: loud };
   };
 
   api.saveProject = async () => {

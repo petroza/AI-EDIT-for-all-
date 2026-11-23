@@ -73,9 +73,11 @@ class VideoSource {
     }
     this.lastTs = tts;
     // časový limit (AI tok S4: u snímku na konci souboru se dekodér zasekl a s ním most aplikace na 10 min)
-    const deadline = Date.now() + 8000;
+    // limit 8 s BEZ POSTUPU (nový vzorek / snímek) – pomalý, ale běžící seek (4K, dlouhé GOP) nespadne (revize #17)
+    let deadline = Date.now() + 8000, lastQ = -1, lastF = -1;
     for (let guard = 0; guard < 100000; guard++) {
       if (this.err) throw this.err;
+      if (this.queue.length !== lastQ || this.feed !== lastF) { lastQ = this.queue.length; lastF = this.feed; deadline = Date.now() + 8000; }
       if (Date.now() > deadline) { this.err = new Error('Decoding timeout at ' + t.toFixed(3) + ' s'); throw this.err; }
       // zahodit staré snímky, ponechat poslední <= cíl
       while (this.queue.length > 1 && this.queue[1].timestamp <= tts) this.queue.shift().close();

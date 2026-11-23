@@ -502,6 +502,8 @@ def chat_json(prompt: str, max_tokens: int = 1500, schema: dict | None = None, b
         try:
             with urllib.request.urlopen(req, timeout=900) as r:
                 resp = json.loads(r.read())
+        except urllib.error.HTTPError:
+            raise  # odpověď serveru (např. překročený kontext) není pád modelu – nerestartovat (revize #13)
         except (ConnectionError, urllib.error.URLError) as e0:
             # Hermes spadl („CUDA error“ na čerstvém serveru u některých dotazů, 2026-11-22): znovu spustit (hermes.ps1
             # ho po startu zahřeje krátkým dotazem) a zkusit ještě jednou
@@ -514,6 +516,13 @@ def chat_json(prompt: str, max_tokens: int = 1500, schema: dict | None = None, b
             req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
             with urllib.request.urlopen(req, timeout=900) as r:
                 resp = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")[:300]
+        except Exception:  # noqa: BLE001
+            pass
+        raise RuntimeError(f"lokální model ({backend or 'local'}) odmítl dotaz: HTTP {e.code} {body}") from e
     except (ConnectionError, urllib.error.URLError) as e:
         # model během dotazu spadl (llama-server: „CUDA error“) – dotaz uložit k ladění a ohlásit srozumitelně
         try:
