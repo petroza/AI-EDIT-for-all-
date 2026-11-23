@@ -1722,7 +1722,20 @@ commands.setLang = (l) => {
   setLanguage(l);
 };
 // ovládání AI panelu (layout.js) se překládá jen v češtině – v angličtině běží uvnitř panelu jeho vlastní překlad
+let aiErrReloads = 0;
 $('aiFrame').addEventListener('load', () => {
+  // zablokovaná cizí navigace (main.js will-frame-navigate) nechá panel na chybové stránce Chromia – vrátit ho
+  // na vlastní stránku (S13 Bezpečnost N3); pojistka proti smyčce
+  let here = '';
+  try { here = $('aiFrame').contentWindow.location.href; } catch (e) { here = 'cizí'; }
+  const own = $('aiFrame').getAttribute('src');
+  if (own && !/^(file:|about:)/.test(here) && !media.WEB && aiErrReloads < 3) {
+    aiErrReloads++;
+    $('aiFrame').src = 'about:blank';
+    setTimeout(() => { $('aiFrame').src = own; }, 50);
+    return;
+  }
+  if (/^file:/.test(here)) aiErrReloads = 0;
   try {
     const d = $('aiFrame').contentDocument;
     if (TN.lang === 'cs' && d.documentElement.lang === 'cs') i18n.observe(d);
