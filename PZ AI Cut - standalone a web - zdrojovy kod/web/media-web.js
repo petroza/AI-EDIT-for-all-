@@ -19,16 +19,21 @@ function fileOf(p) {
 }
 
 async function probe(p) {
-  const file = fileOf(p);
-  if (!/\.(mp4|m4v|mov|m4a)$/i.test(file.name)) throw new Error(`${file.name}: the web version supports MP4 / MOV with H.264 video.`);
+  let file = fileOf(p);
+  const mxf = require('./engine/mxf');
+  // MXF (XDCAM, DNxHR, AVC-Intra) – jednou převést na H.264 MP4 a dál podávat převod (engine/mxf.js)
+  if (mxf.isMxf(file)) { const conv = await mxf.toWeb(file); vfs.setFile(p, conv, file); file = conv; }
+  else if (mxf.isMxf(vfs.getOrig(p))) { /* už převedené */ }
+  else if (!/\.(mp4|m4v|mov|m4a)$/i.test(file.name)) throw new Error(`${file.name}: the web version supports MP4 / MOV with H.264 video and MXF.`);
   const mp = await openMp4(file);
   const v = mp.video, a = mp.audio;
   if (v && v.codecName !== 'h264') throw new Error(`${file.name}: video codec ${v.codecName.toUpperCase()} is not supported – only H.264.`);
   let width = v ? v.width : 0, height = v ? v.height : 0;
   if (v && (v.rotation === 90 || v.rotation === 270)) [width, height] = [height, width];
+  const src = vfs.getOrig(p) || file; // u MXF jméno a velikost originálu, ne převodu
   const info = {
     path: p,
-    name: file.name,
+    name: src.name,
     duration: mp.duration,
     hasVideo: !!v,
     hasAudio: !!(a && a.codecName === 'aac'),
@@ -39,9 +44,10 @@ async function probe(p) {
     acodec: a ? a.codecName : null,
     audioChannels: a ? a.channels : 0,
     sampleRate: a ? a.sampleRate : 0,
-    size: file.size,
+    size: src.size,
     rotation: v ? v.rotation : 0,
   };
+  if (mxf.isMxf(src)) info.convertedFrom = 'mxf';
   info.playable = true;
   return info;
 }

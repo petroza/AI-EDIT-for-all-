@@ -18,6 +18,19 @@ window.addEventListener('pz-media-restored', () => {
   app.toast(t('Media files are available again.'));
 });
 window.addEventListener('pz-reveal', () => app && app.toast(t('The file is in the folder you chose when saving.')));
+// převod MXF v prohlížeči (engine/mxf.js) – průběh ve stavovém řádku
+window.addEventListener('pz-mxf-progress', (e) => {
+  if (!app) return;
+  const d = e.detail || {}, cs = window.TN && window.TN.lang === 'cs', pc = Math.round((d.p || 0) * 100);
+  const msg = {
+    download: cs ? `MXF: stahuji převodník (jednou, ~32 MB)… ${d.mb || 0} MB` : `MXF: downloading the converter (once, ~32 MB)… ${d.mb || 0} MB`,
+    probe: cs ? `MXF: čtu ${d.name}…` : `MXF: reading ${d.name}…`,
+    convert: cs ? `MXF: převádím ${d.name} na MP4… ${pc} %` : `MXF: converting ${d.name} to MP4… ${pc} %`,
+    save: cs ? `MXF: ukládám převod ${d.name}…` : `MXF: saving the conversion of ${d.name}…`,
+    done: cs ? `MXF převeden: ${d.name}` : `MXF converted: ${d.name}`,
+  }[d.stage];
+  if (msg) app.status(msg);
+});
 window.addEventListener('pz-write-error', (e) => app && app.toast(t('Cannot write the file: ') + e.detail, true));
 
 // jen pro vývoj na localhost: import souboru z místního testovacího serveru (web/serve.js)

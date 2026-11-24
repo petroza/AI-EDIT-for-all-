@@ -61,6 +61,15 @@ function putBlob(name, blob) {
   files.set(p, { file: null, blob, handle: null });
   return p;
 }
+/** Pod cestou p podávat jiný soubor (MXF → převedené MP4); originál zůstane v e.orig, handle beze změny. */
+function setFile(p, file, orig) {
+  const e = files.get(p) || { handle: null };
+  if (e.url) { try { URL.revokeObjectURL(e.url); } catch (x) { /* */ } e.url = null; }
+  e.file = file;
+  if (orig) e.orig = orig;
+  files.set(p, e);
+}
+function getOrig(p) { const e = files.get(p); return e ? (e.orig || e.file) : null; }
 function setText(p, text) {
   const e = files.get(p) || { file: null, handle: null };
   e.text = text;
@@ -124,9 +133,12 @@ async function restore(paths, askUser) {
       let st = await h.queryPermission({ mode: 'read' });
       if (st !== 'granted' && askUser) st = await h.requestPermission({ mode: 'read' });
       if (st !== 'granted') { files.set(p, { ...(files.get(p) || {}), file: null, handle: h }); out.needPermission.push(p); continue; }
-      const file = await h.getFile();
-      files.set(p, { ...(files.get(p) || {}), file, handle: h });
+      let file = await h.getFile();
       byKey.set(keyOf(file), p);
+      // MXF: převedené MP4 z úložiště prohlížeče (jinak převést znovu – trvá, ale projekt se otevře celý)
+      const mxf = require('../engine/mxf');
+      if (mxf.isMxf(file)) { const orig = file; file = await mxf.toWeb(orig); files.set(p, { ...(files.get(p) || {}), file, orig, handle: h, url: null }); }
+      else files.set(p, { ...(files.get(p) || {}), file, handle: h });
       out.restored.push(p);
     } catch (e) { out.lost.push(p); }
   }
@@ -134,6 +146,6 @@ async function restore(paths, askUser) {
 }
 
 module.exports = {
-  registerFile, registerHandle, registerSaveHandle, attachHandle, has, getFile, getHandle, getText, setText,
+  registerFile, registerHandle, registerSaveHandle, attachHandle, has, getFile, getHandle, getText, setText, setFile, getOrig,
   urlFor, putBlob, remove, writeOut, restore, loadHandle,
 };

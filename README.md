@@ -125,6 +125,9 @@ pravý klik na klip → Přepsat řeč, Sekvence → Titulky → Vytvořit titul
 
 Stejná střižna v prohlížeči (na obrázku sekvence převedená na 9:16 a průvodce připojením AI). Videa se čtou přímo
 z disku, nic se nenahrává; řeč se přepisuje v prohlížeči (Whisper, model se stáhne jednou ~1 GB).
+Formáty: MP4 / MOV s H.264 přímo, **MXF z televize** (XDCAM HD422, DNxHD/DNxHR, IMX…) se při importu jednou převede
+v prohlížeči na H.264 (ffmpeg.wasm, převodník ~32 MB se stáhne jednou; 1080i zhruba v reálném čase) a uloží se
+v prohlížeči – příště se nepřevádí.
 
 **Co se nainstaluje:** nic – skript jen sestaví `PZ AI Cut - standalone a web - zdrojovy kod\web\dist` a spustí ho na **http://127.0.0.1:8791/**
 (potřeba Node.js 18+, Chrome nebo Edge). Pro AI si v AI panelu stránky stáhneš konektor:

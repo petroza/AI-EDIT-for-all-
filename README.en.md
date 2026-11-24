@@ -133,6 +133,9 @@ The local Worker transcribes (Whisper large-v3 on the GPU).
 
 The same editor in the browser (pictured: a sequence reframed to 9:16 and the AI connection guide). Videos are read
 straight from disk, nothing is uploaded; speech is transcribed in the browser (Whisper, the ~1 GB model downloads once).
+Formats: MP4 / MOV with H.264 directly; **broadcast MXF** (XDCAM HD422, DNxHD/DNxHR, IMX…) is converted once on import
+in the browser to H.264 (ffmpeg.wasm, the ~32 MB converter downloads once; 1080i at roughly real time) and kept in
+the browser – no conversion next time.
 
 **What gets installed:** nothing – the script only builds `PZ AI Cut - standalone a web - zdrojovy kod\web\dist` and serves it at
 **http://127.0.0.1:8791/** (requires Node.js 18+, Chrome or Edge). For AI, download the connector from the page's
