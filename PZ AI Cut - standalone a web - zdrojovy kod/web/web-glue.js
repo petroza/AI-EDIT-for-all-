@@ -18,6 +18,8 @@ window.addEventListener('pz-media-restored', () => {
   app.toast(t('Media files are available again.'));
 });
 window.addEventListener('pz-reveal', () => app && app.toast(t('The file is in the folder you chose when saving.')));
+// mezivýsledky exportu MXF ze zrušeného / spadlého exportu (OPFS pz-tmp) – uklidit při startu
+try { require('./engine/mxf').cleanTemp(); } catch (e) { /* bez OPFS */ }
 // převod MXF v prohlížeči (engine/mxf.js) – průběh ve stavovém řádku
 window.addEventListener('pz-mxf-progress', (e) => {
   if (!app) return;
@@ -52,11 +54,12 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
   window.__pzDevExport = async (opts = {}) => {
     const exporter = require('./export-web');
     const root = await navigator.storage.getDirectory();
-    const name = /.mp4$/i.test(opts.name || '') ? opts.name : (opts.name || 'pz-test') + '.mp4'; // vždy s příponou (report-3)
+    const ext = opts.format && exporter.FORMATS[opts.format] ? exporter.FORMATS[opts.format].ext : 'mp4';
+    const name = new RegExp('\\.' + ext + '$', 'i').test(opts.name || '') ? opts.name : (opts.name || 'pz-test') + '.' + ext; // vždy s příponou (report-3)
     const h = await root.getFileHandle(name, { create: true });
     const out = vfs.registerSaveHandle(h, name);
     const t0 = performance.now();
-    const r = await exporter.exportSequence(app.project, app.seq(), { output: out, range: opts.range || 'all', burnCaptions: !!opts.burn, loudness: opts.loudness || 'off', signal: {}, onProgress: opts.onProgress });
+    const r = await exporter.exportSequence(app.project, app.seq(), { output: out, format: opts.format, range: opts.range || 'all', burnCaptions: !!opts.burn, srtSidecar: false, loudness: opts.loudness || 'off', signal: opts.signal || {}, onProgress: opts.onProgress });
     const secs = (performance.now() - t0) / 1000;
     const file = await h.getFile();
     const up = await fetch('/devsave?name=' + encodeURIComponent(name), { method: 'POST', body: file });

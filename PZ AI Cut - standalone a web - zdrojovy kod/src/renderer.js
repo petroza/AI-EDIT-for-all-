@@ -1494,7 +1494,7 @@ function exportDialog() {
       const k = b.querySelector('#exFmt').value, F = exporter.FORMATS[k];
       const out = b.querySelector('#exOut');
       out.value = out.value.replace(/\.[^.\\/]+$/, '') + '.' + F.ext;
-      const a = exporter.audioLabel ? exporter.audioLabel : F.audio === 'aac' ? 'AAC 256 kb/s' : F.audio === 'pcm' ? 'PCM 24-bit 48 kHz' : '2× mono PCM 24-bit 48 kHz';
+      const a = F.audio === 'pcm_mono' ? '2× mono PCM 24-bit 48 kHz' : exporter.audioLabel ? exporter.audioLabel : F.audio === 'aac' ? 'AAC 256 kb/s' : F.audio === 'pcm' ? 'PCM 24-bit 48 kHz' : '2× mono PCM 24-bit 48 kHz';
       b.querySelector('#exInfo').textContent = `${s.width}×${s.height} · ${s.fps} fps · ${a}`;
       // skrýt, ale nechat místo – jinak se dialog zmenší a tlačítko Exportovat uskočí pod kurzorem (redaktorka S1)
       b.querySelector('#exEncRow').style.visibility = ['h264', 'h265', 'mov_h264'].includes(k) && !media.WEB ? '' : 'hidden';

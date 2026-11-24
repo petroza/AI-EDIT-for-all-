@@ -10,7 +10,14 @@ const { dbToGain, audioBlocks } = require('../src/core/util');
 const { VideoSource, decodeAudioRange } = require('./engine/decode');
 const { Mp4Writer } = require('./engine/mp4-writer');
 
-const FORMATS = { h264: { label: 'H.264 (MP4)', ext: 'mp4', audio: 'aac' } };
+// MXF pro TV: obraz + zvuk z webu, kódování MPEG-2 / DNxHR přes ffmpeg.wasm (engine/mxf.js) – stejné parametry jako desktop
+const FORMATS = {
+  h264: { label: 'H.264 (MP4)', ext: 'mp4', audio: 'aac' },
+  xdcam: { label: 'MXF OP1a – XDCAM HD422 50 Mb/s (TV)', ext: 'mxf', audio: 'pcm_mono' },
+  dnxhr: { label: 'MXF OP1a – Avid DNxHR HQ', ext: 'mxf', audio: 'pcm_mono' },
+};
+/** XDCAM HD422 jen ve standardních variantách (jako desktop). */
+const xdcamOk = (seq) => (seq.width === 1920 && seq.height === 1080 && [25, 50].includes(seq.fps)) || (seq.width === 1280 && seq.height === 720 && seq.fps === 50);
 const LOUDNESS = { off: null, social: -14, tv: -23 };
 const SR = 48000;
 
@@ -225,6 +232,14 @@ function captionsSrt(seq, rs, re) {
   return (seq.captions || []).filter((c) => c.end > rs && c.start < re)
     .map((c, i) => `${i + 1}\n${tc(c.start - rs)} --> ${tc(Math.min(c.end, re) - rs)}\n${c.text}\n`).join('\n');
 }
+/** Hlavička WAV: PCM 24 bit, stereo, 48 kHz. */
+function wavHeader(dataBytes) {
+  const b = new ArrayBuffer(44), v = new DataView(b), w = (o, t) => { for (let i = 0; i < 4; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + dataBytes, true); w(8, 'WAVE'); w(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 2, true); v.setUint32(24, SR, true);
+  v.setUint32(28, SR * 6, true); v.setUint16(32, 6, true); v.setUint16(34, 24, true); w(36, 'data'); v.setUint32(40, dataBytes, true);
+  return new Uint8Array(b);
+}
 function download(name, text) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
@@ -232,10 +247,12 @@ function download(name, text) {
   setTimeout(() => URL.revokeObjectURL(a.href), 10000);
 }
 
-async function pickOutput(output) {
+async function pickOutput(output, F) {
   if (vfs.getHandle(output)) return output;
-  const name = String(output).replace(/\\/g, '/').split('/').pop().replace(/\.[^.]+$/, '') + '.mp4';
-  const h = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'MP4 video', accept: { 'video/mp4': ['.mp4'] } }], startIn: 'videos' });
+  const ext = (F && F.ext) || 'mp4';
+  const name = String(output).replace(/\\/g, '/').split('/').pop().replace(/\.[^.]+$/, '') + '.' + ext;
+  const types = ext === 'mxf' ? [{ description: 'MXF video', accept: { 'application/mxf': ['.mxf'] } }] : [{ description: 'MP4 video', accept: { 'video/mp4': ['.mp4'] } }];
+  const h = await window.showSaveFilePicker({ suggestedName: name, types, startIn: 'videos' });
   return vfs.registerSaveHandle(h, h.name);
 }
 
@@ -253,19 +270,28 @@ async function exportSequence(project, seq, opts) {
   const miss = [...used].map((id) => project.mediaById(id)).filter((m) => m && (m.missing || !vfs.getFile(m.path)));
   if (miss.length) throw new Error('Media not available: ' + miss.map((m) => m.name).join(', ') + ' – allow access or import them again.');
 
-  const output = await pickOutput(opts.output);
+  const fmtKey = FORMATS[opts.format] ? opts.format : (/\.mxf$/i.test(opts.output || '') ? 'xdcam' : 'h264');
+  const F = FORMATS[fmtKey], toMxf = F.ext === 'mxf';
+  if (fmtKey === 'xdcam' && !xdcamOk(seq)) {
+    throw new Error(`XDCAM HD422 needs 1920×1080 at 25/50 fps or 1280×720 at 50 fps (sequence is ${seq.width}×${seq.height} ${seq.fps} fps) – use MXF DNxHR HQ or H.264 instead, or change the sequence to 1920×1080 25 fps (Sequence → Sequence Settings).`);
+  }
+  const mxf = toMxf ? require('./engine/mxf') : null;
+  const output = await pickOutput(opts.output, F);
   const check = () => { if (opts.signal && opts.signal.cancelled) throw new Error('Export cancelled.'); };
-  const progress = (p, msg) => { if (opts.onProgress) opts.onProgress(Math.min(0.99, p), msg); };
+  // MXF: render obrazu 0–70 %, kódování MXF 70–99 %
+  const progress = (p, msg) => { if (opts.onProgress) opts.onProgress(Math.min(0.99, toMxf && msg !== 'MXF' ? p * 0.7 : p), msg); };
 
   // kodéry
   const level = W * H > 1920 * 1088 ? '640033' : '640028';
-  const vcfg = { codec: 'avc1.' + level, width: W, height: H, bitrate: Math.round(Math.min(40e6, Math.max(4e6, W * H * fps * 0.2))), framerate: fps, avc: { format: 'avc' }, latencyMode: 'quality' };
+  const vcfg = toMxf
+    ? { codec: 'avc1.640033', width: W, height: H, bitrate: Math.round(Math.min(80e6, Math.max(20e6, W * H * fps * 0.8))), framerate: fps, avc: { format: 'avc' }, latencyMode: 'quality' } // mezivýsledek pro MXF
+    : { codec: 'avc1.' + level, width: W, height: H, bitrate: Math.round(Math.min(40e6, Math.max(4e6, W * H * fps * 0.2))), framerate: fps, avc: { format: 'avc' }, latencyMode: 'quality' };
   if (!(await VideoEncoder.isConfigSupported(vcfg)).supported) { vcfg.codec = 'avc1.42002a'; }
   const hasAudio = seq.tracks.audio.some((t) => !t.muted && t.clips.some((c) => clipEnd(c) > rs && c.start < re));
   // zvuk AAC (Chrome na Windows / Macu); když ho prohlížeč neumí, Opus v MP4 (přehraje Chrome, VLC, Windows)
   let acfg = { codec: 'mp4a.40.2', sampleRate: SR, numberOfChannels: 2, bitrate: 192000 };
   let aCodec = 'aac';
-  if (hasAudio && !(await AudioEncoder.isConfigSupported(acfg)).supported) {
+  if (hasAudio && !toMxf && !(await AudioEncoder.isConfigSupported(acfg)).supported) {
     acfg = { codec: 'opus', sampleRate: SR, numberOfChannels: 2, bitrate: 160000 };
     aCodec = 'opus';
     if (!(await AudioEncoder.isConfigSupported(acfg)).supported) throw new Error('This browser cannot encode audio – use Google Chrome.');
@@ -276,13 +302,19 @@ async function exportSequence(project, seq, opts) {
   // když je plný rozsah, obraz se před kódováním stlačí (jinak beze změny – jiné kodéry rozsah převádějí správně).
   const squeeze = await encoderFullRange(vcfg).catch(() => false);
   const handle = vfs.getHandle(output);
-  const writable = await handle.createWritable();
-  const mux = new Mp4Writer(writable, { video: { width: W, height: H, fps }, audio: hasAudio ? { sampleRate: SR, channels: 2, bitrate: acfg.bitrate, codec: aCodec } : null });
+  // MXF: obraz do dočasného MP4 a zvuk do WAV 24 bit v úložišti prohlížeče, MXF z nich složí ffmpeg.wasm
+  const tmpV = toMxf ? await mxf.tempFile('mp4') : null;
+  const tmpA = toMxf && hasAudio ? await mxf.tempFile('wav') : null;
+  const writable = toMxf ? await tmpV.writable() : await handle.createWritable();
+  const wavW = tmpA ? await tmpA.writable() : null;
+  let wavPos = 44;
+  if (wavW) await wavW.write({ type: 'write', position: 0, data: new Uint8Array(44) });
+  const mux = new Mp4Writer(writable, { video: { width: W, height: H, fps }, audio: hasAudio && !toMxf ? { sampleRate: SR, channels: 2, bitrate: acfg.bitrate, codec: aCodec } : null });
   await mux.start();
   let encErr = null;
   const venc = new VideoEncoder({ output: (c, m) => mux.addVideo(c, m), error: (e) => { encErr = e; } });
   venc.configure(vcfg);
-  const aenc = hasAudio ? new AudioEncoder({ output: (c, m) => mux.addAudio(c, m), error: (e) => { encErr = e; } }) : null;
+  const aenc = hasAudio && !toMxf ? new AudioEncoder({ output: (c, m) => mux.addAudio(c, m), error: (e) => { encErr = e; } }) : null;
   if (aenc) aenc.configure(acfg);
 
   const canvas = new OffscreenCanvas(W, H);
@@ -383,13 +415,22 @@ async function exportSequence(project, seq, opts) {
       vf.close();
       while (venc.encodeQueueSize > 8) await new Promise((r) => setTimeout(r, 5));
       // zvuk po sekundách, souběžně s obrazem (proložený zápis)
-      while (aenc && aNext < aBlocks && aNext <= (i + 1) / fps) {
+      while ((aenc || wavW) && aNext < aBlocks && aNext <= (i + 1) / fps) {
         const t0 = rs + aNext, n = aSizes[aNext];
         const [L, R] = await mixBlock(project, seq, t0, n);
         for (let k = 0; k < n; k++) { L[k] = softClip(L[k] * gain); R[k] = softClip(R[k] * gain); }
-        const data = new Float32Array(n * 2); data.set(L, 0); data.set(R, n);
-        const ad = new AudioData({ format: 'f32-planar', sampleRate: SR, numberOfFrames: n, numberOfChannels: 2, timestamp: Math.round(aNext * 1e6), data });
-        aenc.encode(ad); ad.close();
+        if (wavW) {
+          // PCM 24 bit, prokládané L R
+          const b = new Uint8Array(n * 6);
+          for (let k = 0, o = 0; k < n; k++) {
+            for (const v of [L[k], R[k]]) { const x = Math.max(-8388608, Math.min(8388607, Math.round(v * 8388607))); b[o++] = x & 255; b[o++] = (x >> 8) & 255; b[o++] = (x >> 16) & 255; }
+          }
+          await wavW.write({ type: 'write', position: wavPos, data: b }); wavPos += b.length;
+        } else {
+          const data = new Float32Array(n * 2); data.set(L, 0); data.set(R, n);
+          const ad = new AudioData({ format: 'f32-planar', sampleRate: SR, numberOfFrames: n, numberOfChannels: 2, timestamp: Math.round(aNext * 1e6), data });
+          aenc.encode(ad); ad.close();
+        }
         aNext++;
       }
       if (i % 5 === 0) progress(base + (1 - base) * (i + 1) / nFrames, `frame ${i + 1} / ${nFrames}`);
@@ -397,12 +438,29 @@ async function exportSequence(project, seq, opts) {
     await venc.flush();
     if (aenc) await aenc.flush();
     if (encErr) throw encErr;
-    const size = await mux.finish();
-    if (opts.srtSidecar && (seq.captions || []).length) download(String(output).split('/').pop().replace(/\.mp4$/i, '') + '.srt', captionsSrt(seq, rs, re));
+    let size = await mux.finish();
+    if (toMxf) {
+      if (wavW) { await wavW.write({ type: 'write', position: 0, data: wavHeader(wavPos - 44) }); await wavW.close(); }
+      check();
+      progress(0.7, 'MXF');
+      if (opts.signal) opts.signal.kill = () => mxf.abort(); // Zrušit během kódování MXF ukončí ffmpeg
+      const res = await mxf.encodeMxf({ video: await tmpV.file(), audio: tmpA ? await tmpA.file() : null, fmt: fmtKey, dur: re - rs,
+        onProgress: (st, p, mb) => progress(st === 'download' ? 0.7 : 0.7 + 0.29 * p, 'MXF') });
+      try {
+        const w2 = await handle.createWritable();
+        await w2.write(res.file);
+        await w2.close();
+        size = res.file.size;
+      } finally { res.remove(); tmpV.remove(); if (tmpA) tmpA.remove(); }
+    }
+    if (opts.srtSidecar && (seq.captions || []).length) download(String(output).split('/').pop().replace(/\.(mp4|mxf)$/i, '') + '.srt', captionsSrt(seq, rs, re));
     if (opts.onProgress) opts.onProgress(1, 'done');
-    return { output, sizeMB: Math.round(size / 1048576 * 10) / 10, audioCodec: hasAudio ? aCodec : null };
+    return { output, sizeMB: Math.round(size / 1048576 * 10) / 10, audioCodec: hasAudio ? (toMxf ? 'pcm_s24le' : aCodec) : null };
   } catch (e) {
     try { await writable.abort(); } catch (e2) { /* už zavřeno */ }
+    if (wavW) { try { await wavW.abort(); } catch (e2) { /* */ } }
+    if (tmpV) tmpV.remove();
+    if (tmpA) tmpA.remove();
     // nový soubor po zrušeném zápisu zůstane prázdný (0 B) – smazat; přepisovaný původní má dál svá data a zůstane
     try { if (handle.remove && (await handle.getFile()).size === 0) await handle.remove(); } catch (e2) { /* nejde – nechat */ }
     throw e;
@@ -422,4 +480,4 @@ if (self.AudioEncoder) {
     .catch(() => {});
 }
 // web ukládá přes okno prohlížeče – jméno se jen předá dál (pmcp-api.exportSequence volá outputPathFor i na webu)
-Object.assign(exportsObj, { exportSequence, captionsSrt, FORMATS, LOUDNESS, videoSegments: () => [], videoFilter: () => '', outputPathFor: (o) => String(o.output || '') });
+Object.assign(exportsObj, { exportSequence, captionsSrt, FORMATS, LOUDNESS, xdcamOk, videoSegments: () => [], videoFilter: () => '', outputPathFor: (o) => String(o.output || '') });
