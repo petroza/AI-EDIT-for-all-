@@ -122,6 +122,19 @@ function install({ app, aiRoot, ffmpeg, LL }) {
   }
   backend.stop = (file) => { const id = running.get(file.path); if (id) wf('/jobs/' + id + '/cancel', {}).catch(() => {}); };
   T.setDesktop({ fileOf, backend });
+  /** Obecná úloha Workeru (např. scene_cuts – střihy obrazu TransNetV2 pro výřez 9:16). Vrací výsledek, nebo vyhodí. */
+  window.__pzWorkerJob = async (type, params, timeoutSec = 600) => {
+    await ensureWorker();
+    let job = await wf('/jobs', { type, params });
+    const until = Date.now() + timeoutSec * 1000;
+    while (job.status === 'queued' || job.status === 'running') {
+      if (Date.now() > until) { wf('/jobs/' + job.id + '/cancel', {}).catch(() => {}); throw new Error(type + ': timeout'); }
+      await new Promise((r) => setTimeout(r, 300));
+      job = await wf('/jobs/' + job.id, null, 60000);
+    }
+    if (job.status !== 'done') throw new Error(type + ': ' + (job.error || job.status));
+    return job.result;
+  };
 
   /* ---- stav po médiích (jako web/ai/bridge.js) ---- */
   const jobs = new Map();

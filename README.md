@@ -83,6 +83,7 @@ Hermes), titulky a převod na 9:16. Zadání z panelu provede agent přímo v ot
 | npm a pip balíčky (faster-whisper, CUDA knihovny, sherpa-onnx, OpenCV…) | `node_modules\`, `.venv\` | ~1,5 GB |
 | Whisper large-v3 – přepis s časy slov | `models\` (Hugging Face) | 3 GB |
 | diarizace – kdo kdy mluví | `models\diarization` | 40 MB |
+| TransNetV2 – střihy obrazu ve zdroji (kontrola hranic, výřez 9:16), MIT | `models\transnetv2` | 31 MB |
 | gemma3 12B + vision model + llama.cpp – osnova, slabá místa | `models\llm`, `tools\llama.cpp` | ~10 GB |
 | **Hermes** (Qwen3.6-35B) – plán střihu zdarma, volitelně (ptá se) | `models\hermes` | ~23 GB |
 | panel do Premiere | odkaz `%APPDATA%\Adobe\CEP\extensions\com.pz.premieremcp`, `PlayerDebugMode` v `HKCU\Software\Adobe\CSXS.*` | – |

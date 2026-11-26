@@ -443,6 +443,13 @@ function createApi(project, hooks = {}) {
     const ranges = a.ranges && a.ranges.length
       ? a.ranges.map((r) => [Math.max(0, Number(r.from) || 0), Math.min(m.duration, Number(r.to) || m.duration)])
       : [[0, a.to > 0 ? Math.min(a.to, m.duration) : m.duration]];
+    // přednostně TransNetV2 ve Workeru MY Premiere MCP (blesk fotoaparátu ani švenk nejsou střih); jinak ffmpeg scene score
+    if (!media.WEB && typeof window !== 'undefined' && window.__pzWorkerJob) {
+      try {
+        const r = await window.__pzWorkerJob('scene_cuts', { path: m.path, ranges: ranges.map(([f, t]) => ({ from: f, to: t })), sensitivity: a.sensitivity });
+        return { sequence: '(TransNetV2)', sequenceID: '', ranges: ranges.map(([f, t]) => [r3(f), r3(t)]), analyzed: r3(r.analyzed), cuts: r.cuts, count: r.cuts.length, transitions: r.transitions };
+      } catch (e) { /* Worker / model není – ffmpeg níž */ }
+    }
     const cuts = [], placed = [];
     let analyzed = 0;
     for (const [f, t] of ranges) {

@@ -89,6 +89,7 @@ Codex, Hermes), captions and 9:16 reframing. The agent carries out the task dire
 | npm and pip packages (faster-whisper, CUDA libraries, sherpa-onnx, OpenCV…) | `node_modules\`, `.venv\` | ~1.5 GB |
 | Whisper large-v3 – transcription with word timing | `models\` (Hugging Face) | 3 GB |
 | diarization – who speaks when | `models\diarization` | 40 MB |
+| TransNetV2 – shot cuts in the source (edge check, 9:16 reframe), MIT | `models\transnetv2` | 31 MB |
 | gemma3 12B + vision model + llama.cpp – outline, weak spots | `models\llm`, `tools\llama.cpp` | ~10 GB |
 | **Hermes** (Qwen3.6-35B) – free edit planning, optional (asked) | `models\hermes` | ~23 GB |
 | Premiere panel | link `%APPDATA%\Adobe\CEP\extensions\com.pz.premieremcp`, `PlayerDebugMode` in `HKCU\Software\Adobe\CSXS.*` | – |
